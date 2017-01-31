@@ -511,20 +511,6 @@
     [self.webView stringByEvaluatingJavaScriptFromString:js];
 }
 
-- (void)showMoreAction {
-
-//    itemActionSheet = [LCActionSheet sheetWithTitle:nil cancelButtonTitle:nil clicked:^(LCActionSheet *actionSheet, NSInteger buttonIndex) {
-//
-//    } otherButtonTitles:@"复制帖子链接", @"在浏览器中查看",@"高级回帖" , nil];
-
-    itemActionSheet = [LCActionSheet sheetWithTitle:nil buttonTitles:@[@"复制帖子链接", @"在浏览器中查看", @"高级回帖"] redButtonIndex:2 clicked:^(NSInteger buttonIndex) {
-
-
-    }];
-
-    [itemActionSheet show];
-}
-
 
 - (NSDictionary *)dictionaryFromQuery:(NSString *)query usingEncoding:(NSStringEncoding)encoding {
     NSCharacterSet *delimiterSet = [NSCharacterSet characterSetWithCharactersInString:@"&;"];
@@ -553,6 +539,20 @@
         shouldScrollEnd = NO;
     }
 
+}
+
+- (void)reportThreadPost:(int)postId userName:(NSString *)userName {
+  UIStoryboard *storyboard = [UIStoryboard mainStoryboard];
+
+                UINavigationController *simpleReplyController = [storyboard instantiateViewControllerWithIdentifier:@"ReportThreadPost"];
+
+                TransBundle *bundle = [[TransBundle alloc] init];
+                [bundle putIntValue:postId forKey:@"POST_ID"];
+                [bundle putStringValue:userName forKey:@"POST_USER"];
+
+                [self presentViewController:simpleReplyController withBundle:bundle forRootController:YES animated:YES completion:^{
+
+                }];
 }
 
 - (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType {
@@ -623,17 +623,7 @@
                 pasteboard.string = postUrl;
                 [SVProgressHUD showSuccessWithStatus:@"复制成功" maskType:SVProgressHUDMaskTypeBlack];
             } else if (buttonIndex == 3){
-                UIStoryboard *storyboard = [UIStoryboard mainStoryboard];
-
-                UINavigationController *simpleReplyController = [storyboard instantiateViewControllerWithIdentifier:@"ReportThreadPost"];
-
-                TransBundle *bundle = [[TransBundle alloc] init];
-                [bundle putIntValue:postId forKey:@"POST_ID"];
-                [bundle putStringValue:userName forKey:@"POST_USER"];
-
-                [self presentViewController:simpleReplyController withBundle:bundle forRootController:YES animated:YES completion:^{
-
-                }];
+                [self reportThreadPost:postId userName:userName];
             }
         }];
 
@@ -764,18 +754,6 @@
 
 - (IBAction)back:(UIBarButtonItem *)sender {
     [self.navigationController popViewControllerAnimated:YES];
-
-
-
-//    NSString * currentHtml = [self.webView stringByEvaluatingJavaScriptFromString:@"document.getElementById('list').innerHTML;"];
-//
-//    [self.webView stringByEvaluatingJavaScriptFromString:[NSString stringWithFormat:@"document.getElementById('list').innerHTML +='%@';", @"<li class=\"post-title\">\n            <div class=\"title\">\n\t 9999999 \n</div>\n        </li>"]];
-
-
-
-//    NSString *injectSrc = @"var i = document.createElement('div'); i.innerHTML = '%@';document.documentElement.appendChild(i);";
-//    NSString *runToInject = [NSString stringWithFormat:injectSrc, @"Hello World"];
-//    [self.webView stringByEvaluatingJavaScriptFromString:runToInject];
 }
 
 - (IBAction)changeNumber:(id)sender {
@@ -785,7 +763,7 @@
 
 - (IBAction)showMoreAction:(UIBarButtonItem *)sender {
 
-    itemActionSheet = [LCActionSheet sheetWithTitle:nil buttonTitles:@[@"复制帖子链接", @"在浏览器中查看", @"高级回帖"] redButtonIndex:4 clicked:^(NSInteger buttonIndex) {
+    itemActionSheet = [LCActionSheet sheetWithTitle:nil buttonTitles:@[@"复制帖子链接", @"在浏览器中查看", @"举报主题"] redButtonIndex:4 clicked:^(NSInteger buttonIndex) {
         if (buttonIndex == 0) {
             // 复制贴链接
             UIPasteboard *pasteboard = [UIPasteboard generalPasteboard];
@@ -805,8 +783,7 @@
             NSURL *url = [NSURL URLWithString:[forumConfig showThreadWithThreadId:[NSString stringWithFormat:@"%d", threadID] withPage:1]];
             [[UIApplication sharedApplication] openURL:url];
         } else if (buttonIndex == 2) {
-            [self reply:self];
-
+            [self reportThreadPost:nil userName:nil];
         }
     }];
 
