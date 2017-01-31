@@ -34,16 +34,23 @@
 
 
 - (IBAction)back:(id)sender {
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 - (IBAction)reportThreadPost:(id)sender {
     [self.reportMessage resignFirstResponder];
     [SVProgressHUD showWithStatus:@"请等待..." maskType:SVProgressHUDMaskTypeBlack];
     
-    [self.forumBrowser reportThreadPost:postId andMessage:self.reportMessage.text handler:^(BOOL isSuccess, id message) {
-       [SVProgressHUD showSuccessWithStatus:@"已经举报给管理员" maskType:SVProgressHUDMaskTypeBlack];
+    if (userName == nil || postId == 0) {
+        
+        [SVProgressHUD showSuccessWithStatus:@"已经举报给管理员" maskType:SVProgressHUDMaskTypeBlack];
         [self dismissViewControllerAnimated:YES completion:nil];
-    }];
+    } else{
+        [self.forumBrowser reportThreadPost:postId andMessage:self.reportMessage.text handler:^(BOOL isSuccess, id message) {
+            [SVProgressHUD showSuccessWithStatus:@"已经举报给管理员" maskType:SVProgressHUDMaskTypeBlack];
+        [self dismissViewControllerAnimated:YES completion:nil];
+        }];
+    }
     
 }
 @end

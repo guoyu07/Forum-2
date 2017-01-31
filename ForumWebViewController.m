@@ -763,7 +763,7 @@
 
 - (IBAction)showMoreAction:(UIBarButtonItem *)sender {
 
-    itemActionSheet = [LCActionSheet sheetWithTitle:nil buttonTitles:@[@"复制帖子链接", @"在浏览器中查看", @"举报主题"] redButtonIndex:4 clicked:^(NSInteger buttonIndex) {
+    itemActionSheet = [LCActionSheet sheetWithTitle:nil buttonTitles:@[@"复制帖子链接", @"在浏览器中查看", @"举报此帖"] redButtonIndex:4 clicked:^(NSInteger buttonIndex) {
         if (buttonIndex == 0) {
             // 复制贴链接
             UIPasteboard *pasteboard = [UIPasteboard generalPasteboard];
