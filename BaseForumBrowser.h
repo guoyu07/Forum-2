@@ -6,7 +6,6 @@
 #import <Foundation/Foundation.h>
 
 #import "vBulletinForumEngine.h"
-#import "ForumConfig.h"
 #import "ForumConfigDelegate.h"
 
 @class AFHTTPSessionManager;
