@@ -10,7 +10,7 @@
 
 #import "ForumConfig.h"
 
-@interface ForumHtmlParser : NSObject <ForumParser>
+@interface ForumHtmlParser : NSObject <ForumParserDelegate>
 
 + (instancetype)parserWithForumConfig:(ForumConfig *)config;
 

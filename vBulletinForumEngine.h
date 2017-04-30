@@ -17,8 +17,8 @@ FOUNDATION_EXPORT const unsigned char vBulletinForumEngineVersionString[];
 // In this header, you should import all the public headers of your framework using statements like #import "PublicHeader.h"
 
 
-#import "ForumEngine.h"
-#import "ForumParser.h"
+#import "ForumBrowserDelegate.h"
+#import "ForumParserDelegate.h"
 
 #import "LoginUser.h"
 #import "Message.h"

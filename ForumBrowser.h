@@ -14,7 +14,7 @@
 
 
 
-@interface ForumBrowser : NSObject <ForumEngine>
+@interface ForumBrowser : NSObject <ForumBrowserDelegate>
 
 - (ForumBrowser*)browserWithForumConfig:(ForumConfig *)config;
 

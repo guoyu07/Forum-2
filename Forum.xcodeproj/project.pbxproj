@@ -308,8 +308,8 @@
 		4D0D87241DE40C7900DA9034 /* ForumNavigationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ForumNavigationViewController.m; sourceTree = "<group>"; };
 		4D339D8B1C31454A0022A6A4 /* Forum.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Forum.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4DEB34C21C47BBE400063CBB /* AssetsLibrary.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AssetsLibrary.framework; path = System/Library/Frameworks/AssetsLibrary.framework; sourceTree = SDKROOT; };
-		4DF736FA1DDECC5000BF1896 /* ForumEngine.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ForumEngine.h; sourceTree = "<group>"; };
-		4DF736FB1DDECC5000BF1896 /* ForumParser.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ForumParser.h; sourceTree = "<group>"; };
+		4DF736FA1DDECC5000BF1896 /* ForumBrowserDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ForumBrowserDelegate.h; sourceTree = "<group>"; };
+		4DF736FB1DDECC5000BF1896 /* ForumParserDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ForumParserDelegate.h; sourceTree = "<group>"; };
 		4DF736FC1DDECC5000BF1896 /* vBulletinForumEngine.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = vBulletinForumEngine.h; sourceTree = "<group>"; };
 		4DF737011DDECC8500BF1896 /* ThreadInSearch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ThreadInSearch.h; sourceTree = "<group>"; };
 		4DF737021DDECC8500BF1896 /* ThreadInSearch.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ThreadInSearch.m; sourceTree = "<group>"; };
@@ -696,8 +696,8 @@
 		4DF736F91DDECC3700BF1896 /* Engine */ = {
 			isa = PBXGroup;
 			children = (
-				4DF736FA1DDECC5000BF1896 /* ForumEngine.h */,
-				4DF736FB1DDECC5000BF1896 /* ForumParser.h */,
+				4DF736FA1DDECC5000BF1896 /* ForumBrowserDelegate.h */,
+				4DF736FB1DDECC5000BF1896 /* ForumParserDelegate.h */,
 				4DF736FC1DDECC5000BF1896 /* vBulletinForumEngine.h */,
 				4DF736FD1DDECC5900BF1896 /* Model */,
 			);

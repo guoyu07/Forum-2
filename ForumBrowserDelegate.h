@@ -15,8 +15,9 @@
 typedef void (^HandlerWithBool)(BOOL isSuccess, id message);
 
 
-@protocol ForumEngine <NSObject>
+@protocol ForumBrowserDelegate <NSObject>
 
+@required
 // 登录论坛
 - (void)loginWithName:(NSString *)name andPassWord:(NSString *)passWord withCode:(NSString*) code handler:(HandlerWithBool)handler;
 
