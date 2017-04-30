@@ -815,9 +815,9 @@
     NSString *userAvatar = [[[[[[userInfoNode childrenAtPosition:1] childrenAtPosition:1] childrenAtPosition:0] attribute:@"src"] componentsSeparatedByString:@"/"] lastObject];
     if (userAvatar) {
         NSString *avatarPattern = @"%@/%@";
-        userAvatar = [NSString stringWithFormat:avatarPattern, self.config.avatarBase, userAvatar];
+        userAvatar = [NSString stringWithFormat:avatarPattern, self.configDelegate.avatarBase, userAvatar];
     } else {
-        userAvatar = self.config.avatarNo;
+        userAvatar = self.configDelegate.avatarNo;
     }
     pmAuthor.userAvatar = userAvatar;
 
@@ -936,7 +936,7 @@
     parent.forumId = fixForumId;
     parent.parentForumId = parentFormId;
     parent.forumName = name;
-    parent.forumHost = self.config.host;
+    parent.forumHost = self.configDelegate.host;
 
     if (node.childrenCount == 2) {
         IGXMLNodeSet *childSet = [node childrenAtPosition:1].children;

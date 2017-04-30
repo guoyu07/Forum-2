@@ -10,7 +10,7 @@
 #import "ForumConfig.h"
 
 @class AFHTTPSessionManager;
-@class ForumHtmlParser;
+@class BaseForumHtmlParser;
 
 
 @interface ForumBrowserFactory : NSObject

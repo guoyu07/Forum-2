@@ -10,14 +10,14 @@
 #import "ForumConfigDelegate.h"
 
 @class AFHTTPSessionManager;
-@class ForumHtmlParser;
+@class BaseForumHtmlParser;
 
 @interface BaseForumBrowser : NSObject
 
 @property(nonatomic, strong) id<ForumConfigDelegate> configDelegate;
 
 @property(nonatomic, strong) NSString *phoneName;
-@property(nonatomic, strong) id<ForumParserDelegate> htmlParser;
+@property(nonatomic, strong) id<ForumParserDelegate> parserDelegate;
 @property(nonatomic, strong) AFHTTPSessionManager *browser;
 
 @end

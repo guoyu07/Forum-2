@@ -4,8 +4,8 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "ForumHtmlParser.h"
+#import "BaseForumHtmlParser.h"
 
 
-@interface DRLForumHtmlParser : ForumHtmlParser<ForumParserDelegate>
+@interface DRLForumHtmlParser : BaseForumHtmlParser<ForumParserDelegate>
 @end

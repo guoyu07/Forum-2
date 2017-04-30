@@ -4,8 +4,8 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "ForumHtmlParser.h"
+#import "BaseForumHtmlParser.h"
 
 
-@interface CCFForumHtmlParser : ForumHtmlParser<ForumParserDelegate>
+@interface CCFForumHtmlParser : BaseForumHtmlParser<ForumParserDelegate>
 @end

@@ -6,7 +6,7 @@
 //
 
 #import "ForumCreateNewThreadViewController.h"
-#import "ForumHtmlParser.h"
+#import "BaseForumHtmlParser.h"
 #import "ForumBrowserFactory.h"
 #import <AssetsLibrary/AssetsLibrary.h>
 #import <SVProgressHUD.h>

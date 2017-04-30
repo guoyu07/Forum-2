@@ -1,5 +1,5 @@
 //
-//  ForumHtmlParser.h
+//  BaseForumHtmlParser.h
 //
 //  Created by 迪远 王 on 16/10/2.
 //  Copyright © 2016年 andforce. All rights reserved.
@@ -10,9 +10,10 @@
 
 #import "ForumConfig.h"
 
-@interface ForumHtmlParser : NSObject
+#import "ForumConfigDelegate.h"
 
-+ (instancetype)parserWithForumConfig:(ForumConfig *)config;
+@interface BaseForumHtmlParser : NSObject
 
-@property (nonatomic, strong) ForumConfig *config;
+@property(nonatomic, strong) id<ForumConfigDelegate> configDelegate;
+
 @end

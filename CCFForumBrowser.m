@@ -9,7 +9,7 @@
 #import "NSUserDefaults+Extensions.h"
 #import "NSUserDefaults+Setting.h"
 #import <AFImageDownloader.h>
-#import "ForumHtmlParser.h"
+#import "BaseForumHtmlParser.h"
 #import "AFHTTPSessionManager+SimpleAction.h"
 #import <AFNetworking/UIImageView+AFNetworking.h>
 
@@ -90,11 +90,11 @@ typedef void (^CallBack)(NSString *token, NSString *hash, NSString *time);
                 [self saveUserName:userName];
                 handler(YES, @"登录成功");
             } else {
-                handler(NO, [self.htmlParser parseLoginErrorMessage:html]);
+                handler(NO, [self.parserDelegate parseLoginErrorMessage:html]);
             }
 
         } else {
-            handler(NO, [self.htmlParser parseLoginErrorMessage:html]);
+            handler(NO, [self.parserDelegate parseLoginErrorMessage:html]);
         }
     }];
 }
@@ -159,7 +159,7 @@ typedef void (^CallBack)(NSString *token, NSString *hash, NSString *time);
     
     [self.browser GETWithURLString:self.configDelegate.archive parameters:parameters requestCallback:^(BOOL isSuccess, NSString *html) {
         if (isSuccess) {
-            NSArray<Forum *> *parserForums = [self.htmlParser parserForums:html];
+            NSArray<Forum *> *parserForums = [self.parserDelegate parserForums:html];
             if (parserForums != nil && parserForums.count > 0) {
                 handler(YES, parserForums);
             } else {
@@ -352,9 +352,9 @@ typedef void (^CallBack)(NSString *token, NSString *hash, NSString *time);
     [self.browser GETWithURLString:[self.configDelegate newThreadWithForumId:[NSString stringWithFormat:@"%d", forumId]] parameters:parameters requestCallback:^(BOOL isSuccess, NSString *html) {
 
         if (isSuccess) {
-            NSString *token = [self.htmlParser parseSecurityToken:html];
+            NSString *token = [self.parserDelegate parseSecurityToken:html];
             NSString *postTime = [[token componentsSeparatedByString:@"-"] firstObject];
-            NSString *hash = [self.htmlParser parsePostHash:html];
+            NSString *hash = [self.parserDelegate parsePostHash:html];
 
             callback(token, hash, postTime);
         } else {
@@ -412,7 +412,7 @@ typedef void (^CallBack)(NSString *token, NSString *hash, NSString *time);
                     if (error != nil) {
                         handler(NO, error);
                     } else {
-                        ViewThreadPage *thread = [self.htmlParser parseShowThreadWithHtml:result];
+                        ViewThreadPage *thread = [self.parserDelegate parseShowThreadWithHtml:result];
                         if (thread.postList.count > 0) {
                             handler(YES, thread);
                         } else {
@@ -430,9 +430,9 @@ typedef void (^CallBack)(NSString *token, NSString *hash, NSString *time);
 
                 if (isSuccess) {
                     // 解析出上传图片需要的参数
-                    NSString *uploadToken = [self.htmlParser parseSecurityToken:result];
+                    NSString *uploadToken = [self.parserDelegate parseSecurityToken:result];
                     NSString *uploadTime = [[token componentsSeparatedByString:@"-"] firstObject];
-                    NSString *uploadHash = [self.htmlParser parsePostHash:result];
+                    NSString *uploadHash = [self.parserDelegate parsePostHash:result];
 
                     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(createThreadUploadImages:) name:@"CREATE_THREAD_UPLOAD_IMAGE" object:nil];
 
@@ -482,7 +482,7 @@ typedef void (^CallBack)(NSString *token, NSString *hash, NSString *time);
                 if (error != nil) {
                     _handlerWithBool(NO, error);
                 } else {
-                    ViewThreadPage *thread = [self.htmlParser parseShowThreadWithHtml:doPostResult];
+                    ViewThreadPage *thread = [self.parserDelegate parseShowThreadWithHtml:doPostResult];
                     if (thread.postList.count > 0) {
                         _handlerWithBool(YES, thread);
                     } else {
@@ -543,7 +543,7 @@ typedef void (^CallBack)(NSString *token, NSString *hash, NSString *time);
             if (error != nil) {
                 handler(NO, error);
             } else {
-                ViewThreadPage *thread = [self.htmlParser parseShowThreadWithHtml:message];
+                ViewThreadPage *thread = [self.parserDelegate parseShowThreadWithHtml:message];
                 if (thread.postList.count > 0) {
                     handler(YES, thread);
                 } else {
@@ -600,7 +600,7 @@ typedef void (^CallBack)(NSString *token, NSString *hash, NSString *time);
             if (error != nil) {
                 handler(NO, error);
             } else {
-                ViewThreadPage *thread = [self.htmlParser parseShowThreadWithHtml:html];
+                ViewThreadPage *thread = [self.parserDelegate parseShowThreadWithHtml:html];
                 if (thread.postList.count > 0) {
                     handler(YES, thread);
                 } else {
@@ -777,9 +777,9 @@ typedef void (^CallBack)(NSString *token, NSString *hash, NSString *time);
     [self.browser POSTWithURLString:url parameters:presparameters requestCallback:^(BOOL isSuccess, NSString *html) {
         if (isSuccess) {
 
-            NSString *securityToken = [self.htmlParser parseSecurityToken:html];
-            NSString *postHash = [self.htmlParser parsePostHash:html];
-            NSString *postStartTime = [self.htmlParser parserPostStartTime:html];
+            NSString *securityToken = [self.parserDelegate parseSecurityToken:html];
+            NSString *postHash = [self.parserDelegate parsePostHash:html];
+            NSString *postStartTime = [self.parserDelegate parserPostStartTime:html];
 
             if (images == nil || [images count] == 0) {
                 [self seniorReplyWithThreadId:threadId andMessage:message securitytoken:securityToken posthash:postHash poststarttime:postStartTime handler:^(BOOL success, id result) {
@@ -790,7 +790,7 @@ typedef void (^CallBack)(NSString *token, NSString *hash, NSString *time);
 
                             handler(NO, error);
                         } else {
-                            ViewThreadPage *thread = [self.htmlParser parseShowThreadWithHtml:result];
+                            ViewThreadPage *thread = [self.parserDelegate parseShowThreadWithHtml:result];
                             if (thread.postList.count > 0) {
                                 handler(YES, thread);
                             } else {
@@ -810,9 +810,9 @@ typedef void (^CallBack)(NSString *token, NSString *hash, NSString *time);
 
                     if (success) {
                         // 解析出上传图片需要的参数
-                        uploadImageToken = [self.htmlParser parseSecurityToken:result];
+                        uploadImageToken = [self.parserDelegate parseSecurityToken:result];
                         NSString *uploadTime = [[securityToken componentsSeparatedByString:@"-"] firstObject];
-                        NSString *uploadHash = [self.htmlParser parsePostHash:result];
+                        NSString *uploadHash = [self.parserDelegate parsePostHash:result];
 
                         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(seniorReplyUploadImage:) name:@"SENIOR_REPLY_UPLOAD_IMAGE" object:nil];
 
@@ -853,7 +853,7 @@ typedef void (^CallBack)(NSString *token, NSString *hash, NSString *time);
         [self uploadImageForSeniorReply:[NSURL URLWithString:self.configDelegate.newattachment] :uploadImageToken fId:forumId threadId:threadId postTime:uploadTime hash:uploadHash :image callback:^(BOOL isSuccess, id uploadResultHtml) {
 
             // 更新token
-            NSString *newUploadImageToken = [self.htmlParser parseSecurityToken:uploadResultHtml];
+            NSString *newUploadImageToken = [self.parserDelegate parseSecurityToken:uploadResultHtml];
 
             NSLog(@" 上传第 %d 张图片", imageId);
 
@@ -874,7 +874,7 @@ typedef void (^CallBack)(NSString *token, NSString *hash, NSString *time);
                 if (error != nil) {
                     _handlerWithBool(NO, error);
                 } else {
-                    ViewThreadPage *thread = [self.htmlParser parseShowThreadWithHtml:result];
+                    ViewThreadPage *thread = [self.parserDelegate parseShowThreadWithHtml:result];
                     if (thread.postList.count > 0) {
                         _handlerWithBool(YES, thread);
                     } else {
@@ -940,7 +940,7 @@ typedef void (^CallBack)(NSString *token, NSString *hash, NSString *time);
 
     [self.browser GETWithURLString:self.configDelegate.search parameters:defparameters requestCallback:^(BOOL isSuccess, NSString *html) {
         if (isSuccess) {
-            NSString *token = [self.htmlParser parseSecurityToken:html];
+            NSString *token = [self.parserDelegate parseSecurityToken:html];
             if (token != nil) {
                 [self saveSecurityToken:token];
             }
@@ -955,7 +955,7 @@ typedef void (^CallBack)(NSString *token, NSString *hash, NSString *time);
                     if (error != nil) {
                         handler(NO, error);
                     } else {
-                        ViewSearchForumPage *page = [self.htmlParser parseSearchPageFromHtml:searchResult];
+                        ViewSearchForumPage *page = [self.parserDelegate parseSearchPageFromHtml:searchResult];
                         [self saveCookie];
 
                         if (page != nil && page.threadList != nil && page.threadList.count > 0) {
@@ -983,7 +983,7 @@ typedef void (^CallBack)(NSString *token, NSString *hash, NSString *time);
 
     [self.browser GETWithURLString:[self.configDelegate privateShowWithMessageId:pmId] parameters:parameters requestCallback:^(BOOL isSuccess, NSString *html) {
         if (isSuccess) {
-            ViewMessagePage *content = [self.htmlParser parsePrivateMessageContent:html];
+            ViewMessagePage *content = [self.parserDelegate parsePrivateMessageContent:html];
             handler(YES, content);
         } else {
             handler(NO, html);
@@ -998,7 +998,7 @@ typedef void (^CallBack)(NSString *token, NSString *hash, NSString *time);
 
     [self.browser GETWithURLString:self.configDelegate.privateNewPre parameters:parameters requestCallback:^(BOOL isSuccess, NSString *html) {
         if (isSuccess) {
-            NSString *token = [self.htmlParser parseSecurityToken:html];
+            NSString *token = [self.parserDelegate parseSecurityToken:html];
 
             NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
             [parameters setValue:message forKey:@"message"];
@@ -1042,12 +1042,12 @@ typedef void (^CallBack)(NSString *token, NSString *hash, NSString *time);
 
     [self.browser GETWithURLString:[self.configDelegate privateShowWithMessageId:pmId] parameters:defparameters requestCallback:^(BOOL isSuccess, NSString *html) {
         if (isSuccess) {
-            NSString *token = [self.htmlParser parseSecurityToken:html];
+            NSString *token = [self.parserDelegate parseSecurityToken:html];
 
-            NSString *quote = [self.htmlParser parseQuickReplyQuoteContent:html];
+            NSString *quote = [self.parserDelegate parseQuickReplyQuoteContent:html];
 
-            NSString *title = [self.htmlParser parseQuickReplyTitle:html];
-            NSString *name = [self.htmlParser parseQuickReplyTo:html];
+            NSString *title = [self.parserDelegate parseQuickReplyTitle:html];
+            NSString *name = [self.parserDelegate parseQuickReplyTo:html];
 
             NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
 
@@ -1092,7 +1092,7 @@ typedef void (^CallBack)(NSString *token, NSString *hash, NSString *time);
         if (!isSuccess) {
             handler(NO, html);
         } else {
-            NSString *token = [self.htmlParser parseSecurityToken:html];
+            NSString *token = [self.parserDelegate parseSecurityToken:html];
 
             NSString *url = [self.configDelegate favForumWithIdParam:forumId];
             NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
@@ -1136,7 +1136,7 @@ typedef void (^CallBack)(NSString *token, NSString *hash, NSString *time);
         if (!isSuccess) {
             handler(NO, html);
         } else {
-            NSString *token = [self.htmlParser parseSecurityToken:html];
+            NSString *token = [self.parserDelegate parseSecurityToken:html];
 
             NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
             [parameters setValue:@"" forKey:@"s"];
@@ -1175,7 +1175,7 @@ typedef void (^CallBack)(NSString *token, NSString *hash, NSString *time);
 
     [self.browser GETWithURLString:[self.configDelegate privateWithType:type withPage:page] parameters:defparameters requestCallback:^(BOOL isSuccess, NSString *html) {
         if (isSuccess) {
-            ViewForumPage *viewForumPage = [self.htmlParser parsePrivateMessageFromHtml:html];
+            ViewForumPage *viewForumPage = [self.parserDelegate parsePrivateMessageFromHtml:html];
             handler(YES, viewForumPage);
         } else {
             handler(NO, html);
@@ -1190,7 +1190,7 @@ typedef void (^CallBack)(NSString *token, NSString *hash, NSString *time);
 
     [self.browser GETWithURLString:self.configDelegate.usercp parameters:defparameters requestCallback:^(BOOL isSuccess, NSString *html) {
         if (isSuccess) {
-            NSMutableArray<Forum *> *favForms = [self.htmlParser parseFavForumFromHtml:html];
+            NSMutableArray<Forum *> *favForms = [self.parserDelegate parseFavForumFromHtml:html];
             handler(YES, favForms);
         } else {
             handler(NO, html);
@@ -1206,7 +1206,7 @@ typedef void (^CallBack)(NSString *token, NSString *hash, NSString *time);
 
     [self.browser GETWithURLString:url parameters:defparameters requestCallback:^(BOOL isSuccess, NSString *html) {
         if (isSuccess) {
-            ViewForumPage *viewForumPage = [self.htmlParser parseFavThreadListFromHtml:html];
+            ViewForumPage *viewForumPage = [self.parserDelegate parseFavThreadListFromHtml:html];
             handler(isSuccess, viewForumPage);
         } else {
             handler(NO, html);
@@ -1231,12 +1231,12 @@ typedef void (^CallBack)(NSString *token, NSString *hash, NSString *time);
 
         [self.browser GETWithURLString:self.configDelegate.searchNewThread parameters:defparameters requestCallback:^(BOOL isSuccess, NSString *html) {
             if (isSuccess) {
-                NSUInteger newThreadPostSearchId = (NSUInteger) [[self.htmlParser parseListMyThreadSearchid:html] integerValue];
+                NSUInteger newThreadPostSearchId = (NSUInteger) [[self.parserDelegate parseListMyThreadSearchid:html] integerValue];
                 [userDefault setInteger:timeStamp forKey:[self.configDelegate.host stringByAppendingString:@"-search_time"]];
                 [userDefault setInteger:newThreadPostSearchId forKey:[self.configDelegate.host stringByAppendingString:@"-search_id"]];
             }
             if (isSuccess) {
-                ViewForumPage *sarchPage = [self.htmlParser parseSearchPageFromHtml:html];
+                ViewForumPage *sarchPage = [self.parserDelegate parseSearchPageFromHtml:html];
                 handler(isSuccess, sarchPage);
             } else {
                 handler(NO, html);
@@ -1251,7 +1251,7 @@ typedef void (^CallBack)(NSString *token, NSString *hash, NSString *time);
 
         [self.browser GETWithURLString:url parameters:defparameters requestCallback:^(BOOL isSuccess, NSString *html) {
             if (isSuccess) {
-                ViewForumPage *sarchPage = [self.htmlParser parseSearchPageFromHtml:html];
+                ViewForumPage *sarchPage = [self.parserDelegate parseSearchPageFromHtml:html];
                 handler(isSuccess, sarchPage);
             } else {
                 handler(NO, html);
@@ -1269,10 +1269,10 @@ typedef void (^CallBack)(NSString *token, NSString *hash, NSString *time);
         [self.browser GETWithURLString:self.configDelegate.searchNewThreadToday parameters:defparameters requestCallback:^(BOOL isSuccess, NSString *html) {
 
             if (isSuccess) {
-                todayNewThreadPostSearchId = [self.htmlParser parseListMyThreadSearchid:html];
+                todayNewThreadPostSearchId = [self.parserDelegate parseListMyThreadSearchid:html];
             }
             if (isSuccess) {
-                ViewForumPage *sarchPage = [self.htmlParser parseSearchPageFromHtml:html];
+                ViewForumPage *sarchPage = [self.parserDelegate parseSearchPageFromHtml:html];
                 handler(isSuccess, sarchPage);
             } else {
                 handler(NO, html);
@@ -1287,7 +1287,7 @@ typedef void (^CallBack)(NSString *token, NSString *hash, NSString *time);
 
         [self.browser GETWithURLString:url parameters:defparameters requestCallback:^(BOOL isSuccess, NSString *html) {
             if (isSuccess) {
-                ViewForumPage *sarchPage = [self.htmlParser parseSearchPageFromHtml:html];
+                ViewForumPage *sarchPage = [self.parserDelegate parseSearchPageFromHtml:html];
                 handler(isSuccess, sarchPage);
             } else {
                 handler(NO, html);
@@ -1332,11 +1332,11 @@ typedef void (^CallBack)(NSString *token, NSString *hash, NSString *time);
         [self.browser GETWithURLString:[self.configDelegate searchMyThreadWithUserName:encodeName] parameters:defparameters requestCallback:^(BOOL isSuccess, NSString *html) {
 
             if (listMyThreadSearchId == nil) {
-                listMyThreadSearchId = [self.htmlParser parseListMyThreadSearchid:html];
+                listMyThreadSearchId = [self.parserDelegate parseListMyThreadSearchid:html];
             }
 
             if (isSuccess) {
-                ViewForumPage *sarchPage = [self.htmlParser parseSearchPageFromHtml:html];
+                ViewForumPage *sarchPage = [self.parserDelegate parseSearchPageFromHtml:html];
                 handler(isSuccess, sarchPage);
             } else {
                 handler(NO, html);
@@ -1351,7 +1351,7 @@ typedef void (^CallBack)(NSString *token, NSString *hash, NSString *time);
 
         [self.browser GETWithURLString:url parameters:defparameters requestCallback:^(BOOL isSuccess, NSString *html) {
             if (isSuccess) {
-                ViewForumPage *sarchPage = [self.htmlParser parseSearchPageFromHtml:html];
+                ViewForumPage *sarchPage = [self.parserDelegate parseSearchPageFromHtml:html];
                 handler(isSuccess, sarchPage);
             } else {
                 handler(NO, html);
@@ -1373,12 +1373,12 @@ typedef void (^CallBack)(NSString *token, NSString *hash, NSString *time);
                 listUserThreadRedirectUrlDictionary = [NSMutableDictionary dictionary];
             }
 
-            NSString *searchId = [self.htmlParser parseListMyThreadSearchid:html];
+            NSString *searchId = [self.parserDelegate parseListMyThreadSearchid:html];
 
             listUserThreadRedirectUrlDictionary[@(userId)] = searchId;
 
             if (isSuccess) {
-                ViewForumPage *sarchPage = [self.htmlParser parseSearchPageFromHtml:html];
+                ViewForumPage *sarchPage = [self.parserDelegate parseSearchPageFromHtml:html];
                 handler(isSuccess, sarchPage);
             } else {
                 handler(NO, html);
@@ -1395,7 +1395,7 @@ typedef void (^CallBack)(NSString *token, NSString *hash, NSString *time);
 
         [self.browser GETWithURLString:url parameters:defparameters requestCallback:^(BOOL isSuccess, NSString *html) {
             if (isSuccess) {
-                ViewForumPage *sarchPage = [self.htmlParser parseSearchPageFromHtml:html];
+                ViewForumPage *sarchPage = [self.parserDelegate parseSearchPageFromHtml:html];
                 handler(isSuccess, sarchPage);
             } else {
                 handler(NO, html);
@@ -1417,7 +1417,7 @@ typedef void (^CallBack)(NSString *token, NSString *hash, NSString *time);
                 handler(NO, error);
             } else {
                 if (isSuccess) {
-                    ViewThreadPage *detail = [self.htmlParser parseShowThreadWithHtml:html];
+                    ViewThreadPage *detail = [self.parserDelegate parseShowThreadWithHtml:html];
                     handler(isSuccess, detail);
                 } else {
                     handler(NO, html);
@@ -1443,7 +1443,7 @@ typedef void (^CallBack)(NSString *token, NSString *hash, NSString *time);
             if (error != nil) {
                 handler(NO, error);
             } else {
-                ViewThreadPage *detail = [self.htmlParser parseShowThreadWithHtml:html];
+                ViewThreadPage *detail = [self.parserDelegate parseShowThreadWithHtml:html];
                 handler(isSuccess, detail);
             }
         } else {
@@ -1459,7 +1459,7 @@ typedef void (^CallBack)(NSString *token, NSString *hash, NSString *time);
 
     [self.browser GETWithURLString:[self.configDelegate forumDisplayWithId:[NSString stringWithFormat:@"%d", forumId] withPage:page] parameters:defparameters requestCallback:^(BOOL isSuccess, NSString *html) {
         if (isSuccess) {
-            ViewForumPage *viewForumPage = [self.htmlParser parseThreadListFromHtml:html withThread:forumId andContainsTop:YES];
+            ViewForumPage *viewForumPage = [self.parserDelegate parseThreadListFromHtml:html withThread:forumId andContainsTop:YES];
             handler(isSuccess, viewForumPage);
         } else {
             handler(NO, html);
@@ -1473,7 +1473,7 @@ typedef void (^CallBack)(NSString *token, NSString *hash, NSString *time);
     [defparameters setValue:@"1" forKey:@"langid"];
 
     [self.browser GETWithURLString:[self.configDelegate memberWithUserId:userId] parameters:defparameters requestCallback:^(BOOL isSuccess, NSString *html) {
-        NSString *avatar = [self.htmlParser parseUserAvatar:html userId:userId];
+        NSString *avatar = [self.parserDelegate parseUserAvatar:html userId:userId];
         if (avatar) {
             avatar = [self.configDelegate.avatarBase stringByAppendingString:avatar];
         } else {
@@ -1497,7 +1497,7 @@ typedef void (^CallBack)(NSString *token, NSString *hash, NSString *time);
             if (error != nil) {
                 handler(NO, error);
             } else {
-                ViewSearchForumPage *viewSearchForumPage = [self.htmlParser parseSearchPageFromHtml:html];
+                ViewSearchForumPage *viewSearchForumPage = [self.parserDelegate parseSearchPageFromHtml:html];
 
                 if (viewSearchForumPage != nil && viewSearchForumPage.threadList != nil && viewSearchForumPage.threadList.count > 0) {
                     handler(YES, viewSearchForumPage);
@@ -1519,7 +1519,7 @@ typedef void (^CallBack)(NSString *token, NSString *hash, NSString *time);
 
     [self.browser GETWithURLString:[self.configDelegate memberWithUserId:userId] parameters:defparameters requestCallback:^(BOOL isSuccess, NSString *html) {
         if (isSuccess) {
-            UserProfile *profile = [self.htmlParser parserProfile:html userId:userId];
+            UserProfile *profile = [self.parserDelegate parserProfile:html userId:userId];
             handler(YES, profile);
         } else {
             handler(NO, @"未知错误");
@@ -1537,7 +1537,7 @@ typedef void (^CallBack)(NSString *token, NSString *hash, NSString *time);
 
             NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
             [parameters setValue:@"" forKey:@"s"];
-            NSString *token = [self.htmlParser parseSecurityToken:html];
+            NSString *token = [self.parserDelegate parseSecurityToken:html];
             [parameters setValue:token forKey:@"securitytoken"];
             [parameters setValue:message forKey:@"reason"];
             [parameters setValue:[NSString stringWithFormat:@"%d", postId] forKey:@"postid"];

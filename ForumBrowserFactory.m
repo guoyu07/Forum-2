@@ -8,7 +8,7 @@
 #import "ForumBrowserFactory.h"
 
 #import <AFImageDownloader.h>
-#import "ForumHtmlParser.h"
+#import "BaseForumHtmlParser.h"
 #import <iOSDeviceName/iOSDeviceName.h>
 #import "CCFForumBrowser.h"
 #import "DRLForumBrowser.h"
@@ -31,23 +31,23 @@
     if ([bundleId isEqualToString:@"com.andforce.et8"]){
         CCFForumBrowser * _ccfForumBrowser = [[CCFForumBrowser alloc] init];
         _ccfForumBrowser.configDelegate = [[CCFForumConfig alloc] init];
-        _ccfForumBrowser.htmlParser = [[CCFForumHtmlParser alloc] init];
+        _ccfForumBrowser.parserDelegate = [[CCFForumHtmlParser alloc] init];
         return _ccfForumBrowser;
     } else if ([bundleId isEqualToString:@"com.andforce.DRL"]){
         DRLForumBrowser * _drlForumBrowser = [[DRLForumBrowser alloc] init];
         _drlForumBrowser.configDelegate = [[DRLForumConfig alloc] init];
-        _drlForumBrowser.htmlParser = [[DRLForumHtmlParser alloc] init];
+        _drlForumBrowser.parserDelegate = [[DRLForumHtmlParser alloc] init];
         return _drlForumBrowser;
     } else{
         if ([host isEqualToString:@"bbs.et8.net"]) {
             CCFForumBrowser * _ccfForumBrowser = [[CCFForumBrowser alloc] init];
             _ccfForumBrowser.configDelegate = [[CCFForumConfig alloc] init];
-            _ccfForumBrowser.htmlParser = [[CCFForumHtmlParser alloc] init];
+            _ccfForumBrowser.parserDelegate = [[CCFForumHtmlParser alloc] init];
             return _ccfForumBrowser;
         } else if ([host isEqualToString:@"dream4ever.org"]){
             DRLForumBrowser * _drlForumBrowser = [[DRLForumBrowser alloc] init];
             _drlForumBrowser.configDelegate = [[DRLForumConfig alloc] init];
-            _drlForumBrowser.htmlParser = [[DRLForumHtmlParser alloc] init];
+            _drlForumBrowser.parserDelegate = [[DRLForumHtmlParser alloc] init];
             return _drlForumBrowser;
         }
     }

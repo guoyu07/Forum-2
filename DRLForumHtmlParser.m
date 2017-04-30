@@ -713,7 +713,7 @@
     // 通过ids 过滤出Form
     ForumCoreDataManager *manager = [[ForumCoreDataManager alloc] initWithEntryType:EntryTypeForm];
     NSArray *result = [manager selectData:^NSPredicate * {
-        return [NSPredicate predicateWithFormat:@"forumHost = %@ AND forumId IN %@", self.config.host ,ids];
+        return [NSPredicate predicateWithFormat:@"forumHost = %@ AND forumId IN %@", self.configDelegate.host ,ids];
     }];
     
     NSMutableArray<Forum *> *forms = [NSMutableArray arrayWithCapacity:result.count];
@@ -849,7 +849,7 @@
     IGXMLNode * userAvatarNode = [document queryNodeWithXPath:@"/html/body/table/tr/td/div[2]/div/div/table[2]/tr/td[3]/form/table[2]/tr[2]/td[1]/div[2]/a/img"];
     NSString *userAvatar = [userAvatarNode attribute:@"src"];//[[userAvatarNode attribute:@"src"] componentsSeparatedByString:@"customavatars"].lastObject;
     if (userAvatar == nil) {
-        userAvatar = self.config.avatarNo;
+        userAvatar = self.configDelegate.avatarNo;
     }
     pmAuthor.userAvatar = userAvatar;
     
@@ -1019,7 +1019,7 @@
         
         forum.forumId = forumID;
         forum.forumName = forumName;
-        forum.forumHost = self.config.host;
+        forum.forumHost = self.configDelegate.host;
         
         [needInsert addObject:forum];
     }
