@@ -1,11 +1,11 @@
 //
-//  ForumBrowser.m
+//  ForumBrowserFactory.m
 //
 //  Created by 迪远 王 on 16/10/3.
 //  Copyright © 2016年 andforce. All rights reserved.
 //
 
-#import "ForumBrowser.h"
+#import "ForumBrowserFactory.h"
 
 #import <AFImageDownloader.h>
 #import "ForumHtmlParser.h"
@@ -17,7 +17,7 @@
 //static CCFForumBrowser * _ccfForumBrowser;
 //static DRLForumBrowser * _drlForumBrowser;
 
-@implementation ForumBrowser
+@implementation ForumBrowserFactory
 
 
 - (id<ForumBrowserDelegate>)browserWithForumConfig:(ForumConfig *)config {

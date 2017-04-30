@@ -7,7 +7,7 @@
 
 #import "ForumCreateNewThreadViewController.h"
 #import "ForumHtmlParser.h"
-#import "ForumBrowser.h"
+#import "ForumBrowserFactory.h"
 #import <AssetsLibrary/AssetsLibrary.h>
 #import <SVProgressHUD.h>
 #import "LCActionSheet.h"
@@ -40,9 +40,9 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
 
-//    _forumBrowser = [ForumBrowser browserWithForumConfig:[ForumConfig configWithForumHost:self.currentForumHost]];
+//    _forumBrowser = [ForumBrowserFactory browserWithForumConfig:[ForumConfig configWithForumHost:self.currentForumHost]];
 
-    _forumBrowser = [[[ForumBrowser alloc] init] browserWithForumConfig:[ForumConfig configWithForumHost:self.currentForumHost]];
+    _forumBrowser = [[[ForumBrowserFactory alloc] init] browserWithForumConfig:[ForumConfig configWithForumHost:self.currentForumHost]];
 
     _selectPhotos.delegate = self;
     _selectPhotos.dataSource = self;

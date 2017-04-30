@@ -41,9 +41,9 @@
     AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
     defaultAvatarImage = [UIImage imageNamed:@"defaultAvatar.gif"];
 
-//    _forumBrowser = [ForumBrowser browserWithForumConfig:[ForumConfig configWithForumHost:[NSURL URLWithString:appDelegate.forumBaseUrl].host]];
+//    _forumBrowser = [ForumBrowserFactory browserWithForumConfig:[ForumConfig configWithForumHost:[NSURL URLWithString:appDelegate.forumBaseUrl].host]];
     
-    _forumBrowser = [[[ForumBrowser alloc] init] browserWithForumConfig:[ForumConfig configWithForumHost:[NSURL URLWithString:appDelegate.forumBaseUrl].host]];
+    _forumBrowser = [[[ForumBrowserFactory alloc] init] browserWithForumConfig:[ForumConfig configWithForumHost:[NSURL URLWithString:appDelegate.forumBaseUrl].host]];
     coreDateManager = [[ForumCoreDataManager alloc] initWithEntryType:EntryTypeUser];
     avatarCache = [NSMutableDictionary dictionary];
 

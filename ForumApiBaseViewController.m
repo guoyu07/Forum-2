@@ -17,8 +17,8 @@
 #pragma mark initData
 
 - (void)initData {
-    //self.forumBrowser = [ForumBrowser browserWithForumConfig:[ForumConfig configWithForumHost:self.currentForumHost]];
-    self.forumBrowser = [[[ForumBrowser alloc] init] browserWithForumConfig:[ForumConfig configWithForumHost:self.currentForumHost]];
+    //self.forumBrowser = [ForumBrowserFactory browserWithForumConfig:[ForumConfig configWithForumHost:self.currentForumHost]];
+    self.forumBrowser = [[[ForumBrowserFactory alloc] init] browserWithForumConfig:[ForumConfig configWithForumHost:self.currentForumHost]];
 }
 
 #pragma mark override-init

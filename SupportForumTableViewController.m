@@ -105,8 +105,8 @@
 
 - (BOOL)isUserHasLogin:(NSString*)host {
     // 判断是否登录
-//    ForumBrowser *browser = [ForumBrowser browserWithForumConfig:[ForumConfig configWithForumHost:host]];
-    id<ForumBrowserDelegate> browser = [[[ForumBrowser alloc] init] browserWithForumConfig:[ForumConfig configWithForumHost:host]];
+//    ForumBrowserFactory *browser = [ForumBrowserFactory browserWithForumConfig:[ForumConfig configWithForumHost:host]];
+    id<ForumBrowserDelegate> browser = [[[ForumBrowserFactory alloc] init] browserWithForumConfig:[ForumConfig configWithForumHost:host]];
     LoginUser *loginUser = [browser getLoginUser];
     
     NSDate *date = [NSDate date];

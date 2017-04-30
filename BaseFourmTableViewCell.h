@@ -8,7 +8,7 @@
 #import <UIKit/UIKit.h>
 #import "ForumCoreDataManager.h"
 #import "UserEntry+CoreDataProperties.h"
-#import "ForumBrowser.h"
+#import "ForumBrowserFactory.h"
 #import "TransValueUITableViewCell.h"
 
 
