@@ -7,5 +7,5 @@
 #import "ForumHtmlParser.h"
 
 
-@interface CCFForumHtmlParser : ForumHtmlParser
+@interface CCFForumHtmlParser : ForumHtmlParser<ForumParserDelegate>
 @end

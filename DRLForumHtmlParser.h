@@ -7,5 +7,5 @@
 #import "ForumHtmlParser.h"
 
 
-@interface DRLForumHtmlParser : ForumHtmlParser
+@interface DRLForumHtmlParser : ForumHtmlParser<ForumParserDelegate>
 @end
