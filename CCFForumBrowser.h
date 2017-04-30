@@ -7,5 +7,5 @@
 #import "ForumBrowser.h"
 
 
-@interface CCFForumBrowser : ForumBrowser
+@interface CCFForumBrowser : ForumBrowser<ForumBrowserDelegate>
 @end

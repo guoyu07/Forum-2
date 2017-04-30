@@ -96,7 +96,7 @@
 
 
 - (void)onPullRefresh {
-    ForumBrowser *api = self.forumBrowser;
+    id<ForumBrowserDelegate> api = self.forumBrowser;
 
     NSString *currentUserId = api.getLoginUser.userID;
 

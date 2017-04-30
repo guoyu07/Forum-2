@@ -7,5 +7,5 @@
 #import "ForumBrowser.h"
 
 
-@interface DRLForumBrowser : ForumBrowser
+@interface DRLForumBrowser : ForumBrowser<ForumBrowserDelegate>
 @end

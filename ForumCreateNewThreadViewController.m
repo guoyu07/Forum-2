@@ -22,7 +22,7 @@
         DeleteDelegate, TransBundleDelegate, UIScrollViewDelegate> {
 
 
-    ForumBrowser *_forumBrowser;
+    id<ForumBrowserDelegate> _forumBrowser;
     int forumId;
     UIImagePickerController *pickControl;
     NSMutableArray<UIImage *> *images;

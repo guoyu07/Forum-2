@@ -13,10 +13,9 @@
 @class ForumHtmlParser;
 
 
+@interface ForumBrowser : NSObject
 
-@interface ForumBrowser : NSObject <ForumBrowserDelegate>
-
-- (ForumBrowser*)browserWithForumConfig:(ForumConfig *)config;
+- (id <ForumBrowserDelegate>) browserWithForumConfig:(ForumConfig *)config;
 
 @property(nonatomic, strong) ForumConfig *config;
 

@@ -19,7 +19,7 @@
     int userId;
     UIImage *defaultAvatarImage;
     ForumCoreDataManager *coreDateManager;
-    ForumBrowser *_forumBrowser;
+    id<ForumBrowserDelegate> _forumBrowser;
     NSMutableDictionary *avatarCache;
     NSMutableArray<UserEntry *> *cacheUsers;
 

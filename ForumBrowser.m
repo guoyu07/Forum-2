@@ -20,7 +20,7 @@
 @implementation ForumBrowser
 
 
-- (ForumBrowser *)browserWithForumConfig:(ForumConfig *)config {
+- (id<ForumBrowserDelegate>)browserWithForumConfig:(ForumConfig *)config {
 
     AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
     NSString *bundleId = [appDelegate bundleIdentifier];

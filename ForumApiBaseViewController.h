@@ -11,7 +11,7 @@
 
 @interface ForumApiBaseViewController : TransBundleUIViewController
 
-@property(nonatomic, strong) ForumBrowser *forumBrowser;
+@property(nonatomic, strong) id<ForumBrowserDelegate> forumBrowser;
 
 - (NSString *)currentForumHost;
 

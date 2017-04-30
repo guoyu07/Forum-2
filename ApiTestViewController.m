@@ -26,7 +26,7 @@
 
 
 //    ForumBrowser *api = [ForumBrowser browserWithForumConfig:[ForumConfig configWithForumHost:[self currentForumHost]]];
-    ForumBrowser *api = [[[ForumBrowser alloc] init] browserWithForumConfig:[ForumConfig configWithForumHost:[self currentForumHost]]];
+    id<ForumBrowserDelegate> api = [[[ForumBrowser alloc] init] browserWithForumConfig:[ForumConfig configWithForumHost:[self currentForumHost]]];
 
     [api listAllForums:^(BOOL isSuccess, id message) {
 

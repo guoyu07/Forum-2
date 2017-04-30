@@ -30,7 +30,7 @@
 
     UIButton *_drawerMaskView;
 
-    ForumBrowser *_forumBrowser;
+    id<ForumBrowserDelegate> _forumBrowser;
 
     UIView *_rightEageView;
 
@@ -58,7 +58,7 @@
 - (void)showUserAvatar {
     AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
 //    ForumBrowser *browser = [ForumBrowser browserWithForumConfig:[ForumConfig configWithForumHost:appDelegate.forumHost]];
-    ForumBrowser *browser = [[[ForumBrowser alloc] init] browserWithForumConfig:[ForumConfig configWithForumHost:appDelegate.forumHost]];
+    id<ForumBrowserDelegate> browser = [[[ForumBrowser alloc] init] browserWithForumConfig:[ForumConfig configWithForumHost:appDelegate.forumHost]];
     LoginUser *loginUser = [browser getLoginUser];
 
     [self showAvatar:_avatarUIImageView userId:loginUser.userID];
@@ -180,7 +180,7 @@
     // 判断是否登录
     //ForumBrowser *browser = [ForumBrowser browserWithForumConfig:[ForumConfig configWithForumHost:host]];
     
-    ForumBrowser *browser = [[[ForumBrowser alloc] init] browserWithForumConfig:[ForumConfig configWithForumHost:host]];
+    id<ForumBrowserDelegate> browser = [[[ForumBrowser alloc] init] browserWithForumConfig:[ForumConfig configWithForumHost:host]];
     LoginUser *loginUser = [browser getLoginUser];
 
     NSDate *date = [NSDate date];
