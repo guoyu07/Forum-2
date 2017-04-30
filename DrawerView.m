@@ -106,10 +106,9 @@
         }];
     } else {
 
-        AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-        ForumConfig *forumConfig = [ForumConfig configWithForumHost:appDelegate.forumHost];
+        id<ForumBrowserDelegate> browserDelegate = [ForumBrowserFactory currentForumBrowser];
 
-        if ([avatarInArray isEqualToString:forumConfig.avatarNo]) {
+        if ([avatarInArray isEqualToString:[browserDelegate currentConfigDelegate].avatarNo]) {
             [avatarImageView setImage:defaultAvatarImage];
         } else {
 

@@ -13,6 +13,10 @@
 #import "UIStoryboard+Forum.h"
 #import "AppDelegate.h"
 #import "ForumTabBarController.h"
+#import "ForumBrowserFactory.h"
+#import "ForumBrowserDelegate.h"
+#import "ForumConfigDelegate.h"
+
 
 @interface ForumMyProfileTableViewController () {
     UserProfile *userProfile;
@@ -154,10 +158,9 @@
         }];
     } else {
 
-        AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-        ForumConfig *forumConfig = [ForumConfig configWithForumHost:appDelegate.forumHost];
+        id<ForumBrowserDelegate> browserDelegate = [ForumBrowserFactory currentForumBrowser];
 
-        if ([avatarInArray isEqualToString:forumConfig.avatarNo]) {
+        if ([avatarInArray isEqualToString:[browserDelegate currentConfigDelegate].avatarNo]) {
             [avatarImageView setImage:defaultAvatarImage];
         } else {
 

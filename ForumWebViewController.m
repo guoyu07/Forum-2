@@ -60,8 +60,8 @@
 
         for (Post *post in posts) {
 
-            AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-            ForumConfig *forumConfig = [ForumConfig configWithForumHost:appDelegate.forumHost];
+            id<ForumBrowserDelegate> browserDelegate = [ForumBrowserFactory currentForumBrowser];
+            id<ForumConfigDelegate> forumConfig = [browserDelegate currentConfigDelegate];
 
             NSString *avatar = [forumConfig avatar:post.postUserInfo.userAvatar];
             NSString *louceng = [post.postLouCeng stringWithRegular:@"\\d+"];
@@ -106,8 +106,8 @@
 
         for (Post *post in posts) {
 
-            AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-            ForumConfig *forumConfig = [ForumConfig configWithForumHost:appDelegate.forumHost];
+            id<ForumBrowserDelegate> browserDelegate = [ForumBrowserFactory currentForumBrowser];
+            id<ForumConfigDelegate> forumConfig = [browserDelegate currentConfigDelegate];
 
             NSString *avatar = [forumConfig avatar:post.postUserInfo.userAvatar];
             NSString *louceng = [post.postLouCeng stringWithRegular:@"\\d+"];
@@ -235,7 +235,10 @@
         NSString *lis = @"";
 
         AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-        ForumConfig *forumConfig = [ForumConfig configWithForumHost:appDelegate.forumHost];
+
+        id<ForumBrowserDelegate> browserDelegate = [ForumBrowserFactory currentForumBrowser];
+        id<ForumConfigDelegate> forumConfig = [browserDelegate currentConfigDelegate];
+
         for (Post *post in posts) {
 
             NSString *avatar = [forumConfig avatar:post.postUserInfo.userAvatar];
@@ -296,7 +299,9 @@
                 [self.navigationController popViewControllerAnimated:YES];
 
                 AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-                ForumConfig *forumConfig = [ForumConfig configWithForumHost:appDelegate.forumHost];
+
+                id<ForumBrowserDelegate> browserDelegate = [ForumBrowserFactory currentForumBrowser];
+                id<ForumConfigDelegate> forumConfig = [browserDelegate currentConfigDelegate];
 
                 NSURL *nsurl = [NSURL URLWithString:[forumConfig showThreadWithThreadId:[NSString stringWithFormat:@"%d", threadId] withPage:page]];
                 [[UIApplication sharedApplication] openURL:nsurl];
@@ -326,7 +331,8 @@
         NSString *lis = @"";
 
         AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-        ForumConfig *forumConfig = [ForumConfig configWithForumHost:appDelegate.forumHost];
+        id<ForumBrowserDelegate> browserDelegate = [ForumBrowserFactory currentForumBrowser];
+        id<ForumConfigDelegate> forumConfig = [browserDelegate currentConfigDelegate];
 
         for (Post *post in posts) {
             NSString *avatar = [forumConfig avatar:post.postUserInfo.userAvatar];
@@ -395,7 +401,8 @@
                 NSMutableArray *posts = threadPage.postList;
 
                 AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-                ForumConfig *forumConfig = [ForumConfig configWithForumHost:appDelegate.forumHost];
+                id<ForumBrowserDelegate> browserDelegate = [ForumBrowserFactory currentForumBrowser];
+                id<ForumConfigDelegate> forumConfig = [browserDelegate currentConfigDelegate];
 
                 for (int i = currentShowThreadPage.postList.count; i < posts.count; i++) {
                     Post *post = posts[i];
@@ -441,7 +448,9 @@
         NSString *lis = @"";
 
         AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-        ForumConfig *forumConfig = [ForumConfig configWithForumHost:appDelegate.forumHost];
+        id<ForumBrowserDelegate> browserDelegate = [ForumBrowserFactory currentForumBrowser];
+        id<ForumConfigDelegate> forumConfig = [browserDelegate currentConfigDelegate];
+
         for (Post *post in posts) {
 
             NSString *avatar = [forumConfig avatar:post.postUserInfo.userAvatar];
@@ -616,7 +625,8 @@
             } else if (buttonIndex == 2) {
 
                 AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-                ForumConfig *forumConfig = [ForumConfig configWithForumHost:appDelegate.forumHost];
+                id<ForumBrowserDelegate> browserDelegate = [ForumBrowserFactory currentForumBrowser];
+                id<ForumConfigDelegate> forumConfig = [browserDelegate currentConfigDelegate];
 
                 NSString *postUrl = [forumConfig showThreadWithPostId:[NSString stringWithFormat:@"%d",postId] withPostCout:louCeng];//BBS_SHOWTHREAD_POSTCOUNT(postId, louCeng);
                 UIPasteboard *pasteboard = [UIPasteboard generalPasteboard];
@@ -769,7 +779,8 @@
             UIPasteboard *pasteboard = [UIPasteboard generalPasteboard];
 
             AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-            ForumConfig *forumConfig = [ForumConfig configWithForumHost:appDelegate.forumHost];
+            id<ForumBrowserDelegate> browserDelegate = [ForumBrowserFactory currentForumBrowser];
+            id<ForumConfigDelegate> forumConfig = [browserDelegate currentConfigDelegate];
 
             pasteboard.string = [forumConfig showThreadWithThreadId:[NSString stringWithFormat:@"%d", threadID] withPage:0];
 
@@ -778,8 +789,8 @@
         } else if (buttonIndex == 1) {
             // 在浏览器种查看
             AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-            ForumConfig *forumConfig = [ForumConfig configWithForumHost:appDelegate.forumHost];
-
+            id<ForumBrowserDelegate> browserDelegate = [ForumBrowserFactory currentForumBrowser];
+            id<ForumConfigDelegate> forumConfig = [browserDelegate currentConfigDelegate];
             NSURL *url = [NSURL URLWithString:[forumConfig showThreadWithThreadId:[NSString stringWithFormat:@"%d", threadID] withPage:1]];
             [[UIApplication sharedApplication] openURL:url];
         } else if (buttonIndex == 2) {

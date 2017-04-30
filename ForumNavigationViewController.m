@@ -7,8 +7,8 @@
 //
 
 #import "ForumNavigationViewController.h"
-#import "AppDelegate.h"
-#import "ForumConfig.h"
+#import "ForumBrowserDelegate.h"
+#import "ForumBrowserFactory.h"
 
 @interface ForumNavigationViewController ()
 
@@ -18,8 +18,9 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-    ForumConfig *forumConfig = [ForumConfig configWithForumHost:appDelegate.forumHost];
+
+    id<ForumBrowserDelegate> browser = [ForumBrowserFactory currentForumBrowser];
+    id<ForumConfigDelegate> forumConfig = [browser currentConfigDelegate];
 
     self.navigationBar.barTintColor = forumConfig.themeColor;
 }

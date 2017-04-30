@@ -10,6 +10,7 @@
 #import "ViewForumPage.h"
 #import "ThreadInSearch.h"
 #import "ViewSearchForumPage.h"
+#import "ForumConfigDelegate.h"
 #import "Forum.h"
 
 typedef void (^HandlerWithBool)(BOOL isSuccess, id message);
@@ -110,4 +111,6 @@ typedef void (^HandlerWithBool)(BOOL isSuccess, id message);
 
 // 举报违规帖子
 - (void)reportThreadPost:(int)postId andMessage:(NSString *)message handler:(HandlerWithBool)handler;
+
+- (id<ForumConfigDelegate>) currentConfigDelegate;
 @end

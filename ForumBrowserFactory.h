@@ -9,6 +9,10 @@
 #import "vBulletinForumEngine.h"
 #import "ForumConfig.h"
 
+#import "ForumConfigDelegate.h"
+#import "ForumBrowserDelegate.h"
+#import "ForumParserDelegate.h"
+
 @class AFHTTPSessionManager;
 @class BaseForumHtmlParser;
 
