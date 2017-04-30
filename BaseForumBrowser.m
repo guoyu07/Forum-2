@@ -5,11 +5,7 @@
 
 #import "BaseForumBrowser.h"
 #import <AFImageDownloader.h>
-#import "ForumHtmlParser.h"
 #import <iOSDeviceName/iOSDeviceName.h>
-#import "CCFForumBrowser.h"
-#import "DRLForumBrowser.h"
-#import "AppDelegate.h"
 
 @implementation BaseForumBrowser {
 
