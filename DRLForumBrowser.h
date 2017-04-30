@@ -4,8 +4,8 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "ForumBrowserFactory.h"
+#import "BaseForumBrowser.h"
+#import "ForumBrowserDelegate.h"
 
-
-@interface DRLForumBrowser : ForumBrowserFactory<ForumBrowserDelegate>
+@interface DRLForumBrowser : BaseForumBrowser<ForumBrowserDelegate>
 @end

@@ -13,64 +13,45 @@
 #import "CCFForumBrowser.h"
 #import "DRLForumBrowser.h"
 #import "AppDelegate.h"
+#import "CCFForumConfig.h"
+#import "DRLForumConfig.h"
+#import "CCFForumHtmlParser.h"
+#import "DRLForumHtmlParser.h"
 
 //static CCFForumBrowser * _ccfForumBrowser;
 //static DRLForumBrowser * _drlForumBrowser;
 
 @implementation ForumBrowserFactory
-
-
-- (id<ForumBrowserDelegate>)browserWithForumConfig:(ForumConfig *)config {
-
++ (id <ForumBrowserDelegate>)currentForumBrowser {
     AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
     NSString *bundleId = [appDelegate bundleIdentifier];
 
+    NSString * host = appDelegate.forumHost;
+
     if ([bundleId isEqualToString:@"com.andforce.et8"]){
-            CCFForumBrowser * _ccfForumBrowser = [[CCFForumBrowser alloc] init];
-            _ccfForumBrowser.config = config;
-            _ccfForumBrowser.htmlParser = [ForumHtmlParser parserWithForumConfig:config];
+        CCFForumBrowser * _ccfForumBrowser = [[CCFForumBrowser alloc] init];
+        _ccfForumBrowser.config = [[CCFForumConfig alloc] init];
+        _ccfForumBrowser.htmlParser = [[CCFForumHtmlParser alloc] init];
         return _ccfForumBrowser;
     } else if ([bundleId isEqualToString:@"com.andforce.DRL"]){
-            DRLForumBrowser * _drlForumBrowser = [[DRLForumBrowser alloc] init];
-            _drlForumBrowser.config = config;
-            _drlForumBrowser.htmlParser = [ForumHtmlParser parserWithForumConfig:config];
+        DRLForumBrowser * _drlForumBrowser = [[DRLForumBrowser alloc] init];
+        _drlForumBrowser.config = [[DRLForumConfig alloc] init];
+        _drlForumBrowser.htmlParser = [[DRLForumHtmlParser alloc] init];
         return _drlForumBrowser;
     } else{
-        if ([config.host isEqualToString:@"bbs.et8.net"]) {
-                CCFForumBrowser * _ccfForumBrowser = [[CCFForumBrowser alloc] init];
-                _ccfForumBrowser.config = config;
-                _ccfForumBrowser.htmlParser = [ForumHtmlParser parserWithForumConfig:config];
+        if ([host isEqualToString:@"bbs.et8.net"]) {
+            CCFForumBrowser * _ccfForumBrowser = [[CCFForumBrowser alloc] init];
+            _ccfForumBrowser.config = [[CCFForumConfig alloc] init];
+            _ccfForumBrowser.htmlParser = [[CCFForumHtmlParser alloc] init];
             return _ccfForumBrowser;
-        } else if ([config.host isEqualToString:@"dream4ever.org"]){
-                DRLForumBrowser * _drlForumBrowser = [[DRLForumBrowser alloc] init];
-                _drlForumBrowser.config = config;
-                _drlForumBrowser.htmlParser = [ForumHtmlParser parserWithForumConfig:config];
+        } else if ([host isEqualToString:@"dream4ever.org"]){
+            DRLForumBrowser * _drlForumBrowser = [[DRLForumBrowser alloc] init];
+            _drlForumBrowser.config = [[DRLForumConfig alloc] init];
+            _drlForumBrowser.htmlParser = [[DRLForumHtmlParser alloc] init];
             return _drlForumBrowser;
         }
-        return self;
     }
-    
-    return self;
-
+    return nil;
 }
-
-#pragma clang diagnostic push
-
-- (id)init {
-
-    if (self = [super init]) {
-        self.browser = [AFHTTPSessionManager manager];
-        self.browser.responseSerializer = [AFHTTPResponseSerializer serializer];
-        self.browser.responseSerializer.acceptableContentTypes = [self.browser.responseSerializer.acceptableContentTypes setByAddingObject:@"text/html"];
-        [self.browser.requestSerializer setValue:@"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/54.0.2840.71 Safari/537.36" forHTTPHeaderField:@"User-Agent"];
-
-        self.phoneName = [DeviceName deviceNameDetail];
-    }
-
-    return self;
-}
-
-#pragma clang diagnostic pop
-
 
 @end

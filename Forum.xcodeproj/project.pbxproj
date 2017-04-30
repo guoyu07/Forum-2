@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2F34C7CEBEAFF7959E033738 /* BaseForumBrowser.m in Sources */ = {isa = PBXBuildFile; fileRef = 2F34C1B18342D001E4FD665B /* BaseForumBrowser.m */; };
 		2F34CFBB62E848555D9DB610 /* ForumShortCutCreateNewThreadViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2F34CA129BA2D7ADF167E05D /* ForumShortCutCreateNewThreadViewController.m */; };
 		3A288A4C1DFAE47F002EBBC2 /* DrawerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A288A4A1DFAE47F002EBBC2 /* DrawerView.m */; };
 		3A288A4D1DFAE47F002EBBC2 /* DrawerView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3A288A4B1DFAE47F002EBBC2 /* DrawerView.xib */; };
@@ -131,8 +132,11 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		2F34C16D3B26281B5A166C6C /* ForumConfigDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ForumConfigDelegate.h; sourceTree = "<group>"; };
+		2F34C1B18342D001E4FD665B /* BaseForumBrowser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BaseForumBrowser.m; sourceTree = "<group>"; };
 		2F34CA129BA2D7ADF167E05D /* ForumShortCutCreateNewThreadViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ForumShortCutCreateNewThreadViewController.m; sourceTree = "<group>"; };
 		2F34CA3EA8022D958EAEA736 /* ForumShortCutCreateNewThreadViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ForumShortCutCreateNewThreadViewController.h; sourceTree = "<group>"; };
+		2F34CB69C9C6D905A8BAD71E /* BaseForumBrowser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BaseForumBrowser.h; sourceTree = "<group>"; };
 		3A288A491DFAE47F002EBBC2 /* DrawerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DrawerView.h; sourceTree = "<group>"; };
 		3A288A4A1DFAE47F002EBBC2 /* DrawerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DrawerView.m; sourceTree = "<group>"; };
 		3A288A4B1DFAE47F002EBBC2 /* DrawerView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DrawerView.xib; sourceTree = "<group>"; };
@@ -616,6 +620,9 @@
 				3AF887961DA16D2C0083A8D5 /* ForumBrowserFactory.m */,
 				3AF8878C1DA155D20083A8D5 /* ForumHtmlParser.h */,
 				3AF8878D1DA155D20083A8D5 /* ForumHtmlParser.m */,
+				2F34C1B18342D001E4FD665B /* BaseForumBrowser.m */,
+				2F34CB69C9C6D905A8BAD71E /* BaseForumBrowser.h */,
+				2F34C16D3B26281B5A166C6C /* ForumConfigDelegate.h */,
 			);
 			name = Custom;
 			sourceTree = "<group>";
@@ -1038,6 +1045,7 @@
 				2F34CFBB62E848555D9DB610 /* ForumShortCutCreateNewThreadViewController.m in Sources */,
 				C7B59C89FE57387F98A2F727 /* CCFForumHtmlParser.m in Sources */,
 				C7B59AE98E801BD822B9F92C /* CCFForumBrowser.m in Sources */,
+				2F34C7CEBEAFF7959E033738 /* BaseForumBrowser.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

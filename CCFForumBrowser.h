@@ -4,8 +4,9 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "ForumBrowserFactory.h"
+#import "BaseForumBrowser.h"
+#import "ForumBrowserDelegate.h"
 
 
-@interface CCFForumBrowser : ForumBrowserFactory<ForumBrowserDelegate>
+@interface CCFForumBrowser : BaseForumBrowser<ForumBrowserDelegate>
 @end

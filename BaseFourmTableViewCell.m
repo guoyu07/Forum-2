@@ -46,7 +46,7 @@
 
 //    _forumBrowser = [ForumBrowserFactory browserWithForumConfig:[ForumConfig configWithForumHost:self.currentForumHost]];
     
-    _forumBrowser = [[[ForumBrowserFactory alloc] init] browserWithForumConfig:[ForumConfig configWithForumHost:self.currentForumHost]];
+    _forumBrowser = [ForumBrowserFactory currentForumBrowser];
 
     avatarCache = [NSMutableDictionary dictionary];
 

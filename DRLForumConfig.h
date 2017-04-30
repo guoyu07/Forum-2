@@ -7,9 +7,9 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "ForumConfig.h"
+#import "ForumConfigDelegate.h"
 
-@interface DRLForumConfig : ForumConfig
+@interface DRLForumConfig : NSObject <ForumConfigDelegate>
 
 
 @end

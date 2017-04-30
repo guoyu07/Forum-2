@@ -15,12 +15,6 @@
 
 @interface ForumBrowserFactory : NSObject
 
-- (id <ForumBrowserDelegate>) browserWithForumConfig:(ForumConfig *)config;
-
-@property(nonatomic, strong) ForumConfig *config;
-
-@property(nonatomic, strong) NSString *phoneName;
-@property(nonatomic, strong) ForumHtmlParser *htmlParser;
-@property(nonatomic, strong) AFHTTPSessionManager *browser;
++ (id <ForumBrowserDelegate>) currentForumBrowser;
 
 @end

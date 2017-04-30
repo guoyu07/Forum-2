@@ -114,7 +114,7 @@ static NSString *bundleIdentifier;
         [data setDBVersion:DB_VERSION];
 
         //ForumBrowserFactory *browser = [ForumBrowserFactory browserWithForumConfig:[ForumConfig configWithForumHost:[self currentForumHost]]];
-        id<ForumBrowserDelegate> browser = [[[ForumBrowserFactory alloc] init] browserWithForumConfig:[ForumConfig configWithForumHost:[self currentForumHost]]];
+        id<ForumBrowserDelegate> browser = [ForumBrowserFactory currentForumBrowser];
         [browser logout];
 
         ForumLoginViewController *rootController = [[ForumLoginViewController alloc] init];
@@ -155,7 +155,7 @@ static NSString *bundleIdentifier;
 - (BOOL)isUserHasLogin {
     // 判断是否登录
     //ForumBrowserFactory *browser = [ForumBrowserFactory browserWithForumConfig:[ForumConfig configWithForumHost:[self currentForumHost]]];
-    id<ForumBrowserDelegate> browser = [[[ForumBrowserFactory alloc] init] browserWithForumConfig:[ForumConfig configWithForumHost:[self currentForumHost]]];
+    id<ForumBrowserDelegate> browser = [ForumBrowserFactory currentForumBrowser];
     LoginUser *loginUser = [browser getLoginUser];
 
     NSDate *date = [NSDate date];

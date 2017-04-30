@@ -43,7 +43,7 @@
 
 //    _forumBrowser = [ForumBrowserFactory browserWithForumConfig:[ForumConfig configWithForumHost:[NSURL URLWithString:appDelegate.forumBaseUrl].host]];
     
-    _forumBrowser = [[[ForumBrowserFactory alloc] init] browserWithForumConfig:[ForumConfig configWithForumHost:[NSURL URLWithString:appDelegate.forumBaseUrl].host]];
+    _forumBrowser = [ForumBrowserFactory currentForumBrowser];
     coreDateManager = [[ForumCoreDataManager alloc] initWithEntryType:EntryTypeUser];
     avatarCache = [NSMutableDictionary dictionary];
 
