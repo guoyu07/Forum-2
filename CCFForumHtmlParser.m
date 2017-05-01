@@ -936,7 +936,7 @@
     parent.forumId = fixForumId;
     parent.parentForumId = parentFormId;
     parent.forumName = name;
-    parent.forumHost = self.configDelegate.host;
+    parent.forumHost = self.configDelegate.forumURL.host;
 
     if (node.childrenCount == 2) {
         IGXMLNodeSet *childSet = [node childrenAtPosition:1].children;

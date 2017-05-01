@@ -141,7 +141,7 @@ typedef void (^CallBack)(NSString *token, NSString *hash, NSString *time);
 - (void)logout {
     [[NSUserDefaults standardUserDefaults] clearCookie];
 
-    NSURL *url = [NSURL URLWithString:self.configDelegate.url];
+    NSURL *url = self.configDelegate.forumURL;
     if (url) {
         NSArray *cookies = [[NSHTTPCookieStorage sharedHTTPCookieStorage] cookiesForURL:url];
         for (int i = 0; i < [cookies count]; i++) {
@@ -1220,8 +1220,8 @@ typedef void (^CallBack)(NSString *token, NSString *hash, NSString *time);
     NSDate *date = [NSDate date];
     NSInteger timeStamp = (NSInteger) [date timeIntervalSince1970];
 
-    NSInteger searchId = [userDefault integerForKey:[self.configDelegate.host stringByAppendingString:@"-search_id"]];
-    NSInteger lastTimeStamp = [userDefault integerForKey:[self.configDelegate.host stringByAppendingString:@"-search_time"]];
+    NSInteger searchId = [userDefault integerForKey:[self.configDelegate.forumURL.host stringByAppendingString:@"-search_id"]];
+    NSInteger lastTimeStamp = [userDefault integerForKey:[self.configDelegate.forumURL.host stringByAppendingString:@"-search_time"]];
 
     long spaceTime = timeStamp - lastTimeStamp;
     if (page == 1 && (searchId == 0 || spaceTime > 60 * 10)) {
@@ -1232,8 +1232,8 @@ typedef void (^CallBack)(NSString *token, NSString *hash, NSString *time);
         [self.browser GETWithURLString:self.configDelegate.searchNewThread parameters:defparameters requestCallback:^(BOOL isSuccess, NSString *html) {
             if (isSuccess) {
                 NSUInteger newThreadPostSearchId = (NSUInteger) [[self.parserDelegate parseListMyThreadSearchid:html] integerValue];
-                [userDefault setInteger:timeStamp forKey:[self.configDelegate.host stringByAppendingString:@"-search_time"]];
-                [userDefault setInteger:newThreadPostSearchId forKey:[self.configDelegate.host stringByAppendingString:@"-search_id"]];
+                [userDefault setInteger:timeStamp forKey:[self.configDelegate.forumURL.host stringByAppendingString:@"-search_time"]];
+                [userDefault setInteger:newThreadPostSearchId forKey:[self.configDelegate.forumURL.host stringByAppendingString:@"-search_id"]];
             }
             if (isSuccess) {
                 ViewForumPage *sarchPage = [self.parserDelegate parseSearchPageFromHtml:html];

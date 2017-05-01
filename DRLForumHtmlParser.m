@@ -713,7 +713,7 @@
     // 通过ids 过滤出Form
     ForumCoreDataManager *manager = [[ForumCoreDataManager alloc] initWithEntryType:EntryTypeForm];
     NSArray *result = [manager selectData:^NSPredicate * {
-        return [NSPredicate predicateWithFormat:@"forumHost = %@ AND forumId IN %@", self.configDelegate.host ,ids];
+        return [NSPredicate predicateWithFormat:@"forumHost = %@ AND forumId IN %@", self.configDelegate.forumURL.host ,ids];
     }];
     
     NSMutableArray<Forum *> *forms = [NSMutableArray arrayWithCapacity:result.count];
@@ -1019,7 +1019,7 @@
         
         forum.forumId = forumID;
         forum.forumName = forumName;
-        forum.forumHost = self.configDelegate.host;
+        forum.forumHost = self.configDelegate.forumURL.host;
         
         [needInsert addObject:forum];
     }

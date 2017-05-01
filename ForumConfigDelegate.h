@@ -16,9 +16,7 @@
 @required
 - (UIColor *) themeColor;
 
-- (NSString *) host;
-
-- (NSString *) url;
+- (NSURL *) forumURL;
 
 - (NSString *) archive;
 
