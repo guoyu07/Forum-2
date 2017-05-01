@@ -29,11 +29,11 @@
     return self;
 }
 
-- (id <ForumParserDelegate>)parserDelegate {
+- (id <ForumParserDelegate>)forumParser {
     return _parserDelegate;
 }
 
-- (id <ForumConfigDelegate>)configDelegate {
+- (id <ForumConfigDelegate>)forumConfig {
     return _configDelegate;
 }
 

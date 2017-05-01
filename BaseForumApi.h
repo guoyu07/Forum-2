@@ -13,8 +13,8 @@
 
 -(id)initWithConfig:(id <ForumConfigDelegate>)configDelegate parser:(id<ForumParserDelegate>) parserDelegate;
 
--(id <ForumConfigDelegate>) configDelegate;
--(id <ForumParserDelegate>) parserDelegate;
+-(id <ForumConfigDelegate>)forumConfig;
+-(id <ForumParserDelegate>)forumParser;
 
 -(AFHTTPSessionManager *)browser;
 @end
