@@ -11,11 +11,13 @@
 @class AFHTTPSessionManager;
 @class BaseForumHtmlParser;
 
-@interface BaseForumBrowser : NSObject
+@interface BaseForumApi : NSObject
 
 @property(nonatomic, strong) id<ForumConfigDelegate> configDelegate;
 @property(nonatomic, strong) id<ForumParserDelegate> parserDelegate;
 
 @property(nonatomic, strong) AFHTTPSessionManager *browser;
+
+-(id)initWithConfig:(id <ForumConfigDelegate>)configDelegate parser:(id<ForumParserDelegate>) parserDelegate;
 
 @end

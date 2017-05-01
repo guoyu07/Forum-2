@@ -3,31 +3,27 @@
 // Copyright (c) 2016 andforce. All rights reserved.
 //
 
-#import "CCFForumBrowser.h"
+#import "CCFForumApi.h"
 
 #import "NSString+Extensions.h"
 #import "NSUserDefaults+Extensions.h"
 #import "NSUserDefaults+Setting.h"
 #import <AFImageDownloader.h>
-#import "BaseForumHtmlParser.h"
 #import "AFHTTPSessionManager+SimpleAction.h"
 #import <AFNetworking/UIImageView+AFNetworking.h>
 #import <iOSDeviceName/iOSDeviceName.h>
 
-//#define kCookieUser @"bbuserid"
-//#define kCookieLastVisit @"bblastvisit"
-//#define kCookieIDStack @"IDstack"
 #define kSecurityToken @"securitytoken"
 
 typedef void (^CallBack)(NSString *token, NSString *hash, NSString *time);
 
-@implementation CCFForumBrowser {
+@implementation CCFForumApi {
     NSString *listMyThreadSearchId;
 
     NSMutableDictionary *listUserThreadRedirectUrlDictionary;
 
     NSString *todayNewThreadPostSearchId;
-    
+
     // senior post
     NSArray *toUploadImages;
     HandlerWithBool _handlerWithBool;
@@ -57,7 +53,7 @@ typedef void (^CallBack)(NSString *token, NSString *hash, NSString *time);
 
 // private
 - (NSString *)buildSignature {
-    NSString * phoneName = [DeviceName deviceNameDetail];
+    NSString *phoneName = [DeviceName deviceNameDetail];
     NSString *signature = [NSString stringWithFormat:@"\n\n发自 %@ 使用 CCF客户端", phoneName];
     return signature;
 }
@@ -158,7 +154,7 @@ typedef void (^CallBack)(NSString *token, NSString *hash, NSString *time);
     NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
     [parameters setValue:@"2" forKey:@"styleid"];
     [parameters setValue:@"1" forKey:@"langid"];
-    
+
     [self.browser GETWithURLString:self.configDelegate.archive parameters:parameters requestCallback:^(BOOL isSuccess, NSString *html) {
         if (isSuccess) {
             NSArray<Forum *> *parserForums = [self.parserDelegate parserForums:html];
@@ -1363,7 +1359,7 @@ typedef void (^CallBack)(NSString *token, NSString *hash, NSString *time);
 }
 
 - (void)listAllUserThreads:(int)userId withPage:(int)page handler:(HandlerWithBool)handler {
-    NSString *baseUrl = [self.configDelegate searchThreadWithUserId:[NSString stringWithFormat:@"%d",userId]];
+    NSString *baseUrl = [self.configDelegate searchThreadWithUserId:[NSString stringWithFormat:@"%d", userId]];
     if (listUserThreadRedirectUrlDictionary == nil || listUserThreadRedirectUrlDictionary[@(userId)] == nil) {
 
         NSMutableDictionary *defparameters = [NSMutableDictionary dictionary];

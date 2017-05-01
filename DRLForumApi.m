@@ -3,7 +3,7 @@
 // Copyright (c) 2016 andforce. All rights reserved.
 //
 
-#import "DRLForumBrowser.h"
+#import "DRLForumApi.h"
 
 #import "NSString+Extensions.h"
 #import "NSUserDefaults+Extensions.h"
@@ -21,7 +21,7 @@
 
 typedef void (^CallBack)(NSString *token, NSString *hash, NSString *time);
 
-@implementation DRLForumBrowser {
+@implementation DRLForumApi {
     NSString *listMyThreadSearchId;
 
     NSMutableDictionary *listUserThreadRedirectUrlDictionary;
