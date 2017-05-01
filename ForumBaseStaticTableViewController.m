@@ -85,7 +85,7 @@
 
 - (void)initData {
     //self.forumBrowser = [ForumBrowserFactory browserWithForumConfig:[ForumConfig configWithForumHost:self.currentForumHost]];
-    self.forumBrowser = [ForumBrowserFactory currentForumBrowser];
+    self.forumBrowser = [ForumApiHelper forumApi];
     self.dataList = [[NSMutableArray alloc] init];
 }
 

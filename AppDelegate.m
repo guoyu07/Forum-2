@@ -17,7 +17,7 @@
 #import "NSUserDefaults+Setting.h"
 #import <AVOSCloud.h>
 #import <AVOSCloudIM.h>
-#import "ForumBrowserFactory.h"
+#import "ForumApiHelper.h"
 #import "UIStoryboard+Forum.h"
 #import "HPURLProtocol.h"
 #import "AFNetworking.h"
@@ -114,7 +114,7 @@ static NSString *bundleIdentifier;
         [data setDBVersion:DB_VERSION];
 
         //ForumBrowserFactory *browser = [ForumBrowserFactory browserWithForumConfig:[ForumConfig configWithForumHost:[self currentForumHost]]];
-        id<ForumBrowserDelegate> browser = [ForumBrowserFactory currentForumBrowser];
+        id<ForumBrowserDelegate> browser = [ForumApiHelper forumApi];
         [browser logout];
 
         ForumLoginViewController *rootController = [[ForumLoginViewController alloc] init];
@@ -155,7 +155,7 @@ static NSString *bundleIdentifier;
 - (BOOL)isUserHasLogin {
     // 判断是否登录
     //ForumBrowserFactory *browser = [ForumBrowserFactory browserWithForumConfig:[ForumConfig configWithForumHost:[self currentForumHost]]];
-    id<ForumBrowserDelegate> browser = [ForumBrowserFactory currentForumBrowser];
+    id<ForumBrowserDelegate> browser = [ForumApiHelper forumApi];
     LoginUser *loginUser = [browser getLoginUser];
 
     NSDate *date = [NSDate date];

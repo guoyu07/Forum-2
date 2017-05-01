@@ -13,12 +13,12 @@
 #import <UIImageView+AFNetworking.h>
 #import "ForumCoreDataManager.h"
 #import "UserEntry+CoreDataProperties.h"
-#import "ForumBrowserFactory.h"
+#import "ForumApiHelper.h"
 
 @implementation ForumThreadListCell {
 
     ForumCoreDataManager *_coreDateManager;
-    ForumBrowserFactory *_forumBrowser;
+    ForumApiHelper *_forumBrowser;
     NSIndexPath *selectIndexPath;
 }
 
@@ -35,7 +35,7 @@
 
         //_forumBrowser = [ForumBrowserFactory browserWithForumConfig:[ForumConfig configWithForumHost:self.currentForumHost]];
         
-        _forumBrowser = [ForumBrowserFactory currentForumBrowser];
+        _forumBrowser = [ForumApiHelper forumApi];
         _coreDateManager = [[ForumCoreDataManager alloc] initWithEntryType:EntryTypeUser];
 
         [self.avatarImage setContentScaleFactor:[[UIScreen mainScreen] scale]];

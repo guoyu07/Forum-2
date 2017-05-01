@@ -13,7 +13,7 @@
 #import "UIStoryboard+Forum.h"
 #import "AppDelegate.h"
 #import "ForumTabBarController.h"
-#import "ForumBrowserFactory.h"
+#import "ForumApiHelper.h"
 #import "ForumBrowserDelegate.h"
 #import "ForumConfigDelegate.h"
 
@@ -158,7 +158,7 @@
         }];
     } else {
 
-        id<ForumBrowserDelegate> browserDelegate = [ForumBrowserFactory currentForumBrowser];
+        id<ForumBrowserDelegate> browserDelegate = [ForumApiHelper forumApi];
 
         if ([avatarInArray isEqualToString:[browserDelegate currentConfigDelegate].avatarNo]) {
             [avatarImageView setImage:defaultAvatarImage];

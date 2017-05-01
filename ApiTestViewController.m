@@ -6,7 +6,7 @@
 //
 
 #import "ApiTestViewController.h"
-#import "ForumBrowserFactory.h"
+#import "ForumApiHelper.h"
 #import "NSUserDefaults+Extensions.h"
 
 @interface ApiTestViewController ()
@@ -26,7 +26,7 @@
 
 
 //    ForumBrowserFactory *api = [ForumBrowserFactory browserWithForumConfig:[ForumConfig configWithForumHost:[self currentForumHost]]];
-    id<ForumBrowserDelegate> api = [ForumBrowserFactory currentForumBrowser];
+    id<ForumBrowserDelegate> api = [ForumApiHelper forumApi];
 
     [api listAllForums:^(BOOL isSuccess, id message) {
 

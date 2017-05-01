@@ -43,7 +43,7 @@
 
 //    _forumBrowser = [ForumBrowserFactory browserWithForumConfig:[ForumConfig configWithForumHost:[NSURL URLWithString:appDelegate.forumBaseUrl].host]];
     
-    _forumBrowser = [ForumBrowserFactory currentForumBrowser];
+    _forumBrowser = [ForumApiHelper forumApi];
     coreDateManager = [[ForumCoreDataManager alloc] initWithEntryType:EntryTypeUser];
     avatarCache = [NSMutableDictionary dictionary];
 
@@ -152,7 +152,7 @@
             }
         }];
     } else {
-        id<ForumBrowserDelegate> browserDelegate = [ForumBrowserFactory currentForumBrowser];
+        id<ForumBrowserDelegate> browserDelegate = [ForumApiHelper forumApi];
         id<ForumConfigDelegate> forumConfig = [browserDelegate currentConfigDelegate];
 
         if ([avatarInArray isEqualToString:forumConfig.avatarNo]) {

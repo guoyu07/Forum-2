@@ -5,7 +5,7 @@
 //  Copyright © 2016年 andforce. All rights reserved.
 //
 
-#import "ForumBrowserFactory.h"
+#import "ForumApiHelper.h"
 #import "MJRefresh.h"
 #import "vBulletinForumEngine.h"
 

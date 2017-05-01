@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		2F34C87F00AC80AC3FF866BF /* BaseForumBrowser.m in Sources */ = {isa = PBXBuildFile; fileRef = 2F34C9AF3EEEE19C34102D22 /* BaseForumBrowser.m */; };
 		2F34C9AE4B2DE1FF04DA5DDB /* BaseForumHtmlParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 2F34C3196ECC0B9AD149C087 /* BaseForumHtmlParser.m */; };
+		2F34CD24DA52CC996BE6F47A /* ForumApiHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 2F34C14160BC257F07318CEF /* ForumApiHelper.m */; };
 		2F34CFBB62E848555D9DB610 /* ForumShortCutCreateNewThreadViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2F34CA129BA2D7ADF167E05D /* ForumShortCutCreateNewThreadViewController.m */; };
 		3A288A4C1DFAE47F002EBBC2 /* DrawerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A288A4A1DFAE47F002EBBC2 /* DrawerView.m */; };
 		3A288A4D1DFAE47F002EBBC2 /* DrawerView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3A288A4B1DFAE47F002EBBC2 /* DrawerView.xib */; };
@@ -102,7 +103,6 @@
 		3ACFFD301CF9DD3C000312DC /* HPURLProtocol.m in Sources */ = {isa = PBXBuildFile; fileRef = 3ACFFD2F1CF9DD3C000312DC /* HPURLProtocol.m */; };
 		3ACFFD341CFA641F000312DC /* NYTExamplePhoto.m in Sources */ = {isa = PBXBuildFile; fileRef = 3ACFFD331CFA641F000312DC /* NYTExamplePhoto.m */; };
 		3AE854B71DF2B0B3000F62E9 /* defaultAvatar.gif in Resources */ = {isa = PBXBuildFile; fileRef = 3AE854B61DF2B0B3000F62E9 /* defaultAvatar.gif */; };
-		3AF887971DA16D2C0083A8D5 /* ForumBrowserFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = 3AF887961DA16D2C0083A8D5 /* ForumBrowserFactory.m */; };
 		4D0D87251DE40C7900DA9034 /* ForumNavigationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4D0D87241DE40C7900DA9034 /* ForumNavigationViewController.m */; };
 		4DEB34C31C47BBE400063CBB /* AssetsLibrary.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DEB34C21C47BBE400063CBB /* AssetsLibrary.framework */; };
 		4DF737051DDECC8500BF1896 /* ThreadInSearch.m in Sources */ = {isa = PBXBuildFile; fileRef = 4DF737021DDECC8500BF1896 /* ThreadInSearch.m */; };
@@ -131,12 +131,14 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		2F34C14160BC257F07318CEF /* ForumApiHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ForumApiHelper.m; sourceTree = "<group>"; };
 		2F34C3196ECC0B9AD149C087 /* BaseForumHtmlParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BaseForumHtmlParser.m; sourceTree = "<group>"; };
 		2F34C9AB97718DACC33EB3B3 /* BaseForumHtmlParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BaseForumHtmlParser.h; sourceTree = "<group>"; };
 		2F34C9AF3EEEE19C34102D22 /* BaseForumBrowser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BaseForumBrowser.m; sourceTree = "<group>"; };
 		2F34CA129BA2D7ADF167E05D /* ForumShortCutCreateNewThreadViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ForumShortCutCreateNewThreadViewController.m; sourceTree = "<group>"; };
 		2F34CA3EA8022D958EAEA736 /* ForumShortCutCreateNewThreadViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ForumShortCutCreateNewThreadViewController.h; sourceTree = "<group>"; };
 		2F34CEEEF0AB70454650352A /* ForumConfigDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ForumConfigDelegate.h; sourceTree = "<group>"; };
+		2F34CF08A261B408C3A92081 /* ForumApiHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ForumApiHelper.h; sourceTree = "<group>"; };
 		2F34CF920692D4F8881DB9A1 /* BaseForumBrowser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BaseForumBrowser.h; sourceTree = "<group>"; };
 		3A288A491DFAE47F002EBBC2 /* DrawerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DrawerView.h; sourceTree = "<group>"; };
 		3A288A4A1DFAE47F002EBBC2 /* DrawerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DrawerView.m; sourceTree = "<group>"; };
@@ -305,8 +307,6 @@
 		3ACFFD321CFA641F000312DC /* NYTExamplePhoto.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NYTExamplePhoto.h; sourceTree = "<group>"; };
 		3ACFFD331CFA641F000312DC /* NYTExamplePhoto.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NYTExamplePhoto.m; sourceTree = "<group>"; };
 		3AE854B61DF2B0B3000F62E9 /* defaultAvatar.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = defaultAvatar.gif; sourceTree = "<group>"; };
-		3AF887951DA16D2C0083A8D5 /* ForumBrowserFactory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ForumBrowserFactory.h; sourceTree = SOURCE_ROOT; };
-		3AF887961DA16D2C0083A8D5 /* ForumBrowserFactory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ForumBrowserFactory.m; sourceTree = SOURCE_ROOT; };
 		4D0D87231DE40C7900DA9034 /* ForumNavigationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ForumNavigationViewController.h; sourceTree = "<group>"; };
 		4D0D87241DE40C7900DA9034 /* ForumNavigationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ForumNavigationViewController.m; sourceTree = "<group>"; };
 		4D339D8B1C31454A0022A6A4 /* Forum.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Forum.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -611,8 +611,6 @@
 			children = (
 				3A288A5B1DFD1490002EBBC2 /* drl */,
 				4DFB34D31DF9461E00BD8DD5 /* ccf */,
-				3AF887951DA16D2C0083A8D5 /* ForumBrowserFactory.h */,
-				3AF887961DA16D2C0083A8D5 /* ForumBrowserFactory.m */,
 			);
 			name = Custom;
 			sourceTree = "<group>";
@@ -702,6 +700,8 @@
 				2F34CEEEF0AB70454650352A /* ForumConfigDelegate.h */,
 				2F34C3196ECC0B9AD149C087 /* BaseForumHtmlParser.m */,
 				2F34C9AB97718DACC33EB3B3 /* BaseForumHtmlParser.h */,
+				2F34CF08A261B408C3A92081 /* ForumApiHelper.h */,
+				2F34C14160BC257F07318CEF /* ForumApiHelper.m */,
 			);
 			name = Engine;
 			sourceTree = "<group>";
@@ -1010,7 +1010,6 @@
 				4DF737211DDECC8D00BF1896 /* ViewForumPage.m in Sources */,
 				3A2C3F681DDFC03400576151 /* AutoRelayoutUITextView.m in Sources */,
 				3A288A4C1DFAE47F002EBBC2 /* DrawerView.m in Sources */,
-				3AF887971DA16D2C0083A8D5 /* ForumBrowserFactory.m in Sources */,
 				3A2C3FE91DDFE0C900576151 /* ForumWebViewController.m in Sources */,
 				4DFB34D11DF82D5E00BD8DD5 /* UserEntry+CoreDataClass.m in Sources */,
 				3A2C3FD21DDFE0C900576151 /* ForumFavThreadPostTableViewController.m in Sources */,
@@ -1040,6 +1039,7 @@
 				C7B59AE98E801BD822B9F92C /* CCFForumBrowser.m in Sources */,
 				2F34C87F00AC80AC3FF866BF /* BaseForumBrowser.m in Sources */,
 				2F34C9AE4B2DE1FF04DA5DDB /* BaseForumHtmlParser.m in Sources */,
+				2F34CD24DA52CC996BE6F47A /* ForumApiHelper.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

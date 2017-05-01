@@ -15,8 +15,8 @@
 @class BaseForumHtmlParser;
 
 
-@interface ForumBrowserFactory : NSObject
+@interface ForumApiHelper : NSObject
 
-+ (id <ForumBrowserDelegate>) currentForumBrowser;
++ (id <ForumBrowserDelegate>)forumApi;
 
 @end

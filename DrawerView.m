@@ -18,7 +18,7 @@
 #import "ForumCoreDataManager.h"
 #import "UserEntry+CoreDataProperties.h"
 #import "LoginUser.h"
-#import "ForumBrowserFactory.h"
+#import "ForumApiHelper.h"
 #import "NSUserDefaults+Extensions.h"
 #import "UIStoryboard+Forum.h"
 #import "ForumTabBarController.h"
@@ -58,7 +58,7 @@
 - (void)showUserAvatar {
     AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
 //    ForumBrowserFactory *browser = [ForumBrowserFactory browserWithForumConfig:[ForumConfig configWithForumHost:appDelegate.forumHost]];
-    id<ForumBrowserDelegate> browser = [ForumBrowserFactory currentForumBrowser];
+    id<ForumBrowserDelegate> browser = [ForumApiHelper forumApi];
     LoginUser *loginUser = [browser getLoginUser];
 
     [self showAvatar:_avatarUIImageView userId:loginUser.userID];
@@ -106,7 +106,7 @@
         }];
     } else {
 
-        id<ForumBrowserDelegate> browserDelegate = [ForumBrowserFactory currentForumBrowser];
+        id<ForumBrowserDelegate> browserDelegate = [ForumApiHelper forumApi];
 
         if ([avatarInArray isEqualToString:[browserDelegate currentConfigDelegate].avatarNo]) {
             [avatarImageView setImage:defaultAvatarImage];
@@ -137,7 +137,7 @@
     if (self = [super init]) {
 
         //_forumBrowser = [ForumBrowserFactory browserWithForumConfig:[ForumConfig configWithForumHost:[self currentForumHost]]];
-        _forumBrowser = [ForumBrowserFactory currentForumBrowser];
+        _forumBrowser = [ForumApiHelper forumApi];
         [self setDrawerType:DrawerViewTypeLeft];
 
         [self initLeftDrawerView];
@@ -179,7 +179,7 @@
     // 判断是否登录
     //ForumBrowserFactory *browser = [ForumBrowserFactory browserWithForumConfig:[ForumConfig configWithForumHost:host]];
     
-    id<ForumBrowserDelegate> browser = [ForumBrowserFactory currentForumBrowser];
+    id<ForumBrowserDelegate> browser = [ForumApiHelper forumApi];
     LoginUser *loginUser = [browser getLoginUser];
 
     NSDate *date = [NSDate date];
@@ -271,7 +271,7 @@
     if (self = [super init]) {
 //        _forumBrowser = [ForumBrowserFactory browserWithForumConfig:[ForumConfig configWithForumHost:[self currentForumHost]]];
 
-        _forumBrowser = [ForumBrowserFactory currentForumBrowser];
+        _forumBrowser = [ForumApiHelper forumApi];
         
         // 和 xib 绑定
         [[NSBundle mainBundle] loadNibNamed:name owner:self options:nil];
@@ -326,7 +326,7 @@
     if (self = [super init]) {
 
 //        _forumBrowser = [ForumBrowserFactory browserWithForumConfig:[ForumConfig configWithForumHost:[self currentForumHost]]];
-        _forumBrowser = [ForumBrowserFactory currentForumBrowser];
+        _forumBrowser = [ForumApiHelper forumApi];
         
 
         [self setDrawerType:drawerType];

@@ -5,11 +5,9 @@
 //  Copyright © 2016年 andforce. All rights reserved.
 //
 
-#import "ForumBrowserFactory.h"
+#import "ForumApiHelper.h"
 
-#import <AFImageDownloader.h>
 #import "BaseForumHtmlParser.h"
-#import <iOSDeviceName/iOSDeviceName.h>
 #import "CCFForumBrowser.h"
 #import "DRLForumBrowser.h"
 #import "AppDelegate.h"
@@ -18,11 +16,8 @@
 #import "CCFForumHtmlParser.h"
 #import "DRLForumHtmlParser.h"
 
-//static CCFForumBrowser * _ccfForumBrowser;
-//static DRLForumBrowser * _drlForumBrowser;
-
-@implementation ForumBrowserFactory
-+ (id <ForumBrowserDelegate>)currentForumBrowser {
+@implementation ForumApiHelper
++ (id <ForumBrowserDelegate>)forumApi {
     AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
     NSString *bundleId = [appDelegate bundleIdentifier];
 

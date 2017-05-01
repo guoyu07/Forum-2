@@ -6,7 +6,7 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "ForumBrowserFactory.h"
+#import "ForumApiHelper.h"
 #import "TransBundleUIViewController.h"
 
 @interface ForumApiBaseViewController : TransBundleUIViewController

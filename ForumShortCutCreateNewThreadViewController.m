@@ -5,7 +5,7 @@
 
 #import "ForumShortCutCreateNewThreadViewController.h"
 #import "BaseForumHtmlParser.h"
-#import "ForumBrowserFactory.h"
+#import "ForumApiHelper.h"
 #import <AssetsLibrary/AssetsLibrary.h>
 #import <SVProgressHUD.h>
 #import "LCActionSheet.h"
@@ -42,7 +42,7 @@
 
     //_forumBrowser = [ForumBrowserFactory browserWithForumConfig:[ForumConfig configWithForumHost:self.currentForumHost]];
 
-    _forumBrowser = [ForumBrowserFactory currentForumBrowser];
+    _forumBrowser = [ForumApiHelper forumApi];
 
     _selectPhotos.delegate = self;
     _selectPhotos.dataSource = self;
