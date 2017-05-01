@@ -4,8 +4,6 @@
 //
 
 #import "BaseForumApi.h"
-#import "AFURLResponseSerialization.h"
-#import <AFImageDownloader.h>
 
 @implementation BaseForumApi {
 

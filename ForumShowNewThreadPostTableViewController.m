@@ -8,12 +8,9 @@
 #import "ForumShowNewThreadPostTableViewController.h"
 
 #import "ForumSearchResultCell.h"
-#import "UIStoryboard+Forum.h"
 #import "ForumUserProfileTableViewController.h"
 #import "ForumTabBarController.h"
 #import "ForumWebViewController.h"
-#import "TransBundleDelegate.h"
-#import "TransBundle.h"
 
 @interface ForumShowNewThreadPostTableViewController () <ThreadListCellDelegate, MGSwipeTableCellDelegate> {
     UIStoryboardSegue *selectSegue;

@@ -10,8 +10,6 @@
 #import <SVProgressHUD.h>
 
 
-#import "TransBundleDelegate.h"
-
 @interface ForumWritePMViewController () <TransBundleDelegate> {
     NSString *profileName;
     BOOL isReply;

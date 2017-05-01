@@ -21,8 +21,6 @@
 #import "ForumUserProfileTableViewController.h"
 #import "AppDelegate.h"
 
-#import "TransBundleDelegate.h"
-
 @interface ForumWebViewController () <UIWebViewDelegate, UIScrollViewDelegate, TransBundleDelegate, CAAnimationDelegate> {
 
     LCActionSheet *itemActionSheet;

@@ -8,11 +8,6 @@
 #import "ForumReportViewController.h"
 #import "SVProgressHUD.h"
 
-#import "UIStoryboard+Forum.h"
-#import "vBulletinForumEngine.h"
-#import "TransBundle.h"
-#import "TransBundleDelegate.h"
-
 @interface ForumReportViewController ()<TransBundleDelegate>{
     NSString * userName;
     int postId;

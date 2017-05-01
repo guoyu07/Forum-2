@@ -18,7 +18,6 @@
 
 #import "ForumEntry+CoreDataClass.h"
 #import "ForumSearchViewController.h"
-#import "ForumShortCutCreateNewThreadViewController.h"
 #import "ForumNavigationViewController.h"
 
 

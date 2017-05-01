@@ -13,9 +13,6 @@
 #import "UIStoryboard+Forum.h"
 #import "AppDelegate.h"
 #import "ForumTabBarController.h"
-#import "ForumApiHelper.h"
-#import "ForumBrowserDelegate.h"
-#import "ForumConfigDelegate.h"
 
 
 @interface ForumMyProfileTableViewController () {

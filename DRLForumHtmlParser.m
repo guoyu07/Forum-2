@@ -6,7 +6,6 @@
 #import "DRLForumHtmlParser.h"
 
 #import "IGXMLNode+Children.h"
-#import <IGHTMLQuery.h>
 
 #import "ForumEntry+CoreDataClass.h"
 #import "ForumCoreDataManager.h"
@@ -14,8 +13,6 @@
 #import "NSString+Extensions.h"
 
 #import "IGHTMLDocument+QueryNode.h"
-#import "IGXMLNode+Children.h"
-#import "AppDelegate.h"
 
 @implementation DRLForumHtmlParser {
 

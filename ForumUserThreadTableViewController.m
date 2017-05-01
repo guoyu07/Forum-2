@@ -8,7 +8,6 @@
 #import "ForumUserThreadTableViewController.h"
 #import "ForumSearchResultCell.h"
 #import "ForumWebViewController.h"
-#import "TransBundleDelegate.h"
 
 @interface ForumUserThreadTableViewController () <TransBundleDelegate> {
     UserProfile *userProfile;

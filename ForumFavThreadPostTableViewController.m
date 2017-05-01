@@ -10,7 +10,6 @@
 #import "ForumTabBarController.h"
 #import "ForumWebViewController.h"
 #import "ForumUserProfileTableViewController.h"
-#import "UIStoryboard+Forum.h"
 
 @interface ForumFavThreadPostTableViewController () <MGSwipeTableCellDelegate, ThreadListCellDelegate> {
     UIStoryboardSegue *selectSegue;

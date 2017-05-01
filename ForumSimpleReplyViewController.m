@@ -8,11 +8,6 @@
 #import "ForumSimpleReplyViewController.h"
 #import "SVProgressHUD.h"
 
-#import "UIStoryboard+Forum.h"
-#import "vBulletinForumEngine.h"
-#import "TransBundle.h"
-#import "TransBundleDelegate.h"
-
 @interface ForumSimpleReplyViewController ()<TransBundleDelegate> {
     NSString * userName;
     int postId;
