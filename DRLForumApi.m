@@ -169,7 +169,7 @@ typedef void (^CallBack)(NSString *token, NSString *hash, NSString *time);
 
     [self.browser GETWithURLString:self.forumConfig.archive parameters:parameters requestCallback:^(BOOL isSuccess, NSString *html) {
         if (isSuccess) {
-            NSArray<Forum *> *parserForums = [self.forumParser parserForums:html];
+            NSArray<Forum *> *parserForums = [self.forumParser parserForums:html forumHost:self.forumConfig.forumURL.host];
             if (parserForums != nil && parserForums.count > 0) {
                 handler(YES, parserForums);
             } else {
@@ -926,7 +926,7 @@ typedef void (^CallBack)(NSString *token, NSString *hash, NSString *time);
 
     [self.browser GETWithURLString:[self.forumConfig privateShowWithMessageId:pmId] parameters:parameters requestCallback:^(BOOL isSuccess, NSString *html) {
     if (isSuccess) {
-        ViewMessagePage *content = [self.forumParser parsePrivateMessageContent:html];
+        ViewMessagePage *content = [self.forumParser parsePrivateMessageContent:html avatarBase:self.forumConfig.avatarBase noavatar:self.forumConfig.avatarNo];
         handler(YES, content);
     } else {
         handler(NO, html);
@@ -958,8 +958,8 @@ typedef void (^CallBack)(NSString *token, NSString *hash, NSString *time);
             [parameters setValue:@"" forKey:@"bccrecipients"];
             [parameters setValue:@"0" forKey:@"iconid"];
             
-            [self.browser POSTWithURLString:self.forumConfig.privateReplyWithMessage parameters:parameters requestCallback:^(BOOL isSuccess, NSString *result) {
-                if (isSuccess) {
+            [self.browser POSTWithURLString:self.forumConfig.privateReplyWithMessage parameters:parameters requestCallback:^(BOOL success, NSString *result) {
+                if (success) {
                     if ([result containsString:@"信息提交时发生如下错误:"] || [result containsString:@"訊息提交時發生如下錯誤:"]) {
                         handler(NO, @"收件人未找到或者未填写标题");
                     } else {

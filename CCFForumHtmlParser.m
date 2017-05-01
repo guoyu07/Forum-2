@@ -771,7 +771,7 @@
     return page;
 }
 
-- (ViewMessagePage *)parsePrivateMessageContent:(NSString *)html {
+- (ViewMessagePage *)parsePrivateMessageContent:(NSString *)html avatarBase:(NSString *) avatarBase noavatar:(NSString *) avatarNO{
     // 去掉引用inline 的样式设定
     html = [html stringByReplacingOccurrencesOfString:@"<div class=\"smallfont\" style=\"margin-bottom:2px\">引用:</div>" withString:@""];
     html = [html stringByReplacingOccurrencesOfString:@"style=\"margin:20px; margin-top:5px; \"" withString:@"class=\"post-quote\""];
@@ -813,9 +813,9 @@
     NSString *userAvatar = [[[[[[userInfoNode childrenAtPosition:1] childrenAtPosition:1] childrenAtPosition:0] attribute:@"src"] componentsSeparatedByString:@"/"] lastObject];
     if (userAvatar) {
         NSString *avatarPattern = @"%@/%@";
-        userAvatar = [NSString stringWithFormat:avatarPattern, self.configDelegate.avatarBase, userAvatar];
+        userAvatar = [NSString stringWithFormat:avatarPattern, avatarBase, userAvatar];
     } else {
-        userAvatar = self.configDelegate.avatarNo;
+        userAvatar = avatarNO;
     }
     pmAuthor.userAvatar = userAvatar;
 
@@ -925,7 +925,7 @@
 
 
 // private
-- (Forum *)node2Form:(IGXMLNode *)node parentFormId:(int)parentFormId replaceId:(int)replaceId {
+- (Forum *)node2Form:(IGXMLNode *)node forumHost:(NSString *) host parentFormId:(int)parentFormId replaceId:(int)replaceId {
     Forum *parent = [[Forum alloc] init];
     NSString *name = [[node childrenAtPosition:0] text];
     NSString *url = [[node childrenAtPosition:0] html];
@@ -934,14 +934,14 @@
     parent.forumId = fixForumId;
     parent.parentForumId = parentFormId;
     parent.forumName = name;
-    parent.forumHost = self.configDelegate.forumURL.host;
+    parent.forumHost = host;
 
     if (node.childrenCount == 2) {
         IGXMLNodeSet *childSet = [node childrenAtPosition:1].children;
         NSMutableArray<Forum *> *childForms = [NSMutableArray array];
 
         for (IGXMLNode *childNode in childSet) {
-            [childForms addObject:[self node2Form:childNode parentFormId:fixForumId replaceId:replaceId]];
+            [childForms addObject:[self node2Form:childNode forumHost: host parentFormId:fixForumId replaceId:replaceId]];
         }
         parent.childForums = childForms;
     }
@@ -959,7 +959,7 @@
     return resultArray;
 }
 
-- (NSArray<Forum *> *)parserForums:(NSString *)html {
+- (NSArray<Forum *> *)parserForums:(NSString *)html forumHost:(NSString *) host{
     IGHTMLDocument *document = [[IGHTMLDocument alloc] initWithHTMLString:html error:nil];
 
     NSMutableArray<Forum *> *forms = [NSMutableArray array];
@@ -972,7 +972,7 @@
 
     int replaceId = 10000;
     for (IGXMLNode *child in contents) {
-        [forms addObject:[self node2Form:child parentFormId:-1 replaceId:replaceId++]];
+        [forms addObject:[self node2Form:child forumHost: host parentFormId:-1 replaceId:replaceId++]];
 
     }
 

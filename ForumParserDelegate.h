@@ -45,7 +45,7 @@
 
 - (ViewForumPage *)parsePrivateMessageFromHtml:(NSString *)html;
 
-- (ViewMessagePage *)parsePrivateMessageContent:(NSString *)html;
+- (ViewMessagePage *)parsePrivateMessageContent:(NSString *)html avatarBase:(NSString *) avatarBase noavatar:(NSString *) avatarNO;
 
 - (NSString *)parseQuickReplyQuoteContent:(NSString *)html;
 
@@ -59,6 +59,6 @@
 
 - (UserProfile *)parserProfile:(NSString *)html userId:(NSString *)userId;
 
-- (NSArray<Forum *> *)parserForums:(NSString *)html;
+- (NSArray<Forum *> *)parserForums:(NSString *)html forumHost:(NSString *) host;
 
 @end

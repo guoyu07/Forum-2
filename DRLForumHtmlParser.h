@@ -4,8 +4,8 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "BaseForumHtmlParser.h"
+#import "ForumParserDelegate.h"
 
 
-@interface DRLForumHtmlParser : BaseForumHtmlParser<ForumParserDelegate>
+@interface DRLForumHtmlParser : NSObject<ForumParserDelegate>
 @end

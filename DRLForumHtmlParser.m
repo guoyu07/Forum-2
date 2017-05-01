@@ -691,7 +691,7 @@
     return resultPage;
 }
 
-- (NSMutableArray<Forum *> *)parseFavForumFromHtml:(NSString *)html {
+- (NSMutableArray<Forum *> *)parseFavForumFromHtml:(NSString *)html forumHost:(NSString *) host{
     IGHTMLDocument *document = [[IGHTMLDocument alloc] initWithHTMLString:html error:nil];
     IGXMLNodeSet *favFormNodeSet = [document queryWithXPath:@"//*[@id='collapseobj_usercp_forums']/tr[*]/td[2]/div[1]/a"];
     
@@ -710,7 +710,7 @@
     // 通过ids 过滤出Form
     ForumCoreDataManager *manager = [[ForumCoreDataManager alloc] initWithEntryType:EntryTypeForm];
     NSArray *result = [manager selectData:^NSPredicate * {
-        return [NSPredicate predicateWithFormat:@"forumHost = %@ AND forumId IN %@", self.configDelegate.forumURL.host ,ids];
+        return [NSPredicate predicateWithFormat:@"forumHost = %@ AND forumId IN %@", host ,ids];
     }];
     
     NSMutableArray<Forum *> *forms = [NSMutableArray arrayWithCapacity:result.count];
@@ -805,7 +805,7 @@
 }
 
 // for drl
-- (ViewMessagePage *)parsePrivateMessageContent:(NSString *)html {
+- (ViewMessagePage *)parsePrivateMessageContent:(NSString *)html avatarBase:(NSString *) avatarBase noavatar:(NSString *) avatarNO{
     
     
     IGHTMLDocument *document = [[IGHTMLDocument alloc] initWithHTMLString:html error:nil];
@@ -846,7 +846,7 @@
     IGXMLNode * userAvatarNode = [document queryNodeWithXPath:@"/html/body/table/tr/td/div[2]/div/div/table[2]/tr/td[3]/form/table[2]/tr[2]/td[1]/div[2]/a/img"];
     NSString *userAvatar = [userAvatarNode attribute:@"src"];//[[userAvatarNode attribute:@"src"] componentsSeparatedByString:@"customavatars"].lastObject;
     if (userAvatar == nil) {
-        userAvatar = self.configDelegate.avatarNo;
+        userAvatar = avatarNO;
     }
     pmAuthor.userAvatar = userAvatar;
     
@@ -982,7 +982,7 @@
     return resultArray;
 }
 
-- (NSArray<Forum *> *)parserForums:(NSString *)html {
+- (NSArray<Forum *> *)parserForums:(NSString *)html forumHost:(NSString *) host{
     IGHTMLDocument *document = [[IGHTMLDocument alloc]initWithHTMLString:html error:nil];
     
     //                   /html/body/table/tr/td/div[3]/div/div/table[5]/tr/td[2]/div/form/select/optgroup[2]
@@ -1016,7 +1016,7 @@
         
         forum.forumId = forumID;
         forum.forumName = forumName;
-        forum.forumHost = self.configDelegate.forumURL.host;
+        forum.forumHost = host;
         
         [needInsert addObject:forum];
     }
