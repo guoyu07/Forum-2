@@ -105,9 +105,7 @@
 
 - (BOOL)isUserHasLogin:(NSString*)host {
     // 判断是否登录
-//    ForumBrowserFactory *browser = [ForumBrowserFactory browserWithForumConfig:[ForumConfig configWithForumHost:host]];
-    id<ForumBrowserDelegate> browser = [ForumApiHelper forumApi];
-    LoginUser *loginUser = [browser getLoginUser];
+    LoginUser *loginUser = [self.forumApi getLoginUser];
     
     NSDate *date = [NSDate date];
     return (loginUser.userID != nil && [loginUser.expireTime compare:date] != NSOrderedAscending);

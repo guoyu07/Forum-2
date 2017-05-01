@@ -19,7 +19,7 @@
     int userId;
     UIImage *defaultAvatarImage;
     ForumCoreDataManager *coreDateManager;
-    id<ForumBrowserDelegate> _forumBrowser;
+    id<ForumBrowserDelegate> _forumApi;
     NSMutableDictionary *avatarCache;
     NSMutableArray<UserEntry *> *cacheUsers;
 
@@ -43,7 +43,7 @@
 
 //    _forumBrowser = [ForumBrowserFactory browserWithForumConfig:[ForumConfig configWithForumHost:[NSURL URLWithString:appDelegate.forumBaseUrl].host]];
     
-    _forumBrowser = [ForumApiHelper forumApi];
+    _forumApi = [ForumApiHelper forumApi];
     coreDateManager = [[ForumCoreDataManager alloc] initWithEntryType:EntryTypeUser];
     avatarCache = [NSMutableDictionary dictionary];
 
@@ -66,7 +66,7 @@
 
 - (void)onPullRefresh {
     NSString *userIdString = [NSString stringWithFormat:@"%d", userId];
-    [self.forumBrowser showProfileWithUserId:userIdString handler:^(BOOL isSuccess, UserProfile *message) {
+    [self.forumApi showProfileWithUserId:userIdString handler:^(BOOL isSuccess, UserProfile *message) {
         userProfile = message;
 
         [self.tableView.mj_header endRefreshing];
@@ -132,7 +132,7 @@
 
     if (avatarInArray == nil) {
 
-        [_forumBrowser getAvatarWithUserId:profileUserId handler:^(BOOL isSuccess, NSString *avatar) {
+        [_forumApi getAvatarWithUserId:profileUserId handler:^(BOOL isSuccess, NSString *avatar) {
             AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
             // 存入数据库
             [coreDateManager insertOneData:^(id src) {

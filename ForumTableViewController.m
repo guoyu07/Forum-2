@@ -62,7 +62,7 @@
 
 - (void)onPullRefresh {
 
-    [self.forumBrowser listAllForums:^(BOOL isSuccess, id message) {
+    [self.forumApi listAllForums:^(BOOL isSuccess, id message) {
 
         [self.tableView.mj_header endRefreshing];
 
@@ -146,7 +146,7 @@
     Forum *parent = self.dataList[cell.indexPath.section];
     Forum *child = parent.childForums[cell.indexPath.row];
 
-    [self.forumBrowser favoriteForumsWithId:[NSString stringWithFormat:@"%d", child.forumId] handler:^(BOOL isSuccess, id message) {
+    [self.forumApi favoriteForumsWithId:[NSString stringWithFormat:@"%d", child.forumId] handler:^(BOOL isSuccess, id message) {
         NSLog(@">>>>>>>>>>>> %@", message);
     }];
 

@@ -46,7 +46,7 @@
         [SVProgressHUD showSuccessWithStatus:@"已经举报给管理员" maskType:SVProgressHUDMaskTypeBlack];
         [self dismissViewControllerAnimated:YES completion:nil];
     } else{
-        [self.forumBrowser reportThreadPost:postId andMessage:self.reportMessage.text handler:^(BOOL isSuccess, id message) {
+        [self.forumApi reportThreadPost:postId andMessage:self.reportMessage.text handler:^(BOOL isSuccess, id message) {
             [SVProgressHUD showSuccessWithStatus:@"已经举报给管理员" maskType:SVProgressHUDMaskTypeBlack];
         [self dismissViewControllerAnimated:YES completion:nil];
         }];

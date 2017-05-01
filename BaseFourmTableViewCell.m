@@ -14,7 +14,7 @@
     UIImage *defaultAvatarImage;
 
     ForumCoreDataManager *coreDateManager;
-    id<ForumBrowserDelegate> _forumBrowser;
+    id<ForumBrowserDelegate> _forumApi;
 
     NSMutableDictionary *avatarCache;
 
@@ -46,7 +46,7 @@
 
 //    _forumBrowser = [ForumBrowserFactory browserWithForumConfig:[ForumConfig configWithForumHost:self.currentForumHost]];
     
-    _forumBrowser = [ForumApiHelper forumApi];
+    _forumApi = [ForumApiHelper forumApi];
 
     avatarCache = [NSMutableDictionary dictionary];
 
@@ -90,7 +90,7 @@
 
     if (avatarInArray == nil) {
 
-        [_forumBrowser getAvatarWithUserId:userId handler:^(BOOL isSuccess, NSString *avatar) {
+        [_forumApi getAvatarWithUserId:userId handler:^(BOOL isSuccess, NSString *avatar) {
 
             if (isSuccess) {
                 AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
@@ -118,8 +118,8 @@
         }];
     } else {
 
-        id<ForumBrowserDelegate> browserDelegate = [ForumApiHelper forumApi];
-        id<ForumConfigDelegate> forumConfig = [browserDelegate currentConfigDelegate];
+        id<ForumBrowserDelegate> forumApi = [ForumApiHelper forumApi];
+        id<ForumConfigDelegate> forumConfig = [forumApi currentConfigDelegate];
 
         if ([avatarInArray isEqualToString:forumConfig.avatarNo]) {
             [avatarImageView setImage:defaultAvatarImage];

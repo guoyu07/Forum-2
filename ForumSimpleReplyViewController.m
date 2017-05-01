@@ -59,7 +59,7 @@
 
 
     if (postId != -1) {
-        [self.forumBrowser quickReplyPostWithThreadId:threadId forPostId:postId andMessage:self.replyContent.text securitytoken:securityToken ajaxLastPost:ajaxLastPost handler:^(BOOL isSuccess, ViewThreadPage *message) {
+        [self.forumApi quickReplyPostWithThreadId:threadId forPostId:postId andMessage:self.replyContent.text securitytoken:securityToken ajaxLastPost:ajaxLastPost handler:^(BOOL isSuccess, ViewThreadPage *message) {
             if (isSuccess && message != nil) {
                 [SVProgressHUD showSuccessWithStatus:@"回复成功" maskType:SVProgressHUDMaskTypeBlack];
 
@@ -81,7 +81,7 @@
             }
         }];
     } else {
-        [self.forumBrowser replyThreadWithId:threadId andMessage:self.replyContent.text handler:^(BOOL isSuccess, id message) {
+        [self.forumApi replyThreadWithId:threadId andMessage:self.replyContent.text handler:^(BOOL isSuccess, id message) {
 
             if (isSuccess) {
 

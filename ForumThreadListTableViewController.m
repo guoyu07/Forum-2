@@ -52,7 +52,7 @@
 }
 
 - (void)onPullRefresh {
-    [self.forumBrowser forumDisplayWithId:transForm.forumId andPage:1 handler:^(BOOL isSuccess, ViewForumPage *page) {
+    [self.forumApi forumDisplayWithId:transForm.forumId andPage:1 handler:^(BOOL isSuccess, ViewForumPage *page) {
 
         [self.tableView.mj_header endRefreshing];
 
@@ -80,7 +80,7 @@
 }
 
 - (void)onLoadMore {
-    [self.forumBrowser forumDisplayWithId:transForm.forumId andPage:self.currentPage + 1 handler:^(BOOL isSuccess, ViewForumPage *page) {
+    [self.forumApi forumDisplayWithId:transForm.forumId andPage:self.currentPage + 1 handler:^(BOOL isSuccess, ViewForumPage *page) {
 
         [self.tableView.mj_footer endRefreshing];
 
@@ -216,19 +216,19 @@
     if (indexPath.section == 0) {
         Forum *parent = childForms[(NSUInteger) cell.indexPath.section];
 
-        [self.forumBrowser favoriteForumsWithId:[NSString stringWithFormat:@"%d", parent.forumId] handler:^(BOOL isSuccess, id message) {
+        [self.forumApi favoriteForumsWithId:[NSString stringWithFormat:@"%d", parent.forumId] handler:^(BOOL isSuccess, id message) {
             NSLog(@">>>>>>>>>>>> %@", message);
         }];
     } else if (indexPath.section == 1) {
         NormalThread *play = self.threadTopList[(NSUInteger) indexPath.row];
 
-        [self.forumBrowser favoriteThreadPostWithId:play.threadID handler:^(BOOL isSuccess, id message) {
+        [self.forumApi favoriteThreadPostWithId:play.threadID handler:^(BOOL isSuccess, id message) {
 
         }];
     } else {
         NormalThread *play = self.dataList[(NSUInteger) indexPath.row];
 
-        [self.forumBrowser favoriteThreadPostWithId:play.threadID handler:^(BOOL isSuccess, id message) {
+        [self.forumApi favoriteThreadPostWithId:play.threadID handler:^(BOOL isSuccess, id message) {
 
         }];
     }

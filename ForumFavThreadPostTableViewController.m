@@ -27,7 +27,7 @@
 }
 
 - (void)onPullRefresh {
-    [self.forumBrowser listFavoriteThreadPostsWithPage:1 handler:^(BOOL isSuccess, ViewForumPage *resultPage) {
+    [self.forumApi listFavoriteThreadPostsWithPage:1 handler:^(BOOL isSuccess, ViewForumPage *resultPage) {
 
         [self.tableView.mj_header endRefreshing];
         if (isSuccess) {
@@ -44,7 +44,7 @@
 }
 
 - (void)onLoadMore {
-    [self.forumBrowser listFavoriteThreadPostsWithPage:self.currentPage handler:^(BOOL isSuccess, ViewForumPage *resultPage) {
+    [self.forumApi listFavoriteThreadPostsWithPage:self.currentPage handler:^(BOOL isSuccess, ViewForumPage *resultPage) {
 
         [self.tableView.mj_footer endRefreshing];
 
@@ -90,7 +90,7 @@
 
     SimpleThread *list = self.dataList[(NSUInteger) cell.indexPath.row];
 
-    [self.forumBrowser unfavoriteThreadPostWithId:list.threadID handler:^(BOOL isSuccess, id message) {
+    [self.forumApi unfavoriteThreadPostWithId:list.threadID handler:^(BOOL isSuccess, id message) {
         NSLog(@">>>>>>>>>>>> %@", message);
     }];
 

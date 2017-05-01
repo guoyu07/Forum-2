@@ -100,11 +100,11 @@
 
 
 - (void)onPullRefresh {
-    id<ForumBrowserDelegate> api = self.forumBrowser;
+    id<ForumBrowserDelegate> api = self.forumApi;
 
     NSString *currentUserId = api.getLoginUser.userID;
 
-    [self.forumBrowser showProfileWithUserId:currentUserId handler:^(BOOL isSuccess, UserProfile *message) {
+    [self.forumApi showProfileWithUserId:currentUserId handler:^(BOOL isSuccess, UserProfile *message) {
         userProfile = message;
 
         [self.tableView.mj_header endRefreshing];
@@ -130,7 +130,7 @@
 
     if (avatarInArray == nil) {
 
-        [self.forumBrowser getAvatarWithUserId:userId handler:^(BOOL isSuccess, NSString *avatar) {
+        [self.forumApi getAvatarWithUserId:userId handler:^(BOOL isSuccess, NSString *avatar) {
 
             if (isSuccess) {
                 AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
@@ -189,7 +189,7 @@
 
     if (indexPath.section == 3 && indexPath.row == 1) {
 
-        [self.forumBrowser logout];
+        [self.forumApi logout];
 
 
         ForumLoginViewController *rootController = [[ForumLoginViewController alloc] init];

@@ -36,7 +36,7 @@
 
 - (void)onPullRefresh {
 
-    [self.forumBrowser listFavoriteForums:^(BOOL isSuccess, NSMutableArray<Forum *> *message) {
+    [self.forumApi listFavoriteForums:^(BOOL isSuccess, NSMutableArray<Forum *> *message) {
 
 
         [self.tableView.mj_header endRefreshing];
@@ -62,7 +62,7 @@
     NSUserDefaults *userDef = [NSUserDefaults standardUserDefaults];
 
     if (userDef.favFormIds == nil) {
-        [self.forumBrowser listFavoriteForums:^(BOOL isSuccess, NSMutableArray<Forum *> *message) {
+        [self.forumApi listFavoriteForums:^(BOOL isSuccess, NSMutableArray<Forum *> *message) {
             self.dataList = message;
             [self.tableView reloadData];
         }];
@@ -139,7 +139,7 @@
 
     Forum *parent = self.dataList[(NSUInteger) cell.indexPath.row];
 
-    [self.forumBrowser unfavouriteForumsWithId:[NSString stringWithFormat:@"%d", parent.forumId] handler:^(BOOL isSuccess, id message) {
+    [self.forumApi unfavouriteForumsWithId:[NSString stringWithFormat:@"%d", parent.forumId] handler:^(BOOL isSuccess, id message) {
 
     }];
 

@@ -22,7 +22,7 @@
         DeleteDelegate, TransBundleDelegate, UIScrollViewDelegate> {
 
 
-    id<ForumBrowserDelegate> _forumBrowser;
+    id<ForumBrowserDelegate> _forumApi;
     int forumId;
     UIImagePickerController *pickControl;
     NSMutableArray<UIImage *> *images;
@@ -42,7 +42,7 @@
 
 //    _forumBrowser = [ForumBrowserFactory browserWithForumConfig:[ForumConfig configWithForumHost:self.currentForumHost]];
 
-    _forumBrowser = [ForumApiHelper forumApi];
+    _forumApi = [ForumApiHelper forumApi];
 
     _selectPhotos.delegate = self;
     _selectPhotos.dataSource = self;
@@ -205,7 +205,7 @@
         [uploadData addObject:data];
     }
 
-    [_forumBrowser createNewThreadWithForumId:forumId withSubject:title andMessage:message withImages:[uploadData copy] handler:^(BOOL isSuccess, id message) {
+    [_forumApi createNewThreadWithForumId:forumId withSubject:title andMessage:message withImages:[uploadData copy] handler:^(BOOL isSuccess, id message) {
 
         [self dismissViewControllerAnimated:YES completion:^{
 

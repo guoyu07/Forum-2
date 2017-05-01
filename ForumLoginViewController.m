@@ -17,7 +17,7 @@
 
     CGRect screenSize;
 
-    id<ForumBrowserDelegate> _forumBrowser;
+    id<ForumBrowserDelegate> _forumApi;
 
 }
 
@@ -28,10 +28,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
 
-    id<ForumBrowserDelegate> browserDelegate = [ForumApiHelper forumApi];
-    id<ForumConfigDelegate> forumConfig = [browserDelegate currentConfigDelegate];
 
-    self.rootView.backgroundColor = forumConfig.themeColor;
     
     _userName.delegate = self;
     _password.delegate = self;
@@ -46,14 +43,16 @@
 
     screenSize = [UIScreen mainScreen].bounds;
 
-//    _forumBrowser = [ForumBrowserFactory browserWithForumConfig:[ForumConfig configWithForumHost:self.currentForumHost]];
+    _forumApi = [ForumApiHelper forumApi];
 
-    _forumBrowser = [ForumApiHelper forumApi];                       ;
+    id<ForumConfigDelegate> forumConfig = [_forumApi currentConfigDelegate];
+
+    self.rootView.backgroundColor = forumConfig.themeColor;
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardDidShowNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
 
-    [_forumBrowser refreshVCodeToUIImageView:_doorImageView];
+    [_forumApi refreshVCodeToUIImageView:_doorImageView];
 
 }
 
@@ -134,10 +133,10 @@
 
     [SVProgressHUD showWithStatus:@"正在登录" maskType:SVProgressHUDMaskTypeBlack];
 
-    [_forumBrowser loginWithName:name andPassWord:password withCode:code handler:^(BOOL isSuccess, id message) {
+    [_forumApi loginWithName:name andPassWord:password withCode:code handler:^(BOOL isSuccess, id message) {
         if (isSuccess) {
 
-            [_forumBrowser listAllForums:^(BOOL isSuccess, id message) {
+            [_forumApi listAllForums:^(BOOL isSuccess, id message) {
 
 
                 [SVProgressHUD dismiss];
@@ -184,7 +183,7 @@
 
 
 - (IBAction)refreshDoor:(id)sender {
-    [_forumBrowser refreshVCodeToUIImageView:_doorImageView];
+    [_forumApi refreshVCodeToUIImageView:_doorImageView];
 }
 
 @end

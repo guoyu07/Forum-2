@@ -25,7 +25,7 @@
 
 - (void)onPullRefresh {
     int userId = [userProfile.profileUserId intValue];
-    [self.forumBrowser listAllUserThreads:userId withPage:1 handler:^(BOOL isSuccess, ViewForumPage *message) {
+    [self.forumApi listAllUserThreads:userId withPage:1 handler:^(BOOL isSuccess, ViewForumPage *message) {
         [self.tableView.mj_header endRefreshing];
 
         if (isSuccess) {
@@ -43,7 +43,7 @@
 
 - (void)onLoadMore {
     int userId = [userProfile.profileUserId intValue];
-    [self.forumBrowser listAllUserThreads:userId withPage:self.currentPage + 1 handler:^(BOOL isSuccess, ViewForumPage *message) {
+    [self.forumApi listAllUserThreads:userId withPage:self.currentPage + 1 handler:^(BOOL isSuccess, ViewForumPage *message) {
         [self.tableView.mj_footer endRefreshing];
 
         if (isSuccess) {

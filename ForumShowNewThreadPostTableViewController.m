@@ -24,7 +24,7 @@
 @implementation ForumShowNewThreadPostTableViewController
 
 - (void)onPullRefresh {
-    [self.forumBrowser listNewThreadPostsWithPage:1 handler:^(BOOL isSuccess, ViewForumPage *message) {
+    [self.forumApi listNewThreadPostsWithPage:1 handler:^(BOOL isSuccess, ViewForumPage *message) {
         [self.tableView.mj_header endRefreshing];
         if (isSuccess) {
             [self.tableView.mj_footer endRefreshing];
@@ -45,7 +45,7 @@
 }
 
 - (void)onLoadMore {
-    [self.forumBrowser listNewThreadPostsWithPage:self.currentPage + 1 handler:^(BOOL isSuccess, ViewForumPage *message) {
+    [self.forumApi listNewThreadPostsWithPage:self.currentPage + 1 handler:^(BOOL isSuccess, ViewForumPage *message) {
         [self.tableView.mj_footer endRefreshing];
         if (isSuccess) {
             self.currentPage++;
@@ -107,7 +107,7 @@
 
     NormalThread *play = self.dataList[(NSUInteger) indexPath.row];
 
-    [self.forumBrowser favoriteThreadPostWithId:play.threadID handler:^(BOOL isSuccess, id message) {
+    [self.forumApi favoriteThreadPostWithId:play.threadID handler:^(BOOL isSuccess, id message) {
 
     }];
 

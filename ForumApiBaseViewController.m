@@ -18,7 +18,7 @@
 
 - (void)initData {
     //self.forumBrowser = [ForumBrowserFactory browserWithForumConfig:[ForumConfig configWithForumHost:self.currentForumHost]];
-    self.forumBrowser = [ForumApiHelper forumApi];
+    self.forumApi = [ForumApiHelper forumApi];
 }
 
 #pragma mark override-init

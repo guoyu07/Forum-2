@@ -40,7 +40,7 @@
         [self.tableView.mj_footer endRefreshing];
         return;
     }
-    [self.forumBrowser listSearchResultWithSearchid:_searchid andPage:self.currentPage + 1 handler:^(BOOL isSuccess, ViewSearchForumPage *message) {
+    [self.forumApi listSearchResultWithSearchid:_searchid andPage:self.currentPage + 1 handler:^(BOOL isSuccess, ViewSearchForumPage *message) {
         [self.tableView.mj_footer endRefreshing];
 
         if (isSuccess) {
@@ -73,7 +73,7 @@
 
     int select = (int) self.segmentedControl.selectedSegmentIndex;
 
-    [self.forumBrowser searchWithKeyWord:searchText forType:select handler:^(BOOL isSuccess, ViewSearchForumPage *message) {
+    [self.forumApi searchWithKeyWord:searchText forType:select handler:^(BOOL isSuccess, ViewSearchForumPage *message) {
         [SVProgressHUD dismiss];
 
         if (isSuccess) {
@@ -141,7 +141,7 @@
 
     ThreadInSearch *play = self.dataList[(NSUInteger) indexPath.row];
 
-    [self.forumBrowser favoriteThreadPostWithId:play.threadID handler:^(BOOL isSuccess, id message) {
+    [self.forumApi favoriteThreadPostWithId:play.threadID handler:^(BOOL isSuccess, id message) {
         BOOL success = isSuccess;
         NSString * result = message;
     }];

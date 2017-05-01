@@ -81,7 +81,7 @@
         [SVProgressHUD showWithStatus:@"正在发送" maskType:SVProgressHUDMaskTypeBlack];
 
         if (isReply) {
-            [self.forumBrowser replyPrivateMessageWithId:[_privateMessage.pmID intValue] andMessage:self.privateMessageContent.text handler:^(BOOL isSuccess, id message) {
+            [self.forumApi replyPrivateMessageWithId:[_privateMessage.pmID intValue] andMessage:self.privateMessageContent.text handler:^(BOOL isSuccess, id message) {
                 [SVProgressHUD dismiss];
 
                 if (isSuccess) {
@@ -93,7 +93,7 @@
                 }
             }];
         } else {
-            [self.forumBrowser sendPrivateMessageToUserName:self.toWho.text andTitle:self.privateMessageTitle.text andMessage:self.privateMessageContent.text handler:^(BOOL isSuccess, id message) {
+            [self.forumApi sendPrivateMessageToUserName:self.toWho.text andTitle:self.privateMessageTitle.text andMessage:self.privateMessageContent.text handler:^(BOOL isSuccess, id message) {
 
                 [SVProgressHUD dismiss];
 

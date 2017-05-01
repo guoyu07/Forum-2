@@ -24,11 +24,9 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
 
+    id<ForumBrowserDelegate> forumApi = [ForumApiHelper forumApi];
 
-//    ForumBrowserFactory *api = [ForumBrowserFactory browserWithForumConfig:[ForumConfig configWithForumHost:[self currentForumHost]]];
-    id<ForumBrowserDelegate> api = [ForumApiHelper forumApi];
-
-    [api listAllForums:^(BOOL isSuccess, id message) {
+    [forumApi listAllForums:^(BOOL isSuccess, id message) {
 
     }];
 

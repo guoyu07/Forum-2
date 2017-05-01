@@ -30,7 +30,7 @@
 
     UIButton *_drawerMaskView;
 
-    id<ForumBrowserDelegate> _forumBrowser;
+    id<ForumBrowserDelegate> _forumApi;
 
     UIView *_rightEageView;
 
@@ -58,8 +58,8 @@
 - (void)showUserAvatar {
     AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
 //    ForumBrowserFactory *browser = [ForumBrowserFactory browserWithForumConfig:[ForumConfig configWithForumHost:appDelegate.forumHost]];
-    id<ForumBrowserDelegate> browser = [ForumApiHelper forumApi];
-    LoginUser *loginUser = [browser getLoginUser];
+    id<ForumBrowserDelegate> forumApi = [ForumApiHelper forumApi];
+    LoginUser *loginUser = [forumApi getLoginUser];
 
     [self showAvatar:_avatarUIImageView userId:loginUser.userID];
     
@@ -78,7 +78,7 @@
 
     if (avatarInArray == nil) {
 
-        [_forumBrowser getAvatarWithUserId:userId handler:^(BOOL isSuccess, NSString *avatar) {
+        [_forumApi getAvatarWithUserId:userId handler:^(BOOL isSuccess, NSString *avatar) {
 
             if (isSuccess) {
                 AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
@@ -106,9 +106,9 @@
         }];
     } else {
 
-        id<ForumBrowserDelegate> browserDelegate = [ForumApiHelper forumApi];
+        id<ForumBrowserDelegate> forumApi = [ForumApiHelper forumApi];
 
-        if ([avatarInArray isEqualToString:[browserDelegate currentConfigDelegate].avatarNo]) {
+        if ([avatarInArray isEqualToString:[forumApi currentConfigDelegate].avatarNo]) {
             [avatarImageView setImage:defaultAvatarImage];
         } else {
 
@@ -137,7 +137,7 @@
     if (self = [super init]) {
 
         //_forumBrowser = [ForumBrowserFactory browserWithForumConfig:[ForumConfig configWithForumHost:[self currentForumHost]]];
-        _forumBrowser = [ForumApiHelper forumApi];
+        _forumApi = [ForumApiHelper forumApi];
         [self setDrawerType:DrawerViewTypeLeft];
 
         [self initLeftDrawerView];
@@ -179,8 +179,8 @@
     // 判断是否登录
     //ForumBrowserFactory *browser = [ForumBrowserFactory browserWithForumConfig:[ForumConfig configWithForumHost:host]];
     
-    id<ForumBrowserDelegate> browser = [ForumApiHelper forumApi];
-    LoginUser *loginUser = [browser getLoginUser];
+    id<ForumBrowserDelegate> forumApi = [ForumApiHelper forumApi];
+    LoginUser *loginUser = [forumApi getLoginUser];
 
     NSDate *date = [NSDate date];
     return (loginUser.userID != nil && [loginUser.expireTime compare:date] != NSOrderedAscending);
@@ -271,7 +271,7 @@
     if (self = [super init]) {
 //        _forumBrowser = [ForumBrowserFactory browserWithForumConfig:[ForumConfig configWithForumHost:[self currentForumHost]]];
 
-        _forumBrowser = [ForumApiHelper forumApi];
+        _forumApi = [ForumApiHelper forumApi];
         
         // 和 xib 绑定
         [[NSBundle mainBundle] loadNibNamed:name owner:self options:nil];
@@ -326,7 +326,7 @@
     if (self = [super init]) {
 
 //        _forumBrowser = [ForumBrowserFactory browserWithForumConfig:[ForumConfig configWithForumHost:[self currentForumHost]]];
-        _forumBrowser = [ForumApiHelper forumApi];
+        _forumApi = [ForumApiHelper forumApi];
         
 
         [self setDrawerType:drawerType];
