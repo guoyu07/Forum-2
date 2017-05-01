@@ -1,6 +1,0 @@
-framework module iOSDeviceName {
-  umbrella header "iOSDeviceName.h"
-
-  export *
-  module * { export * }
-}

@@ -10,7 +10,7 @@
 #import "NSUserDefaults+Setting.h"
 #import "AFHTTPSessionManager+SimpleAction.h"
 #import <AFNetworking/UIImageView+AFNetworking.h>
-#import <iOSDeviceName/iOSDeviceName.h>
+#import "DeviceName.h"
 
 #define kSecurityToken @"securitytoken"
 
