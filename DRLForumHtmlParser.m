@@ -13,6 +13,7 @@
 #import "NSString+Extensions.h"
 
 #import "IGHTMLDocument+QueryNode.h"
+#import "AppDelegate.h"
 
 @implementation DRLForumHtmlParser {
 
@@ -691,37 +692,40 @@
     return resultPage;
 }
 
-- (NSMutableArray<Forum *> *)parseFavForumFromHtml:(NSString *)html forumHost:(NSString *) host{
+
+- (NSMutableArray<Forum *> *)parseFavForumFromHtml:(NSString *)html {
     IGHTMLDocument *document = [[IGHTMLDocument alloc] initWithHTMLString:html error:nil];
     IGXMLNodeSet *favFormNodeSet = [document queryWithXPath:@"//*[@id='collapseobj_usercp_forums']/tr[*]/td[2]/div[1]/a"];
-    
-    
+
+
     NSMutableArray *ids = [NSMutableArray array];
-    
+
     //<a href="forumdisplay.php?f=158">『手机◇移动数码』</a>
     for (IGXMLNode *node in favFormNodeSet) {
         NSString *idsStr = [node.html stringWithRegular:@"f=\\d+" andChild:@"\\d+"];
         [ids addObject:[NSNumber numberWithInt:[idsStr intValue]]];
     }
-    
+
     [[NSUserDefaults standardUserDefaults] saveFavFormIds:ids];
-    
-    
+
+
     // 通过ids 过滤出Form
     ForumCoreDataManager *manager = [[ForumCoreDataManager alloc] initWithEntryType:EntryTypeForm];
+    AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
     NSArray *result = [manager selectData:^NSPredicate * {
+        NSString * host = [NSURL URLWithString:appDelegate.forumBaseUrl].host;
         return [NSPredicate predicateWithFormat:@"forumHost = %@ AND forumId IN %@", host ,ids];
     }];
-    
+
     NSMutableArray<Forum *> *forms = [NSMutableArray arrayWithCapacity:result.count];
-    
+
     for (ForumEntry *entry in result) {
         Forum *form = [[Forum alloc] init];
         form.forumName = entry.forumName;
         form.forumId = [entry.forumId intValue];
         [forms addObject:form];
     }
-    
+
     return forms;
 }
 
