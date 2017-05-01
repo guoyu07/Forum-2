@@ -8,8 +8,6 @@
 #import "NSString+Extensions.h"
 #import "NSUserDefaults+Extensions.h"
 #import "NSUserDefaults+Setting.h"
-#import <AFImageDownloader.h>
-#import "BaseForumHtmlParser.h"
 #import "AFHTTPSessionManager+SimpleAction.h"
 #import <AFNetworking/UIImageView+AFNetworking.h>
 #import <iOSDeviceName/iOSDeviceName.h>
