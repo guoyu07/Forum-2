@@ -24,6 +24,8 @@
 #import "AFNetworkActivityIndicatorManager.h"
 #import "ForumTabBarController.h"
 #import "ForumTableViewController.h"
+#import "Forums.h"
+#import "SupportForums.h"
 
 static BOOL API_DEBUG = NO;
 static int DB_VERSION = 8;
@@ -68,7 +70,7 @@ static NSString *bundleIdentifier;
 
 
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-    NSString *documentsDirectory = [paths objectAtIndex:0];//Documents目录
+    NSString *documentsDirectory = paths[0];//Documents目录
 
 
     NSLog(@"文件路径: %@", documentsDirectory);
@@ -81,8 +83,8 @@ static NSString *bundleIdentifier;
     // 设置默认数值
     NSUserDefaults *setting = [NSUserDefaults standardUserDefaults];
     NSMutableDictionary *dictonary = [NSMutableDictionary dictionary];
-    [dictonary setValue:[NSNumber numberWithInt:1] forKey:kSIGNATURE];
-    [dictonary setValue:[NSNumber numberWithInt:1] forKey:kTOP_THREAD];
+    [dictonary setValue:@1 forKey:kSIGNATURE];
+    [dictonary setValue:@1 forKey:kTOP_THREAD];
     [setting registerDefaults:dictonary];
 
     if ([[self bundleIdentifier] isEqualToString:@"com.andforce.forum"]){
@@ -153,13 +155,23 @@ static NSString *bundleIdentifier;
 }
 
 - (BOOL)isUserHasLogin {
-    // 判断是否登录
-    //ForumBrowserFactory *browser = [ForumBrowserFactory browserWithForumConfig:[ForumConfig configWithForumHost:[self currentForumHost]]];
-    id<ForumBrowserDelegate> forumApi = [ForumApiHelper forumApi];
-    LoginUser *loginUser = [forumApi getLoginUser];
 
-    NSDate *date = [NSDate date];
-    return (loginUser.userID != nil && [loginUser.expireTime compare:date] != NSOrderedAscending);
+    NSData *data = [NSData dataWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"supportForums" ofType:@"json"]];
+
+    NSDictionary *dictionary = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:nil];
+
+    SupportForums *supportForums = [SupportForums modelObjectWithDictionary:dictionary];
+
+    // 判断是否登录
+    id<ForumBrowserDelegate> forumApi = [ForumApiHelper forumApi];
+
+    for (Forums *forums in supportForums.forums) {
+        NSURL *url = [NSURL URLWithString:forums.url];
+        if ([forumApi isHaveLoginUser:url.host]){
+            return YES;
+        }
+    }
+    return NO;
 }
 
 - (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
@@ -190,7 +202,7 @@ static NSString *bundleIdentifier;
         UILocalNotification *localNotification = [[UILocalNotification alloc] init];
         localNotification.userInfo = userInfo;
         localNotification.soundName = UILocalNotificationDefaultSoundName;
-        localNotification.alertBody = [[userInfo objectForKey:@"aps"] objectForKey:@"alert"];
+        localNotification.alertBody = [userInfo[@"aps"] objectForKey:@"alert"];
         localNotification.fireDate = [NSDate date];
         [[UIApplication sharedApplication] scheduleLocalNotification:localNotification];
         NSLog(@">>>>>>>>>>>>>>>>>>>>>>   didReceiveRemoteNotification   createLocale");

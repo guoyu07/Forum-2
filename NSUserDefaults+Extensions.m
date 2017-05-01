@@ -64,8 +64,8 @@
     [self setValue:name forKey:[[self currentForumHost] stringByAppendingString:@"-UserName"]];
 }
 
-- (NSString *)userName {
-    return [self valueForKey:[[self currentForumHost] stringByAppendingString:@"-UserName"]];
+- (NSString *)userName:(NSString *) host{
+    return [self valueForKey:[host stringByAppendingString:@"-UserName"]];
 }
 
 - (NSString *)currentForumURL {

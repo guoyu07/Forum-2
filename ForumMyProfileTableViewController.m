@@ -99,7 +99,7 @@
 - (void)onPullRefresh {
     id<ForumBrowserDelegate> api = self.forumApi;
 
-    NSString *currentUserId = api.getLoginUser.userID;
+    NSString *currentUserId = [api getLoginUser:api.currentConfigDelegate.forumURL.host].userID;
 
     [self.forumApi showProfileWithUserId:currentUserId handler:^(BOOL isSuccess, UserProfile *message) {
         userProfile = message;

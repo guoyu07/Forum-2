@@ -26,7 +26,10 @@ typedef void (^HandlerWithBool)(BOOL isSuccess, id message);
 - (void)refreshVCodeToUIImageView:(UIImageView *)vCodeImageView;
 
 // 获取当前登录的账户信息
-- (LoginUser *)getLoginUser;
+- (LoginUser *)getLoginUser:(NSString *) host;
+
+// 获取当前登录的账户信息
+- (bool)isHaveLoginUser:(NSString *) host;
 
 // 退出论坛
 - (void)logout;

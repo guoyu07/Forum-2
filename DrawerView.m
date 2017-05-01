@@ -30,7 +30,7 @@
 
     UIButton *_drawerMaskView;
 
-    id<ForumBrowserDelegate> _forumApi;
+    id <ForumBrowserDelegate> _forumApi;
 
     UIView *_rightEageView;
 
@@ -56,14 +56,14 @@
 
 
 - (void)showUserAvatar {
-    AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-//    ForumBrowserFactory *browser = [ForumBrowserFactory browserWithForumConfig:[ForumConfig configWithForumHost:appDelegate.forumHost]];
-    id<ForumBrowserDelegate> forumApi = [ForumApiHelper forumApi];
-    LoginUser *loginUser = [forumApi getLoginUser];
+    AppDelegate *appDelegate = (AppDelegate *) [[UIApplication sharedApplication] delegate];
+    id <ForumBrowserDelegate> forumApi = [ForumApiHelper forumApi];
+    id<ForumConfigDelegate> forumConfig = [forumApi currentConfigDelegate];
+    LoginUser *loginUser = [forumApi getLoginUser: forumConfig.forumURL.host];
 
     [self showAvatar:_avatarUIImageView userId:loginUser.userID];
-    
-    self.userName.text = [[NSUserDefaults standardUserDefaults] userName];
+
+    self.userName.text = [[NSUserDefaults standardUserDefaults] userName:forumConfig.forumURL.host];
 
 }
 
@@ -81,7 +81,7 @@
         [_forumApi getAvatarWithUserId:userId handler:^(BOOL isSuccess, NSString *avatar) {
 
             if (isSuccess) {
-                AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+                AppDelegate *appDelegate = (AppDelegate *) [[UIApplication sharedApplication] delegate];
                 // 存入数据库
                 [coreDateManager insertOneData:^(id src) {
                     UserEntry *user = (UserEntry *) src;
@@ -106,7 +106,7 @@
         }];
     } else {
 
-        id<ForumBrowserDelegate> forumApi = [ForumApiHelper forumApi];
+        id <ForumBrowserDelegate> forumApi = [ForumApiHelper forumApi];
 
         if ([avatarInArray isEqualToString:[forumApi currentConfigDelegate].avatarNo]) {
             [avatarImageView setImage:defaultAvatarImage];
@@ -122,7 +122,7 @@
 
             [avatarImageView sd_setImageWithURL:avatarUrl placeholderImage:defaultAvatarImage completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
                 if (error) {
-                    [coreDateManager deleteData:^NSPredicate *{
+                    [coreDateManager deleteData:^NSPredicate * {
                         return [NSPredicate predicateWithFormat:@"forumHost = %@ AND userID = %@", self.currentForumHost, userId];
                     }];
                 }
@@ -159,7 +159,7 @@
 
         coreDateManager = [[ForumCoreDataManager alloc] initWithEntryType:EntryTypeUser];
         if (cacheUsers == nil) {
-            AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+            AppDelegate *appDelegate = (AppDelegate *) [[UIApplication sharedApplication] delegate];
             cacheUsers = [[coreDateManager selectData:^NSPredicate * {
                 return [NSPredicate predicateWithFormat:@"forumHost = %@ AND userID > %d", [NSURL URLWithString:appDelegate.forumBaseUrl].host, 0];
             }] copy];
@@ -176,11 +176,10 @@
 }
 
 - (BOOL)isUserHasLogin:(NSString *)host {
+
     // 判断是否登录
-    //ForumBrowserFactory *browser = [ForumBrowserFactory browserWithForumConfig:[ForumConfig configWithForumHost:host]];
-    
-    id<ForumBrowserDelegate> forumApi = [ForumApiHelper forumApi];
-    LoginUser *loginUser = [forumApi getLoginUser];
+    id <ForumBrowserDelegate> forumApi = [ForumApiHelper forumApi];
+    LoginUser *loginUser = [forumApi getLoginUser:host];
 
     NSDate *date = [NSDate date];
     return (loginUser.userID != nil && [loginUser.expireTime compare:date] != NSOrderedAscending);
@@ -272,7 +271,7 @@
 //        _forumBrowser = [ForumBrowserFactory browserWithForumConfig:[ForumConfig configWithForumHost:[self currentForumHost]]];
 
         _forumApi = [ForumApiHelper forumApi];
-        
+
         // 和 xib 绑定
         [[NSBundle mainBundle] loadNibNamed:name owner:self options:nil];
 
@@ -327,7 +326,7 @@
 
 //        _forumBrowser = [ForumBrowserFactory browserWithForumConfig:[ForumConfig configWithForumHost:[self currentForumHost]]];
         _forumApi = [ForumApiHelper forumApi];
-        
+
 
         [self setDrawerType:drawerType];
 

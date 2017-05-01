@@ -105,10 +105,7 @@
 
 - (BOOL)isUserHasLogin:(NSString*)host {
     // 判断是否登录
-    LoginUser *loginUser = [self.forumApi getLoginUser];
-    
-    NSDate *date = [NSDate date];
-    return (loginUser.userID != nil && [loginUser.expireTime compare:date] != NSOrderedAscending);
+    return [self.forumApi isHaveLoginUser:host];
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {

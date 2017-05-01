@@ -26,7 +26,7 @@
 
 - (void)saveUserName:(NSString *)name;
 
-- (NSString *)userName;
+- (NSString *)userName:(NSString *) host;
 
 - (NSString *)currentForumURL;
 
