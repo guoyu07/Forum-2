@@ -14,9 +14,8 @@
 @interface BaseForumBrowser : NSObject
 
 @property(nonatomic, strong) id<ForumConfigDelegate> configDelegate;
-
-@property(nonatomic, strong) NSString *phoneName;
 @property(nonatomic, strong) id<ForumParserDelegate> parserDelegate;
+
 @property(nonatomic, strong) AFHTTPSessionManager *browser;
 
 @end

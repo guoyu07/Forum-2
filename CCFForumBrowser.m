@@ -12,6 +12,7 @@
 #import "BaseForumHtmlParser.h"
 #import "AFHTTPSessionManager+SimpleAction.h"
 #import <AFNetworking/UIImageView+AFNetworking.h>
+#import <iOSDeviceName/iOSDeviceName.h>
 
 //#define kCookieUser @"bbuserid"
 //#define kCookieLastVisit @"bblastvisit"
@@ -56,8 +57,9 @@ typedef void (^CallBack)(NSString *token, NSString *hash, NSString *time);
 
 // private
 - (NSString *)buildSignature {
-    NSString *sigature = [NSString stringWithFormat:@"\n\n发自 %@ 使用 CCF客户端", self.phoneName];
-    return sigature;
+    NSString * phoneName = [DeviceName deviceNameDetail];
+    NSString *signature = [NSString stringWithFormat:@"\n\n发自 %@ 使用 CCF客户端", phoneName];
+    return signature;
 }
 
 //------
