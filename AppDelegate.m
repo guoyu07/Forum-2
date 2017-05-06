@@ -103,9 +103,6 @@ static NSString *bundleIdentifier;
         } else{
             [[UIStoryboard mainStoryboard] changeRootViewControllerTo:@"LoginForum"];
         }
-
-        //[[UIStoryboard mainStoryboard] changeRootViewControllerTo:@"LoginForum"];
-        //self.window.rootViewController = [[ForumLoginViewController alloc] init];
     }
 
     NSUserDefaults *data = [NSUserDefaults standardUserDefaults];
@@ -122,11 +119,15 @@ static NSString *bundleIdentifier;
 
         [data setDBVersion:DB_VERSION];
 
-        //ForumBrowserFactory *browser = [ForumBrowserFactory browserWithForumConfig:[ForumConfig configWithForumHost:[self currentForumHost]]];
         id<ForumBrowserDelegate> forumApi = [ForumApiHelper forumApi];
         [forumApi logout];
 
-        [[UIStoryboard mainStoryboard] changeRootViewControllerTo:@"LoginForum"];
+        if ([[self bundleIdentifier] isEqualToString:@"com.andforce.forum"]){
+            [[NSUserDefaults standardUserDefaults] clearCurrentForumURL];
+            self.window.rootViewController = [[UIStoryboard mainStoryboard] finControllerById:@"ShowSupportForums"];
+        } else{
+            [[UIStoryboard mainStoryboard] changeRootViewControllerTo:@"LoginForum"];
+        }
     }
 
 

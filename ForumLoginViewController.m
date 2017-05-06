@@ -190,6 +190,7 @@
 }
 
 - (IBAction)cancelLogin:(id)sender {
+    [_forumApi logout];
     [[NSUserDefaults standardUserDefaults] clearCurrentForumURL];
     [[UIStoryboard mainStoryboard] changeRootViewControllerTo:@"ShowSupportForums" withAnim:UIViewAnimationOptionTransitionFlipFromTop];
     //[self dismissViewControllerAnimated:YES completion:nil];
