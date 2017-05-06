@@ -12,6 +12,7 @@
 #import <SVProgressHUD.h>
 #import "ForumCoreDataManager.h"
 #import "ForumEntry+CoreDataClass.h"
+#import "NSUserDefaults+Extensions.h"
 
 @interface ForumLoginViewController () <UITextFieldDelegate> {
 
@@ -138,12 +139,12 @@
     [_forumApi loginWithName:name andPassWord:password withCode:code handler:^(BOOL isSuccess, id message) {
         if (isSuccess) {
 
-            [_forumApi listAllForums:^(BOOL isSuccess, id message) {
+            [_forumApi listAllForums:^(BOOL success, id msg) {
 
 
                 [SVProgressHUD dismiss];
-                if (isSuccess) {
-                    NSMutableArray<Forum *> *needInsert = message;
+                if (success) {
+                    NSMutableArray<Forum *> *needInsert = msg;
                     ForumCoreDataManager *formManager = [[ForumCoreDataManager alloc] initWithEntryType:EntryTypeForm];
                     // 需要先删除之前的老数据
                     [formManager deleteData:^NSPredicate * {
@@ -189,7 +190,9 @@
 }
 
 - (IBAction)cancelLogin:(id)sender {
-    [self dismissViewControllerAnimated:YES completion:nil];
+    [[NSUserDefaults standardUserDefaults] clearCurrentForumURL];
+    [[UIStoryboard mainStoryboard] changeRootViewControllerTo:@"ShowSupportForums" withAnim:UIViewAnimationOptionTransitionFlipFromTop];
+    //[self dismissViewControllerAnimated:YES completion:nil];
 }
 
 - (UIStatusBarStyle)preferredStatusBarStyle {

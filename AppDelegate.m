@@ -75,10 +75,7 @@ static NSString *bundleIdentifier;
 
     NSLog(@"文件路径: %@", documentsDirectory);
 
-    //[UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleLightContent;
-
 //    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent animated:NO];
-//    [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleLightContent;
 
 
     // 设置默认数值
@@ -88,18 +85,26 @@ static NSString *bundleIdentifier;
     [dictonary setValue:@1 forKey:kTOP_THREAD];
     [setting registerDefaults:dictonary];
 
-    if ([[self bundleIdentifier] isEqualToString:@"com.andforce.forum"]){
-        NSString * url = [self forumBaseUrl];
-        if (url == nil) {
-            self.window.rootViewController = [[UIStoryboard mainStoryboard] finControllerById:@"ShowSupportForums"];
-            return YES;
-        }
-    }
+//    if ([[self bundleIdentifier] isEqualToString:@"com.andforce.forum"]){
+//        NSString * url = [self forumBaseUrl];
+//        if (url == nil) {
+//            self.window.rootViewController = [[UIStoryboard mainStoryboard] finControllerById:@"ShowSupportForums"];
+//            return YES;
+//        }
+//    }
     
 
     // 判断是否登录
     if (![self isUserHasLogin]) {
-        [[UIStoryboard mainStoryboard] changeRootViewControllerTo:@"LoginForum"];
+
+        if ([[self bundleIdentifier] isEqualToString:@"com.andforce.forum"]){
+            [[NSUserDefaults standardUserDefaults] clearCurrentForumURL];
+            self.window.rootViewController = [[UIStoryboard mainStoryboard] finControllerById:@"ShowSupportForums"];
+        } else{
+            [[UIStoryboard mainStoryboard] changeRootViewControllerTo:@"LoginForum"];
+        }
+
+        //[[UIStoryboard mainStoryboard] changeRootViewControllerTo:@"LoginForum"];
         //self.window.rootViewController = [[ForumLoginViewController alloc] init];
     }
 
@@ -157,7 +162,7 @@ static NSString *bundleIdentifier;
 
     NSData *data = [NSData dataWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"supportForums" ofType:@"json"]];
 
-    NSDictionary *dictionary = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:nil];
+    NSDictionary *dictionary = [NSJSONSerialization JSONObjectWithData:data options:(NSJSONReadingOptions) kNilOptions error:nil];
 
     SupportForums *supportForums = [SupportForums modelObjectWithDictionary:dictionary];
 

@@ -29,7 +29,7 @@
 
     NSData *data = [NSData dataWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"supportForums" ofType:@"json"]];
 
-    NSDictionary *dictionary = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:nil];
+    NSDictionary *dictionary = [NSJSONSerialization JSONObjectWithData:data options:(NSJSONReadingOptions) kNilOptions error:nil];
 
     SupportForums *supportForums = [SupportForums modelObjectWithDictionary:dictionary];
 
@@ -73,7 +73,7 @@
     UITableViewCell *cell = (UITableViewCell *) [tableView dequeueReusableCellWithIdentifier:@"SupportForum"];
 
 
-    Forums *forums = self.dataList[indexPath.row];
+    Forums *forums = self.dataList[(NSUInteger) indexPath.row];
 
     cell.textLabel.text = forums.name;
 
@@ -110,7 +110,7 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [tableView deselectRowAtIndexPath:indexPath animated:NO];
-    Forums *forums = self.dataList[indexPath.row];
+    Forums *forums = self.dataList[(NSUInteger) indexPath.row];
     
     NSURL * url = [NSURL URLWithString:forums.url];
     
@@ -157,7 +157,7 @@
     
     rotationAnimation.removedOnCompletion = NO;
     //旋转角度
-    rotationAnimation.toValue = [NSNumber numberWithFloat: M_PI /2 ];
+    rotationAnimation.toValue = @((float) (M_PI / 2));
     //每次旋转的时间（单位秒）
     rotationAnimation.duration = 0.5;
     rotationAnimation.cumulative = YES;

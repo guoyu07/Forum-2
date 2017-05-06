@@ -84,6 +84,10 @@
     [self setValue:url forKey:@"currentForumURL"];
 }
 
+- (void)clearCurrentForumURL {
+    [self removeObjectForKey:@"currentForumURL"];
+}
+
 - (NSString*) currentForumHost{
     NSURL * nsurl = [NSURL URLWithString:[self currentForumURL]];
     return [nsurl host];

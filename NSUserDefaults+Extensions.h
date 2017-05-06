@@ -32,6 +32,8 @@
 
 - (void) saveCurrentForumURL:(NSString*) url;
 
+- (void) clearCurrentForumURL;
+
 - (NSString*) currentForumHost;
 
 

@@ -12,6 +12,4 @@
 - (IBAction)showLeftDrawer:(id)sender;
 - (IBAction)cancel:(id)sender;
 
-- (void) showControllerByShortCutItemType:(NSString *) shortCutItemType;
-
 @end
