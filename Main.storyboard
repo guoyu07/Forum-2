@@ -78,10 +78,10 @@
                         <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                         <prototypes>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="PrivateMessageTableViewCell" rowHeight="119" id="6dg-Y9-eXc" customClass="PrivateMessageTableViewCell">
-                                <rect key="frame" x="0.0" y="55.333333333333336" width="414" height="119"/>
+                                <rect key="frame" x="0.0" y="55.5" width="414" height="119"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="6dg-Y9-eXc" id="fzf-9p-l9N">
-                                    <rect key="frame" x="0.0" y="0.0" width="414" height="118.66666666666667"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="414" height="119"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="FXM-4L-UfL">
@@ -748,7 +748,7 @@
                     </tableView>
                     <navigationItem key="navigationItem" title="请选择论坛" id="Q3m-2X-egQ">
                         <barButtonItem key="leftBarButtonItem" title="取消" id="dMy-xS-H9h">
-                            <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            <color key="tintColor" cocoaTouchSystemColor="darkTextColor"/>
                             <connections>
                                 <action selector="cancel:" destination="2hj-fq-jCt" id="jch-Ro-41c"/>
                             </connections>
@@ -763,12 +763,12 @@
         <scene sceneID="Okx-LC-yVb">
             <objects>
                 <navigationController storyboardIdentifier="ShowSupportForums" id="of7-9w-Eye" customClass="ForumNavigationViewController" sceneMemberID="viewController">
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" translucent="NO" id="DR5-0D-7aZ">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" translucent="NO" id="DR5-0D-7aZ">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <color key="barTintColor" red="0.18250495195388794" green="0.27161902189254761" blue="0.51042383909225464" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <textAttributes key="titleTextAttributes">
-                            <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                         </textAttributes>
                     </navigationBar>
                     <connections>
