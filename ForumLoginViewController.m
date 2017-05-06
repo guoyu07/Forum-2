@@ -186,4 +186,8 @@
     [_forumApi refreshVCodeToUIImageView:_doorImageView];
 }
 
+- (UIStatusBarStyle)preferredStatusBarStyle {
+    return UIStatusBarStyleLightContent;
+}
+
 @end

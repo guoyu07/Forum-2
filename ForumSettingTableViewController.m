@@ -51,4 +51,8 @@
     [[NSUserDefaults standardUserDefaults] setTopThreadPost:sender.isOn];
 }
 
+- (UIStatusBarStyle)preferredStatusBarStyle {
+    return UIStatusBarStyleLightContent;
+}
+
 @end

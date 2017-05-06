@@ -77,7 +77,8 @@ static NSString *bundleIdentifier;
 
     //[UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleLightContent;
 
-    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent animated:NO];
+//    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent animated:NO];
+//    [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleLightContent;
 
 
     // 设置默认数值

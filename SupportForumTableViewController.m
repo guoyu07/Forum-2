@@ -173,6 +173,10 @@
     exit(0);
 }
 
+- (UIStatusBarStyle)preferredStatusBarStyle {
+    return UIStatusBarStyleDefault;
+}
+
 @end
 
 
