@@ -189,10 +189,7 @@
         [self.forumApi logout];
 
 
-        ForumLoginViewController *rootController = [[ForumLoginViewController alloc] init];
-
-        UIStoryboard *stortboard = [UIStoryboard mainStoryboard];
-        [stortboard changeRootViewControllerToController:rootController];
+        [[UIStoryboard mainStoryboard] changeRootViewControllerTo:@"LoginForum"];
 
     }
     [tableView deselectRowAtIndexPath:indexPath animated:NO];

@@ -74,18 +74,18 @@
 - (void)keyboardWillShow:(id)sender {
     CGRect keyboardFrame;
     //    UIKeyboardBoundsUserInfoKey
-    [[[((NSNotification *) sender) userInfo] objectForKey:UIKeyboardFrameEndUserInfoKey] getValue:&keyboardFrame];
+    [[((NSNotification *) sender) userInfo][UIKeyboardFrameEndUserInfoKey] getValue:&keyboardFrame];
 
     CGRect focusedFrame = _loginbgview.frame;
-    int bottom = focusedFrame.origin.y + CGRectGetHeight(focusedFrame) + self.rootView.frame.origin.y;
+    int bottom = (int) (focusedFrame.origin.y + CGRectGetHeight(focusedFrame) + self.rootView.frame.origin.y) + 20;
 
-    int keyboardTop = CGRectGetHeight(screenSize) - CGRectGetHeight(keyboardFrame);
+    int keyboardTop = (int) (CGRectGetHeight(screenSize) - CGRectGetHeight(keyboardFrame));
 
-    if (bottom > keyboardTop) {
+    if (bottom >= keyboardTop) {
         // 键盘被挡住了
         [UIView animateWithDuration:0.2 animations:^{
             CGRect frame = self.rootView.frame;
-            frame.origin.y -= (bottom - keyboardTop) + 20;
+            frame.origin.y -= (bottom - keyboardTop) + 50;
             self.rootView.frame = frame;
         }];
     }
@@ -95,7 +95,7 @@
 - (void)keyboardWillHide:(id)sender {
     CGRect keyboardFrame;
 
-    [[[((NSNotification *) sender) userInfo] objectForKey:UIKeyboardFrameEndUserInfoKey] getValue:&keyboardFrame];
+    [[((NSNotification *) sender) userInfo][UIKeyboardFrameEndUserInfoKey] getValue:&keyboardFrame];
 
 
     if (self.rootView.frame.origin.y != 0) {
@@ -184,6 +184,10 @@
 
 - (IBAction)refreshDoor:(id)sender {
     [_forumApi refreshVCodeToUIImageView:_doorImageView];
+}
+
+- (IBAction)cancelLogin:(id)sender {
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 - (UIStatusBarStyle)preferredStatusBarStyle {

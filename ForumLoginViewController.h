@@ -22,5 +22,6 @@
 - (IBAction)login:(id)sender;
 
 - (IBAction)refreshDoor:(id)sender;
+- (IBAction)cancelLogin:(id)sender;
 
 @end

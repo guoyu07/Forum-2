@@ -121,8 +121,7 @@
         [stortboard changeRootViewControllerTo:@"ForumTabBarControllerId"];
         
     } else{
-        UIStoryboard *stortboard = [UIStoryboard mainStoryboard];
-        [stortboard changeRootViewControllerToController:[[ForumLoginViewController alloc] init]];
+        [[UIStoryboard mainStoryboard] changeRootViewControllerTo:@"LoginForum" withAnim:UIViewAnimationOptionTransitionFlipFromTop];
     }
 
 }

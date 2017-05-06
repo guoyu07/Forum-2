@@ -99,7 +99,8 @@ static NSString *bundleIdentifier;
 
     // 判断是否登录
     if (![self isUserHasLogin]) {
-        self.window.rootViewController = [[ForumLoginViewController alloc] init];
+        [[UIStoryboard mainStoryboard] changeRootViewControllerTo:@"LoginForum"];
+        //self.window.rootViewController = [[ForumLoginViewController alloc] init];
     }
 
     NSUserDefaults *data = [NSUserDefaults standardUserDefaults];
@@ -120,10 +121,7 @@ static NSString *bundleIdentifier;
         id<ForumBrowserDelegate> forumApi = [ForumApiHelper forumApi];
         [forumApi logout];
 
-        ForumLoginViewController *rootController = [[ForumLoginViewController alloc] init];
-
-        UIStoryboard *stortboard = [UIStoryboard mainStoryboard];
-        [stortboard changeRootViewControllerToController:rootController];
+        [[UIStoryboard mainStoryboard] changeRootViewControllerTo:@"LoginForum"];
     }
 
 
