@@ -38,7 +38,7 @@
 
     ForumCoreDataManager *coreDateManager;
 
-    NSMutableArray *loginForums;
+    NSMutableArray *_haveLoginForums;
 
 
     UIImage *defaultAvatarImage;
@@ -59,7 +59,7 @@
     AppDelegate *appDelegate = (AppDelegate *) [[UIApplication sharedApplication] delegate];
     id <ForumBrowserDelegate> forumApi = [ForumApiHelper forumApi];
     id<ForumConfigDelegate> forumConfig = [forumApi currentConfigDelegate];
-    LoginUser *loginUser = [forumApi getLoginUser: forumConfig.forumURL.host];
+    LoginUser *loginUser = [forumApi getLoginUser];
 
     [self showAvatar:_avatarUIImageView userId:loginUser.userID];
 
@@ -106,9 +106,8 @@
         }];
     } else {
 
-        id <ForumBrowserDelegate> forumApi = [ForumApiHelper forumApi];
 
-        if ([avatarInArray isEqualToString:[forumApi currentConfigDelegate].avatarNo]) {
+        if ([avatarInArray isEqualToString:[_forumApi currentConfigDelegate].avatarNo]) {
             [avatarImageView setImage:defaultAvatarImage];
         } else {
 
@@ -175,17 +174,6 @@
     return self;
 }
 
-- (BOOL)isUserHasLogin:(NSString *)host {
-
-    // 判断是否登录
-    id <ForumBrowserDelegate> forumApi = [ForumApiHelper forumApi];
-    LoginUser *loginUser = [forumApi getLoginUser:host];
-
-    NSDate *date = [NSDate date];
-    return (loginUser.userID != nil && [loginUser.expireTime compare:date] != NSOrderedAscending);
-}
-
-
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
@@ -198,7 +186,7 @@
 
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return loginForums.count;
+    return _haveLoginForums.count;
 }
 
 
@@ -210,7 +198,7 @@
 
     UITableViewCell *cell = nib.lastObject;
 
-    Forums *forums = loginForums[indexPath.row];
+    Forums *forums = _haveLoginForums[indexPath.row];
 
     if ([forums.host isEqualToString:[NSUserDefaults standardUserDefaults].currentForumHost]) {
         cell.accessoryType = UITableViewCellAccessoryCheckmark;
@@ -235,7 +223,7 @@
     [tableView deselectRowAtIndexPath:indexPath animated:NO];
 
 
-    Forums *forums = loginForums[indexPath.row];
+    Forums *forums = _haveLoginForums[indexPath.row];
 
     NSURL *url = [NSURL URLWithString:forums.url];
 
@@ -243,7 +231,7 @@
 
     [self closeLeftDrawer:^{
         [self showUserAvatar];
-        if ([self isUserHasLogin:url.host]) {
+        if ([_forumApi isHaveLogin:url.host]) {
             ForumTabBarController *rootViewController = (ForumTabBarController *) [[UIStoryboard mainStoryboard] finControllerById:@"ForumTabBarControllerId"];
             rootViewController.selectedIndex = 2;
             UIStoryboard *stortboard = [UIStoryboard mainStoryboard];
@@ -454,7 +442,7 @@
     [rootView bringSubviewToFront:self];
 
 
-    loginForums = [NSMutableArray array];
+    _haveLoginForums = [NSMutableArray array];
 
     self.tableView.dataSource = self;
     self.tableView.delegate = self;
@@ -462,13 +450,13 @@
 
     NSData *data = [NSData dataWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"supportForums" ofType:@"json"]];
 
-    NSDictionary *dictionary = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:nil];
+    NSDictionary *dictionary = [NSJSONSerialization JSONObjectWithData:data options:(NSJSONReadingOptions) kNilOptions error:nil];
 
     SupportForums *supportForums = [SupportForums modelObjectWithDictionary:dictionary];
     for (Forums *forums in supportForums.forums) {
         NSURL *url = [NSURL URLWithString:forums.url];
-        if ([self isUserHasLogin:url.host]) {
-            [loginForums addObject:forums];
+        if ([_forumApi isHaveLogin:url.host]) {
+            [_haveLoginForums addObject:forums];
         }
     }
 

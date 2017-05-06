@@ -171,7 +171,7 @@ static NSString *bundleIdentifier;
 
     for (Forums *forums in supportForums.forums) {
         NSURL *url = [NSURL URLWithString:forums.url];
-        if ([forumApi isHaveLoginUser:url.host]){
+        if ([forumApi isHaveLogin:url.host]){
             return YES;
         }
     }

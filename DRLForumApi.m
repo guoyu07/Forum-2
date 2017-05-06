@@ -131,10 +131,10 @@ typedef void (^CallBack)(NSString *token, NSString *hash, NSString *time);
     }];
 }
 
-- (LoginUser *)getLoginUser:(NSString *)host {
+- (LoginUser *)getLoginUser {
     NSArray<NSHTTPCookie *> *cookies = [[NSHTTPCookieStorage sharedHTTPCookieStorage] cookies];
     LoginUser *user = [[LoginUser alloc] init];
-    user.userName = [self userName:host];
+    user.userName = [self userName:self.currentConfigDelegate.forumURL.host];
 
     for (int i = 0; i < cookies.count; i++) {
         NSHTTPCookie *cookie = cookies[(NSUInteger) i];
@@ -150,11 +150,16 @@ typedef void (^CallBack)(NSString *token, NSString *hash, NSString *time);
     return user;
 }
 
-- (bool)isHaveLoginUser:(NSString *)host {
+- (BOOL)isHaveLogin:(NSString *)host {
+    NSArray<NSHTTPCookie *> *cookies = [[NSHTTPCookieStorage sharedHTTPCookieStorage] cookies];
 
     NSDate *date = [NSDate date];
-    LoginUser *loginUser = [self getLoginUser:host];
-    return (loginUser.userID != nil && [loginUser.expireTime compare:date] != NSOrderedAscending);
+    for (NSHTTPCookie * cookie in cookies) {
+        if ([host isEqualToString:cookie.domain] && [cookie.expiresDate compare:date] != NSOrderedAscending){
+            return YES;
+        }
+    }
+    return NO;
 }
 
 - (void)logout {
@@ -205,7 +210,7 @@ typedef void (^CallBack)(NSString *token, NSString *hash, NSString *time);
 
     [parameters setValue:time forKey:@"poststarttime"];
 
-    LoginUser *user = [self getLoginUser:self.forumConfig.forumURL.host];
+    LoginUser *user = [self getLoginUser];
     [parameters setValue:user.userID forKey:@"loggedinuser"];
     [parameters setValue:@"发表主题" forKey:@"sbutton"];
     [parameters setValue:@"1" forKey:@"parseurl"];
@@ -535,7 +540,7 @@ typedef void (^CallBack)(NSString *token, NSString *hash, NSString *time);
 
     [parameters setValue:@"1" forKey:@"parseurl"];
 
-    LoginUser *user = [self getLoginUser:self.forumConfig.forumURL.host];
+    LoginUser *user = [self getLoginUser];
 
     [parameters setValue:user.userID forKey:@"loggedinuser"];
     [parameters setValue:@"1" forKey:@"fromquickreply"];
@@ -602,7 +607,7 @@ typedef void (^CallBack)(NSString *token, NSString *hash, NSString *time);
     [parameters setValue:@"1" forKey:@"specifiedpost"];
     [parameters setValue:@"1" forKey:@"parseurl"];
 
-    LoginUser *user = [self getLoginUser:self.forumConfig.forumURL.host];
+    LoginUser *user = [self getLoginUser];
     [parameters setValue:user.userID forKey:@"loggedinuser"];
     [parameters setValue:@"sbutton" forKey:@"快速回复帖子"];
 
@@ -1234,7 +1239,7 @@ typedef void (^CallBack)(NSString *token, NSString *hash, NSString *time);
 }
 
 - (void)listMyAllThreadPost:(HandlerWithBool)handler {
-    LoginUser *user = [self getLoginUser:self.forumConfig.forumURL.host];
+    LoginUser *user = [self getLoginUser];
     if (user == nil || user.userID == nil) {
         handler(NO, @"未登录");
         return;
@@ -1251,7 +1256,7 @@ typedef void (^CallBack)(NSString *token, NSString *hash, NSString *time);
 }
 
 - (void)listMyAllThreadsWithPage:(int)page handler:(HandlerWithBool)handler {
-    LoginUser *user = [self getLoginUser:self.forumConfig.forumURL.host];
+    LoginUser *user = [self getLoginUser];
     if (user == nil || user.userID == nil) {
         handler(NO, @"未登录");
         return;

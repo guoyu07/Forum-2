@@ -105,7 +105,7 @@
 
 - (BOOL)isUserHasLogin:(NSString*)host {
     // 判断是否登录
-    return [self.forumApi isHaveLoginUser:host];
+    return [self.forumApi isHaveLogin:host];
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
