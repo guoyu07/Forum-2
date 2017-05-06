@@ -59,8 +59,7 @@ typedef void (^CallBack)(NSString *token, NSString *hash, NSString *time);
 
 //------
 
-- (void)loginWithName:(NSString *)name andPassWord:(NSString *)passWord withCode:(NSString *)code handler:(HandlerWithBool)handler {
-
+- (void)loginWithName:(NSString *)name andPassWord:(NSString *)passWord withCode:(NSString *)code question:(NSString *)q answer:(NSString *)a handler:(HandlerWithBool)handler {
     NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
     [parameters setValue:name forKey:@"vb_login_username"];
     [parameters setValue:@"" forKey:@"vb_login_password"];

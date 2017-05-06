@@ -14,6 +14,9 @@
 #import "DRLForumConfig.h"
 #import "CCFForumHtmlParser.h"
 #import "DRLForumHtmlParser.h"
+#import "CHHForumApi.h"
+#import "CHHForumConfig.h"
+#import "CHHForumHtmlParser.h"
 
 @implementation ForumApiHelper
 + (id <ForumBrowserDelegate>)forumApi {
@@ -36,6 +39,9 @@
             DRLForumApi * _drlForumBrowser = [[DRLForumApi alloc] initWithConfig:[[DRLForumConfig alloc] init] parser:[[DRLForumHtmlParser alloc] init]];
 
             return _drlForumBrowser;
+        } else if ([host isEqualToString:@"chiphell.com"]){
+            CHHForumApi * api = [[CHHForumApi alloc] initWithConfig:[[CHHForumConfig alloc] init] parser:[[CHHForumHtmlParser alloc] init]];
+            return api;
         }
     }
     return nil;

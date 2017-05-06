@@ -136,7 +136,7 @@
 
     [SVProgressHUD showWithStatus:@"正在登录" maskType:SVProgressHUDMaskTypeBlack];
 
-    [_forumApi loginWithName:name andPassWord:password withCode:code handler:^(BOOL isSuccess, id message) {
+    [_forumApi loginWithName:name andPassWord:password withCode:code question:nil answer:nil handler:^(BOOL isSuccess, id message) {
         if (isSuccess) {
 
             [_forumApi listAllForums:^(BOOL success, id msg) {

@@ -7,7 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2F34C77038A45486C1F899BA /* CHHForumHtmlParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 2F34C933EAF9358009F4612F /* CHHForumHtmlParser.m */; };
+		2F34C79B539AC259648765D1 /* CHHForumApi.m in Sources */ = {isa = PBXBuildFile; fileRef = 2F34C076378D371E57F0863F /* CHHForumApi.m */; };
 		2F34C87F00AC80AC3FF866BF /* BaseForumApi.m in Sources */ = {isa = PBXBuildFile; fileRef = 2F34C9AF3EEEE19C34102D22 /* BaseForumApi.m */; };
+		2F34CCE7AE4C35FFB148F31E /* CHHForumConfig.m in Sources */ = {isa = PBXBuildFile; fileRef = 2F34C36FABA87760B3B5B1B3 /* CHHForumConfig.m */; };
 		2F34CD24DA52CC996BE6F47A /* ForumApiHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 2F34C14160BC257F07318CEF /* ForumApiHelper.m */; };
 		2F34CFBB62E848555D9DB610 /* ForumShortCutCreateNewThreadViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2F34CA129BA2D7ADF167E05D /* ForumShortCutCreateNewThreadViewController.m */; };
 		3A288A4C1DFAE47F002EBBC2 /* DrawerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A288A4A1DFAE47F002EBBC2 /* DrawerView.m */; };
@@ -130,10 +133,16 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		2F34C076378D371E57F0863F /* CHHForumApi.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CHHForumApi.m; sourceTree = "<group>"; };
 		2F34C14160BC257F07318CEF /* ForumApiHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ForumApiHelper.m; sourceTree = "<group>"; };
+		2F34C36FABA87760B3B5B1B3 /* CHHForumConfig.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CHHForumConfig.m; sourceTree = "<group>"; };
+		2F34C8DBF1BAF7284E27B0F6 /* CHHForumHtmlParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CHHForumHtmlParser.h; sourceTree = "<group>"; };
+		2F34C933EAF9358009F4612F /* CHHForumHtmlParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CHHForumHtmlParser.m; sourceTree = "<group>"; };
 		2F34C9AF3EEEE19C34102D22 /* BaseForumApi.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BaseForumApi.m; sourceTree = "<group>"; };
+		2F34C9C1792EF57FF901D717 /* CHHForumApi.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CHHForumApi.h; sourceTree = "<group>"; };
 		2F34CA129BA2D7ADF167E05D /* ForumShortCutCreateNewThreadViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ForumShortCutCreateNewThreadViewController.m; sourceTree = "<group>"; };
 		2F34CA3EA8022D958EAEA736 /* ForumShortCutCreateNewThreadViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ForumShortCutCreateNewThreadViewController.h; sourceTree = "<group>"; };
+		2F34CAE13DEE2EFC6579F89E /* CHHForumConfig.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CHHForumConfig.h; sourceTree = "<group>"; };
 		2F34CEEEF0AB70454650352A /* ForumConfigDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ForumConfigDelegate.h; sourceTree = "<group>"; };
 		2F34CF08A261B408C3A92081 /* ForumApiHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ForumApiHelper.h; sourceTree = "<group>"; };
 		2F34CF920692D4F8881DB9A1 /* BaseForumApi.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BaseForumApi.h; sourceTree = "<group>"; };
@@ -375,6 +384,19 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		2F34C7BC164C986C72776D3A /* chh */ = {
+			isa = PBXGroup;
+			children = (
+				2F34C076378D371E57F0863F /* CHHForumApi.m */,
+				2F34C9C1792EF57FF901D717 /* CHHForumApi.h */,
+				2F34C36FABA87760B3B5B1B3 /* CHHForumConfig.m */,
+				2F34CAE13DEE2EFC6579F89E /* CHHForumConfig.h */,
+				2F34C933EAF9358009F4612F /* CHHForumHtmlParser.m */,
+				2F34C8DBF1BAF7284E27B0F6 /* CHHForumHtmlParser.h */,
+			);
+			name = chh;
+			sourceTree = "<group>";
+		};
 		3A288A511DFC533E002EBBC2 /* SupportForums */ = {
 			isa = PBXGroup;
 			children = (
@@ -610,6 +632,7 @@
 			children = (
 				3A288A5B1DFD1490002EBBC2 /* drl */,
 				4DFB34D31DF9461E00BD8DD5 /* ccf */,
+				2F34C7BC164C986C72776D3A /* chh */,
 			);
 			name = Custom;
 			sourceTree = "<group>";
@@ -1038,6 +1061,9 @@
 				C7B59AE98E801BD822B9F92C /* CCFForumApi.m in Sources */,
 				2F34C87F00AC80AC3FF866BF /* BaseForumApi.m in Sources */,
 				2F34CD24DA52CC996BE6F47A /* ForumApiHelper.m in Sources */,
+				2F34C79B539AC259648765D1 /* CHHForumApi.m in Sources */,
+				2F34CCE7AE4C35FFB148F31E /* CHHForumConfig.m in Sources */,
+				2F34C77038A45486C1F899BA /* CHHForumHtmlParser.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
