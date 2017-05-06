@@ -54,6 +54,8 @@
 
     [_forumApi refreshVCodeToUIImageView:_doorImageView];
 
+    self.title = [[_forumApi currentConfigDelegate].forumURL.host uppercaseString];
+
 }
 
 #pragma mark UITextFieldDelegate

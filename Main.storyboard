@@ -724,7 +724,7 @@
             </objects>
             <point key="canvasLocation" x="-1378.4000000000001" y="-5948.2758620689656"/>
         </scene>
-        <!--Forum Login View Controller-->
+        <!--登录论坛-->
         <scene sceneID="v8j-Ti-el8">
             <objects>
                 <viewController id="aOU-Jb-m64" customClass="ForumLoginViewController" sceneMemberID="viewController">
@@ -859,14 +859,14 @@
                             <constraint firstItem="JUG-5g-vNr" firstAttribute="width" secondItem="CQD-JO-ONT" secondAttribute="width" id="uSJ-Q4-zyd"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" id="AeT-oe-oTD">
+                    <navigationItem key="navigationItem" title="登录论坛" id="AeT-oe-oTD">
                         <barButtonItem key="leftBarButtonItem" title="取消" id="k3p-T1-Ycq">
                             <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             <connections>
                                 <action selector="cancelLogin:" destination="aOU-Jb-m64" id="dNe-hP-N4Y"/>
                             </connections>
                         </barButtonItem>
-                        <barButtonItem key="rightBarButtonItem" title="登录" id="BAF-Pm-omh">
+                        <barButtonItem key="rightBarButtonItem" title="确定" id="BAF-Pm-omh">
                             <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             <connections>
                                 <action selector="login:" destination="aOU-Jb-m64" id="PgW-dN-orT"/>
@@ -3033,12 +3033,12 @@
         <scene sceneID="nzi-7A-d6l">
             <objects>
                 <navigationController storyboardIdentifier="LoginForum" id="bNT-Oi-p6L" customClass="ForumNavigationViewController" sceneMemberID="viewController">
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" translucent="NO" id="lli-i9-gQ2">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" translucent="NO" id="lli-i9-gQ2">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <color key="barTintColor" red="0.182504952" green="0.27161902189999998" blue="0.5104238391" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <textAttributes key="titleTextAttributes">
-                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                            <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         </textAttributes>
                     </navigationBar>
                     <connections>
