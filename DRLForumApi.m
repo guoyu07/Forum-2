@@ -12,9 +12,6 @@
 #import <AFNetworking/UIImageView+AFNetworking.h>
 #import "DeviceName.h"
 
-//#define kCookieUser @"bbuserid"
-//#define kCookieLastVisit @"bblastvisit"
-//#define kCookieIDStack @"IDstack"
 #define kSecurityToken @"securitytoken"
 
 typedef void (^CallBack)(NSString *token, NSString *hash, NSString *time);
@@ -84,10 +81,10 @@ typedef void (^CallBack)(NSString *token, NSString *hash, NSString *time);
 
             [parameters setValue:@"1" forKey:@"cookieuser"];
 
-            [self.browser POSTWithURLString:self.forumConfig.login parameters:parameters requestCallback:^(BOOL isSuccess, NSString *html) {
-                if (isSuccess) {
+            [self.browser POSTWithURLString:self.forumConfig.login parameters:parameters requestCallback:^(BOOL success, NSString *string) {
+                if (success) {
 
-                    NSString *userName = [html stringWithRegular:@"<p><strong>.*</strong></p>" andChild:@"，.*。"];
+                    NSString *userName = [string stringWithRegular:@"<p><strong>.*</strong></p>" andChild:@"，.*。"];
 
                     userName = [userName substringWithRange:NSMakeRange(1, [userName length] - 2)];
 
@@ -98,10 +95,10 @@ typedef void (^CallBack)(NSString *token, NSString *hash, NSString *time);
                         [self saveUserName:userName];
                         handler(YES, @"登录成功");
                     } else {
-                        handler(NO, [self.forumParser parseLoginErrorMessage:html]);
+                        handler(NO, [self.forumParser parseLoginErrorMessage:string]);
                     }
                 } else {
-                    handler(NO, html);
+                    handler(NO, string);
                 }
             }];
 
@@ -124,9 +121,9 @@ typedef void (^CallBack)(NSString *token, NSString *hash, NSString *time);
 
     UIImageView *view = vCodeImageView;
 
-    [vCodeImageView setImageWithURLRequest:request placeholderImage:nil success:^(NSURLRequest *_Nonnull request, NSHTTPURLResponse *_Nullable response, UIImage *_Nonnull image) {
+    [vCodeImageView setImageWithURLRequest:request placeholderImage:nil success:^(NSURLRequest *_Nonnull urlRequest, NSHTTPURLResponse *_Nullable response, UIImage *_Nonnull image) {
         [view setImage:image];
-    }                              failure:^(NSURLRequest *_Nonnull request, NSHTTPURLResponse *_Nullable response, NSError *_Nonnull error) {
+    }failure:^(NSURLRequest *_Nonnull urlRequest, NSHTTPURLResponse *_Nullable response, NSError *_Nonnull error) {
         NSLog(@"refreshDoor failed");
     }];
 }
@@ -288,8 +285,8 @@ typedef void (^CallBack)(NSString *token, NSString *hash, NSString *time);
 
         //[formData appendPartWithFileData:image name:@"attachment[]" fileName:@"abc123.jpeg" mimeType:type];
 
-        UIImage *image = [UIImage imageNamed:@"test.jpg"];
-        NSData *data = UIImageJPEGRepresentation(image, 1);
+        UIImage *test = [UIImage imageNamed:@"test.jpg"];
+        NSData *data = UIImageJPEGRepresentation(test, 1);
 
 
         [formData appendPartWithFileData:data name:@"attachment[]" fileName:fileName mimeType:type];
@@ -377,7 +374,7 @@ typedef void (^CallBack)(NSString *token, NSString *hash, NSString *time);
     for (NSString *param in parameters) {
         [body appendData:[[NSString stringWithFormat:@"--%@\r\n", boundary] dataUsingEncoding:NSUTF8StringEncoding]];
         [body appendData:[[NSString stringWithFormat:@"Content-Disposition: form-data; name=\"%@\"\r\n\r\n", param] dataUsingEncoding:NSUTF8StringEncoding]];
-        [body appendData:[[NSString stringWithFormat:@"%@\r\n", [parameters objectForKey:param]] dataUsingEncoding:NSUTF8StringEncoding]];
+        [body appendData:[[NSString stringWithFormat:@"%@\r\n", parameters[param]] dataUsingEncoding:NSUTF8StringEncoding]];
     }
 
 
@@ -477,19 +474,19 @@ typedef void (^CallBack)(NSString *token, NSString *hash, NSString *time);
                     [NSThread sleepForTimeInterval:2.0f];
 
                     NSURL *url = [NSURL URLWithString:self.forumConfig.newattachment];
-                    [self uploadImage:url :uploadToken fId:fId postTime:uploadTime hash:uploadHash :image callback:^(BOOL isSuccess, id result) {
-                        uploadSuccess = isSuccess;
+                    [self uploadImage:url :uploadToken fId:fId postTime:uploadTime hash:uploadHash :image callback:^(BOOL success, id html) {
+                        uploadSuccess = success;
 
                         if (i == images.count - 1) {
                             [NSThread sleepForTimeInterval:2.0f];
-                            [self doPostThread:fId withSubject:subject andMessage:message withToken:token withHash:hash postTime:time handler:^(BOOL isSuccess, id result) {
+                            [self doPostThread:fId withSubject:subject andMessage:message withToken:token withHash:hash postTime:time handler:^(BOOL b, id r) {
 
-                                if ([result containsString:@"此帖是您在最后 5 分钟发表的帖子的副本，您将返回该主题。"]) {
+                                if ([html containsString:@"此帖是您在最后 5 分钟发表的帖子的副本，您将返回该主题。"]) {
                                     handler(NO, @"此帖是您在最后 5 分钟发表的帖子的副本，您将返回该主题。");
-                                } else if ([result containsString:@"您输入的信息太短，您发布的信息至少为 5 个字符。"]) {
+                                } else if ([html containsString:@"您输入的信息太短，您发布的信息至少为 5 个字符。"]) {
                                     handler(NO, @"您输入的信息太短，您发布的信息至少为 5 个字符。");
                                 } else {
-                                    ViewThreadPage *thread = [self.forumParser parseShowThreadWithHtml:result];
+                                    ViewThreadPage *thread = [self.forumParser parseShowThreadWithHtml:r];
                                     if (thread.postList.count > 0) {
                                         handler(YES, thread);
                                     } else {
@@ -717,7 +714,7 @@ typedef void (^CallBack)(NSString *token, NSString *hash, NSString *time);
     for (NSString *param in parameters) {
         [body appendData:[[NSString stringWithFormat:@"--%@\r\n", boundary] dataUsingEncoding:NSUTF8StringEncoding]];
         [body appendData:[[NSString stringWithFormat:@"Content-Disposition: form-data; name=\"%@\"\r\n\r\n", param] dataUsingEncoding:NSUTF8StringEncoding]];
-        [body appendData:[[NSString stringWithFormat:@"%@\r\n", [parameters objectForKey:param]] dataUsingEncoding:NSUTF8StringEncoding]];
+        [body appendData:[[NSString stringWithFormat:@"%@\r\n", parameters[param]] dataUsingEncoding:NSUTF8StringEncoding]];
     }
 
 
@@ -776,8 +773,8 @@ typedef void (^CallBack)(NSString *token, NSString *hash, NSString *time);
             NSString *postStartTime = [self.forumParser parserPostStartTime:html];
 
             if (images == nil || [images count] == 0) {
-                [self seniorReplyWithThreadId:threadId andMessage:message posthash:postHash poststarttime:postStartTime handler:^(BOOL isSuccess, id result) {
-                    if (isSuccess) {
+                [self seniorReplyWithThreadId:threadId andMessage:message posthash:postHash poststarttime:postStartTime handler:^(BOOL success, id result) {
+                    if (success) {
                         if ([html containsString:@"<ol><li>本论坛允许的发表两个帖子的时间间隔必须大于 30 秒。请等待 "]) {
                             handler(NO, @"本论坛允许的发表两个帖子的时间间隔必须大于 30 秒");
                         } else {
@@ -798,24 +795,24 @@ typedef void (^CallBack)(NSString *token, NSString *hash, NSString *time);
                 NSString *urlStr = self.forumConfig.newattachment;
                 NSURL *uploadImageUrl = [NSURL URLWithString:urlStr];
                 // 如果有图片，先传图片
-                [self uploadImagePrepairFormSeniorReply:threadId startPostTime:postStartTime postHash:postHash :^(BOOL isSuccess, id result) {
+                [self uploadImagePrepairFormSeniorReply:threadId startPostTime:postStartTime postHash:postHash :^(BOOL bisSuccess, id result) {
 
                     __block BOOL uploadSuccess = YES;
                     int uploadCount = (int) images.count;
                     for (int i = 0; i < uploadCount && uploadSuccess; i++) {
-                        NSData *image = images[i];
+                        NSData *image = images[(NSUInteger) i];
 
                         [NSThread sleepForTimeInterval:2.0f];
-                        [self uploadImageForSeniorReply:uploadImageUrl fId:forumId threadId:threadId postTime:postStartTime hash:postHash :image callback:^(BOOL isSuccess, id uploadResultHtml) {
-                            uploadSuccess = isSuccess;
+                        [self uploadImageForSeniorReply:uploadImageUrl fId:forumId threadId:threadId postTime:postStartTime hash:postHash :image callback:^(BOOL bsuccess, id uploadResultHtml) {
+                            uploadSuccess = bsuccess;
                             // 更新token
                             NSLog(@" 上传第 %d 张图片", i);
 
                             if (i == images.count - 1) {
                                 [NSThread sleepForTimeInterval:2.0f];
-                                [self seniorReplyWithThreadId:threadId andMessage:message posthash:postHash poststarttime:postStartTime handler:^(BOOL isSuccess, id resultHtml) {
+                                [self seniorReplyWithThreadId:threadId andMessage:message posthash:postHash poststarttime:postStartTime handler:^(BOOL rsuccess, id resultHtml) {
 
-                                    if (isSuccess) {
+                                    if (rsuccess) {
                                         if ([html containsString:@"<ol><li>本论坛允许的发表两个帖子的时间间隔必须大于 30 秒。请等待 "]) {
                                             handler(NO, @"本论坛允许的发表两个帖子的时间间隔必须大于 30 秒");
                                         } else {
@@ -903,16 +900,16 @@ typedef void (^CallBack)(NSString *token, NSString *hash, NSString *time);
             NSString *securitytoken = [self readSecurityToken];
             [parameters setValue:securitytoken forKey:@"securitytoken"];
 
-            [self.browser POSTWithURLString:self.forumConfig.search parameters:parameters requestCallback:^(BOOL isSuccess, NSString *html) {
-                if (isSuccess) {
+            [self.browser POSTWithURLString:self.forumConfig.search parameters:parameters requestCallback:^(BOOL success, NSString *result) {
+                if (success) {
                     [self saveCookie];
 
-                    if ([html containsString:@"对不起，没有匹配记录。请尝试采用其他条件查询。"]) {
+                    if ([result containsString:@"对不起，没有匹配记录。请尝试采用其他条件查询。"]) {
                         handler(NO, @"对不起，没有匹配记录。请尝试采用其他条件查询。");
-                    } else if ([html containsString:@"本论坛允许的进行两次搜索的时间间隔必须大于 30 秒。"]) {
+                    } else if ([result containsString:@"本论坛允许的进行两次搜索的时间间隔必须大于 30 秒。"]) {
                         handler(NO, @"本论坛允许的进行两次搜索的时间间隔必须大于 30 秒。");
                     } else {
-                        ViewSearchForumPage *page = [self.forumParser parseSearchPageFromHtml:html];
+                        ViewSearchForumPage *page = [self.forumParser parseSearchPageFromHtml:result];
 
                         if (page != nil && page.threadList != nil && page.threadList.count > 0) {
                             handler(YES, page);
@@ -921,7 +918,7 @@ typedef void (^CallBack)(NSString *token, NSString *hash, NSString *time);
                         }
                     }
                 } else {
-                    handler(NO, html);
+                    handler(NO, result);
                 }
 
             }];
@@ -990,10 +987,10 @@ typedef void (^CallBack)(NSString *token, NSString *hash, NSString *time);
 }
 
 - (void)replyPrivateMessageWithId:(int)pmId andMessage:(NSString *)message handler:(HandlerWithBool)handler {
-    NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
-    [parameters setValue:@"3" forKey:@"styleid"];
+    NSMutableDictionary *p = [NSMutableDictionary dictionary];
+    [p setValue:@"3" forKey:@"styleid"];
 
-    [self.browser GETWithURLString:[self.forumConfig privateShowWithMessageId:pmId] parameters:parameters requestCallback:^(BOOL isSuccess, NSString *html) {
+    [self.browser GETWithURLString:[self.forumConfig privateShowWithMessageId:pmId] parameters:p requestCallback:^(BOOL isSuccess, NSString *html) {
         if (isSuccess) {
             NSString *token = [self.forumParser parseSecurityToken:html];
 
@@ -1024,8 +1021,8 @@ typedef void (^CallBack)(NSString *token, NSString *hash, NSString *time);
             [parameters setValue:@"1" forKey:@"savecopy"];
             [parameters setValue:@"提交信息" forKey:@"sbutton"];
 
-            [self.browser POSTWithURLString:[self.forumConfig privateReplyWithMessageIdPre:pmId] parameters:parameters requestCallback:^(BOOL isSuccess, NSString *html) {
-                handler(isSuccess, html);
+            [self.browser POSTWithURLString:[self.forumConfig privateReplyWithMessageIdPre:pmId] parameters:parameters requestCallback:^(BOOL success, NSString *result) {
+                handler(success, result);
             }];
 
         } else {
@@ -1037,9 +1034,9 @@ typedef void (^CallBack)(NSString *token, NSString *hash, NSString *time);
 - (void)favoriteForumsWithId:(NSString *)forumId handler:(HandlerWithBool)handler {
     NSString *preUrl = [self.forumConfig favForumWithId:forumId];
 
-    NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
-    [parameters setValue:@"3" forKey:@"styleid"];
-    [self.browser GETWithURLString:preUrl parameters:parameters requestCallback:^(BOOL isSuccess, NSString *html) {
+    NSMutableDictionary *p = [NSMutableDictionary dictionary];
+    [p setValue:@"3" forKey:@"styleid"];
+    [self.browser GETWithURLString:preUrl parameters:p requestCallback:^(BOOL isSuccess, NSString *html) {
         if (!isSuccess) {
             handler(NO, html);
         } else {
@@ -1055,8 +1052,8 @@ typedef void (^CallBack)(NSString *token, NSString *hash, NSString *time);
             [parameters setValue:paramUrl forKey:@"url"];
             [parameters setValue:@"0" forKey:@"emailupdate"];
 
-            [self.browser POSTWithURLString:url parameters:parameters requestCallback:^(BOOL isSuccess, NSString *html) {
-                handler(isSuccess, html);
+            [self.browser POSTWithURLString:url parameters:parameters requestCallback:^(BOOL success, NSString *result) {
+                handler(success, result);
             }];
 
         }
@@ -1076,9 +1073,9 @@ typedef void (^CallBack)(NSString *token, NSString *hash, NSString *time);
 - (void)favoriteThreadPostWithId:(NSString *)threadPostId handler:(HandlerWithBool)handler {
     NSString *preUrl = [self.forumConfig favThreadWithIdPre:threadPostId];
 
-    NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
-    [parameters setValue:@"3" forKey:@"styleid"];
-    [self.browser GETWithURLString:preUrl parameters:parameters requestCallback:^(BOOL isSuccess, NSString *html) {
+    NSMutableDictionary *p = [NSMutableDictionary dictionary];
+    [p setValue:@"3" forKey:@"styleid"];
+    [self.browser GETWithURLString:preUrl parameters:p requestCallback:^(BOOL isSuccess, NSString *html) {
 
         if (!isSuccess) {
             handler(NO, html);
@@ -1096,8 +1093,8 @@ typedef void (^CallBack)(NSString *token, NSString *hash, NSString *time);
             [parameters setValue:@"0" forKey:@"folderid"];
 
             NSString *fav = [self.forumConfig favThreadWithId:threadPostId];
-            [self.browser POSTWithURLString:fav parameters:parameters requestCallback:^(BOOL isSuccess, NSString *html) {
-                handler(isSuccess, html);
+            [self.browser POSTWithURLString:fav parameters:parameters requestCallback:^(BOOL success, NSString *result) {
+                handler(success, result);
             }];
         }
     }];
@@ -1120,8 +1117,8 @@ typedef void (^CallBack)(NSString *token, NSString *hash, NSString *time);
     [self.browser GETWithURLString:[self.forumConfig privateWithType:type withPage:page] parameters:parameters requestCallback:^(BOOL isSuccess, NSString *html) {
 
         if (isSuccess) {
-            ViewForumPage *page = [self.forumParser parsePrivateMessageFromHtml:html];
-            handler(YES, page);
+            ViewForumPage *p = [self.forumParser parsePrivateMessageFromHtml:html];
+            handler(YES, p);
         } else {
             handler(NO, html);
         }
@@ -1151,8 +1148,8 @@ typedef void (^CallBack)(NSString *token, NSString *hash, NSString *time);
     [self.browser GETWithURLString:url parameters:parameters requestCallback:^(BOOL isSuccess, NSString *html) {
 
         if (isSuccess) {
-            ViewForumPage *page = [self.forumParser parseFavThreadListFromHtml:html];
-            handler(isSuccess, page);
+            ViewForumPage *p = [self.forumParser parseFavThreadListFromHtml:html];
+            handler(isSuccess, p);
         } else {
             handler(NO, html);
         }
@@ -1163,7 +1160,7 @@ typedef void (^CallBack)(NSString *token, NSString *hash, NSString *time);
     NSUserDefaults *userDefault = [NSUserDefaults standardUserDefaults];
 
     NSDate *date = [NSDate date];
-    NSInteger timeStamp = [date timeIntervalSince1970];
+    NSInteger timeStamp = (NSInteger) [date timeIntervalSince1970];
 
     NSInteger searchId = [userDefault integerForKey:[self.forumConfig.forumURL.host stringByAppendingString:@"-search_id"]];
     NSInteger lastTimeStamp = [userDefault integerForKey:[self.forumConfig.forumURL.host stringByAppendingString:@"-search_time"]];
@@ -1176,7 +1173,7 @@ typedef void (^CallBack)(NSString *token, NSString *hash, NSString *time);
         [self.browser GETWithURLString:self.forumConfig.searchNewThread parameters:parameters requestCallback:^(BOOL isSuccess, NSString *html) {
 
             if (isSuccess) {
-                NSUInteger newThreadPostSearchId = [[self.forumParser parseListMyThreadSearchid:html] integerValue];
+                NSUInteger newThreadPostSearchId = (NSUInteger) [[self.forumParser parseListMyThreadSearchid:html] integerValue];
                 [userDefault setInteger:timeStamp forKey:[self.forumConfig.forumURL.host stringByAppendingString:@"-search_time"]];
                 [userDefault setInteger:newThreadPostSearchId forKey:[self.forumConfig.forumURL.host stringByAppendingString:@"-search_id"]];
             }
@@ -1188,7 +1185,7 @@ typedef void (^CallBack)(NSString *token, NSString *hash, NSString *time);
             }
         }];
     } else {
-        NSString *searchIdStr = [NSString stringWithFormat:@"%ld", searchId];
+        NSString *searchIdStr = [NSString stringWithFormat:@"%ld", (long) searchId];
         NSString *url = [self.forumConfig searchWithSearchId:searchIdStr withPage:page];
 
         NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
@@ -1300,7 +1297,7 @@ typedef void (^CallBack)(NSString *token, NSString *hash, NSString *time);
 
 - (void)listAllUserThreads:(int)userId withPage:(int)page handler:(HandlerWithBool)handler {
     NSString *baseUrl = [self.forumConfig searchThreadWithUserId:[NSString stringWithFormat:@"%d", userId]];
-    if (listUserThreadRedirectUrlDictionary == nil || [listUserThreadRedirectUrlDictionary objectForKey:[NSNumber numberWithInt:userId]] == nil) {
+    if (listUserThreadRedirectUrlDictionary == nil || listUserThreadRedirectUrlDictionary[@(userId)] == nil) {
 
         NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
         [parameters setValue:@"3" forKey:@"styleid"];
@@ -1312,7 +1309,7 @@ typedef void (^CallBack)(NSString *token, NSString *hash, NSString *time);
 
             NSString *searchId = [self.forumParser parseListMyThreadSearchid:html];
 
-            [listUserThreadRedirectUrlDictionary setObject:searchId forKey:[NSNumber numberWithInt:userId]];
+            listUserThreadRedirectUrlDictionary[@(userId)] = searchId;
 
             if (isSuccess) {
                 ViewForumPage *sarchPage = [self.forumParser parseSearchPageFromHtml:html];
@@ -1322,7 +1319,7 @@ typedef void (^CallBack)(NSString *token, NSString *hash, NSString *time);
             }
         }];
     } else {
-        NSString *searchId = [listUserThreadRedirectUrlDictionary objectForKey:[NSNumber numberWithInt:userId]];
+        NSString *searchId = listUserThreadRedirectUrlDictionary[@(userId)];
 
         NSString *url = [self.forumConfig searchWithSearchId:searchId withPage:page];
 
@@ -1389,8 +1386,8 @@ typedef void (^CallBack)(NSString *token, NSString *hash, NSString *time);
     [self.browser GETWithURLString:[self.forumConfig forumDisplayWithId:[NSString stringWithFormat:@"%d", forumId] withPage:page] parameters:parameters requestCallback:^(BOOL isSuccess, NSString *html) {
 
         if (isSuccess) {
-            ViewForumPage *page = [self.forumParser parseThreadListFromHtml:html withThread:forumId andContainsTop:YES];
-            handler(isSuccess, page);
+            ViewForumPage *p = [self.forumParser parseThreadListFromHtml:html withThread:forumId andContainsTop:YES];
+            handler(isSuccess, p);
         } else {
             handler(NO, html);
         }
@@ -1426,10 +1423,10 @@ typedef void (^CallBack)(NSString *token, NSString *hash, NSString *time);
             } else if ([html containsString:@"本论坛允许的进行两次搜索的时间间隔必须大于 30 秒。"]) {
                 handler(NO, @"本论坛允许的进行两次搜索的时间间隔必须大于 30 秒。");
             } else {
-                ViewSearchForumPage *page = [self.forumParser parseSearchPageFromHtml:html];
+                ViewSearchForumPage *p = [self.forumParser parseSearchPageFromHtml:html];
 
-                if (page != nil && page.threadList != nil && page.threadList.count > 0) {
-                    handler(YES, page);
+                if (p != nil && p.threadList != nil && p.threadList.count > 0) {
+                    handler(YES, p);
                 } else {
                     handler(NO, @"未知错误");
                 }
@@ -1457,9 +1454,9 @@ typedef void (^CallBack)(NSString *token, NSString *hash, NSString *time);
 }
 
 - (void)reportThreadPost:(int)postId andMessage:(NSString *)message handler:(HandlerWithBool)handler {
-    NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
-    [parameters setValue:@"3" forKey:@"styleid"];
-    [self.browser GETWithURLString:[self.forumConfig reportWithPostId:postId] parameters:parameters requestCallback:^(BOOL isSuccess, NSString *html) {
+    NSMutableDictionary *p = [NSMutableDictionary dictionary];
+    [p setValue:@"3" forKey:@"styleid"];
+    [self.browser GETWithURLString:[self.forumConfig reportWithPostId:postId] parameters:p requestCallback:^(BOOL isSuccess, NSString *html) {
         if (isSuccess) {
 
             NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
@@ -1471,8 +1468,8 @@ typedef void (^CallBack)(NSString *token, NSString *hash, NSString *time);
             [parameters setValue:@"sendemail" forKey:@"do"];
             [parameters setValue:[NSString stringWithFormat:@"showthread.php?p=%d#post%d", postId, postId] forKey:@"url"];
 
-            [self.browser POSTWithURLString:self.forumConfig.report parameters:parameters requestCallback:^(BOOL isSuccess, NSString *html) {
-                handler(isSuccess, html);
+            [self.browser POSTWithURLString:self.forumConfig.report parameters:parameters requestCallback:^(BOOL success, NSString *result) {
+                handler(success, result);
             }];
         } else {
             handler(NO, html);

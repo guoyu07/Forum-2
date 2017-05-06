@@ -1010,23 +1010,23 @@ typedef void (^CallBack)(NSString *token, NSString *hash, NSString *time);
         if (isSuccess) {
             NSString *token = [self.forumParser parseSecurityToken:html];
 
-            NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
-            [parameters setValue:message forKey:@"message"];
-            [parameters setValue:title forKey:@"title"];
-            [parameters setValue:@"0" forKey:@"pmid"];
-            [parameters setValue:name forKey:@"recipients"];
-            [parameters setValue:@"0" forKey:@"wysiwyg"];
-            [parameters setValue:@"" forKey:@"s"];
-            [parameters setValue:token forKey:@"securitytoken"];
-            [parameters setValue:@"0" forKey:@"forward"];
-            [parameters setValue:@"1" forKey:@"savecopy"];
-            [parameters setValue:@"提交信息" forKey:@"sbutton"];
-            [parameters setValue:@"1" forKey:@"parseurl"];
-            [parameters setValue:@"insertpm" forKey:@"do"];
-            [parameters setValue:@"" forKey:@"bccrecipients"];
-            [parameters setValue:@"0" forKey:@"iconid"];
+            NSMutableDictionary *pars = [NSMutableDictionary dictionary];
+            [pars setValue:message forKey:@"message"];
+            [pars setValue:title forKey:@"title"];
+            [pars setValue:@"0" forKey:@"pmid"];
+            [pars setValue:name forKey:@"recipients"];
+            [pars setValue:@"0" forKey:@"wysiwyg"];
+            [pars setValue:@"" forKey:@"s"];
+            [pars setValue:token forKey:@"securitytoken"];
+            [pars setValue:@"0" forKey:@"forward"];
+            [pars setValue:@"1" forKey:@"savecopy"];
+            [pars setValue:@"提交信息" forKey:@"sbutton"];
+            [pars setValue:@"1" forKey:@"parseurl"];
+            [pars setValue:@"insertpm" forKey:@"do"];
+            [pars setValue:@"" forKey:@"bccrecipients"];
+            [pars setValue:@"0" forKey:@"iconid"];
 
-            [self.browser POSTWithURLString:self.forumConfig.privateReplyWithMessage parameters:parameters requestCallback:^(BOOL success, NSString *result) {
+            [self.browser POSTWithURLString:self.forumConfig.privateReplyWithMessage parameters:pars requestCallback:^(BOOL success, NSString *result) {
                 if (success) {
                     if ([result containsString:@"信息提交时发生如下错误:"]) {
                         handler(NO, @"收件人未找到或者未填写标题");
@@ -1426,12 +1426,8 @@ typedef void (^CallBack)(NSString *token, NSString *hash, NSString *time);
             if (error != nil) {
                 handler(NO, error);
             } else {
-                if (isSuccess) {
-                    ViewThreadPage *detail = [self.forumParser parseShowThreadWithHtml:html];
-                    handler(isSuccess, detail);
-                } else {
-                    handler(NO, html);
-                }
+                ViewThreadPage *detail = [self.forumParser parseShowThreadWithHtml:html];
+                handler(isSuccess, detail);
             }
         } else {
             handler(NO, html);
@@ -1442,11 +1438,11 @@ typedef void (^CallBack)(NSString *token, NSString *hash, NSString *time);
 
 - (void)showThreadWithP:(NSString *)p handler:(HandlerWithBool)handler {
     NSString *url = [self.forumConfig showThreadWithP:p];
-    NSMutableDictionary *defparameters = [NSMutableDictionary dictionary];
-    [defparameters setValue:@"2" forKey:@"styleid"];
-    [defparameters setValue:@"1" forKey:@"langid"];
+    NSMutableDictionary *defParameters = [NSMutableDictionary dictionary];
+    [defParameters setValue:@"2" forKey:@"styleid"];
+    [defParameters setValue:@"1" forKey:@"langid"];
 
-    [self.browser GETWithURLString:url parameters:defparameters requestCallback:^(BOOL isSuccess, NSString *html) {
+    [self.browser GETWithURLString:url parameters:defParameters requestCallback:^(BOOL isSuccess, NSString *html) {
 
         if (isSuccess) {
             NSString *error = [self checkError:html];
