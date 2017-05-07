@@ -247,7 +247,96 @@
 }
 
 - (ViewSearchForumPage *)parseSearchPageFromHtml:(NSString *)html {
-    return nil;
+    ViewSearchForumPage *page = [[ViewSearchForumPage alloc] init];
+
+    NSMutableArray<NormalThread *> *threadList = [NSMutableArray<NormalThread *> array];
+
+
+    IGHTMLDocument *document = [[IGHTMLDocument alloc] initWithHTMLString:html error:nil];
+    //*[@id="threadlist"]/div[2]/table
+    IGXMLNode *contents = [document queryNodeWithXPath:@"//*[@id=\"threadlist\"]/div[2]/table"];
+    int childCount = contents.childrenCount;
+
+    for (int i = 0; i < childCount; ++i) {
+        IGXMLNode * threadNode = [contents childrenAtPosition:i];
+        if (threadNode.childrenCount == 1 && threadNode.firstChild.childrenCount == 6){
+            NSString * threadNodeHtml = threadNode.html;
+            NSLog(@"%@", threadNodeHtml);
+
+            ThreadInSearch *thread = [[ThreadInSearch alloc] init];
+            // threadId
+            NSString * idAttr = [threadNode attribute:@"id"];
+            if (idAttr == nil || ![idAttr containsString:@"_"]) {
+                continue;
+            }
+            NSString * tId = [idAttr componentsSeparatedByString:@"_"][1];
+            // thread Title
+            IGXMLNode * titleNode = [threadNode.firstChild childrenAtPosition:1];
+            NSString * titleHtml = titleNode.html;
+
+            int titleIndex = 0;
+            NSString *threadTitle = [titleNode childrenAtPosition:titleIndex].text;
+            // 作者
+            IGXMLNode * authorNode = [threadNode.firstChild childrenAtPosition:3];
+            NSString *threadAuthor = [[[authorNode childrenAtPosition:0] text] trim];
+            // 作者ID
+            NSString *threadAuthorId = [[[authorNode childrenAtPosition:0] attribute:@"href"] stringWithRegular:@"\\d+"];
+            //最后发表时间
+            IGXMLNode * lastAuthorNode = [threadNode.firstChild childrenAtPosition:5];
+            NSString *lastPostTime = [[lastAuthorNode childrenAtPosition:1].text trim];
+            // 是否是精华
+            // 都不是
+            // 是否包含图片
+            BOOL isHaveImage = [threadNode.html containsString:@"<img src=\"static/image/filetype/image_s.gif\" alt=\"attach_img\" title=\"图片附件\" align=\"absmiddle\">"];
+
+            // 回复数量
+            IGXMLNode * numberNode = [threadNode.firstChild childrenAtPosition:4];
+            NSString * huitieShu = numberNode.firstChild.text.trim;
+            // 查看数量
+            NSString * chakanShu = [[[numberNode childrenAtPosition:1] text] trim];
+
+            // 最后发表的人
+            NSString *lastAuthorName = [[lastAuthorNode childrenAtPosition:0].text trim];
+
+            // 帖子回帖页数
+            int totalPage = 1;
+            if ([titleNode.html containsString:@"<span class=\"tps\">"]){
+                IGXMLNode * pageNode = [titleNode childrenAtPosition:titleNode.childrenCount -1];
+                NSString * h = [pageNode html];
+                if ([[pageNode text] isEqualToString:@"New"]) {
+                    pageNode = [titleNode childrenAtPosition:titleNode.childrenCount -2];
+                }
+                int pageNodeChildCount = pageNode.childrenCount;
+                IGXMLNode * realPageNode = [pageNode childrenAtPosition:pageNodeChildCount -1];
+                NSString * h1 = [realPageNode html];
+                totalPage = [[realPageNode text] intValue];
+            }
+
+            thread.threadID = tId;
+            thread.threadTitle = threadTitle;
+            thread.threadAuthorName = threadAuthor;
+            thread.threadAuthorID = threadAuthorId;
+            thread.lastPostTime = lastPostTime;
+            thread.isGoodNess = NO;
+            thread.isContainsImage = isHaveImage;
+            thread.postCount = huitieShu;
+            thread.openCount = chakanShu;
+            thread.lastPostAuthorName = lastAuthorName;
+            thread.totalPostPageCount = totalPage;
+
+            [threadList addObject:thread];
+        }
+    }
+
+    page.threadList = threadList;
+
+    // 总页数
+
+    IGXMLNode *totalPageNode = [document queryNodeWithXPath:@"//*[@id='fd_page_bottom']/div/label"];
+    NSString * totalPageNodeText = totalPageNode.text;
+
+
+    return page;
 }
 
 - (NSMutableArray<Forum *> *)parseFavForumFromHtml:(NSString *)html {

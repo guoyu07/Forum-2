@@ -102,7 +102,7 @@
 }
 
 - (NSString *)searchNewThread {
-    return nil;
+    return @"https://www.chiphell.com/forum.php?mod=guide&view=new";
 }
 
 - (NSString *)searchNewThreadToday {
@@ -130,7 +130,7 @@
 }
 
 - (NSString *)avatar:(NSString *)avatar {
-    return nil;
+    return avatar;
 }
 
 - (NSString *)avatarBase {

@@ -255,6 +255,14 @@
 
 - (void)listNewThreadPostsWithPage:(int)page handler:(HandlerWithBool)handler {
 
+    [self.browser GETWithURLString:self.forumConfig.searchNewThread parameters:nil requestCallback:^(BOOL isSuccess, NSString *html) {
+        if (isSuccess) {
+            ViewSearchForumPage *searchForumPage = [self.forumParser parseSearchPageFromHtml:html];
+            handler(isSuccess, searchForumPage);
+        } else {
+            handler(NO, html);
+        }
+    }];
 }
 
 - (void)listTodayNewThreadsWithPage:(int)page handler:(HandlerWithBool)handler {
