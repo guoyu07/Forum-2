@@ -18,7 +18,7 @@
 }
 
 - (NSString *)archive {
-    return @"https://chiphell.com/archiver/";
+    return @"https://www.chiphell.com/archiver/";
 }
 
 - (NSString *)cookieUserIdKey {
@@ -146,7 +146,7 @@
 }
 
 - (NSString *)login {
-    return @"https://chiphell.com/member.php?mod=logging&action=login";
+    return @"https://www.chiphell.com/member.php?mod=logging&action=login&referer=https%3A%2F%2Fwww.chiphell.com%2Fforum.php&cookietime=1";
 }
 
 - (NSString *)loginvCode {

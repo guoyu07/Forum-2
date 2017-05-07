@@ -39,7 +39,7 @@
             DRLForumApi * _drlForumBrowser = [[DRLForumApi alloc] initWithConfig:[[DRLForumConfig alloc] init] parser:[[DRLForumHtmlParser alloc] init]];
 
             return _drlForumBrowser;
-        } else if ([host isEqualToString:@"chiphell.com"]){
+        } else if ([host isEqualToString:@"www.chiphell.com"] || [host isEqualToString:@"chiphell.com"]){
             CHHForumApi * api = [[CHHForumApi alloc] initWithConfig:[[CHHForumConfig alloc] init] parser:[[CHHForumHtmlParser alloc] init]];
             return api;
         }

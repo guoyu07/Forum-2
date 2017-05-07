@@ -387,12 +387,12 @@
 		2F34C7BC164C986C72776D3A /* chh */ = {
 			isa = PBXGroup;
 			children = (
-				2F34C076378D371E57F0863F /* CHHForumApi.m */,
 				2F34C9C1792EF57FF901D717 /* CHHForumApi.h */,
-				2F34C36FABA87760B3B5B1B3 /* CHHForumConfig.m */,
+				2F34C076378D371E57F0863F /* CHHForumApi.m */,
 				2F34CAE13DEE2EFC6579F89E /* CHHForumConfig.h */,
-				2F34C933EAF9358009F4612F /* CHHForumHtmlParser.m */,
+				2F34C36FABA87760B3B5B1B3 /* CHHForumConfig.m */,
 				2F34C8DBF1BAF7284E27B0F6 /* CHHForumHtmlParser.h */,
+				2F34C933EAF9358009F4612F /* CHHForumHtmlParser.m */,
 			);
 			name = chh;
 			sourceTree = "<group>";
