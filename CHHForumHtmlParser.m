@@ -51,7 +51,11 @@
                 continue;
             }
 
-            NSString *threadTitle = [titleNode childrenAtPosition:3].text;
+            int titleIndex = 3;
+            if (![titleHtml containsString:@"<em>[<a href=\"forum.php?mod=forumdisplay&amp;fid="]) {
+                titleIndex = 2;
+            }
+            NSString *threadTitle = [titleNode childrenAtPosition:titleIndex].text;
             // 作者
             IGXMLNode * authorNode = [threadNode.firstChild childrenAtPosition:2];
             NSString *threadAuthor = [[[authorNode childrenAtPosition:0] text] trim];
