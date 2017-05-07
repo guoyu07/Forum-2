@@ -20,10 +20,10 @@
 
 @property(nonatomic, strong) NSString *originalHtml;
 
-@property(nonatomic, strong) NSMutableArray<Post *> *postList;
-
 @property(nonatomic, assign) NSUInteger totalPageCount;
 @property(nonatomic, assign) NSUInteger currentPage;
+
+@property(nonatomic, strong) NSMutableArray<Post *> *postList;
 
 @property(nonatomic, strong) NSString *securityToken;
 @property(nonatomic, strong) NSString *ajaxLastPost;

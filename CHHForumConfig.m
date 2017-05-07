@@ -118,7 +118,7 @@
 }
 
 - (NSString *)showThreadWithThreadId:(NSString *)threadId withPage:(int)page {
-    return nil;
+    return [NSString stringWithFormat:@"https://www.chiphell.com/thread-%@-%d-1.html", threadId, page];
 }
 
 - (NSString *)showThreadWithPostId:(NSString *)postId withPostCout:(int)postCount {

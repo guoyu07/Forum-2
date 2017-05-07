@@ -17,7 +17,109 @@
 
 }
 - (ViewThreadPage *)parseShowThreadWithHtml:(NSString *)html {
-    return nil;
+
+
+    IGHTMLDocument * document = [[IGHTMLDocument alloc] initWithHTMLString:html error:nil];
+
+    ViewThreadPage *showThreadPage = [[ViewThreadPage alloc] init];
+    // threadId
+    IGXMLNode * threadIdNode = [document queryNodeWithXPath:@"//*[@id=\"postlist\"]/table[1]/tbody/tr/td[2]/span/a"];
+    NSString * threadId = [[threadIdNode attribute:@"href"] componentsSeparatedByString:@"-"][1];
+    // threadTitle
+    IGXMLNode * threadTitleNode = [document queryNodeWithXPath:@"//*[@id=\"thread_subject\"]"];
+    NSString * threadTitle = [[threadTitleNode text] trim];
+    // forumId
+    IGXMLNode * forumIdNode = [document queryNodeWithXPath:@"//*[@id=\"pt\"]/div/a[4]"];
+    NSString * forumId = [[forumIdNode attribute:@"href"] componentsSeparatedByString:@"-"][1];
+    // origin html
+    NSString * originHtml = [document queryNodeWithXPath:@"//*[@id=\"postlist\"]"].html;
+    // totalPageCount
+    int  totalPageCount = 1;
+    int  currentPage = 1;
+    //*[@id="pgt"]/div/div/label/span
+    IGXMLNode * totalPageNode = [document queryNodeWithXPath:@"//*[@id=\"pgt\"]/div/div/label/span"];
+    if (threadTitleNode != nil){
+        totalPageCount = [[[totalPageNode text] stringWithRegular:@"\\d+"] intValue];
+        IGXMLNode * currentPageNode = [document queryNodeWithXPath:@"//*[@id=\"pgt\"]/div/div"];
+        for (IGXMLNode * node in currentPageNode.children){
+            if ([node.html hasPrefix:@"<strong>"] && [node.html hasSuffix:@"</strong>"]){
+                currentPage = [[[node text] trim] intValue];
+            }
+        }
+    }
+
+    showThreadPage.threadID = threadId;
+    showThreadPage.threadTitle = threadTitle;
+    showThreadPage.forumId= forumId;
+    showThreadPage.originalHtml;
+    showThreadPage.totalPageCount = (NSUInteger) totalPageCount;
+    showThreadPage.currentPage = (NSUInteger) currentPage;
+
+
+    // 回帖列表
+    NSMutableArray<Post *> *postList = [NSMutableArray array];
+
+    IGXMLNode * postListNode = [document queryNodeWithXPath:@"//*[@id=\"postlist\"]"];
+    for (IGXMLNode * node in postListNode.children){
+        NSString * nodeHtml = node.html.trim;
+        if ([nodeHtml hasPrefix:@"<div id=\"post_"]){
+            Post * post = [[Post alloc] init];
+            NSString *postId = [[node attribute:@"id"] componentsSeparatedByString:@"_"][1];
+            NSString * loucengQuery = [NSString stringWithFormat: @"//*[@id=\"postnum%@\"]/em", postId];
+            IGXMLNode * postLouCengNode = [document queryNodeWithXPath:loucengQuery];
+            NSString *postLouCeng = [[postLouCengNode text] trim];
+            // 发表时间
+            NSString *postTimeQuery = [NSString stringWithFormat:@"//*[@id=\"authorposton%@\"]", postId];
+            NSString *postTime = [[document queryNodeWithXPath:postTimeQuery] text];//[[[document queryNodeWithXPath:postTimeQuery] text] stringWithRegular:@"\\d+-\\d+\\d+ \\d+:\\d+"];
+            // 发表内容
+
+
+            NSString *contentQuery = [NSString stringWithFormat:@"//*[@id=\"pid%@\"]/tr[1]/td[2]/div[2]/div/div[1]", postId];
+            NSString *postContent = [document queryNodeWithXPath:contentQuery].html;
+
+            // User Info
+            User * user = [[User alloc] init];
+            // UserId
+            NSString * userQuery = [NSString stringWithFormat:@"//*[@id=\"favatar%@\"]", postId];
+            IGXMLNode * userNode = [document queryNodeWithXPath:userQuery];
+            NSString * idNameQuery = [NSString stringWithFormat:@"//*[@id=\"favatar%@\"]/div[1]/div/a", postId];
+            IGXMLNode *idNameNode = [document queryNodeWithXPath:idNameQuery];
+            NSString *userId = [[idNameNode attribute:@"href"] stringWithRegular:@"\\d+"];
+            NSString * userName = [[idNameNode text] trim];
+
+            NSString * avatarQuery = [NSString stringWithFormat:@"//*[@id=\"favatar%@\"]/div[3]/div/a/img", postId];
+            IGXMLNode * avatarNode = [document queryNodeWithXPath:avatarQuery];
+            NSString * avatar = [avatarNode attribute:@"src"];
+
+            NSString * rankQuery = [NSString stringWithFormat:@"//*[@id=\"favatar%@\"]/p[1]/em/a", postId];
+            IGXMLNode *rankNode = [document queryNodeWithXPath:rankQuery];
+            NSString *rank = [[rankNode text] trim];
+
+            // 注册日期
+            NSString * signQuery = [NSString stringWithFormat:@"//*[@id=\"favatar%@\"]/dl[1]/dd[4]", postId];
+            IGXMLNode * signNode = [document queryNodeWithXPath:signQuery];
+            NSString * signDate = [signNode text];
+            user.userAvatar = avatar;
+            user.userID = userId;
+            user.userName = userName;
+            user.userRank = rank;
+            user.userSignDate = signDate;
+
+            post.postContent = postContent;
+            post.postID = postId;
+            post.postLouCeng = postLouCeng;
+            post.postTime = postTime;
+            post.postUserInfo = user;
+
+            [postList addObject:post];
+
+        }
+    }
+
+    showThreadPage.postList = postList;
+
+
+    return showThreadPage;
 }
 
 - (ViewForumPage *)parseThreadListFromHtml:(NSString *)html withThread:(int)threadId andContainsTop:(BOOL)containTop {

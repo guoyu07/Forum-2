@@ -275,6 +275,23 @@
 
 - (void)showThreadWithId:(int)threadId andPage:(int)page handler:(HandlerWithBool)handler {
 
+    //https://www.chiphell.com/thread-1732141-2-1.html
+
+    [self.browser GETWithURLString:[self.forumConfig showThreadWithThreadId:[NSString stringWithFormat:@"%d", threadId] withPage:page] parameters:nil requestCallback:^(BOOL isSuccess, NSString *html) {
+
+        if (isSuccess) {
+            NSString *error = nil;//[self checkError:html];
+            if (error != nil) {
+                handler(NO, error);
+            } else {
+                ViewThreadPage *detail = [self.forumParser parseShowThreadWithHtml:html];
+                handler(isSuccess, detail);
+            }
+        } else {
+            handler(NO, html);
+        }
+
+    }];
 }
 
 - (void)showThreadWithP:(NSString *)p handler:(HandlerWithBool)handler {
