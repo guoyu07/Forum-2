@@ -250,7 +250,16 @@
 }
 
 - (void)listFavoriteThreadPostsWithPage:(int)page handler:(HandlerWithBool)handler {
+    NSString *url = [self.forumConfig listfavThreadWithId:page];
 
+    [self.browser GETWithURLString:url parameters:nil requestCallback:^(BOOL isSuccess, NSString *html) {
+        if (isSuccess) {
+            ViewForumPage *viewForumPage = [self.forumParser parseFavThreadListFromHtml:html];
+            handler(isSuccess, viewForumPage);
+        } else {
+            handler(NO, html);
+        }
+    }];
 }
 
 - (void)listNewThreadPostsWithPage:(int)page handler:(HandlerWithBool)handler {

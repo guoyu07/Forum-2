@@ -90,7 +90,7 @@
 }
 
 - (NSString *)listfavThreadWithId:(int)page {
-    return nil;
+    return [NSString stringWithFormat:@"https://www.chiphell.com/home.php?mod=space&do=favorite&type=thread&page=%d", page];
 }
 
 - (NSString *)forumDisplayWithId:(NSString *)forumId {
