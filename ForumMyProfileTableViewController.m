@@ -188,8 +188,8 @@
 
         [self.forumApi logout];
 
-
-        [[UIStoryboard mainStoryboard] changeRootViewControllerTo:@"LoginForum"];
+        NSString * id = self.forumApi.currentConfigDelegate.loginControllerId;
+        [[UIStoryboard mainStoryboard] changeRootViewControllerTo:id];
 
     }
     [tableView deselectRowAtIndexPath:indexPath animated:NO];

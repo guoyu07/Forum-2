@@ -179,7 +179,18 @@
 }
 
 - (void)listAllForums:(HandlerWithBool)handler {
-
+    [self.browser GETWithURLString:self.forumConfig.archive parameters:nil requestCallback:^(BOOL isSuccess, NSString *html) {
+        if (isSuccess) {
+            NSArray<Forum *> *parserForums = [self.forumParser parserForums:html forumHost:self.forumConfig.forumURL.host];
+            if (parserForums != nil && parserForums.count > 0) {
+                handler(YES, parserForums);
+            } else {
+                handler(NO, html);
+            }
+        } else {
+            handler(NO, html);
+        }
+    }];
 }
 
 - (void)createNewThreadWithForumId:(int)fId withSubject:(NSString *)subject andMessage:(NSString *)message withImages:(NSArray *)images handler:(HandlerWithBool)handler {

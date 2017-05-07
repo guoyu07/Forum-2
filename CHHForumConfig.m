@@ -189,4 +189,9 @@
     return nil;
 }
 
+- (NSString *)loginControllerId {
+    return @"LoginForumWebView";
+}
+
+
 @end

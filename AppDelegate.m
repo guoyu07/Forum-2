@@ -94,41 +94,44 @@ static NSString *bundleIdentifier;
 //    }
     
 
-    // 判断是否登录
-    if (![self isUserHasLogin]) {
+    if (YES){
+        // 判断是否登录
+        if (![self isUserHasLogin]) {
 
-        if ([[self bundleIdentifier] isEqualToString:@"com.andforce.forum"]){
-            [[NSUserDefaults standardUserDefaults] clearCurrentForumURL];
-            self.window.rootViewController = [[UIStoryboard mainStoryboard] finControllerById:@"ShowSupportForums"];
-        } else{
-            [[UIStoryboard mainStoryboard] changeRootViewControllerTo:@"LoginForum"];
+            if ([[self bundleIdentifier] isEqualToString:@"com.andforce.forum"]){
+                [[NSUserDefaults standardUserDefaults] clearCurrentForumURL];
+                self.window.rootViewController = [[UIStoryboard mainStoryboard] finControllerById:@"ShowSupportForums"];
+            } else{
+                [[UIStoryboard mainStoryboard] changeRootViewControllerTo:@"LoginForum"];
+            }
+        }
+
+        NSUserDefaults *data = [NSUserDefaults standardUserDefaults];
+
+        if ([data dbVersion] != DB_VERSION) {
+
+            ForumCoreDataManager *formManager = [[ForumCoreDataManager alloc] initWithEntryType:EntryTypeForm];
+
+            // 清空数据库
+            [formManager deleteData];
+
+            ForumCoreDataManager *userManager = [[ForumCoreDataManager alloc] initWithEntryType:EntryTypeUser];
+            [userManager deleteData];
+
+            [data setDBVersion:DB_VERSION];
+
+            id<ForumBrowserDelegate> forumApi = [ForumApiHelper forumApi];
+            [forumApi logout];
+
+            if ([[self bundleIdentifier] isEqualToString:@"com.andforce.forum"]){
+                [[NSUserDefaults standardUserDefaults] clearCurrentForumURL];
+                self.window.rootViewController = [[UIStoryboard mainStoryboard] finControllerById:@"ShowSupportForums"];
+            } else{
+                [[UIStoryboard mainStoryboard] changeRootViewControllerTo:@"LoginForum"];
+            }
         }
     }
 
-    NSUserDefaults *data = [NSUserDefaults standardUserDefaults];
-
-    if ([data dbVersion] != DB_VERSION) {
-
-        ForumCoreDataManager *formManager = [[ForumCoreDataManager alloc] initWithEntryType:EntryTypeForm];
-
-        // 清空数据库
-        [formManager deleteData];
-
-        ForumCoreDataManager *userManager = [[ForumCoreDataManager alloc] initWithEntryType:EntryTypeUser];
-        [userManager deleteData];
-
-        [data setDBVersion:DB_VERSION];
-
-        id<ForumBrowserDelegate> forumApi = [ForumApiHelper forumApi];
-        [forumApi logout];
-
-        if ([[self bundleIdentifier] isEqualToString:@"com.andforce.forum"]){
-            [[NSUserDefaults standardUserDefaults] clearCurrentForumURL];
-            self.window.rootViewController = [[UIStoryboard mainStoryboard] finControllerById:@"ShowSupportForums"];
-        } else{
-            [[UIStoryboard mainStoryboard] changeRootViewControllerTo:@"LoginForum"];
-        }
-    }
 
 
     [AVOSCloud registerForRemoteNotification];

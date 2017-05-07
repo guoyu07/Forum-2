@@ -97,4 +97,6 @@
 // report
 - (NSString *) report;
 - (NSString *) reportWithPostId:(int) postId;
+
+-(NSString *) loginControllerId;
 @end

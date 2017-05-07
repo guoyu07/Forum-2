@@ -27,6 +27,8 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
 
+    self.forumApi = [ForumApiHelper forumApi];
+    
     NSData *data = [NSData dataWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"supportForums" ofType:@"json"]];
 
     NSDictionary *dictionary = [NSJSONSerialization JSONObjectWithData:data options:(NSJSONReadingOptions) kNilOptions error:nil];
@@ -121,7 +123,11 @@
         [stortboard changeRootViewControllerTo:@"ForumTabBarControllerId"];
         
     } else{
-        [[UIStoryboard mainStoryboard] changeRootViewControllerTo:@"LoginForum" withAnim:UIViewAnimationOptionTransitionFlipFromTop];
+
+        id<ForumBrowserDelegate> api = [ForumApiHelper forumApi];
+        
+        NSString * cId = api.currentConfigDelegate.loginControllerId;
+        [[UIStoryboard mainStoryboard] changeRootViewControllerTo:cId withAnim:UIViewAnimationOptionTransitionFlipFromTop];
     }
 
 }

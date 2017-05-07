@@ -531,15 +531,7 @@
     return [NSDictionary dictionaryWithDictionary:pairs];
 }
 
-- (void)webViewDidFinishLoad:(UIWebView *)webView {
-    if (shouldScrollEnd) {
-        NSInteger height = [[webView stringByEvaluatingJavaScriptFromString:@"document.body.offsetHeight;"] intValue];
-        NSString *javascript = [NSString stringWithFormat:@"window.scrollBy(0, %ld);", (long) height];
-        [webView stringByEvaluatingJavaScriptFromString:javascript];
-        shouldScrollEnd = NO;
-    }
 
-}
 
 - (void)reportThreadPost:(int)postId userName:(NSString *)userName {
   UIStoryboard *storyboard = [UIStoryboard mainStoryboard];
@@ -553,6 +545,16 @@
                 [self presentViewController:simpleReplyController withBundle:bundle forRootController:YES animated:YES completion:^{
 
                 }];
+}
+
+- (void)webViewDidFinishLoad:(UIWebView *)webView {
+    if (shouldScrollEnd) {
+        NSInteger height = [[webView stringByEvaluatingJavaScriptFromString:@"document.body.offsetHeight;"] intValue];
+        NSString *javascript = [NSString stringWithFormat:@"window.scrollBy(0, %ld);", (long) height];
+        [webView stringByEvaluatingJavaScriptFromString:javascript];
+        shouldScrollEnd = NO;
+    }
+
 }
 
 - (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType {

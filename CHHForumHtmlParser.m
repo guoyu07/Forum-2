@@ -5,6 +5,14 @@
 
 #import "CHHForumHtmlParser.h"
 
+#import "IGXMLNode+Children.h"
+
+#import "ForumEntry+CoreDataClass.h"
+#import "ForumCoreDataManager.h"
+#import "NSUserDefaults+Extensions.h"
+#import "NSString+Extensions.h"
+
+#import "IGHTMLDocument+QueryNode.h"
 
 @implementation CHHForumHtmlParser {
 
@@ -78,7 +86,74 @@
 }
 
 - (NSArray<Forum *> *)parserForums:(NSString *)html forumHost:(NSString *)host {
-    return nil;
+    IGHTMLDocument *document = [[IGHTMLDocument alloc] initWithHTMLString:html error:nil];
+
+    NSMutableArray<Forum *> *forms = [NSMutableArray array];
+
+    NSString *xPath = @"//*[@id='content']";
+
+    IGXMLNode *contents = [document queryNodeWithXPath:xPath];
+    int size = contents.childrenCount;
+
+    int replaceId = 10000;
+    Forum * current;
+    for (int i = 0; i < size; i++) {
+        IGXMLNode * child = [contents childrenAtPosition:i];
+
+        NSString * childHtml = child.html;
+
+        if (child.childrenCount == 0){
+            Forum *parent = [[Forum alloc] init];
+            NSString * name = child.text;
+            parent.forumName = name;
+            parent.forumId = replaceId;
+            replaceId ++;
+            parent.forumHost = host;
+            parent.parentForumId = -1;
+
+            current = parent;
+            [forms addObject:parent];
+        } else{
+            NSMutableArray<Forum *> *childForms = [NSMutableArray array];
+            IGXMLNodeSet * set = child.children;
+            for(IGXMLNode * node in set){
+
+                NSString * nodeHtml = node.html;
+                Forum *childForum = [[Forum alloc] init];
+                NSString * name = node.text;
+                childForum.forumName = name;
+
+                NSString *url = [[node childrenAtPosition:0] attribute:@"href"];
+                int forumId = [[url stringWithRegular:@"fid-\\d+" andChild:@"\\d+"] intValue];
+                childForum.forumId = forumId;
+                childForum.forumHost = host;
+                childForum.parentForumId = current.forumId;
+
+                [childForms addObject:childForum];
+            }
+
+            current.childForums = childForms;
+
+        }
+
+    }
+
+    NSMutableArray<Forum *> *needInsert = [NSMutableArray array];
+
+    for (Forum *forum in forms) {
+        [needInsert addObjectsFromArray:[self flatForm:forum]];
+    }
+
+    return [needInsert copy];
+}
+
+- (NSArray *)flatForm:(Forum *)form {
+    NSMutableArray *resultArray = [NSMutableArray array];
+    [resultArray addObject:form];
+    for (Forum *childForm in form.childForums) {
+        [resultArray addObjectsFromArray:[self flatForm:childForm]];
+    }
+    return resultArray;
 }
 
 @end

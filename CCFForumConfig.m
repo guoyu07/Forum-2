@@ -204,4 +204,9 @@
     return [NSString stringWithFormat:@"%@report.php?p=%d", _forumURL.absoluteString, postId];
 }
 
+- (NSString *)loginControllerId {
+    return @"LoginForum";
+}
+
+
 @end
