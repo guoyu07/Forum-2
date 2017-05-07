@@ -98,7 +98,7 @@
 }
 
 - (NSString *)forumDisplayWithId:(NSString *)forumId withPage:(int)page {
-    return nil;
+    return [NSString stringWithFormat:@"https://www.chiphell.com/forum-%@-%d.html", forumId, page];
 }
 
 - (NSString *)searchNewThread {
