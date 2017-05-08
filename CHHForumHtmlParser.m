@@ -263,7 +263,7 @@
             NSString * threadNodeHtml = threadNode.html;
             NSLog(@"%@", threadNodeHtml);
 
-            ThreadInSearch *thread = [[ThreadInSearch alloc] init];
+            Thread *thread = [[Thread alloc] init];
             // threadId
             NSString * idAttr = [threadNode attribute:@"id"];
             if (idAttr == nil || ![idAttr containsString:@"_"]) {

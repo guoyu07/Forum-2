@@ -19,7 +19,6 @@
 #import "NormalThread.h"
 #import "ViewThreadPage.h"
 #import "ViewForumPage.h"
-#import "ThreadInSearch.h"
 #import "ViewSearchForumPage.h"
 
 @protocol ForumParserDelegate <NSObject>

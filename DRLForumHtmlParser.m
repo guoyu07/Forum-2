@@ -644,13 +644,13 @@
     }
     
     
-    NSMutableArray<ThreadInSearch*>* post = [NSMutableArray array];
+    NSMutableArray<Thread*>* post = [NSMutableArray array];
     
     for (IGXMLNode *node in searchNodeSet) {
         
         if (node.children.count == 9) {
             // 9个节点是正确的输出结果
-            ThreadInSearch * searchThread = [[ThreadInSearch alloc]init];
+            Thread * searchThread = [[Thread alloc]init];
             
             IGXMLNode * postForNode = [node childrenAtPosition:2];
             

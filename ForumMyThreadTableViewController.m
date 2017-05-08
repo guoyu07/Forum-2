@@ -59,7 +59,7 @@
     static NSString *cellId = @"SearchResultCell";
     ForumSearchResultCell *cell = [tableView dequeueReusableCellWithIdentifier:cellId];
 
-    ThreadInSearch *thread = self.dataList[indexPath.row];
+    Thread *thread = self.dataList[indexPath.row];
     [cell setData:thread];
 
     [cell setSeparatorInset:UIEdgeInsetsZero];
@@ -78,7 +78,7 @@
         ForumWebViewController *controller = segue.destinationViewController;
         NSIndexPath *indexPath = [self.tableView indexPathForSelectedRow];
 
-        ThreadInSearch *thread = self.dataList[(NSUInteger) indexPath.row];
+        Thread *thread = self.dataList[(NSUInteger) indexPath.row];
 
         TransBundle *transBundle = [[TransBundle alloc] init];
         [transBundle putIntValue:[thread.threadID intValue] forKey:@"threadID"];

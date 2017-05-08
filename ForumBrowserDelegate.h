@@ -8,7 +8,6 @@
 #import <Foundation/Foundation.h>
 #import "LoginUser.h"
 #import "ViewForumPage.h"
-#import "ThreadInSearch.h"
 #import "ViewSearchForumPage.h"
 #import "ForumConfigDelegate.h"
 #import "Forum.h"

@@ -14,7 +14,7 @@
 }
 
 
-- (void)setData:(ThreadInSearch *)data {
+- (void)setData:(Thread *)data {
 
 
     self.postTitle.text = data.threadTitle;

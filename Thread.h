@@ -15,4 +15,7 @@
 @property(nonatomic, strong) NSString *lastPostAuthorName; // 最后发表的人
 @property(nonatomic, assign) int totalPostPageCount;       // 回帖页数
 
+// 搜索页面
+@property(nonatomic, strong) NSString *fromFormName;       // 所属论坛名称
+
 @end

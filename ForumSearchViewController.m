@@ -96,7 +96,7 @@
 
 - (void)showUserProfile:(NSIndexPath *)indexPath {
     ForumUserProfileTableViewController *controller = selectSegue.destinationViewController;
-    ThreadInSearch *thread = self.dataList[(NSUInteger) indexPath.row];
+    Thread *thread = self.dataList[(NSUInteger) indexPath.row];
     TransBundle *bundle = [[TransBundle alloc] init];
     [bundle putIntValue:[thread.threadAuthorID intValue] forKey:@"UserId"];
 
@@ -115,7 +115,7 @@
     ForumSearchResultCell *cell = (ForumSearchResultCell *) [tableView dequeueReusableCellWithIdentifier:QuoteCellIdentifier];
     cell.showUserProfileDelegate = self;
 
-    ThreadInSearch *thread = self.dataList[(NSUInteger) indexPath.row];
+    Thread *thread = self.dataList[(NSUInteger) indexPath.row];
 
     [cell setData:thread forIndexPath:indexPath];
 
@@ -139,7 +139,7 @@
     NSIndexPath *indexPath = cell.indexPath;
 
 
-    ThreadInSearch *play = self.dataList[(NSUInteger) indexPath.row];
+    Thread *play = self.dataList[(NSUInteger) indexPath.row];
 
     [self.forumApi favoriteThreadPostWithId:play.threadID handler:^(BOOL isSuccess, id message) {
         BOOL success = isSuccess;
@@ -157,7 +157,7 @@
         ForumWebViewController *controller = segue.destinationViewController;
         NSIndexPath *indexPath = [self.tableView indexPathForSelectedRow];
 
-        ThreadInSearch *thread = self.dataList[(NSUInteger) indexPath.row];
+        Thread *thread = self.dataList[(NSUInteger) indexPath.row];
 
         TransBundle *transBundle = [[TransBundle alloc] init];
         [transBundle putIntValue:[thread.threadID intValue] forKey:@"threadID"];

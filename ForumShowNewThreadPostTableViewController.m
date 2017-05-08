@@ -63,7 +63,7 @@
     ForumSearchResultCell *cell = [tableView dequeueReusableCellWithIdentifier:cellId];
     cell.showUserProfileDelegate = self;
 
-    ThreadInSearch *thread = self.dataList[(NSUInteger) indexPath.row];
+    Thread *thread = self.dataList[(NSUInteger) indexPath.row];
     [cell setData:thread forIndexPath:indexPath];
 
     cell.showUserProfileDelegate = self;
@@ -115,7 +115,7 @@
 - (void)showUserProfile:(NSIndexPath *)indexPath {
     ForumUserProfileTableViewController *controller = selectSegue.destinationViewController;
     TransBundle * bundle = [[TransBundle alloc] init];
-    ThreadInSearch *thread = self.dataList[(NSUInteger) indexPath.row];
+    Thread *thread = self.dataList[(NSUInteger) indexPath.row];
     [bundle putIntValue:[thread.threadAuthorID intValue] forKey:@"UserId"];
     [self transBundle:bundle forController:controller];
 }
@@ -129,7 +129,7 @@
         ForumWebViewController *controller = segue.destinationViewController;
         NSIndexPath *indexPath = [self.tableView indexPathForSelectedRow];
 
-        ThreadInSearch *thread = self.dataList[(NSUInteger) indexPath.row];
+        Thread *thread = self.dataList[(NSUInteger) indexPath.row];
         TransBundle *transBundle = [[TransBundle alloc] init];
         [transBundle putIntValue:[thread.threadID intValue] forKey:@"threadID"];
         [transBundle putStringValue:thread.threadAuthorName forKey:@"threadAuthorName"];
