@@ -47,7 +47,7 @@
     return self;
 }
 
-- (void)setData:(NormalThread *)data {
+- (void)setData:(Thread *)data {
     self.threadAuthor.text = data.threadAuthorName;
 
     self.threadPostCount.text = data.postCount;

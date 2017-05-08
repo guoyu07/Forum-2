@@ -114,7 +114,6 @@
 		4DF7371B1DDECC8D00BF1896 /* Forum.m in Sources */ = {isa = PBXBuildFile; fileRef = 4DF7370C1DDECC8D00BF1896 /* Forum.m */; };
 		4DF7371C1DDECC8D00BF1896 /* Thread.m in Sources */ = {isa = PBXBuildFile; fileRef = 4DF7370E1DDECC8D00BF1896 /* Thread.m */; };
 		4DF7371D1DDECC8D00BF1896 /* UserProfile.m in Sources */ = {isa = PBXBuildFile; fileRef = 4DF737101DDECC8D00BF1896 /* UserProfile.m */; };
-		4DF7371F1DDECC8D00BF1896 /* NormalThread.m in Sources */ = {isa = PBXBuildFile; fileRef = 4DF737141DDECC8D00BF1896 /* NormalThread.m */; };
 		4DF737201DDECC8D00BF1896 /* ViewThreadPage.m in Sources */ = {isa = PBXBuildFile; fileRef = 4DF737161DDECC8D00BF1896 /* ViewThreadPage.m */; };
 		4DF737211DDECC8D00BF1896 /* ViewForumPage.m in Sources */ = {isa = PBXBuildFile; fileRef = 4DF737181DDECC8D00BF1896 /* ViewForumPage.m */; };
 		4DF737261DDECC9600BF1896 /* Message.m in Sources */ = {isa = PBXBuildFile; fileRef = 4DF737231DDECC9600BF1896 /* Message.m */; };
@@ -335,8 +334,6 @@
 		4DF7370E1DDECC8D00BF1896 /* Thread.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Thread.m; sourceTree = "<group>"; };
 		4DF7370F1DDECC8D00BF1896 /* UserProfile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UserProfile.h; sourceTree = "<group>"; };
 		4DF737101DDECC8D00BF1896 /* UserProfile.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UserProfile.m; sourceTree = "<group>"; };
-		4DF737131DDECC8D00BF1896 /* NormalThread.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NormalThread.h; sourceTree = "<group>"; };
-		4DF737141DDECC8D00BF1896 /* NormalThread.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NormalThread.m; sourceTree = "<group>"; };
 		4DF737151DDECC8D00BF1896 /* ViewThreadPage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ViewThreadPage.h; sourceTree = "<group>"; };
 		4DF737161DDECC8D00BF1896 /* ViewThreadPage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ViewThreadPage.m; sourceTree = "<group>"; };
 		4DF737171DDECC8D00BF1896 /* ViewForumPage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ViewForumPage.h; sourceTree = "<group>"; };
@@ -761,8 +758,6 @@
 				4DF7370E1DDECC8D00BF1896 /* Thread.m */,
 				4DF7370F1DDECC8D00BF1896 /* UserProfile.h */,
 				4DF737101DDECC8D00BF1896 /* UserProfile.m */,
-				4DF737131DDECC8D00BF1896 /* NormalThread.h */,
-				4DF737141DDECC8D00BF1896 /* NormalThread.m */,
 				4DF737151DDECC8D00BF1896 /* ViewThreadPage.h */,
 				4DF737161DDECC8D00BF1896 /* ViewThreadPage.m */,
 				4DF737171DDECC8D00BF1896 /* ViewForumPage.h */,
@@ -1017,7 +1012,6 @@
 				4DF737061DDECC8500BF1896 /* ViewSearchForumPage.m in Sources */,
 				3A288A631DFD14D8002EBBC2 /* DRLForumConfig.m in Sources */,
 				4DF7371C1DDECC8D00BF1896 /* Thread.m in Sources */,
-				4DF7371F1DDECC8D00BF1896 /* NormalThread.m in Sources */,
 				3A2C3FE81DDFE0C900576151 /* ForumUserThreadTableViewController.m in Sources */,
 				3A2C3F501DDFBF5900576151 /* PrivateMessageTableViewCell.m in Sources */,
 				3A2C3FE41DDFE0C900576151 /* ForumTableViewController.m in Sources */,

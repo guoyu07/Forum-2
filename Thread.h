@@ -25,4 +25,6 @@
 // 搜索页面
 @property(nonatomic, strong) NSString *fromFormName;       // 所属论坛名称
 
+@property(nonatomic, assign) BOOL isTopThread;             // 是否置顶帖子
+
 @end

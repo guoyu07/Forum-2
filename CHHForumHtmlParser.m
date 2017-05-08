@@ -125,7 +125,7 @@
 - (ViewForumPage *)parseThreadListFromHtml:(NSString *)html withThread:(int)threadId andContainsTop:(BOOL)containTop {
     ViewForumPage *page = [[ViewForumPage alloc] init];
 
-    NSMutableArray<NormalThread *> *threadList = [NSMutableArray<NormalThread *> array];
+    NSMutableArray<Thread *> *threadList = [NSMutableArray<Thread *> array];
 
 
     IGHTMLDocument *document = [[IGHTMLDocument alloc] initWithHTMLString:html error:nil];
@@ -138,7 +138,7 @@
             NSString * threadNodeHtml = threadNode.html;
             NSLog(@"%@", threadNodeHtml);
 
-            NormalThread *thread = [[NormalThread alloc] init];
+            Thread *thread = [[Thread alloc] init];
             // threadId
             NSString * idAttr = [threadNode attribute:@"id"];
             if (idAttr == nil || ![idAttr containsString:@"_"]) {
@@ -249,7 +249,7 @@
 - (ViewSearchForumPage *)parseSearchPageFromHtml:(NSString *)html {
     ViewSearchForumPage *page = [[ViewSearchForumPage alloc] init];
 
-    NSMutableArray<NormalThread *> *threadList = [NSMutableArray<NormalThread *> array];
+    NSMutableArray<Thread *> *threadList = [NSMutableArray<Thread *> array];
 
 
     IGHTMLDocument *document = [[IGHTMLDocument alloc] initWithHTMLString:html error:nil];

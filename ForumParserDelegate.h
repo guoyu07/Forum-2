@@ -15,7 +15,6 @@
 #import "Forum.h"
 #import "Thread.h"
 #import "UserProfile.h"
-#import "NormalThread.h"
 #import "ViewThreadPage.h"
 #import "ViewForumPage.h"
 #import "ViewSearchForumPage.h"

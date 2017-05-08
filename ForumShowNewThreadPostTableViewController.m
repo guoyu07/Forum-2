@@ -102,7 +102,7 @@
     NSIndexPath *indexPath = cell.indexPath;
 
 
-    NormalThread *play = self.dataList[(NSUInteger) indexPath.row];
+    Thread *play = self.dataList[(NSUInteger) indexPath.row];
 
     [self.forumApi favoriteThreadPostWithId:play.threadID handler:^(BOOL isSuccess, id message) {
 

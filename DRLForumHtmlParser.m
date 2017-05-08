@@ -370,7 +370,7 @@
     // /html/body/table/tr/td/div[3]/div/div/table[6]/tr[9]
     NSString *path = @"/html/body/table/tr/td/div[*]/div/div/table[*]/tr[position()>1]";
     
-    NSMutableArray<NormalThread *> *threadList = [NSMutableArray<NormalThread *> array];
+    NSMutableArray<Thread *> *threadList = [NSMutableArray<Thread *> array];
     
     IGHTMLDocument *document = [[IGHTMLDocument alloc] initWithHTMLString:html error:nil];
     IGXMLNodeSet *contents = [document queryWithXPath:path];
@@ -381,8 +381,8 @@
         IGXMLNode *normallThreadNode = contents[i];
         
         if (normallThreadNode.children.count >= 8) { // 要>=8的原因是：过滤已经被删除的帖子 以及 被移动的帖子
-            
-            NormalThread *normalThread = [[NormalThread alloc] init];
+
+            Thread *normalThread = [[Thread alloc] init];
             
             // 由于各个论坛的帖子格式可能不一样，因此此处的标题等所在的列也会发生变化
             // 需要根据不同的论坛计算不同的位置

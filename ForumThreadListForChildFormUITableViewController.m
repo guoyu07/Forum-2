@@ -57,7 +57,7 @@
             [self.threadTopList removeAllObjects];
             [self.dataList removeAllObjects];
 
-            for (NormalThread *thread in page.threadList) {
+            for (Thread *thread in page.threadList) {
                 if (thread.isTopThread) {
                     [self.threadTopList addObject:thread];
                 } else {
@@ -82,7 +82,7 @@
                 [self.tableView.mj_footer endRefreshingWithNoMoreData];
             }
 
-            for (NormalThread *thread in page.threadList) {
+            for (Thread *thread in page.threadList) {
                 if (!thread.isTopThread) {
                     [self.dataList addObject:thread];
                 }
@@ -125,10 +125,10 @@
     ForumThreadListCell *cell = (ForumThreadListCell *) [tableView dequeueReusableCellWithIdentifier:reusedIdentifier];
 
     if (indexPath.section == 0) {
-        NormalThread *play = self.threadTopList[(NSUInteger) indexPath.row];
+        Thread *play = self.threadTopList[(NSUInteger) indexPath.row];
         [cell setData:play];
     } else {
-        NormalThread *play = self.dataList[(NSUInteger) indexPath.row];
+        Thread *play = self.dataList[(NSUInteger) indexPath.row];
         [cell setData:play];
     }
 
@@ -149,13 +149,13 @@
 - (BOOL)swipeTableCell:(MGSwipeTableCellWithIndexPath *)cell tappedButtonAtIndex:(NSInteger)index direction:(MGSwipeDirection)direction fromExpansion:(BOOL)fromExpansion {
     NSIndexPath *indexPath = cell.indexPath;
     if (indexPath.section == 0) {
-        NormalThread *play = self.threadTopList[(NSUInteger) indexPath.row];
+        Thread *play = self.threadTopList[(NSUInteger) indexPath.row];
 
         [self.forumApi favoriteThreadPostWithId:play.threadID handler:^(BOOL isSuccess, id message) {
 
         }];
     } else {
-        NormalThread *play = self.threadTopList[(NSUInteger) indexPath.row];
+        Thread *play = self.threadTopList[(NSUInteger) indexPath.row];
 
         [self.forumApi favoriteThreadPostWithId:play.threadID handler:^(BOOL isSuccess, id message) {
 
@@ -182,7 +182,7 @@
         ForumWebViewController *controller = segue.destinationViewController;
         NSIndexPath *indexPath = [self.tableView indexPathForSelectedRow];
 
-        NormalThread *thread = nil;
+        Thread *thread = nil;
         if (indexPath.section == 0) {
             thread = self.threadTopList[(NSUInteger) indexPath.row];
         } else {
@@ -199,8 +199,8 @@
     } else if ([sender isKindOfClass:[UIButton class]]) {
         ForumUserProfileTableViewController *controller = segue.destinationViewController;
         NSIndexPath *indexPath = [self.tableView indexPathForSelectedRow];
-        
-        NormalThread *thread = nil;
+
+        Thread *thread = nil;
         if (indexPath.section == 0) {
             thread = self.threadTopList[(NSUInteger) indexPath.row];
         } else {
