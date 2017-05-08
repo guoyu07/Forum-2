@@ -144,7 +144,7 @@
 
         [self initMaskView];
 
-        defaultAvatar = [UIImage imageNamed:@"defaultAvatar.jpg"];
+        defaultAvatar = [UIImage imageNamed:@"defaultAvatar.gif"];
 
         UIScreenEdgePanGestureRecognizer *leftEdgePanRecognizer = [[UIScreenEdgePanGestureRecognizer alloc] initWithTarget:self action:@selector(handleLeftEdgePan:)];
         leftEdgePanRecognizer.edges = UIRectEdgeLeft;
