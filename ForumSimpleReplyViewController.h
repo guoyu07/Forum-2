@@ -7,7 +7,6 @@
 
 #import <UIKit/UIKit.h>
 #import "ForumApiBaseViewController.h"
-#import "vBulletinForumEngine.h"
 
 @interface ForumSimpleReplyViewController : ForumApiBaseViewController
 

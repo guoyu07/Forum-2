@@ -6,7 +6,6 @@
 //
 
 #import "ForumApiBaseTableViewController.h"
-#import "vBulletinForumEngine.h"
 
 @interface ForumUserProfileTableViewController : ForumApiBaseTableViewController
 

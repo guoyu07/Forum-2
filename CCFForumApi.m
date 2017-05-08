@@ -11,6 +11,7 @@
 #import "AFHTTPSessionManager+SimpleAction.h"
 #import <AFNetworking/UIImageView+AFNetworking.h>
 #import "DeviceName.h"
+#import "ForumParserDelegate.h"
 
 #define kSecurityToken @"securitytoken"
 

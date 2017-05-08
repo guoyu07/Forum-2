@@ -6,7 +6,6 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "vBulletinForumEngine.h"
 #import "ForumConfigDelegate.h"
 #import "ForumBrowserDelegate.h"
 #import "ForumParserDelegate.h"

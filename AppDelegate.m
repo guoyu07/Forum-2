@@ -8,8 +8,6 @@
 #import "AppDelegate.h"
 #import "ForumLoginViewController.h"
 
-#import "vBulletinForumEngine.h"
-
 #import "ForumCoreDataManager.h"
 #import "ForumEntry+CoreDataClass.h"
 #import "NSUserDefaults+Extensions.h"

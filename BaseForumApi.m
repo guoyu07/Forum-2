@@ -4,6 +4,7 @@
 //
 
 #import "BaseForumApi.h"
+#import "ForumParserDelegate.h"
 
 @implementation BaseForumApi {
 

@@ -6,8 +6,6 @@
 //
 
 #import "ForumProfileTableViewCell.h"
-#import "vBulletinForumEngine.h"
-#import "UserProfile.h"
 
 @implementation ForumProfileTableViewCell
 

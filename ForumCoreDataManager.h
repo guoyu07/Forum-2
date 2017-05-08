@@ -6,8 +6,7 @@
 //
 
 #import "CoreDataManager.h"
-#import "vBulletinForumEngine.h"
-
+#import "Forum.h"
 
 typedef NS_ENUM(NSInteger, EntryType) {
     EntryTypeForm = 0,

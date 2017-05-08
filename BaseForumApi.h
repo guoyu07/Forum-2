@@ -5,9 +5,10 @@
 
 #import <Foundation/Foundation.h>
 
-#import "vBulletinForumEngine.h"
 #import "ForumConfigDelegate.h"
 #import <AFImageDownloader.h>
+
+@protocol ForumParserDelegate;
 
 @interface BaseForumApi : NSObject
 

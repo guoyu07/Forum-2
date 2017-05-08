@@ -10,6 +10,7 @@
 #import "NSString+Extensions.h"
 #import "AFHTTPSessionManager+SimpleAction.h"
 #import "UIButton+AFNetworking.h"
+#import "ForumParserDelegate.h"
 
 
 @implementation CHHForumApi {

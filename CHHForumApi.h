@@ -5,6 +5,7 @@
 
 #import <Foundation/Foundation.h>
 #import "BaseForumApi.h"
+#import "ForumBrowserDelegate.h"
 
 
 @interface CHHForumApi : BaseForumApi<ForumBrowserDelegate>

@@ -7,13 +7,6 @@
 //
 
 #import "ForumThreadListCell.h"
-#import "vBulletinForumEngine.h"
-
-#import "NSString+Extensions.h"
-#import <UIImageView+AFNetworking.h>
-#import "ForumCoreDataManager.h"
-#import "UserEntry+CoreDataProperties.h"
-#import "ForumApiHelper.h"
 
 @implementation ForumThreadListCell {
 

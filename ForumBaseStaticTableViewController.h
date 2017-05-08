@@ -7,7 +7,6 @@
 
 #import "ForumApiHelper.h"
 #import "MJRefresh.h"
-#import "vBulletinForumEngine.h"
 
 @interface ForumBaseStaticTableViewController : UITableViewController
 

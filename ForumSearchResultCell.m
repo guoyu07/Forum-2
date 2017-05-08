@@ -6,7 +6,6 @@
 //
 
 #import "ForumSearchResultCell.h"
-#import "vBulletinForumEngine.h"
 
 
 @implementation ForumSearchResultCell {

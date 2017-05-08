@@ -10,7 +10,6 @@
 #import "ForumApiHelper.h"
 #import "MJRefresh.h"
 
-#import "vBulletinForumEngine.h"
 #import "TranBundleUITableViewController.h"
 
 @interface ForumApiBaseTableViewController : TranBundleUITableViewController
