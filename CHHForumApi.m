@@ -143,9 +143,7 @@
     for (int i = 0; i < cookies.count; i++) {
         NSHTTPCookie *cookie = cookies[(NSUInteger) i];
 
-        if ([cookie.name isEqualToString:self.forumConfig.cookieLastVisitTimeKey]) {
-            user.lastVisit = cookie.value;
-        } else if ([cookie.name isEqualToString:self.forumConfig.cookieUserIdKey]) {
+        if ([cookie.name isEqualToString:self.forumConfig.cookieUserIdKey]) {
             user.userID = cookie.value;
         } else if ([cookie.name isEqualToString:self.forumConfig.cookieExpTimeKey]) {
             user.expireTime = cookie.expiresDate;

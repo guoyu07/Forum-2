@@ -22,7 +22,8 @@
 }
 
 - (NSString *)cookieUserIdKey {
-    return nil;
+    // name:"v2x4_48dd_lastcheckfeed" value:"238210%7C1494126638" expiresDate:2018-05-07 03:10:38 +0000
+    return @"v2x4_48dd_lastcheckfeed";
 }
 
 - (NSString *)cookieLastVisitTimeKey {
@@ -30,7 +31,8 @@
 }
 
 - (NSString *)cookieExpTimeKey {
-    return nil;
+    // name:"v2x4_48dd_lastcheckfeed" value:"238210%7C1494126638" expiresDate:2018-05-07 03:10:38 +0000
+    return @"v2x4_48dd_lastcheckfeed";
 }
 
 - (NSString *)newattachmentForThread:(int)threadId time:(NSString *)time postHash:(NSString *)postHash {
