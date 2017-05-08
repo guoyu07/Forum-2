@@ -328,6 +328,16 @@
 
 - (void)getAvatarWithUserId:(NSString *)userId handler:(HandlerWithBool)handler {
 
+    [self.browser GETWithURLString:[self.forumConfig memberWithUserId:userId] parameters:nil requestCallback:^(BOOL isSuccess, NSString *html) {
+        NSString *avatar = [self.forumParser parseUserAvatar:html userId:userId];
+        if (avatar) {
+            avatar = [self.forumConfig.avatarBase stringByAppendingString:avatar];
+        } else {
+            avatar = self.forumConfig.avatarNo;
+        }
+        handler(isSuccess, avatar);
+    }];
+
 }
 
 - (void)listSearchResultWithSearchid:(NSString *)searchid andPage:(int)page handler:(HandlerWithBool)handler {

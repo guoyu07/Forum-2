@@ -136,15 +136,15 @@
 }
 
 - (NSString *)avatarBase {
-    return nil;
+    return @"";
 }
 
 - (NSString *)avatarNo {
-    return nil;
+    return @"/no_avatar.gif";
 }
 
 - (NSString *)memberWithUserId:(NSString *)userId {
-    return nil;
+    return [NSString stringWithFormat:@"https://www.chiphell.com/space-uid-%@.html", userId];
 }
 
 - (NSString *)login {

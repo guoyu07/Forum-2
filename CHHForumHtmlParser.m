@@ -364,7 +364,55 @@
 }
 
 - (NSString *)parseUserAvatar:(NSString *)html userId:(NSString *)userId {
-    return nil;
+    //*[@id="uhd"]/div[2]/div/a/img
+//    <div id="uhd">
+//            <div class="h cl">
+//            <div class="icn avt"><a href="space-uid-238210.html"><img src="https://www.chiphell.com/uc_server/data/avatar/000/23/82/10_avatar_small.jpg" onerror="this.onerror=null;this.src='https://www.chiphell.com/uc_server/images/noavatar_small.gif'"></a></div>
+//            <h2 class="mt">
+//            马小甲</h2>
+//            <p>
+//            <a href="https://www.chiphell.com/?238210" class="xg1">https://www.chiphell.com/?238210</a>
+//    </p>
+//            </div>
+//
+//            <ul class="tb cl" style="padding-left: 75px;">
+//            <li><a href="home.php?mod=space&amp;uid=238210&amp;do=thread&amp;view=me&amp;from=space">主题</a></li>
+//            <li class="a"><a href="home.php?mod=space&amp;uid=238210&amp;do=profile&amp;from=space">个人资料</a></li>
+//            </ul>
+//            </div>
+//
+//            ===
+//    <div id="uhd">
+//            <div class="mn">
+//            <ul>
+//            <li class="addf">
+//            <a href="home.php?mod=spacecp&amp;ac=friend&amp;op=add&amp;uid=102088&amp;handlekey=addfriendhk_102088" id="a_friend_li_102088" onclick="showWindow(this.id, this.href, 'get', 0);" class="xi2">加为好友</a>
+//            </li>
+//            <li class="pm2">
+//            <a href="home.php?mod=spacecp&amp;ac=pm&amp;op=showmsg&amp;handlekey=showmsg_102088&amp;touid=102088&amp;pmid=0&amp;daterange=2" id="a_sendpm_102088" onclick="showWindow('showMsgBox', this.href, 'get', 0)" title="发送消息">发送消息</a>
+//            </li>
+//            </ul>
+//            </div>
+//            <div class="h cl">
+//            <div class="icn avt"><a href="space-uid-102088.html"><img src="https://www.chiphell.com/uc_server/data/avatar/000/10/20/88_avatar_small.jpg" onerror="this.onerror=null;this.src='https://www.chiphell.com/uc_server/images/noavatar_small.gif'"></a></div>
+//            <h2 class="mt">
+//            daheadtuzi</h2>
+//            <p>
+//            <a href="https://www.chiphell.com/?102088" class="xg1">https://www.chiphell.com/?102088</a>
+//    </p>
+//            </div>
+//
+//            <ul class="tb cl" style="padding-left: 75px;">
+//            <li><a href="home.php?mod=space&amp;uid=102088&amp;do=thread&amp;view=me&amp;from=space">主题</a></li>
+//            <li class="a"><a href="home.php?mod=space&amp;uid=102088&amp;do=profile&amp;from=space">个人资料</a></li>
+//            </ul>
+//            </div>
+
+    //*[@id="uhd"]/div/div/a/img
+    IGHTMLDocument *document = [[IGHTMLDocument alloc] initWithHTMLString:html error:nil];
+    IGXMLNode *avatarNode = [document queryNodeWithClassName:@"icn avt"];
+    NSString *attrSrc = [[avatarNode.firstChild.firstChild attribute:@"src"] stringByReplacingOccurrencesOfString:@"_avatar_small" withString:@"_avatar_middle"];
+    return attrSrc;
 }
 
 - (NSString *)parseListMyThreadSearchid:(NSString *)html {
