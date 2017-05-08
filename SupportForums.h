@@ -6,12 +6,12 @@
 //
 
 #import <Foundation/Foundation.h>
-
+#import "Forums.h"
 
 
 @interface SupportForums : NSObject <NSCoding, NSCopying>
 
-@property (nonatomic, strong) NSArray *forums;
+@property (nonatomic, strong) NSArray<Forums *> *forums;
 
 + (instancetype)modelObjectWithDictionary:(NSDictionary *)dict;
 - (instancetype)initWithDictionary:(NSDictionary *)dict;

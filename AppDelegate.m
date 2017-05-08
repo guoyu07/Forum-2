@@ -167,16 +167,24 @@ static NSString *bundleIdentifier;
     NSDictionary *dictionary = [NSJSONSerialization JSONObjectWithData:data options:(NSJSONReadingOptions) kNilOptions error:nil];
 
     SupportForums *supportForums = [SupportForums modelObjectWithDictionary:dictionary];
+    int size = (int) supportForums.forums;
 
     // 判断是否登录
     id<ForumBrowserDelegate> forumApi = [ForumApiHelper forumApi];
 
-    for (Forums *forums in supportForums.forums) {
+    for (int i = 0; i < size; ++i) {
+        Forums * forums = supportForums.forums[(NSUInteger) i];
         NSURL *url = [NSURL URLWithString:forums.url];
         if ([forumApi isHaveLogin:url.host]){
             return YES;
         }
     }
+//    for (Forums *forums in supportForums.forums) {
+//        NSURL *url = [NSURL URLWithString:forums.url];
+//        if ([forumApi isHaveLogin:url.host]){
+//            return YES;
+//        }
+//    }
     return NO;
 }
 

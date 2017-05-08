@@ -144,7 +144,7 @@
         NSHTTPCookie *cookie = cookies[(NSUInteger) i];
 
         if ([cookie.name isEqualToString:self.forumConfig.cookieUserIdKey]) {
-            user.userID = cookie.value;
+            user.userID = [cookie.value componentsSeparatedByString:@"%"][0];
         } else if ([cookie.name isEqualToString:self.forumConfig.cookieExpTimeKey]) {
             user.expireTime = cookie.expiresDate;
         }
@@ -157,7 +157,7 @@
 
     NSDate *date = [NSDate date];
     for (NSHTTPCookie * cookie in cookies) {
-        if ([host isEqualToString:cookie.domain] && [cookie.expiresDate compare:date] != NSOrderedAscending){
+        if ([cookie.domain containsString:host] && [cookie.expiresDate compare:date] != NSOrderedAscending){
             return YES;
         }
     }

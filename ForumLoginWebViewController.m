@@ -42,16 +42,34 @@
     [self.webView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:@"https://www.chiphell.com/member.php?mod=logging&action=login&mobile=2"]]];
 }
 
+//private
+- (void)saveCookie {
+    [[NSUserDefaults standardUserDefaults] saveCookie];
+}
+
+// private
+- (void)saveUserName:(NSString *)name {
+    [[NSUserDefaults standardUserDefaults] saveUserName:name];
+}
+
 - (void)webViewDidFinishLoad:(UIWebView *)webView {
 
     NSString *lJs = @"document.documentElement.outerHTML";
-    NSString * html = [webView stringByEvaluatingJavaScriptFromString:lJs];
+    NSString *html = [webView stringByEvaluatingJavaScriptFromString:lJs];
 
-    IGHTMLDocument * document = [[IGHTMLDocument alloc] initWithHTMLString:html error:nil];
+    IGHTMLDocument *document = [[IGHTMLDocument alloc] initWithHTMLString:html error:nil];
 
-    IGXMLNode * logined = [document queryNodeWithXPath:@"/html/body/div[1]"];
+    IGXMLNode *logined = [document queryNodeWithXPath:@"/html/body/div[1]"];
 
-    NSString * name = [logined childrenAtPosition:0].text;
+    //@"欢迎您回来，天使 马小甲，现在将转入登录前页面"
+    NSString *userName = [[[logined childrenAtPosition:0].text componentsSeparatedByString:@"，"][1] componentsSeparatedByString:@" "][1];
+
+    if (userName != nil) {
+        // 保存Cookie
+        [self saveCookie];
+        // 保存用户名
+        [self saveUserName:userName];
+    }
 
     NSArray<NSHTTPCookie *> *cookies = [[NSHTTPCookieStorage sharedHTTPCookieStorage] cookies];
 
@@ -64,7 +82,7 @@
                 return [NSPredicate predicateWithFormat:@"forumHost = %@", self.currentForumHost];;
             }];
 
-            AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+            AppDelegate *appDelegate = (AppDelegate *) [[UIApplication sharedApplication] delegate];
 
             [formManager insertData:needInsert operation:^(NSManagedObject *target, id src) {
                 ForumEntry *newsInfo = (ForumEntry *) target;
@@ -93,12 +111,13 @@
     NSString *urlString = [[request URL] absoluteString];
 
 
-    if ([urlString isEqualToString:@"https://www.chiphell.com/?mobile=2"]){
+    if ([urlString isEqualToString:@"https://www.chiphell.com/?mobile=2"]) {
         NSArray<NSHTTPCookie *> *cookies = [[NSHTTPCookieStorage sharedHTTPCookieStorage] cookies];
     }
     NSLog(@"shouldStartLoadWithRequest %@", urlString);
     return YES;
 }
+
 - (IBAction)cancelLogin:(id)sender {
 }
 @end

@@ -139,7 +139,7 @@ typedef void (^CallBack)(NSString *token, NSString *hash, NSString *time);
 
     NSDate *date = [NSDate date];
     for (NSHTTPCookie * cookie in cookies) {
-        if ([host isEqualToString:cookie.domain] && [cookie.expiresDate compare:date] != NSOrderedAscending){
+        if ([cookie.domain containsString:host] && [cookie.expiresDate compare:date] != NSOrderedAscending){
             return YES;
         }
     }
