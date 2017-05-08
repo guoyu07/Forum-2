@@ -506,25 +506,25 @@
     
     //*[@id="threadbits_forum_147"]/tr[1]
     
-    NSMutableArray<SimpleThread *> *threadList = [NSMutableArray<SimpleThread *> array];
-    
+    NSMutableArray<Thread *> *threadList = [NSMutableArray<Thread *> array];
+
     IGHTMLDocument *document = [[IGHTMLDocument alloc] initWithHTMLString:html error:nil];
     IGXMLNodeSet *contents = [document queryWithXPath:path];
-    
+
     NSInteger totaleListCount = -1;
-    
-    
+
+
     for (int i = 0; i < contents.count; i++) {
         IGXMLNode *threadListNode = contents[i];
-        
+
         if (threadListNode.children.count >= 6) {
-            
-            SimpleThread *simpleThread = [[SimpleThread alloc] init];
-            
+
+            Thread *simpleThread = [[Thread alloc] init];
+
             // Title
             IGXMLNode *threadTitleNode = threadListNode.children[2];
             NSString *titleText = [[[threadTitleNode text] trim] componentsSeparatedByString:@"\n"].firstObject;
-            
+
             if (! ([titleText hasPrefix:@"["] && [titleText containsString:@"]"])){
                 if ([titleText hasPrefix:@"【"]) {
                     titleText = [titleText stringByReplacingOccurrencesOfString:@"【" withString:@"["];
@@ -534,24 +534,24 @@
                 }
             }
             simpleThread.threadTitle = titleText;
-            
+
             // Thread Id
             NSString * threadStrig = [[threadTitleNode attribute:@"id"] stringWithRegular:@"\\d+"];
             simpleThread.threadID = threadStrig;
-            
+
             //  Author
             IGXMLNode *authorNode = threadListNode.children[3];
-            
+
             NSString *authorIdStr = [authorNode innerHtml];
             simpleThread.threadAuthorID = [authorIdStr stringWithRegular:@"\\d+"];
-            
+
             simpleThread.threadAuthorName = [[authorNode text] trim];
-            
+
             IGXMLNode *timeNode = threadListNode.children[4];
             NSString *time = [[timeNode text] trim];
-            
+
             simpleThread.lastPostTime = time;
-            
+
             [threadList addObject:simpleThread];
         }
     }

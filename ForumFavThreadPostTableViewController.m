@@ -74,7 +74,7 @@
     cell.rightButtons = @[[MGSwipeButton buttonWithTitle:@"取消收藏" backgroundColor:[UIColor lightGrayColor]]];
     cell.rightSwipeSettings.transition = MGSwipeTransitionBorder;
 
-    SimpleThread *list = self.dataList[(NSUInteger) indexPath.row];
+    Thread *list = self.dataList[(NSUInteger) indexPath.row];
     [cell setData:list forIndexPath:indexPath];
 
     [cell setSeparatorInset:UIEdgeInsetsZero];
@@ -87,7 +87,7 @@
 
 - (BOOL)swipeTableCell:(MGSwipeTableCellWithIndexPath *)cell tappedButtonAtIndex:(NSInteger)index direction:(MGSwipeDirection)direction fromExpansion:(BOOL)fromExpansion {
 
-    SimpleThread *list = self.dataList[(NSUInteger) cell.indexPath.row];
+    Thread *list = self.dataList[(NSUInteger) cell.indexPath.row];
 
     [self.forumApi unfavoriteThreadPostWithId:list.threadID handler:^(BOOL isSuccess, id message) {
         NSLog(@">>>>>>>>>>>> %@", message);
@@ -126,7 +126,7 @@
     ForumUserProfileTableViewController *controller = selectSegue.destinationViewController;
 
     TransBundle *bundle = [[TransBundle alloc] init];
-    SimpleThread *thread = self.dataList[(NSUInteger) indexPath.row];
+    Thread *thread = self.dataList[(NSUInteger) indexPath.row];
     [bundle putIntValue:[thread.threadAuthorID intValue] forKey:@"UserId"];
     [self transBundle:bundle forController:controller];
 

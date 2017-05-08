@@ -17,7 +17,7 @@
     // Configure the view for the selected state
 }
 
-- (void)setData:(SimpleThread *)data {
+- (void)setData:(Thread *)data {
     self.threadTitle.text = data.threadTitle;
     self.threadAuthorName.text = data.threadAuthorName;
     self.lastPostTime.text = data.lastPostTime;

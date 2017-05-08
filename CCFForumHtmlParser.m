@@ -476,7 +476,7 @@
 
     //*[@id="threadbits_forum_147"]/tr[1]
 
-    NSMutableArray<SimpleThread *> *threadList = [NSMutableArray<SimpleThread *> array];
+    NSMutableArray<Thread *> *threadList = [NSMutableArray<Thread *> array];
 
     IGHTMLDocument *document = [[IGHTMLDocument alloc] initWithHTMLString:html error:nil];
     IGXMLNodeSet *contents = [document queryWithXPath:path];
@@ -489,7 +489,7 @@
 
         if (threadListNode.children.count >= 7) { // 要大于7的原因是：过滤已经被删除的帖子 和已经被移动的帖子
 
-            SimpleThread *simpleThread = [[SimpleThread alloc] init];
+            Thread *simpleThread = [[Thread alloc] init];
 
             // title
             IGXMLNode *threadTitleNode = threadListNode.children[2];
