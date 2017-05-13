@@ -1128,7 +1128,7 @@ typedef void (^CallBack)(NSString *token, NSString *hash, NSString *time);
 
     NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
     [parameters setValue:@"3" forKey:@"styleid"];
-    [self.browser GETWithURLString:self.forumConfig.usercp parameters:parameters requestCallback:^(BOOL isSuccess, NSString *html) {
+    [self.browser GETWithURLString:self.forumConfig.favoriteForums parameters:parameters requestCallback:^(BOOL isSuccess, NSString *html) {
         if (isSuccess) {
             NSMutableArray<Forum *> *favForms = [self.forumParser parseFavForumFromHtml:html];
             handler(YES, favForms);

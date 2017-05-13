@@ -179,8 +179,8 @@
     return nil;
 }
 
-- (NSString *)usercp {
-    return nil;
+- (NSString *)favoriteForums {
+    return @"https://www.chiphell.com/home.php?mod=space&do=favorite&type=forum";
 }
 
 - (NSString *)report {

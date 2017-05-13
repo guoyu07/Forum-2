@@ -1196,7 +1196,7 @@ typedef void (^CallBack)(NSString *token, NSString *hash, NSString *time);
     [defparameters setValue:@"2" forKey:@"styleid"];
     [defparameters setValue:@"1" forKey:@"langid"];
 
-    [self.browser GETWithURLString:self.forumConfig.usercp parameters:defparameters requestCallback:^(BOOL isSuccess, NSString *html) {
+    [self.browser GETWithURLString:self.forumConfig.favoriteForums parameters:defparameters requestCallback:^(BOOL isSuccess, NSString *html) {
         if (isSuccess) {
             NSMutableArray<Forum *> *favForms = [self.forumParser parseFavForumFromHtml:html];
             handler(YES, favForms);

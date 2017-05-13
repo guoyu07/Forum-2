@@ -245,7 +245,47 @@
 }
 
 - (void)listFavoriteForums:(HandlerWithBool)handler {
+    NSMutableArray * result = [NSMutableArray array];
 
+    __block int page = 1;
+    [self listFavoriteForums:page handler:^(BOOL isSuccess, id m) {
+        if (isSuccess){
+            NSMutableArray<Forum *> *favForms = [self.forumParser parseFavForumFromHtml:m];
+            [result addObjectsFromArray:favForms];
+            PageNumber * pageNumber = [self.forumParser parserPageNumber:m];
+
+            if (pageNumber.totalPageNumber > page){
+                for (int i = page + 1; i <= pageNumber.totalPageNumber; i++) {
+                    [self listFavoriteForums:i handler:^(BOOL success, id html) {
+                        if (success){
+                            NSMutableArray<Forum *> *forums = [self.forumParser parseFavForumFromHtml:html];
+                            [result addObjectsFromArray:forums];
+                            page = i;
+                            if (page >= pageNumber.totalPageNumber){
+                                handler(YES, result);
+                            }
+                        } else{
+                            handler(NO, html);
+                        }
+                    }];
+                }
+            } else{
+                handler(YES, result);
+            }
+        } else{
+            handler(NO, m);
+        }
+
+        
+    }];
+}
+
+- (void)listFavoriteForums:(int ) page handler:(HandlerWithBool)handler {
+    NSString * baseUrl = self.forumConfig.favoriteForums;
+    NSString * favForumsURL = [NSString stringWithFormat:@"%@&page=%d",baseUrl,page];
+    [self.browser GETWithURLString:favForumsURL parameters:nil requestCallback:^(BOOL isSuccess, NSString *html) {
+        handler(isSuccess, html);
+    }];
 }
 
 - (void)listFavoriteThreadPostsWithPage:(int)page handler:(HandlerWithBool)handler {

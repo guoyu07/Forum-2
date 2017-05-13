@@ -92,7 +92,7 @@
 - (NSString *) privateNewPre;
 
 // UserCP
-- (NSString *) usercp;
+- (NSString *)favoriteForums;
 
 // report
 - (NSString *) report;

@@ -18,6 +18,7 @@
 #import "ViewThreadPage.h"
 #import "ViewForumPage.h"
 #import "ViewSearchForumPage.h"
+#import "PageNumber.h"
 
 @protocol ForumParserDelegate <NSObject>
 
@@ -57,5 +58,7 @@
 - (UserProfile *)parserProfile:(NSString *)html userId:(NSString *)userId;
 
 - (NSArray<Forum *> *)parserForums:(NSString *)html forumHost:(NSString *) host;
+
+- (PageNumber *) parserPageNumber:(NSString *)html;
 
 @end

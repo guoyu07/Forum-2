@@ -12,6 +12,8 @@
 #import "NSString+Extensions.h"
 
 #import "IGHTMLDocument+QueryNode.h"
+#import "NSUserDefaults+Extensions.h"
+#import "AppDelegate.h"
 
 @implementation CHHForumHtmlParser {
 
@@ -340,7 +342,42 @@
 }
 
 - (NSMutableArray<Forum *> *)parseFavForumFromHtml:(NSString *)html {
-    return nil;
+    IGHTMLDocument *document = [[IGHTMLDocument alloc] initWithHTMLString:html error:nil];
+    //*[@id="favorite_ul"]
+    IGXMLNode * favoriteUl = [document queryNodeWithXPath:@"//*[@id=\"favorite_ul\"]"];
+    IGXMLNodeSet * favoriteLis = favoriteUl.children;
+
+    NSMutableArray *ids = [NSMutableArray array];
+    
+    for (IGXMLNode *favLi in favoriteLis){
+        IGXMLNode * forumIdNode = [favLi childrenAtPosition:2];
+        NSString * forumIdNodeHtml = forumIdNode.html;
+        //<a href="forum-196-1.html" target="_blank">GALAX</a>
+        NSString *idsStr = [forumIdNodeHtml stringWithRegular:@"forum-\\d+" andChild:@"\\d+"];
+        [ids addObject:@(idsStr.intValue)];
+        NSLog(@"%@", forumIdNodeHtml);
+    }
+
+    [[NSUserDefaults standardUserDefaults] saveFavFormIds:ids];
+
+    //*[@id="ct"]/div[1]/div[2]/div/div
+
+    // 通过ids 过滤出Form
+    ForumCoreDataManager *manager = [[ForumCoreDataManager alloc] initWithEntryType:EntryTypeForm];
+    AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+    NSArray *result = [manager selectData:^NSPredicate * {
+        return [NSPredicate predicateWithFormat:@"forumHost = %@ AND forumId IN %@", [NSURL URLWithString:appDelegate.forumBaseUrl].host, ids];
+    }];
+
+    NSMutableArray<Forum *> *forms = [NSMutableArray arrayWithCapacity:result.count];
+
+    for (ForumEntry *entry in result) {
+        Forum *form = [[Forum alloc] init];
+        form.forumName = entry.forumName;
+        form.forumId = [entry.forumId intValue];
+        [forms addObject:form];
+    }
+    return forms;
 }
 
 - (ViewForumPage *)parsePrivateMessageFromHtml:(NSString *)html {
@@ -447,6 +484,37 @@
         [resultArray addObjectsFromArray:[self flatForm:childForm]];
     }
     return resultArray;
+}
+
+- (PageNumber *)parserPageNumber:(NSString *)html {
+
+    PageNumber *pageNumber = [[PageNumber alloc] init];
+
+    IGHTMLDocument *document = [[IGHTMLDocument alloc] initWithHTMLString:html error:nil];
+
+    IGXMLNode * pageNode = [document queryNodeWithClassName:@"pg"];
+
+    if (pageNode == nil){
+        pageNumber.currentPageNumber = 1;
+        pageNumber.totalPageNumber = 1;
+    } else{
+        IGXMLNodeSet * childNodes = pageNode.children;
+        for (IGXMLNode * node in childNodes) {
+            NSString * childHtml = node.html;
+            if ([childHtml hasPrefix:@"<strong>"] && [childHtml hasSuffix:@"</strong>"]){
+                int currentPage = [[[node text] trim] intValue];
+                pageNumber.currentPageNumber = currentPage;
+                continue;
+            }
+
+            if ([childHtml hasPrefix:@"<label>"] && [childHtml hasSuffix:@"</label>"]){
+                int totalPage = [[node.text stringWithRegular:@"\\d+"] intValue];
+                pageNumber.totalPageNumber = totalPage;
+                continue;
+            }
+        }
+    }
+    return pageNumber;
 }
 
 @end

@@ -1031,4 +1031,23 @@
     
     return [needInsert copy];
 }
+
+- (PageNumber *)parserPageNumber:(NSString *)html {
+
+    PageNumber *pageNumber = [[PageNumber alloc] init];
+
+    IGHTMLDocument *document = [[IGHTMLDocument alloc] initWithHTMLString:html error:nil];
+
+    IGXMLNode * pageNode = [document queryNodeWithClassName:@"pg"];
+
+    if (pageNode == nil){
+        pageNumber.currentPageNumber = 1;
+        pageNumber.totalPageNumber = 1;
+    } else{
+        NSString * text = [pageNode text];
+        NSLog(@"%@", text);
+    }
+    return pageNumber;
+}
+
 @end

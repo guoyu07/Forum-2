@@ -13,6 +13,7 @@
 		2F34C87F00AC80AC3FF866BF /* BaseForumApi.m in Sources */ = {isa = PBXBuildFile; fileRef = 2F34C9AF3EEEE19C34102D22 /* BaseForumApi.m */; };
 		2F34CCE7AE4C35FFB148F31E /* CHHForumConfig.m in Sources */ = {isa = PBXBuildFile; fileRef = 2F34C36FABA87760B3B5B1B3 /* CHHForumConfig.m */; };
 		2F34CD24DA52CC996BE6F47A /* ForumApiHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 2F34C14160BC257F07318CEF /* ForumApiHelper.m */; };
+		2F34CDC68B8E6EA4AB5D764B /* PageNumber.m in Sources */ = {isa = PBXBuildFile; fileRef = 2F34CA39D274171CAD239E5E /* PageNumber.m */; };
 		2F34CFBB62E848555D9DB610 /* ForumShortCutCreateNewThreadViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2F34CA129BA2D7ADF167E05D /* ForumShortCutCreateNewThreadViewController.m */; };
 		3A288A4C1DFAE47F002EBBC2 /* DrawerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A288A4A1DFAE47F002EBBC2 /* DrawerView.m */; };
 		3A288A4D1DFAE47F002EBBC2 /* DrawerView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3A288A4B1DFAE47F002EBBC2 /* DrawerView.xib */; };
@@ -140,8 +141,10 @@
 		2F34C9C1792EF57FF901D717 /* CHHForumApi.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CHHForumApi.h; sourceTree = "<group>"; };
 		2F34C9F7371B8DDC9EEA62AB /* ForumLoginWebViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ForumLoginWebViewController.m; sourceTree = "<group>"; };
 		2F34CA129BA2D7ADF167E05D /* ForumShortCutCreateNewThreadViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ForumShortCutCreateNewThreadViewController.m; sourceTree = "<group>"; };
+		2F34CA39D274171CAD239E5E /* PageNumber.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PageNumber.m; sourceTree = "<group>"; };
 		2F34CA3EA8022D958EAEA736 /* ForumShortCutCreateNewThreadViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ForumShortCutCreateNewThreadViewController.h; sourceTree = "<group>"; };
 		2F34CAE13DEE2EFC6579F89E /* CHHForumConfig.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CHHForumConfig.h; sourceTree = "<group>"; };
+		2F34CAFE1A4BB2690531ABD9 /* PageNumber.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PageNumber.h; sourceTree = "<group>"; };
 		2F34CEDC13FE605A95AACC4B /* ForumLoginWebViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ForumLoginWebViewController.h; sourceTree = "<group>"; };
 		2F34CEEEF0AB70454650352A /* ForumConfigDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ForumConfigDelegate.h; sourceTree = "<group>"; };
 		2F34CF08A261B408C3A92081 /* ForumApiHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ForumApiHelper.h; sourceTree = "<group>"; };
@@ -760,6 +763,8 @@
 				4DF737161DDECC8D00BF1896 /* ViewThreadPage.m */,
 				4DF737171DDECC8D00BF1896 /* ViewForumPage.h */,
 				4DF737181DDECC8D00BF1896 /* ViewForumPage.m */,
+				2F34CA39D274171CAD239E5E /* PageNumber.m */,
+				2F34CAFE1A4BB2690531ABD9 /* PageNumber.h */,
 			);
 			name = Thread;
 			sourceTree = "<group>";
@@ -1050,6 +1055,7 @@
 				2F34CCE7AE4C35FFB148F31E /* CHHForumConfig.m in Sources */,
 				2F34C77038A45486C1F899BA /* CHHForumHtmlParser.m in Sources */,
 				2F34C81F010BA4C4C0199B85 /* ForumLoginWebViewController.m in Sources */,
+				2F34CDC68B8E6EA4AB5D764B /* PageNumber.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

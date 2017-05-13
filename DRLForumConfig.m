@@ -191,7 +191,7 @@
     return [NSString stringWithFormat:@"%@private.php?do=newpm", _forumURL.absoluteString];
 }
 
-- (NSString *)usercp {
+- (NSString *)favoriteForums {
     return [NSString stringWithFormat:@"%@usercp.php", _forumURL.absoluteString];
 }
 

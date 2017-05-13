@@ -675,7 +675,7 @@
     //<a href="forumdisplay.php?f=158">『手机◇移动数码』</a>
     for (IGXMLNode *node in favFormNodeSet) {
         NSString *idsStr = [node.html stringWithRegular:@"f=\\d+" andChild:@"\\d+"];
-        [ids addObject:[NSNumber numberWithInt:[idsStr intValue]]];
+        [ids addObject:@(idsStr.intValue)];
     }
 
     [[NSUserDefaults standardUserDefaults] saveFavFormIds:ids];
