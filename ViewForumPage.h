@@ -7,12 +7,13 @@
 
 #import <Foundation/Foundation.h>
 #import "Thread.h"
+#import "PageNumber.h"
 
 @interface ViewForumPage : NSObject
 
 @property(nonatomic, assign) BOOL isCanCreateThread;
 @property(nonatomic, strong) NSMutableArray<Thread *> *threadList;
-@property(nonatomic, assign) NSUInteger totalPageCount;
-@property(nonatomic, assign) NSUInteger currentPage;
+@property(nonatomic, strong) PageNumber *pageNumber;
+
 
 @end

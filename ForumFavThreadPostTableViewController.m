@@ -34,7 +34,7 @@
             [self.tableView.mj_header endRefreshing];
 
             self.currentPage = 1;
-            self.totalPage = (int) resultPage.totalPageCount;
+            self.totalPage = (int) resultPage.pageNumber.totalPageNumber;
             [self.dataList removeAllObjects];
             [self.dataList addObjectsFromArray:resultPage.threadList];
             [self.tableView reloadData];
@@ -48,7 +48,7 @@
         [self.tableView.mj_footer endRefreshing];
 
         if (isSuccess) {
-            self.totalPage = (int) resultPage.totalPageCount;
+            self.totalPage = (int) resultPage.pageNumber.totalPageNumber;
             self.currentPage++;
             if (self.currentPage >= self.totalPage) {
                 [self.tableView.mj_footer endRefreshingWithNoMoreData];

@@ -49,13 +49,15 @@
             }
         }
     }
+    PageNumber *pageNumber = [[PageNumber alloc] init];
+    pageNumber.currentPageNumber = currentPage;
+    pageNumber.totalPageNumber = totalPageCount;
 
     showThreadPage.threadID = threadId;
     showThreadPage.threadTitle = threadTitle;
     showThreadPage.forumId= forumId;
     showThreadPage.originalHtml;
-    showThreadPage.totalPageCount = (NSUInteger) totalPageCount;
-    showThreadPage.currentPage = (NSUInteger) currentPage;
+    showThreadPage.pageNumber = pageNumber;
 
 
     // 回帖列表

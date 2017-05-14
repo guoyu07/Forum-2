@@ -268,19 +268,21 @@
 
     // page number
     IGXMLNode * pageNumberNode = [document queryNodeWithXPath:@"/html/body/table/tr/td/div[2]/div/div/table[2]/tr/td[2]/div/table/tr/td[1]"];
-    
+
+    PageNumber * pageNumber = [[PageNumber alloc] init];
     if (pageNumberNode == nil) {
-        showThreadPage.totalPageCount = 1;
-        showThreadPage.currentPage = 1;
-        
+        pageNumber.totalPageNumber = 1;
+        pageNumber.currentPageNumber = 1;
     } else{
         
         NSString * currentPageAndTotalPageString = pageNumberNode.text;
         NSArray *pageAndTotalPage = [currentPageAndTotalPageString componentsSeparatedByString:@" "];
-        
-        showThreadPage.currentPage = [[pageAndTotalPage[0] stringWithRegular:@"\\d+"] intValue];
-        showThreadPage.totalPageCount = [[pageAndTotalPage[1] stringWithRegular:@"\\d+"] intValue];
+
+        pageNumber.currentPageNumber = [[pageAndTotalPage[0] stringWithRegular:@"\\d+"] intValue];
+        pageNumber.totalPageNumber = [[pageAndTotalPage[1] stringWithRegular:@"\\d+"] intValue];
     }
+
+    showThreadPage.pageNumber = pageNumber;
     
     return showThreadPage;
 }
@@ -363,22 +365,17 @@
     
     
     ViewForumPage *forumDisplayPage = [[ViewForumPage alloc] init];
-    
-    // /html/body/table/tr/td/div[3]/div/div/table[4]/tr[2]
-    // /html/body/table/tr/td/div[3]/div/div/table[6]/tr[2]
-    // /html/body/table/tr/td/div[3]/div/div/table[6]/tr[8]
-    // /html/body/table/tr/td/div[3]/div/div/table[6]/tr[9]
+
     NSString *path = @"/html/body/table/tr/td/div[*]/div/div/table[*]/tr[position()>1]";
     
     NSMutableArray<Thread *> *threadList = [NSMutableArray<Thread *> array];
     
     IGHTMLDocument *document = [[IGHTMLDocument alloc] initWithHTMLString:html error:nil];
+
     IGXMLNodeSet *contents = [document queryWithXPath:path];
-    
-    NSInteger totaleListCount = -1;
-    
+
     for (int i = 0; i < contents.count; i++) {
-        IGXMLNode *normallThreadNode = contents[i];
+        IGXMLNode *normallThreadNode = contents[(NSUInteger) i];
         
         if (normallThreadNode.children.count >= 8) { // 要>=8的原因是：过滤已经被删除的帖子 以及 被移动的帖子
 
@@ -471,30 +468,27 @@
             [threadList addObject:normalThread];
         }
     }
-    
-    // 总页数
-    if (totaleListCount == -1) {
-        IGXMLNodeSet *totalPageSet = [document queryWithXPath:@"/html/body/table/tr/td/div[*]/div/div/table[4]/tr/td[2]/div/table/tr/td[1]"];
-        
-        if (totalPageSet == nil) {
-            totaleListCount = 1;
-            forumDisplayPage.totalPageCount = 1;
-        } else {
-            IGXMLNode *totalPage = totalPageSet.firstObject;
-            NSString *pageText = [[totalPage text] trim];
-            
-            NSString *numberText = [[pageText componentsSeparatedByString:@" "] lastObject];
-            numberText = [numberText stringWithRegular:@"\\d+"];
-            NSUInteger totalNumber = [numberText integerValue];
-            
-            forumDisplayPage.totalPageCount = totalNumber;
-            totaleListCount = totalNumber;
-        }
-        
-    } else {
-        forumDisplayPage.totalPageCount = totaleListCount;
-    }
     forumDisplayPage.threadList = threadList;
+
+    // 总页数
+    IGXMLNodeSet *totalPageSet = [document queryWithXPath:@"/html/body/table/tr/td/div[*]/div/div/table[4]/tr/td[2]/div/table/tr/td[1]"];
+    PageNumber * pageNumber = [[PageNumber alloc] init];
+    if (totalPageSet == nil) {
+        pageNumber.totalPageNumber = 1;
+        pageNumber.currentPageNumber = 1;
+    } else {
+        IGXMLNode *totalPage = totalPageSet.firstObject;
+        NSString *pageText = [[totalPage text] trim];
+
+        NSString *numberText = [[pageText componentsSeparatedByString:@" "] lastObject];
+        numberText = [numberText stringWithRegular:@"\\d+"];
+        NSUInteger totalNumber = (NSUInteger) [numberText integerValue];
+
+        pageNumber.totalPageNumber = totalNumber;
+        pageNumber.currentPageNumber = totalNumber;
+    }
+
+    forumDisplayPage.pageNumber = pageNumber;
     
     return forumDisplayPage;
 }
@@ -555,18 +549,21 @@
             [threadList addObject:simpleThread];
         }
     }
+    page.threadList = threadList;
     
     // 总页数
     IGXMLNode * totalPageNode = [document queryNodeWithClassName:@"vbmenu_control"];
+
+    PageNumber *pageNumber = [[PageNumber alloc] init];
     if (totalPageNode == nil) {
-        page.totalPageCount = 1;
-        page.currentPage = 1;
+        pageNumber.totalPageNumber = 1;
+        pageNumber.currentPageNumber = 1;
     } else{
         NSString *pageText = [totalPageNode.text trim];
-        page.totalPageCount = [[pageText stringWithRegular:@"共\\d+页" andChild:@"\\d+"] integerValue];
-        page.currentPage = [[pageText stringWithRegular:@"第\\d+页" andChild:@"\\d+"] integerValue];
+        pageNumber.totalPageNumber = [[pageText stringWithRegular:@"共\\d+页" andChild:@"\\d+"] integerValue];
+        pageNumber.currentPageNumber = [[pageText stringWithRegular:@"第\\d+页" andChild:@"\\d+"] integerValue];
     }
-    page.threadList = threadList;
+    page.pageNumber = pageNumber;
     
     return page;
 }
@@ -631,17 +628,20 @@
     // 总页数 和 当前页数
     
     IGXMLNode* totalPageAndCurrentPageNumberSet = [document queryNodeWithXPath:@"/html/body/table/tr/td/div[2]/div/div/table[2]/tr/td/div/table/tr/td[1]"];
+    PageNumber *pageNumber = [[PageNumber alloc] init];
     if (totalPageAndCurrentPageNumberSet == nil) {
-        resultPage.currentPage = 1;
-        resultPage.totalPageCount = 1;
+        pageNumber.totalPageNumber = 1;
+        pageNumber.currentPageNumber = 1;
     } else{
         NSArray * page = [[totalPageAndCurrentPageNumberSet text] componentsSeparatedByString:@" "];
         NSString * currentPage = [page[0] stringWithRegular:@"\\d+"];
-        resultPage.currentPage = [currentPage integerValue];
+        pageNumber.currentPageNumber = [currentPage integerValue];
         
         NSString * totalPage = [page[1] stringWithRegular:@"\\d+"];
-        resultPage.totalPageCount = [totalPage integerValue];
+        pageNumber.totalPageNumber = [totalPage integerValue];
     }
+
+    resultPage.pageNumber = pageNumber;
     
     
     NSMutableArray<Thread*>* post = [NSMutableArray array];
@@ -654,7 +654,7 @@
             
             IGXMLNode * postForNode = [node childrenAtPosition:2];
             
-            NSLog(@"--------------------- %ld", [postForNode children].count);
+            NSLog(@"--------------------- %ld", (long) [postForNode children].count);
             
             NSString * postIdNode = [postForNode html];
             NSString * postId = [postIdNode stringWithRegular:@"t=\\d+" andChild:@"\\d+"];
@@ -703,7 +703,7 @@
     //<a href="forumdisplay.php?f=158">『手机◇移动数码』</a>
     for (IGXMLNode *node in favFormNodeSet) {
         NSString *idsStr = [node.html stringWithRegular:@"f=\\d+" andChild:@"\\d+"];
-        [ids addObject:[NSNumber numberWithInt:[idsStr intValue]]];
+        [ids addObject:@([idsStr intValue])];
     }
 
     [[NSUserDefaults standardUserDefaults] saveFavFormIds:ids];
@@ -739,23 +739,27 @@
     //<td class="vbmenu_control" style="font-weight:normal">第 1 页，共 5 页</td>
     NSString *fullText = [[totalPage firstObject] text];
     NSString *currentPage = [fullText stringWithRegular:@"第\\d+页" andChild:@"\\d+"];
+    PageNumber *pageNumber = [[PageNumber alloc] init];
     if (currentPage == nil) {
-        page.currentPage = 1;
+        pageNumber.currentPageNumber = 1;
     } else{
-        page.currentPage = [currentPage integerValue];
+        pageNumber.currentPageNumber = [currentPage integerValue];
     }
     
     NSString *totalPageCount = [fullText stringWithRegular:@"共\\d+页" andChild:@"\\d+"];
     if (totalPageCount == nil) {
-        page.totalPageCount = 1;
+        pageNumber.totalPageNumber = 1;
     } else{
-        page.totalPageCount = [totalPageCount integerValue];
+        pageNumber.totalPageNumber = [totalPageCount integerValue];
     }
-    
+
+    page.pageNumber = pageNumber;
+
+
     NSMutableArray<Message *> *messagesList = [NSMutableArray array];
     IGXMLNodeSet *messages = [document queryWithXPath:@"/html/body/table/tr/td/div[2]/div/div/table[2]/tr/td[3]/form[2]/table/tbody[*]/tr"];
     for (IGXMLNode *node in messages) {
-        long childCount = [[node children] count];
+        long childCount = (long) [[node children] count];
         if (childCount == 4) {
             // 有4个节点说明是正常的站内短信
             Message *message = [[Message alloc] init];

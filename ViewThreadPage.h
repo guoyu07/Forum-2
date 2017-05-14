@@ -7,6 +7,7 @@
 
 #import <Foundation/Foundation.h>
 #import "Post.h"
+#import "PageNumber.h"
 
 @interface ViewThreadPage : NSObject
 
@@ -20,8 +21,7 @@
 
 @property(nonatomic, strong) NSString *originalHtml;
 
-@property(nonatomic, assign) NSUInteger totalPageCount;
-@property(nonatomic, assign) NSUInteger currentPage;
+@property(nonatomic, strong) PageNumber *pageNumber;
 
 @property(nonatomic, strong) NSMutableArray<Post *> *postList;
 

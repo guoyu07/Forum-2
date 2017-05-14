@@ -57,7 +57,7 @@
         [self.tableView.mj_header endRefreshing];
 
         if (isSuccess) {
-            self.totalPage = (int) page.totalPageCount;
+            self.totalPage = (int) page.pageNumber.totalPageNumber;
             self.currentPage = 1;
             if (self.currentPage >= self.totalPage) {
                 [self.tableView.mj_footer endRefreshingWithNoMoreData];
@@ -85,7 +85,7 @@
         [self.tableView.mj_footer endRefreshing];
 
         if (isSuccess) {
-            self.totalPage = (int) page.totalPageCount;
+            self.totalPage = (int) page.pageNumber.totalPageNumber;
             self.currentPage++;
             if (self.currentPage >= self.totalPage) {
                 [self.tableView.mj_footer endRefreshingWithNoMoreData];

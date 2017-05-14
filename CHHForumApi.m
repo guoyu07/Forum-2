@@ -280,6 +280,7 @@
     }];
 }
 
+// private
 - (void)listFavoriteForums:(int ) page handler:(HandlerWithBool)handler {
     NSString * baseUrl = self.forumConfig.favoriteForums;
     NSString * favForumsURL = [NSString stringWithFormat:@"%@&page=%d",baseUrl,page];

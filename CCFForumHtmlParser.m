@@ -248,18 +248,20 @@
 
     IGXMLNodeSet *threadInfoSet = [document queryWithXPath:@"/html/body/div[4]/div/div/table[1]/tr/td[2]/div/table/tr"];
 
+    PageNumber *pageNumber = [[PageNumber alloc] init];
     if (threadInfoSet == nil || threadInfoSet.count == 0) {
-        showThreadPage.totalPageCount = 1;
-        showThreadPage.currentPage = 1;
+        pageNumber.totalPageNumber = 1;
+        pageNumber.currentPageNumber = 1;
 
     } else {
         IGXMLNode *currentPageAndTotalPageNode = threadInfoSet.firstObject.firstChild;
         NSString *currentPageAndTotalPageString = currentPageAndTotalPageNode.text;
         NSArray *pageAndTotalPage = [currentPageAndTotalPageString componentsSeparatedByString:@"页，共"];
 
-        showThreadPage.totalPageCount = (NSUInteger) [[[pageAndTotalPage.lastObject stringByReplacingOccurrencesOfString:@" " withString:@""] stringByReplacingOccurrencesOfString:@"页" withString:@""] intValue];
-        showThreadPage.currentPage = (NSUInteger) [[[pageAndTotalPage.firstObject stringByReplacingOccurrencesOfString:@" " withString:@""] stringByReplacingOccurrencesOfString:@"第" withString:@""] intValue];
+        pageNumber.totalPageNumber = (NSUInteger) [[[pageAndTotalPage.lastObject stringByReplacingOccurrencesOfString:@" " withString:@""] stringByReplacingOccurrencesOfString:@"页" withString:@""] intValue];
+        pageNumber.currentPageNumber = (NSUInteger) [[[pageAndTotalPage.firstObject stringByReplacingOccurrencesOfString:@" " withString:@""] stringByReplacingOccurrencesOfString:@"第" withString:@""] intValue];
     }
+    showThreadPage.pageNumber = pageNumber;
 
     return showThreadPage;
 }
@@ -344,10 +346,8 @@
     IGHTMLDocument *document = [[IGHTMLDocument alloc] initWithHTMLString:html error:nil];
     IGXMLNodeSet *contents = [document queryWithXPath:path];
 
-    NSInteger totaleListCount = -1;
-
     for (int i = 0; i < contents.count; i++) {
-        IGXMLNode *normallThreadNode = contents[i];
+        IGXMLNode *normallThreadNode = contents[(NSUInteger) i];
 
         if (normallThreadNode.children.count >= 8) { // 要>=8的原因是：过滤已经被删除的帖子 以及 被移动的帖子
 
@@ -442,29 +442,25 @@
             [threadList addObject:normalThread];
         }
     }
+    page.threadList = threadList;
 
     // 总页数
-    if (totaleListCount == -1) {
-        IGXMLNodeSet *totalPageSet = [document queryWithXPath:@"//*[@id='inlinemodform']/table[4]/tr[1]/td[2]/div/table/tr/td[1]"];
-
-        if (totalPageSet == nil) {
-            totaleListCount = 1;
-            page.totalPageCount = 1;
-        } else {
-            IGXMLNode *totalPage = totalPageSet.firstObject;
-            NSString *pageText = [totalPage innerHtml];
-            NSString *numberText = [[pageText componentsSeparatedByString:@"，"] lastObject];
-            numberText = [numberText stringWithRegular:@"\\d+"];
-            NSUInteger totalNumber = [numberText integerValue];
-            //NSLog(@"总页数：   %@", pageText);
-            page.totalPageCount = totalNumber;
-            totaleListCount = totalNumber;
-        }
-
+    IGXMLNodeSet *totalPageSet = [document queryWithXPath:@"//*[@id='inlinemodform']/table[4]/tr[1]/td[2]/div/table/tr/td[1]"];
+    PageNumber *pageNumber = [[PageNumber alloc] init];
+    if (totalPageSet == nil) {
+        pageNumber.totalPageNumber = 1;
+        pageNumber.currentPageNumber = 1;
     } else {
-        page.totalPageCount = totaleListCount;
+        IGXMLNode *totalPage = totalPageSet.firstObject;
+        NSString *pageText = [totalPage innerHtml];
+        NSString *numberText = [[pageText componentsSeparatedByString:@"，"] lastObject];
+        numberText = [numberText stringWithRegular:@"\\d+"];
+        NSUInteger totalNumber = (NSUInteger) [numberText integerValue];
+        //NSLog(@"总页数：   %@", pageText);
+        pageNumber.totalPageNumber = totalNumber;
+        pageNumber.currentPageNumber = totalNumber;
     }
-    page.threadList = threadList;
+    page.pageNumber = pageNumber;
 
     return page;
 }
@@ -480,9 +476,6 @@
 
     IGHTMLDocument *document = [[IGHTMLDocument alloc] initWithHTMLString:html error:nil];
     IGXMLNodeSet *contents = [document queryWithXPath:path];
-
-    NSInteger totaleListCount = -1;
-
 
     for (int i = 0; i < contents.count; i++) {
         IGXMLNode *threadListNode = contents[i];
@@ -527,28 +520,26 @@
             [threadList addObject:simpleThread];
         }
     }
+    page.threadList = threadList;
 
     // 总页数
-    if (totaleListCount == -1) {
-        IGXMLNodeSet *totalPageSet = [document queryWithXPath:@"//*[@id='inlinemodform']/table[4]/tr[1]/td[2]/div/table/tr/td[1]"];
+    IGXMLNodeSet *totalPageSet = [document queryWithXPath:@"//*[@id='inlinemodform']/table[4]/tr[1]/td[2]/div/table/tr/td[1]"];
 
-        if (totalPageSet == nil) {
-            totaleListCount = 1;
-            page.totalPageCount = 1;
-        } else {
-            IGXMLNode *totalPage = totalPageSet.firstObject;
-            NSString *pageText = [totalPage innerHtml];
-            NSString *numberText = [[pageText componentsSeparatedByString:@"，"] lastObject];
-            NSUInteger totalNumber = [numberText integerValue];
-            NSLog(@"总页数：   %@", pageText);
-            page.totalPageCount = totalNumber;
-            totaleListCount = totalNumber;
-        }
-
+    PageNumber *pageNumber = [[PageNumber alloc] init];
+    if (totalPageSet == nil) {
+        pageNumber.totalPageNumber = 1;
+        pageNumber.currentPageNumber = 1;
     } else {
-        page.totalPageCount = totaleListCount;
+        IGXMLNode *totalPage = totalPageSet.firstObject;
+        NSString *pageText = [totalPage innerHtml];
+        NSString *numberText = [[pageText componentsSeparatedByString:@"，"] lastObject];
+        NSUInteger totalNumber = (NSUInteger) [numberText integerValue];
+        NSLog(@"总页数：   %@", pageText);
+        pageNumber.totalPageNumber = totalNumber;
+        pageNumber.currentPageNumber = totalNumber;
     }
-    page.threadList = threadList;
+
+    page.pageNumber = pageNumber;
 
     return page;
 }
@@ -599,16 +590,17 @@
 
     NSString *postTotalCount = [postTotalCountNode.text stringWithRegular:@"共计 \\d+ 条" andChild:@"\\d+"];
     // 1. 结果总条数
-    resultPage.totalPageCount = [postTotalCount integerValue];
+    //resultPage.totalPageCount = [postTotalCount integerValue];
 
     IGXMLNode *pageNode = [document queryWithXPath:@"/html/body/div[2]/div/div/table[3]/tr/td/div/table/tr/td[1]"].firstObject;
+    PageNumber *pageNumber = [[PageNumber alloc] init];
     // 2. 当前页数 和 总页数
     if (pageNode == nil) {
-        resultPage.currentPage = 1;
-        resultPage.totalPageCount = 1;
+        pageNumber.currentPageNumber = 1;
+        pageNumber.totalPageNumber = 1;
     } else {
-        resultPage.currentPage = [[pageNode.text stringWithRegular:@"第 \\d+ 页" andChild:@"\\d+"] integerValue];
-        resultPage.totalPageCount = [[pageNode.text stringWithRegular:@"共 \\d+ 页" andChild:@"\\d+"] integerValue];
+        pageNumber.currentPageNumber = [[pageNode.text stringWithRegular:@"第 \\d+ 页" andChild:@"\\d+"] integerValue];
+        pageNumber.totalPageNumber = [[pageNode.text stringWithRegular:@"共 \\d+ 页" andChild:@"\\d+"] integerValue];
     }
 
     NSMutableArray<Thread *> *post = [NSMutableArray array];
@@ -621,7 +613,7 @@
 
             IGXMLNode *postForNode = [node childrenAtPosition:2];
 
-            NSLog(@"--------------------- %ld title: %@", [postForNode children].count, [[postForNode text] trim]);
+            NSLog(@"--------------------- %ld title: %@", (long) [postForNode children].count, [[postForNode text] trim]);
 
             NSString *postIdNode = [postForNode html];
             NSString *postId = [postIdNode stringWithRegular:@"id=\"thread_title_\\d+\"" andChild:@"\\d+"];
@@ -707,18 +699,21 @@
 
     IGXMLNodeSet *totalPage = [document queryWithXPath:@"//*[@id='pmform']/table[1]/tr/td/div/table/tr/td[1]"];
     //<td class="vbmenu_control" style="font-weight:normal">第 1 页，共 5 页</td>
+    PageNumber *pageNumber = [[PageNumber alloc] init];
     NSString *fullText = [[totalPage firstObject] text];
     NSString *currentPage = [fullText stringWithRegular:@"第 \\d+ 页" andChild:@"\\d+"];
-    page.currentPage = [currentPage integerValue];
+    pageNumber.currentPageNumber = [currentPage integerValue];
     NSString *totalPageCount = [fullText stringWithRegular:@"共 \\d+ 页" andChild:@"\\d+"];
-    page.totalPageCount = [totalPageCount integerValue];
+    pageNumber.totalPageNumber = [totalPageCount integerValue];
+
+    page.pageNumber = pageNumber;
 
 
     NSMutableArray<Message *> *messagesList = [NSMutableArray array];
 
     IGXMLNodeSet *messages = [document queryWithXPath:@"//*[@id='pmform']/table[2]/tbody[*]/tr"];
     for (IGXMLNode *node in messages) {
-        long childCount = [[node children] count];
+        long childCount = (long) [[node children] count];
         if (childCount == 4) {
             // 有4个节点说明是正常的站内短信
             Message *message = [[Message alloc] init];

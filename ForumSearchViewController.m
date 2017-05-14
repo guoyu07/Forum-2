@@ -46,7 +46,7 @@
         if (isSuccess) {
 
             self.currentPage++;
-            self.totalPage = (int) message.totalPageCount;
+            self.totalPage = (int) message.pageNumber.totalPageNumber;
 
             if (self.currentPage >= self.totalPage) {
                 [self.tableView.mj_footer endRefreshingWithNoMoreData];
@@ -79,8 +79,8 @@
         if (isSuccess) {
             _searchid = message.searchid;
 
-            self.currentPage = (int) message.currentPage;
-            self.totalPage = (int) message.totalPageCount;
+            self.currentPage = (int) message.pageNumber.currentPageNumber;
+            self.totalPage = (int) message.pageNumber.totalPageNumber;
 
             [self.dataList removeAllObjects];
             [self.dataList addObjectsFromArray:message.threadList];

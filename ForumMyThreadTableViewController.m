@@ -45,7 +45,7 @@
 
         if (isSuccess) {
             self.currentPage++;
-            if (self.currentPage >= message.totalPageCount) {
+            if (self.currentPage >= message.pageNumber.totalPageNumber) {
                 [self.tableView.mj_footer endRefreshingWithNoMoreData];
             }
             [self.dataList addObjectsFromArray:message.threadList];
@@ -59,7 +59,7 @@
     static NSString *cellId = @"SearchResultCell";
     ForumSearchResultCell *cell = [tableView dequeueReusableCellWithIdentifier:cellId];
 
-    Thread *thread = self.dataList[indexPath.row];
+    Thread *thread = self.dataList[(NSUInteger) indexPath.row];
     [cell setData:thread];
 
     [cell setSeparatorInset:UIEdgeInsetsZero];

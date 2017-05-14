@@ -47,7 +47,7 @@
 
         if (isSuccess) {
             self.currentPage++;
-            if (self.currentPage >= message.totalPageCount) {
+            if (self.currentPage >= message.pageNumber.totalPageNumber) {
                 [self.tableView.mj_footer endRefreshingWithNoMoreData];
             }
             [self.dataList addObjectsFromArray:message.threadList];

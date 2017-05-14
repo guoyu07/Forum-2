@@ -27,7 +27,7 @@
             [self.tableView.mj_footer endRefreshing];
 
             self.currentPage = 1;
-            self.totalPage = (int) message.totalPageCount;
+            self.totalPage = (int) message.pageNumber.totalPageNumber;
 
             if (self.currentPage >= self.totalPage) {
                 [self.tableView.mj_footer endRefreshingWithNoMoreData];
@@ -46,7 +46,7 @@
         [self.tableView.mj_footer endRefreshing];
         if (isSuccess) {
             self.currentPage++;
-            self.totalPage = (int) message.totalPageCount;
+            self.totalPage = (int) message.pageNumber.totalPageNumber;
             if (self.currentPage >= self.totalPage) {
                 [self.tableView.mj_footer endRefreshingWithNoMoreData];
             }

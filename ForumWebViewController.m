@@ -49,7 +49,7 @@
         currentShowThreadPage = threadPage;
 
 
-        NSString *title = [NSString stringWithFormat:@"%lu/%lu", (unsigned long) currentShowThreadPage.currentPage, (unsigned long) currentShowThreadPage.totalPageCount];
+        NSString *title = [NSString stringWithFormat:@"%lu/%lu", (unsigned long) currentShowThreadPage.pageNumber.currentPageNumber, (unsigned long) currentShowThreadPage.pageNumber.totalPageNumber];
         self.pageNumber.title = title;
 
         NSMutableArray<Post *> *posts = threadPage.postList;
@@ -72,18 +72,18 @@
 
         NSString *html = nil;
 
-        if (threadPage.currentPage <= 1) {
+        if (threadPage.pageNumber.currentPageNumber <= 1) {
             html = [NSString stringWithFormat:THREAD_PAGE, threadPage.threadTitle, lis];
         } else {
             html = [NSString stringWithFormat:THREAD_PAGE_NOTITLE, lis];
         }
 
-        NSString *cacheHtml = pageDic[@(currentShowThreadPage.currentPage)];
+        NSString *cacheHtml = pageDic[@(currentShowThreadPage.pageNumber.currentPageNumber)];
 
         AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
         if (![cacheHtml isEqualToString:threadPage.originalHtml]) {
             [self.webView loadHTMLString:html baseURL:[NSURL URLWithString:appDelegate.forumBaseUrl]];
-            pageDic[@(currentShowThreadPage.currentPage)] = html;
+            pageDic[@(currentShowThreadPage.pageNumber.currentPageNumber)] = html;
         }
 
         shouldScrollEnd = YES;
@@ -94,7 +94,7 @@
         currentShowThreadPage = threadPage;
 
 
-        NSString *title = [NSString stringWithFormat:@"%lu/%lu", (unsigned long) currentShowThreadPage.currentPage, (unsigned long) currentShowThreadPage.totalPageCount];
+        NSString *title = [NSString stringWithFormat:@"%lu/%lu", (unsigned long) currentShowThreadPage.pageNumber.currentPageNumber, (unsigned long) currentShowThreadPage.pageNumber.totalPageNumber];
         self.pageNumber.title = title;
 
         NSMutableArray<Post *> *posts = threadPage.postList;
@@ -117,17 +117,17 @@
 
         NSString *html = nil;
 
-        if (threadPage.currentPage <= 1) {
+        if (threadPage.pageNumber.currentPageNumber <= 1) {
             html = [NSString stringWithFormat:THREAD_PAGE, threadPage.threadTitle, lis];
         } else {
             html = [NSString stringWithFormat:THREAD_PAGE_NOTITLE, lis];
         }
 
-        NSString *cacheHtml = pageDic[@(currentShowThreadPage.currentPage)];
+        NSString *cacheHtml = pageDic[@(currentShowThreadPage.pageNumber.currentPageNumber)];
         if (![cacheHtml isEqualToString:threadPage.originalHtml]) {
             AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
             [self.webView loadHTMLString:html baseURL:[NSURL URLWithString:appDelegate.forumBaseUrl]];
-            pageDic[@(currentShowThreadPage.currentPage)] = html;
+            pageDic[@(currentShowThreadPage.pageNumber.currentPageNumber)] = html;
         }
 
         shouldScrollEnd = YES;
@@ -169,10 +169,10 @@
         } else {
             if (currentShowThreadPage == nil) {
                 [self prePage:threadID page:1 withAnim:NO];
-            } else if (currentShowThreadPage.currentPage == 1) {
+            } else if (currentShowThreadPage.pageNumber.currentPageNumber == 1) {
                 [self prePage:threadID page:1 withAnim:NO];
             } else {
-                int page = currentShowThreadPage.currentPage - 1;
+                int page = currentShowThreadPage.pageNumber.currentPageNumber - 1;
                 if (page <= 1) {
                     page = 1;
                 }
@@ -186,7 +186,7 @@
 
         // 当前页面 == 页面的最大数，只刷新当前页面就可以了
 
-        [self showNextPageOrRefreshCurrentPage:currentShowThreadPage.currentPage forThreadId:threadID];
+        [self showNextPageOrRefreshCurrentPage:currentShowThreadPage.pageNumber.currentPageNumber forThreadId:threadID];
 
     }];
 
@@ -222,7 +222,7 @@
         currentShowThreadPage = threadPage;
         threadID = [threadPage.threadID intValue];
 
-        NSString *title = [NSString stringWithFormat:@"%d/%d", currentShowThreadPage.currentPage, currentShowThreadPage.totalPageCount];
+        NSString *title = [NSString stringWithFormat:@"%d/%d", currentShowThreadPage.pageNumber.currentPageNumber, currentShowThreadPage.pageNumber.totalPageNumber];
         self.pageNumber.title = title;
 
         NSMutableArray<Post *> *posts = threadPage.postList;
@@ -246,7 +246,7 @@
 
 
         // 缓存当前页面
-        pageDic[@(currentShowThreadPage.currentPage)] = threadPage.originalHtml;
+        pageDic[@(currentShowThreadPage.pageNumber.currentPageNumber)] = threadPage.originalHtml;
 
         [self.webView loadHTMLString:html baseURL:[NSURL URLWithString:appDelegate.forumBaseUrl]];
 
@@ -316,7 +316,7 @@
         currentShowThreadPage = threadPage;
 
 
-        NSString *title = [NSString stringWithFormat:@"%lu/%lu", (unsigned long) currentShowThreadPage.currentPage, (unsigned long) currentShowThreadPage.totalPageCount];
+        NSString *title = [NSString stringWithFormat:@"%d/%d", currentShowThreadPage.pageNumber.currentPageNumber, currentShowThreadPage.pageNumber.totalPageNumber];
         self.pageNumber.title = title;
 
         NSMutableArray<Post *> *posts = threadPage.postList;
@@ -343,7 +343,7 @@
         }
 
 
-        pageDic[@(currentShowThreadPage.currentPage)] = threadPage.originalHtml;
+        pageDic[@(currentShowThreadPage.pageNumber.currentPageNumber)] = threadPage.originalHtml;
 
         [self.webView loadHTMLString:html baseURL:[NSURL URLWithString:appDelegate.forumBaseUrl]];
 
@@ -378,7 +378,7 @@
 
 - (void)showNextPageOrRefreshCurrentPage:(NSUInteger)currentPage forThreadId:(int)threadId {
 
-    if (currentPage < currentShowThreadPage.totalPageCount) {
+    if (currentPage < currentShowThreadPage.pageNumber.totalPageNumber) {
         [self showThread:threadId page:currentPage + 1 withAnim:YES];
     } else {
         [self.forumApi showThreadWithId:threadId andPage:currentPage handler:^(BOOL isSuccess, id message) {
@@ -432,7 +432,7 @@
         currentShowThreadPage = threadPage;
 
 
-        NSString *title = [NSString stringWithFormat:@"%lu/%lu", (unsigned long)currentShowThreadPage.currentPage, (unsigned long)currentShowThreadPage.totalPageCount];
+        NSString *title = [NSString stringWithFormat:@"%lu/%lu", (unsigned long)currentShowThreadPage.pageNumber.currentPageNumber, (unsigned long)currentShowThreadPage.pageNumber.totalPageNumber];
         self.pageNumber.title = title;
 
         NSMutableArray<Post *> *posts = threadPage.postList;
@@ -719,17 +719,17 @@
 
 - (void)showChangePageActionSheet:(UIBarButtonItem *)sender {
     NSMutableArray<NSString *> *pages = [NSMutableArray array];
-    for (int i = 0; i < currentShowThreadPage.totalPageCount; i++) {
+    for (int i = 0; i < currentShowThreadPage.pageNumber.totalPageNumber; i++) {
         NSString *page = [NSString stringWithFormat:@"第 %d 页", i + 1];
         [pages addObject:page];
     }
 
 
-    ActionSheetStringPicker *picker = [[ActionSheetStringPicker alloc] initWithTitle:@"选择页面" rows:pages initialSelection:currentShowThreadPage.currentPage - 1 doneBlock:^(ActionSheetStringPicker *picker, NSInteger selectedIndex, id selectedValue) {
+    ActionSheetStringPicker *picker = [[ActionSheetStringPicker alloc] initWithTitle:@"选择页面" rows:pages initialSelection:currentShowThreadPage.pageNumber.currentPageNumber - 1 doneBlock:^(ActionSheetStringPicker *picker, NSInteger selectedIndex, id selectedValue) {
 
         int selectPage = (int) selectedIndex + 1;
 
-        if (selectPage != currentShowThreadPage.currentPage) {
+        if (selectPage != currentShowThreadPage.pageNumber.currentPageNumber) {
 
             [SVProgressHUD showWithStatus:@"正在切换" maskType:SVProgressHUDMaskTypeBlack];
             [self showThread:threadID page:selectPage withAnim:YES];
