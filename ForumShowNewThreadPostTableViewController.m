@@ -18,7 +18,9 @@
 
 @end
 
-@implementation ForumShowNewThreadPostTableViewController
+@implementation ForumShowNewThreadPostTableViewController{
+    ViewForumPage *currentForumPage;
+}
 
 - (void)onPullRefresh {
     [self.forumApi listNewThreadPostsWithPage:1 handler:^(BOOL isSuccess, ViewForumPage *message) {
@@ -26,10 +28,9 @@
         if (isSuccess) {
             [self.tableView.mj_footer endRefreshing];
 
-            self.currentPage = 1;
-            self.totalPage = (int) message.pageNumber.totalPageNumber;
+            currentForumPage = message;
 
-            if (self.currentPage >= self.totalPage) {
+            if (currentForumPage.pageNumber.currentPageNumber >= currentForumPage.pageNumber.totalPageNumber) {
                 [self.tableView.mj_footer endRefreshingWithNoMoreData];
             }
 
@@ -42,14 +43,15 @@
 }
 
 - (void)onLoadMore {
-    [self.forumApi listNewThreadPostsWithPage:self.currentPage + 1 handler:^(BOOL isSuccess, ViewForumPage *message) {
+    int toLoadPage = currentForumPage == nil ? 1 : currentForumPage.pageNumber.currentPageNumber + 1;
+    [self.forumApi listNewThreadPostsWithPage:toLoadPage handler:^(BOOL isSuccess, ViewForumPage *message) {
         [self.tableView.mj_footer endRefreshing];
         if (isSuccess) {
-            self.currentPage++;
-            self.totalPage = (int) message.pageNumber.totalPageNumber;
-            if (self.currentPage >= self.totalPage) {
+
+            if (currentForumPage.pageNumber.currentPageNumber >= currentForumPage.pageNumber.totalPageNumber) {
                 [self.tableView.mj_footer endRefreshingWithNoMoreData];
             }
+
             [self.dataList addObjectsFromArray:message.threadList];
             [self.tableView reloadData];
         }

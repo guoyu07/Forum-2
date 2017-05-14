@@ -15,7 +15,9 @@
 
 @end
 
-@implementation ForumUserThreadTableViewController
+@implementation ForumUserThreadTableViewController{
+    ViewForumPage *currentForumPage;
+}
 
 - (void)transBundle:(TransBundle *)bundle {
     userProfile = [bundle getObjectValue:@"UserProfile"];
@@ -30,7 +32,12 @@
         if (isSuccess) {
             [self.tableView.mj_footer endRefreshing];
 
-            self.currentPage = 1;
+            currentForumPage = message;
+
+            if (currentForumPage.pageNumber.currentPageNumber >= currentForumPage.pageNumber.totalPageNumber) {
+                [self.tableView.mj_footer endRefreshingWithNoMoreData];
+            }
+
             [self.dataList removeAllObjects];
 
             [self.dataList addObjectsFromArray:message.threadList];
@@ -41,13 +48,15 @@
 }
 
 - (void)onLoadMore {
+
+    int toLoadPage = currentForumPage == nil ? 1: currentForumPage.pageNumber.currentPageNumber + 1;
     int userId = [userProfile.profileUserId intValue];
-    [self.forumApi listAllUserThreads:userId withPage:self.currentPage + 1 handler:^(BOOL isSuccess, ViewForumPage *message) {
+    [self.forumApi listAllUserThreads:userId withPage:toLoadPage handler:^(BOOL isSuccess, ViewForumPage *message) {
         [self.tableView.mj_footer endRefreshing];
 
         if (isSuccess) {
-            self.currentPage++;
-            if (self.currentPage >= message.pageNumber.totalPageNumber) {
+            currentForumPage = message;
+            if (currentForumPage.pageNumber.currentPageNumber >= currentForumPage.pageNumber.totalPageNumber) {
                 [self.tableView.mj_footer endRefreshingWithNoMoreData];
             }
             [self.dataList addObjectsFromArray:message.threadList];

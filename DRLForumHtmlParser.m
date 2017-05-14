@@ -478,14 +478,13 @@
         pageNumber.currentPageNumber = 1;
     } else {
         IGXMLNode *totalPage = totalPageSet.firstObject;
-        NSString *pageText = [[totalPage text] trim];
+        NSString *pageText = [[totalPage text] trim];                                       //@"第1页 共1397页"
 
-        NSString *numberText = [[pageText componentsSeparatedByString:@" "] lastObject];
-        numberText = [numberText stringWithRegular:@"\\d+"];
-        NSUInteger totalNumber = (NSUInteger) [numberText integerValue];
+        NSString *currentPageText = [pageText componentsSeparatedByString:@" "].firstObject;
+        NSString *totalPageText = [pageText componentsSeparatedByString:@" "].lastObject;
 
-        pageNumber.totalPageNumber = totalNumber;
-        pageNumber.currentPageNumber = totalNumber;
+        pageNumber.totalPageNumber = [[totalPageText stringWithRegular:@"\\d+"] intValue];
+        pageNumber.currentPageNumber = [[currentPageText stringWithRegular:@"\\d+"] intValue];;
     }
 
     forumDisplayPage.pageNumber = pageNumber;

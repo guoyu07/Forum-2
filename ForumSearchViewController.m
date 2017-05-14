@@ -20,7 +20,9 @@
 
 @end
 
-@implementation ForumSearchViewController
+@implementation ForumSearchViewController{
+    ViewSearchForumPage *currentSearchForumPage;
+}
 
 - (void)viewDidLoad {
     self.searchBar.delegate = self;
@@ -40,15 +42,16 @@
         [self.tableView.mj_footer endRefreshing];
         return;
     }
-    [self.forumApi listSearchResultWithSearchid:_searchid andPage:self.currentPage + 1 handler:^(BOOL isSuccess, ViewSearchForumPage *message) {
+
+    int toLoadPage = self.pageNumber == nil ? 1: self.pageNumber.currentPageNumber + 1;
+    [self.forumApi listSearchResultWithSearchid:_searchid andPage:toLoadPage handler:^(BOOL isSuccess, ViewSearchForumPage *message) {
         [self.tableView.mj_footer endRefreshing];
 
         if (isSuccess) {
 
-            self.currentPage++;
-            self.totalPage = (int) message.pageNumber.totalPageNumber;
+            currentSearchForumPage = message;
 
-            if (self.currentPage >= self.totalPage) {
+            if (currentSearchForumPage.pageNumber.currentPageNumber >= currentSearchForumPage.pageNumber.totalPageNumber) {
                 [self.tableView.mj_footer endRefreshingWithNoMoreData];
             }
 
@@ -79,8 +82,7 @@
         if (isSuccess) {
             _searchid = message.searchid;
 
-            self.currentPage = (int) message.pageNumber.currentPageNumber;
-            self.totalPage = (int) message.pageNumber.totalPageNumber;
+            currentSearchForumPage = message;
 
             [self.dataList removeAllObjects];
             [self.dataList addObjectsFromArray:message.threadList];

@@ -452,13 +452,12 @@
         pageNumber.currentPageNumber = 1;
     } else {
         IGXMLNode *totalPage = totalPageSet.firstObject;
-        NSString *pageText = [totalPage innerHtml];
-        NSString *numberText = [[pageText componentsSeparatedByString:@"，"] lastObject];
-        numberText = [numberText stringWithRegular:@"\\d+"];
-        NSUInteger totalNumber = (NSUInteger) [numberText integerValue];
-        //NSLog(@"总页数：   %@", pageText);
-        pageNumber.totalPageNumber = totalNumber;
-        pageNumber.currentPageNumber = totalNumber;
+        NSString *pageText = [totalPage innerHtml];                                             //@"第 1 页，共 4123 页"
+        NSString *currentPageText = [pageText componentsSeparatedByString:@"，"].firstObject;   //第 1 页
+        NSString *totalPageText = [pageText componentsSeparatedByString:@"，"].lastObject;      //共 4123 页
+
+        pageNumber.totalPageNumber = [[totalPageText stringWithRegular:@"\\d+"] intValue];
+        pageNumber.currentPageNumber = [[currentPageText stringWithRegular:@"\\d+"] intValue];
     }
     page.pageNumber = pageNumber;
 
@@ -523,20 +522,16 @@
     page.threadList = threadList;
 
     // 总页数
-    IGXMLNodeSet *totalPageSet = [document queryWithXPath:@"//*[@id='inlinemodform']/table[4]/tr[1]/td[2]/div/table/tr/td[1]"];
+    //<td class="vbmenu_control" style="font-weight:normal">第 \\d+ 页，共 \\d+ 页</td>
+    NSString * pageString = [html stringWithRegular:@"<td class=\"vbmenu_control\" style=\"font-weight:normal\">第 \\d+ 页，共 \\d+ 页</td>"];
 
     PageNumber *pageNumber = [[PageNumber alloc] init];
-    if (totalPageSet == nil) {
+    if (pageString == nil) {
         pageNumber.totalPageNumber = 1;
         pageNumber.currentPageNumber = 1;
     } else {
-        IGXMLNode *totalPage = totalPageSet.firstObject;
-        NSString *pageText = [totalPage innerHtml];
-        NSString *numberText = [[pageText componentsSeparatedByString:@"，"] lastObject];
-        NSUInteger totalNumber = (NSUInteger) [numberText integerValue];
-        NSLog(@"总页数：   %@", pageText);
-        pageNumber.totalPageNumber = totalNumber;
-        pageNumber.currentPageNumber = totalNumber;
+        pageNumber.totalPageNumber = [[pageString stringWithRegular:@"共 \\d+ 页" andChild:@"\\d+"] intValue];
+        pageNumber.currentPageNumber = [[pageString stringWithRegular:@"第 \\d+ 页" andChild:@"\\d+"] intValue];;
     }
 
     page.pageNumber = pageNumber;

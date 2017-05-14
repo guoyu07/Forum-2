@@ -17,7 +17,9 @@
 
 @end
 
-@implementation ForumFavThreadPostTableViewController
+@implementation ForumFavThreadPostTableViewController{
+    ViewForumPage *currentForumPage;
+}
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -33,8 +35,7 @@
 
             [self.tableView.mj_header endRefreshing];
 
-            self.currentPage = 1;
-            self.totalPage = (int) resultPage.pageNumber.totalPageNumber;
+            currentForumPage = resultPage;
             [self.dataList removeAllObjects];
             [self.dataList addObjectsFromArray:resultPage.threadList];
             [self.tableView reloadData];
@@ -43,14 +44,15 @@
 }
 
 - (void)onLoadMore {
-    [self.forumApi listFavoriteThreadPostsWithPage:self.currentPage handler:^(BOOL isSuccess, ViewForumPage *resultPage) {
+    int toLoadPage = currentForumPage == nil ? 1: currentForumPage.pageNumber.currentPageNumber + 1;
+    [self.forumApi listFavoriteThreadPostsWithPage:toLoadPage handler:^(BOOL isSuccess, ViewForumPage *resultPage) {
 
         [self.tableView.mj_footer endRefreshing];
 
         if (isSuccess) {
-            self.totalPage = (int) resultPage.pageNumber.totalPageNumber;
-            self.currentPage++;
-            if (self.currentPage >= self.totalPage) {
+            currentForumPage = resultPage;
+
+            if (currentForumPage.pageNumber.currentPageNumber >= currentForumPage.pageNumber.totalPageNumber) {
                 [self.tableView.mj_footer endRefreshingWithNoMoreData];
             }
             [self.dataList addObjectsFromArray:resultPage.threadList];

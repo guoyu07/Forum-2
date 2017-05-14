@@ -19,7 +19,9 @@
 
 @end
 
-@implementation ForumThreadListForChildFormUITableViewController
+@implementation ForumThreadListForChildFormUITableViewController{
+    ViewForumPage * currentForumPage;
+}
 
 - (void)transBundle:(TransBundle *)bundle {
     forumId = [bundle getIntValue:@"ForumId"];
@@ -48,9 +50,9 @@
         [self.tableView.mj_header endRefreshing];
 
         if (isSuccess) {
-            self.totalPage = (int) page.pageNumber.totalPageNumber;
-            self.currentPage = 1;
-            if (self.currentPage >= self.totalPage) {
+            currentForumPage = page;
+
+            if (currentForumPage.pageNumber.currentPageNumber >= currentForumPage.pageNumber.totalPageNumber) {
                 [self.tableView.mj_footer endRefreshingWithNoMoreData];
             }
 
@@ -71,14 +73,17 @@
 }
 
 - (void)onLoadMore {
-    [self.forumApi forumDisplayWithId:forumId andPage:self.currentPage + 1 handler:^(BOOL isSuccess, ViewForumPage *page) {
+
+    int toLoadPage = currentForumPage == nil ? 1 : currentForumPage.pageNumber.totalPageNumber + 1;
+
+    [self.forumApi forumDisplayWithId:forumId andPage:toLoadPage handler:^(BOOL isSuccess, ViewForumPage *page) {
 
         [self.tableView.mj_footer endRefreshing];
 
         if (isSuccess) {
-            self.totalPage = (int) page.pageNumber.totalPageNumber;
-            self.currentPage++;
-            if (self.currentPage >= self.totalPage) {
+            currentForumPage = page;
+
+            if (currentForumPage.pageNumber.currentPageNumber >= currentForumPage.pageNumber.totalPageNumber) {
                 [self.tableView.mj_footer endRefreshingWithNoMoreData];
             }
 

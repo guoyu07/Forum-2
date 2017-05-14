@@ -16,8 +16,7 @@
 
 @property(nonatomic, strong) id<ForumBrowserDelegate> forumApi;
 @property(nonatomic, strong) NSMutableArray *dataList;
-@property(nonatomic, assign) int currentPage;
-@property(nonatomic, assign) int totalPage;
+@property(nonatomic, strong) PageNumber *pageNumber;
 
 
 - (void)onPullRefresh;

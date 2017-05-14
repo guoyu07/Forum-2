@@ -13,7 +13,9 @@
 
 @end
 
-@implementation ForumMyThreadTableViewController
+@implementation ForumMyThreadTableViewController{
+    ViewForumPage *currentForumPage;
+}
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -28,7 +30,7 @@
         if (isSuccess) {
             [self.tableView.mj_footer endRefreshing];
 
-            self.currentPage = 1;
+            currentForumPage = message;
             [self.dataList removeAllObjects];
 
             [self.dataList addObjectsFromArray:message.threadList];
@@ -40,12 +42,14 @@
 }
 
 - (void)onLoadMore {
-    [self.forumApi listMyAllThreadsWithPage:self.currentPage + 1 handler:^(BOOL isSuccess, ViewForumPage *message) {
+    int  toLoadPage = currentForumPage == nil ? 1 : currentForumPage.pageNumber.currentPageNumber + 1;
+    [self.forumApi listMyAllThreadsWithPage:toLoadPage handler:^(BOOL isSuccess, ViewForumPage *message) {
         [self.tableView.mj_footer endRefreshing];
 
         if (isSuccess) {
-            self.currentPage++;
-            if (self.currentPage >= message.pageNumber.totalPageNumber) {
+            currentForumPage = message;
+
+            if (currentForumPage.pageNumber.currentPageNumber >= currentForumPage.pageNumber.totalPageNumber) {
                 [self.tableView.mj_footer endRefreshingWithNoMoreData];
             }
             [self.dataList addObjectsFromArray:message.threadList];
