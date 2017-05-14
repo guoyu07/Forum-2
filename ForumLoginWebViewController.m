@@ -52,72 +52,84 @@
     [[NSUserDefaults standardUserDefaults] saveUserName:name];
 }
 
-- (void)webViewDidFinishLoad:(UIWebView *)webView {
-
+- (NSString*) getResponseHTML:(UIWebView *)webView {
     NSString *lJs = @"document.documentElement.outerHTML";
     NSString *html = [webView stringByEvaluatingJavaScriptFromString:lJs];
+    return html;
+}
 
-    IGHTMLDocument *document = [[IGHTMLDocument alloc] initWithHTMLString:html error:nil];
+- (void)webViewDidFinishLoad:(UIWebView *)webView {
 
-    IGXMLNode *logined = [document queryNodeWithXPath:@"/html/body/div[1]"];
+    NSString *html = [self getResponseHTML:webView];
 
-    //@"欢迎您回来，天使 马小甲，现在将转入登录前页面"
-    NSString *userName = [[[logined childrenAtPosition:0].text componentsSeparatedByString:@"，"][1] componentsSeparatedByString:@" "][1];
+    NSString *currentURL = [webView stringByEvaluatingJavaScriptFromString:@"document.location.href"];
+    if ([currentURL isEqualToString:@"https://www.chiphell.com/member.php?mod=logging&action=login&mobile=2"]){
+        [webView stringByEvaluatingJavaScriptFromString:@"document.getElementsByClassName('footer')[0].style.visibility='hidden';"
+                "document.getElementsByClassName('header')[0].innerHTML='';"];
+    } else if ([currentURL isEqualToString:@"https://www.chiphell.com/forum.php?mobile=yes"]){
 
-    if (userName != nil) {
-        // 保存Cookie
-        [self saveCookie];
-        // 保存用户名
-        [self saveUserName:userName];
+        IGHTMLDocument *document = [[IGHTMLDocument alloc] initWithHTMLString:html error:nil];
+        IGXMLNode *logined = [document queryNodeWithXPath:@"/html/body/div[3]/div[1]/a[1]"];
+        NSString *userName = [[logined text] trim];
+
+        if (userName != nil) {
+            // 保存Cookie
+            [self saveCookie];
+            // 保存用户名
+            [self saveUserName:userName];
+        }
+
+        [self.forumApi listAllForums:^(BOOL isSuccess, id msg) {
+            if (isSuccess) {
+                NSMutableArray<Forum *> *needInsert = msg;
+                ForumCoreDataManager *formManager = [[ForumCoreDataManager alloc] initWithEntryType:EntryTypeForm];
+                // 需要先删除之前的老数据
+                [formManager deleteData:^NSPredicate * {
+                    return [NSPredicate predicateWithFormat:@"forumHost = %@", self.currentForumHost];;
+                }];
+
+                AppDelegate *appDelegate = (AppDelegate *) [[UIApplication sharedApplication] delegate];
+
+                [formManager insertData:needInsert operation:^(NSManagedObject *target, id src) {
+                    ForumEntry *newsInfo = (ForumEntry *) target;
+                    newsInfo.forumId = [src valueForKey:@"forumId"];
+                    newsInfo.forumName = [src valueForKey:@"forumName"];
+                    newsInfo.parentForumId = [src valueForKey:@"parentForumId"];
+                    newsInfo.forumHost = appDelegate.forumHost;
+
+                }];
+
+                UIStoryboard *stortboard = [UIStoryboard mainStoryboard];
+                [stortboard changeRootViewControllerTo:kForumTabBarControllerId];
+
+            }
+        }];
     }
 
-    NSArray<NSHTTPCookie *> *cookies = [[NSHTTPCookieStorage sharedHTTPCookieStorage] cookies];
+    NSLog(@"ForumLoginWebViewController.webViewDidFinishLoad %@ ", html);
+    
 
-    [self.forumApi listAllForums:^(BOOL isSuccess, id msg) {
-        if (isSuccess) {
-            NSMutableArray<Forum *> *needInsert = msg;
-            ForumCoreDataManager *formManager = [[ForumCoreDataManager alloc] initWithEntryType:EntryTypeForm];
-            // 需要先删除之前的老数据
-            [formManager deleteData:^NSPredicate * {
-                return [NSPredicate predicateWithFormat:@"forumHost = %@", self.currentForumHost];;
-            }];
-
-            AppDelegate *appDelegate = (AppDelegate *) [[UIApplication sharedApplication] delegate];
-
-            [formManager insertData:needInsert operation:^(NSManagedObject *target, id src) {
-                ForumEntry *newsInfo = (ForumEntry *) target;
-                newsInfo.forumId = [src valueForKey:@"forumId"];
-                newsInfo.forumName = [src valueForKey:@"forumName"];
-                newsInfo.parentForumId = [src valueForKey:@"parentForumId"];
-                newsInfo.forumHost = appDelegate.forumHost;
-
-            }];
-
-            UIStoryboard *stortboard = [UIStoryboard mainStoryboard];
-            [stortboard changeRootViewControllerTo:kForumTabBarControllerId];
-
-        }
-    }];
-    NSLog(@"shouldStartLoadWithRequest %@", html);
 }
 
 - (void)webViewDidStartLoad:(UIWebView *)webView {
-    NSLog(@"shouldStartLoadWithRequest %@", @"webViewDidStartLoad");
+
+    NSString *html = [self getResponseHTML:webView];
+    NSLog(@"ForumLoginWebViewController.webViewDidStartLoad %@ ", html);
 }
 
 
 - (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType {
 
     NSString *urlString = [[request URL] absoluteString];
-
-
     if ([urlString isEqualToString:@"https://www.chiphell.com/?mobile=2"]) {
         NSArray<NSHTTPCookie *> *cookies = [[NSHTTPCookieStorage sharedHTTPCookieStorage] cookies];
     }
-    NSLog(@"shouldStartLoadWithRequest %@", urlString);
+    NSLog(@"ForumLoginWebViewController.shouldStartLoadWithRequest %@ ", urlString);
     return YES;
 }
 
 - (IBAction)cancelLogin:(id)sender {
+    [[NSUserDefaults standardUserDefaults] clearCurrentForumURL];
+    [[UIStoryboard mainStoryboard] changeRootViewControllerTo:@"ShowSupportForums" withAnim:UIViewAnimationOptionTransitionFlipFromTop];
 }
 @end
