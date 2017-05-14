@@ -105,7 +105,7 @@
 }
 
 - (NSString *)searchNewThread {
-    return @"https://www.chiphell.com/forum.php?mod=guide&view=new";
+    return @"https://www.chiphell.com/forum.php?mod=guide&view=hot";
 }
 
 - (NSString *)searchNewThreadToday {
