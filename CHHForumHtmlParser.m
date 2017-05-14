@@ -414,7 +414,24 @@
 }
 
 - (UserProfile *)parserProfile:(NSString *)html userId:(NSString *)userId {
-    return nil;
+
+    IGHTMLDocument *document = [[IGHTMLDocument alloc] initWithHTMLString:html error:nil];
+
+    UserProfile *profile = [[UserProfile alloc] init];
+    NSString *profileUserId = userId;
+    NSString *profileRank = [[document queryNodeWithXPath:@"//*[@id=\"ct\"]/div/div[2]/div/div[1]/div[2]/ul[1]/li/span/a"] text];
+    NSString *profileName = [[[document queryNodeWithXPath:@"//*[@id=\"uhd\"]/div/h2"] text] trim];
+    NSString *profileRegisterDate = [[[document queryNodeWithXPath:@"//*[@id=\"pbbs\"]/li[2]/text()"] text] trim];
+    NSString *profileRecentLoginDate = [[[document queryNodeWithXPath:@"//*[@id=\"pbbs\"]/li[3]/text()"] text] trim];
+    NSString *profileTotalPostCount = [[[document queryNodeWithXPath:@"//*[@id=\"ct\"]/div/div[2]/div/div[1]/div[1]/ul[3]/li/a[3]"] text] trim];
+
+    profile.profileUserId = profileUserId;
+    profile.profileRank = profileRank;
+    profile.profileName = profileName;
+    profile.profileRegisterDate = profileRegisterDate;
+    profile.profileRecentLoginDate = profileRecentLoginDate;
+    profile.profileTotalPostCount = profileTotalPostCount;
+    return profile;
 }
 
 - (NSArray<Forum *> *)parserForums:(NSString *)html forumHost:(NSString *)host {

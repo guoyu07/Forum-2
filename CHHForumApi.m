@@ -386,7 +386,14 @@
 }
 
 - (void)showProfileWithUserId:(NSString *)userId handler:(HandlerWithBool)handler {
-
+    [self.browser GETWithURLString:[self.forumConfig memberWithUserId:userId] parameters:nil requestCallback:^(BOOL isSuccess, NSString *html) {
+        if (isSuccess) {
+            UserProfile *profile = [self.forumParser parserProfile:html userId:userId];
+            handler(YES, profile);
+        } else {
+            handler(NO, @"未知错误");
+        }
+    }];
 }
 
 - (void)reportThreadPost:(int)postId andMessage:(NSString *)message handler:(HandlerWithBool)handler {
