@@ -22,7 +22,7 @@
 
 - (NSString *)trim;
 
-- (NSArray *)arrayWithRegulat:(NSString *)regular;
+- (NSArray *)arrayWithRegular:(NSString *)regular;
 
 
 @end

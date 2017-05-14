@@ -160,7 +160,7 @@
 
 // private 修改字体大小统一为2
 -(NSString *) fixedFontSize:(NSString *) html{
-    NSArray * fontSetString = [html arrayWithRegulat:@"<font size=\"\\d+\">"];
+    NSArray * fontSetString = [html arrayWithRegular:@"<font size=\"\\d+\">"];
     
     NSString * fixFontSizeHTML= html;
     for (NSString * tmp in fontSetString) {
@@ -173,7 +173,7 @@
 -(NSString *) fixedLink:(NSString *) html{
     // 去掉_http hxxp
     NSString * fuxkHttp = html;
-    NSArray * httpArray = [html arrayWithRegulat:@"(_http|hxxp|_https|hxxps)://[\\w\\-_]+(\\.[\\w\\-_]+)+([\\w\\-\\.,@?^=%&amp;:/~\\+#]*[\\w\\-\\@?^=%&amp;/~\\+#])?"];
+    NSArray * httpArray = [html arrayWithRegular:@"(_http|hxxp|_https|hxxps)://[\\w\\-_]+(\\.[\\w\\-_]+)+([\\w\\-\\.,@?^=%&amp;:/~\\+#]*[\\w\\-\\@?^=%&amp;/~\\+#])?"];
     NSString * httpPattern = @"<a href=\"%@\" target=\"_blank\">%@</a>";
     for (NSString * http in httpArray) {
         NSString * fixedHttp = [http stringByReplacingOccurrencesOfString:@"_http://" withString:@"http://"];
@@ -200,7 +200,7 @@
     
     NSString *fixedImage = html;
     
-    NSArray * images = [html arrayWithRegulat:@"<a href=\"attachment.php\\?attachmentid=\\d+&amp;stc=1\" target=\"_blank\"><img class=\"attach\" src=\"attachment.php\\?attachmentid=\\d+&amp;stc=1\" border=\"0\" alt=\"\" /></a>"];
+    NSArray * images = [html arrayWithRegular:@"<a href=\"attachment.php\\?attachmentid=\\d+&amp;stc=1\" target=\"_blank\"><img class=\"attach\" src=\"attachment.php\\?attachmentid=\\d+&amp;stc=1\" border=\"0\" alt=\"\" /></a>"];
     
     for (NSString * image in images) {
         NSString * imageSrc = [image stringWithRegular:@"<img class=\"attach\" src=\"attachment.php\\?attachmentid=\\d+&amp;stc=1\" border=\"0\" alt=\"\" />"];
@@ -304,7 +304,7 @@
 
 // private 获取回帖的页数
 - (int)threadPostPageCount:(NSString *)postTitlehtml {
-    NSArray *postPages = [postTitlehtml arrayWithRegulat:@"page=\\d+"];
+    NSArray *postPages = [postTitlehtml arrayWithRegular:@"page=\\d+"];
     if (postPages == nil || postPages.count == 0) {
         return 1;
     } else {

@@ -73,7 +73,7 @@
     return [self stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
 }
 
-- (NSArray *)arrayWithRegulat:(NSString *)regular {
+- (NSArray *)arrayWithRegular:(NSString *)regular {
 
     NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:regular options:NSRegularExpressionCaseInsensitive error:nil];
 

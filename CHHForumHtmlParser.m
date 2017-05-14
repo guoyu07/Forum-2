@@ -18,10 +18,22 @@
 @implementation CHHForumHtmlParser {
 
 }
-- (ViewThreadPage *)parseShowThreadWithHtml:(NSString *)html {
+- (ViewThreadPage *)parseShowThreadWithHtml:(NSString *)orgHtml {
 
+    NSString * fixImagesHtml = orgHtml;
+    NSString *newImagePattern = @"<img src=\"%@\" />";
+    NSArray *orgImages = [fixImagesHtml arrayWithRegular:@"<img id=\"aimg_\\d+\" aid=\"\\d+\" src=\".*\" zoomfile=\".*\" file=\".*\" class=\"zoom\" onclick=\".*\" width=\".*\" .*"];
+    for (NSString *img in orgImages) {
 
-    IGHTMLDocument * document = [[IGHTMLDocument alloc] initWithHTMLString:html error:nil];
+        IGXMLDocument *igxmlDocument = [[IGXMLDocument alloc] initWithXMLString:img error:nil];
+        NSString * file = [igxmlDocument attribute:@"file"];
+        NSString * newImage = [NSString stringWithFormat:newImagePattern, file];
+        NSLog(@"parseShowThreadWithHtml orgimage: %@ %@", img, newImage);
+
+        fixImagesHtml = [fixImagesHtml stringByReplacingOccurrencesOfString:img withString:newImage];
+    }
+
+    IGHTMLDocument * document = [[IGHTMLDocument alloc] initWithHTMLString:fixImagesHtml error:nil];
 
     ViewThreadPage *showThreadPage = [[ViewThreadPage alloc] init];
     // threadId
@@ -80,7 +92,6 @@
 
             NSString *contentQuery = [NSString stringWithFormat:@"//*[@id=\"pid%@\"]/tr[1]/td[2]/div[2]/div/div[1]", postId];
             NSString *postContent = [document queryNodeWithXPath:contentQuery].html;
-
             // User Info
             User * user = [[User alloc] init];
             // UserId

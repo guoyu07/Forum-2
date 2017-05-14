@@ -189,7 +189,7 @@
 
 - (ViewThreadPage *)parseShowThreadWithHtml:(NSString *)html {
     // 查找设置了字体的回帖
-    NSArray *fontSetString = [html arrayWithRegulat:@"<font size=\"\\d+\">"];
+    NSArray *fontSetString = [html arrayWithRegular:@"<font size=\"\\d+\">"];
 
     NSString *fixFontSizeHTML = html;
 
@@ -198,7 +198,7 @@
     }
     // 去掉_http hxxp
     NSString *fuxkHttp = fixFontSizeHTML;
-    NSArray *httpArray = [fixFontSizeHTML arrayWithRegulat:@"(_http|hxxp|_https|hxxps)://[\\w\\-_]+(\\.[\\w\\-_]+)+([\\w\\-\\.,@?^=%&amp;:/~\\+#]*[\\w\\-\\@?^=%&amp;/~\\+#])?"];
+    NSArray *httpArray = [fixFontSizeHTML arrayWithRegular:@"(_http|hxxp|_https|hxxps)://[\\w\\-_]+(\\.[\\w\\-_]+)+([\\w\\-\\.,@?^=%&amp;:/~\\+#]*[\\w\\-\\@?^=%&amp;/~\\+#])?"];
     NSString *httpPattern = @"<a href=\"%@\" target=\"_blank\">%@</a>";
     for (NSString *http in httpArray) {
         NSString *fixedHttp = [http stringByReplacingOccurrencesOfString:@"_http://" withString:@"http://"];
@@ -283,7 +283,7 @@
 
 // private 获取回帖的页数
 - (int)threadPostPageCount:(NSString *)postTitlehtml {
-    NSArray *postPages = [postTitlehtml arrayWithRegulat:@"page=\\d+"];
+    NSArray *postPages = [postTitlehtml arrayWithRegular:@"page=\\d+"];
     if (postPages == nil || postPages.count == 0) {
         return 1;
     } else {
