@@ -56,7 +56,7 @@
 
 
 // 查看新帖
-- (NSString *) searchNewThread;
+- (NSString *) searchNewThread:(int) page;
 - (NSString *) searchNewThreadToday;
 
 // 回帖

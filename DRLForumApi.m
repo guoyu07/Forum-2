@@ -1169,7 +1169,7 @@ typedef void (^CallBack)(NSString *token, NSString *hash, NSString *time);
 
         NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
         [parameters setValue:@"3" forKey:@"styleid"];
-        [self.browser GETWithURLString:self.forumConfig.searchNewThread parameters:parameters requestCallback:^(BOOL isSuccess, NSString *html) {
+        [self.browser GETWithURLString:[self.forumConfig searchNewThread:page] parameters:parameters requestCallback:^(BOOL isSuccess, NSString *html) {
 
             if (isSuccess) {
                 NSUInteger newThreadPostSearchId = (NSUInteger) [[self.forumParser parseListMyThreadSearchid:html] integerValue];

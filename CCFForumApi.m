@@ -1237,7 +1237,7 @@ typedef void (^CallBack)(NSString *token, NSString *hash, NSString *time);
         [defparameters setValue:@"2" forKey:@"styleid"];
         [defparameters setValue:@"1" forKey:@"langid"];
 
-        [self.browser GETWithURLString:self.forumConfig.searchNewThread parameters:defparameters requestCallback:^(BOOL isSuccess, NSString *html) {
+        [self.browser GETWithURLString:[self.forumConfig searchNewThread:page] parameters:defparameters requestCallback:^(BOOL isSuccess, NSString *html) {
             if (isSuccess) {
                 NSUInteger newThreadPostSearchId = (NSUInteger) [[self.forumParser parseListMyThreadSearchid:html] integerValue];
                 [userDefault setInteger:timeStamp forKey:[self.forumConfig.forumURL.host stringByAppendingString:@"-search_time"]];

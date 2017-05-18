@@ -115,7 +115,7 @@
     return [NSString stringWithFormat:@"%@forumdisplay.php?f=%@&order=desc&page=%d", _forumURL.absoluteString, forumId, page];
 }
 
-- (NSString *)searchNewThread {
+- (NSString *)searchNewThread:(int)page {
     return [NSString stringWithFormat:@"%@search.php?do=getnew", _forumURL.absoluteString];
 }
 

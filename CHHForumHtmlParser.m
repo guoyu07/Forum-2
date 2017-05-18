@@ -346,9 +346,8 @@
     page.threadList = threadList;
 
     // 总页数
-
-    IGXMLNode *totalPageNode = [document queryNodeWithXPath:@"//*[@id='fd_page_bottom']/div/label"];
-    NSString * totalPageNodeText = totalPageNode.text;
+    PageNumber *pageNumber = [self parserPageNumber:html];
+    page.pageNumber = pageNumber;
 
 
     return page;

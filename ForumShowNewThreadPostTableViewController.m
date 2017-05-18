@@ -48,6 +48,7 @@
         [self.tableView.mj_footer endRefreshing];
         if (isSuccess) {
 
+            currentForumPage = message;
             if (currentForumPage.pageNumber.currentPageNumber >= currentForumPage.pageNumber.totalPageNumber) {
                 [self.tableView.mj_footer endRefreshingWithNoMoreData];
             }

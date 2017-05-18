@@ -312,7 +312,7 @@
 
 - (void)listNewThreadPostsWithPage:(int)page handler:(HandlerWithBool)handler {
 
-    [self.browser GETWithURLString:self.forumConfig.searchNewThread parameters:nil requestCallback:^(BOOL isSuccess, NSString *html) {
+    [self.browser GETWithURLString:[self.forumConfig searchNewThread:page] parameters:nil requestCallback:^(BOOL isSuccess, NSString *html) {
         if (isSuccess) {
             ViewSearchForumPage *searchForumPage = [self.forumParser parseSearchPageFromHtml:html];
             handler(isSuccess, searchForumPage);

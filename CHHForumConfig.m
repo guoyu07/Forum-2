@@ -104,8 +104,8 @@
     return [NSString stringWithFormat:@"https://www.chiphell.com/forum-%@-%d.html", forumId, page];
 }
 
-- (NSString *)searchNewThread {
-    return @"https://www.chiphell.com/forum.php?mod=guide&view=hot";
+- (NSString *)searchNewThread:(int)page {
+    return [NSString stringWithFormat:@"https://www.chiphell.com/forum.php?mod=guide&view=hot&page=%d", page];
 }
 
 - (NSString *)searchNewThreadToday {
