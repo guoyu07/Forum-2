@@ -270,6 +270,7 @@
                             [result addObjectsFromArray:forums];
                             page = i;
                             if (page >= pageNumber.totalPageNumber){
+
                                 handler(YES, result);
                             }
                         } else{

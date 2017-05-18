@@ -360,7 +360,7 @@
     IGXMLNodeSet * favoriteLis = favoriteUl.children;
 
     NSMutableArray *ids = [NSMutableArray array];
-    
+
     for (IGXMLNode *favLi in favoriteLis){
         IGXMLNode * forumIdNode = [favLi childrenAtPosition:2];
         NSString * forumIdNodeHtml = forumIdNode.html;
@@ -369,8 +369,8 @@
         [ids addObject:@(idsStr.intValue)];
         NSLog(@"%@", forumIdNodeHtml);
     }
-
-    [[NSUserDefaults standardUserDefaults] saveFavFormIds:ids];
+//
+//    [[NSUserDefaults standardUserDefaults] saveFavFormIds:ids];
 
     //*[@id="ct"]/div[1]/div[2]/div/div
 

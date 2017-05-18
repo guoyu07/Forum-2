@@ -43,6 +43,12 @@
         if (isSuccess) {
             self.dataList = message;
             [self.tableView reloadData];
+
+            NSMutableArray * ids = [NSMutableArray array];
+            for (Forum *forum in message){
+                [ids addObject:@(forum.forumId)];
+            }
+            [[NSUserDefaults standardUserDefaults] saveFavFormIds:ids];
         }
 
     }];
@@ -64,6 +70,13 @@
         [self.forumApi listFavoriteForums:^(BOOL isSuccess, NSMutableArray<Forum *> *message) {
             self.dataList = message;
             [self.tableView reloadData];
+
+            NSMutableArray * ids = [NSMutableArray array];
+            for (Forum *forum in message){
+                [ids addObject:@(forum.forumId)];
+            }
+            [[NSUserDefaults standardUserDefaults] saveFavFormIds:ids];
+
         }];
     } else {
         ForumCoreDataManager *manager = [[ForumCoreDataManager alloc] initWithEntryType:EntryTypeForm];
