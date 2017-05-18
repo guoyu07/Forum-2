@@ -74,6 +74,10 @@
 
             currentForumPage = message;
 
+            if (currentForumPage.pageNumber.currentPageNumber >= currentForumPage.pageNumber.totalPageNumber) {
+                [self.tableView.mj_footer endRefreshingWithNoMoreData];
+            }
+
             [self.dataList removeAllObjects];
             [self.dataList addObjectsFromArray:message.threadList];
 
@@ -89,6 +93,8 @@
     [self.forumApi listPrivateMessageWithType:messageType andPage:toLoadPage handler:^(BOOL isSuccess, ViewForumPage *message) {
         [self.tableView.mj_footer endRefreshing];
         if (isSuccess) {
+
+            currentForumPage = message;
 
             if (currentForumPage.pageNumber.currentPageNumber >= currentForumPage.pageNumber.totalPageNumber) {
                 [self.tableView.mj_footer endRefreshingWithNoMoreData];
