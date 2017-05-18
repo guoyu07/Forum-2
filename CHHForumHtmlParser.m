@@ -47,10 +47,11 @@
     NSString * forumId = [[forumIdNode attribute:@"href"] componentsSeparatedByString:@"-"][1];
     // origin html
     NSString * originHtml = [document queryNodeWithXPath:@"//*[@id=\"postlist\"]"].html;
+
+
     // totalPageCount
     int  totalPageCount = 1;
     int  currentPage = 1;
-    //*[@id="pgt"]/div/div/label/span
     IGXMLNode * totalPageNode = [document queryNodeWithXPath:@"//*[@id=\"pgt\"]/div/div/label/span"];
     if (threadTitleNode != nil){
         totalPageCount = [[[totalPageNode text] stringWithRegular:@"\\d+"] intValue];
@@ -234,8 +235,8 @@
 
     // 总页数
 
-    IGXMLNode *totalPageNode = [document queryNodeWithXPath:@"//*[@id='fd_page_bottom']/div/label"];
-    NSString * totalPageNodeText = totalPageNode.text;
+    PageNumber *pageNumber = [self parserPageNumber:html];
+    page.pageNumber = pageNumber;
 
 
     return page;
@@ -369,10 +370,6 @@
         [ids addObject:@(idsStr.intValue)];
         NSLog(@"%@", forumIdNodeHtml);
     }
-//
-//    [[NSUserDefaults standardUserDefaults] saveFavFormIds:ids];
-
-    //*[@id="ct"]/div[1]/div[2]/div/div
 
     // 通过ids 过滤出Form
     ForumCoreDataManager *manager = [[ForumCoreDataManager alloc] initWithEntryType:EntryTypeForm];
@@ -406,9 +403,6 @@
     IGHTMLDocument *document = [[IGHTMLDocument alloc] initWithHTMLString:html error:nil];
 
     IGXMLNode *pmRootNode = [document queryNodeWithXPath:@"//*[@id=\"ct\"]/div[1]/div/div/div"];
-
-    PageNumber *pageNumber = [self parserPageNumber:html];
-    page.pageNumber = pageNumber;
 
     NSMutableArray<Message *> *messagesList = [NSMutableArray array];
     for (IGXMLNode *pmNode in pmRootNode.children){
@@ -445,7 +439,8 @@
     }
 
     page.threadList = messagesList;
-
+    PageNumber *pageNumber = [self parserPageNumber:html];
+    page.pageNumber = pageNumber;
     return page;
 }
 
@@ -455,9 +450,6 @@
     IGHTMLDocument *document = [[IGHTMLDocument alloc] initWithHTMLString:html error:nil];
 
     IGXMLNode *pmRootNode = [document queryNodeWithXPath:@"//*[@id=\"deletepmform\"]/div[1]"];
-
-    PageNumber *pageNumber = [self parserPageNumber:html];
-    page.pageNumber = pageNumber;
 
     NSMutableArray<Message *> *messagesList = [NSMutableArray array];
     for (IGXMLNode *pmNode in pmRootNode.children){
@@ -489,7 +481,8 @@
     }
 
     page.threadList = messagesList;
-
+    PageNumber *pageNumber = [self parserPageNumber:html];
+    page.pageNumber = pageNumber;
     return page;
 }
 
