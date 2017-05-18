@@ -393,6 +393,63 @@
     return forms;
 }
 
+- (ViewForumPage *)parsePrivateMessageFromHtml:(NSString *)html forType:(int)type {
+    if (type == 0){
+        return [self parsePrivateMessageFromHtml:html];
+    } else{
+        return [self parsePostMessageFromHtml:html];
+    }
+}
+
+- (ViewForumPage *)parsePostMessageFromHtml:(NSString *)html {
+    ViewForumPage *page = [[ViewForumPage alloc] init];
+
+    IGHTMLDocument *document = [[IGHTMLDocument alloc] initWithHTMLString:html error:nil];
+
+    IGXMLNode *pmRootNode = [document queryNodeWithXPath:@"//*[@id=\"ct\"]/div[1]/div/div/div"];
+
+    PageNumber *pageNumber = [self parserPageNumber:html];
+    page.pageNumber = pageNumber;
+
+    NSMutableArray<Message *> *messagesList = [NSMutableArray array];
+    for (IGXMLNode *pmNode in pmRootNode.children){
+        Message *message = [[Message alloc] init];
+
+        BOOL isReaded = NO;
+
+        // Title
+        IGXMLNodeSet *actionNode = [pmNode queryWithXPath:@"dd[2]/text()"];
+        NSString * action = [[actionNode[1] text] trim];
+        IGXMLNode *actionTitleNode = [pmNode queryWithXPath:@"dd[2]/a[2]"].firstObject;
+        NSString *pmId = [actionTitleNode attribute:@"href"];
+        NSString *actionTitle = [[actionTitleNode text] trim];
+        NSString * title = [NSString stringWithFormat:@"%@ %@", action, actionTitle];
+
+        // 作者
+        IGXMLNode *authorNode = [pmNode queryWithXPath:@"dd[2]/a[1]"].firstObject;
+        NSString *authorName = [[authorNode text] trim];
+        NSString *authorId = [[authorNode attribute:@"href"] stringWithRegular:@"\\d+"];
+
+        // 时间
+        IGXMLNode *timeNode = [pmNode queryWithXPath:@"dt/span"].firstObject;
+        NSString *time = [timeNode text];
+
+        message.isReaded = isReaded;
+        message.pmID = pmId;
+        message.pmAuthor = authorName;
+        message.pmAuthorId = authorId;
+        message.pmTime = time;
+        message.pmTitle = title;
+
+        [messagesList addObject:message];
+
+    }
+
+    page.threadList = messagesList;
+
+    return page;
+}
+
 - (ViewForumPage *)parsePrivateMessageFromHtml:(NSString *)html {
     ViewForumPage *page = [[ViewForumPage alloc] init];
 

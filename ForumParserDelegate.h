@@ -41,7 +41,7 @@
 
 - (NSMutableArray<Forum *> *)parseFavForumFromHtml:(NSString *)html;
 
-- (ViewForumPage *)parsePrivateMessageFromHtml:(NSString *)html;
+- (ViewForumPage *)parsePrivateMessageFromHtml:(NSString *)html forType:(int) type;
 
 - (ViewMessagePage *)parsePrivateMessageContent:(NSString *)html avatarBase:(NSString *) avatarBase noavatar:(NSString *) avatarNO;
 

@@ -728,6 +728,11 @@
     return forms;
 }
 
+- (ViewForumPage *)parsePrivateMessageFromHtml:(NSString *)html forType:(int)type {
+    return [self parsePrivateMessageFromHtml:html];
+}
+
+
 // for drl
 - (ViewForumPage *)parsePrivateMessageFromHtml:(NSString *)html {
     ViewForumPage *page = [[ViewForumPage alloc] init];

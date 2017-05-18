@@ -1116,7 +1116,7 @@ typedef void (^CallBack)(NSString *token, NSString *hash, NSString *time);
     [self.browser GETWithURLString:[self.forumConfig privateWithType:type withPage:page] parameters:parameters requestCallback:^(BOOL isSuccess, NSString *html) {
 
         if (isSuccess) {
-            ViewForumPage *p = [self.forumParser parsePrivateMessageFromHtml:html];
+            ViewForumPage *p = [self.forumParser parsePrivateMessageFromHtml:html forType:type];
             handler(YES, p);
         } else {
             handler(NO, html);

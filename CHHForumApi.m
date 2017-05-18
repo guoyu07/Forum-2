@@ -244,7 +244,7 @@
 
     [self.browser GETWithURLString:[self.forumConfig privateWithType:type withPage:page] parameters:nil requestCallback:^(BOOL isSuccess, NSString *html) {
         if (isSuccess) {
-            ViewForumPage *viewForumPage = [self.forumParser parsePrivateMessageFromHtml:html];
+            ViewForumPage *viewForumPage = [self.forumParser parsePrivateMessageFromHtml:html forType:type];
             handler(YES, viewForumPage);
         } else {
             handler(NO, html);
