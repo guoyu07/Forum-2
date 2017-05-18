@@ -242,6 +242,14 @@
 
 - (void)listPrivateMessageWithType:(int)type andPage:(int)page handler:(HandlerWithBool)handler {
 
+    [self.browser GETWithURLString:[self.forumConfig privateWithType:type withPage:page] parameters:nil requestCallback:^(BOOL isSuccess, NSString *html) {
+        if (isSuccess) {
+            ViewForumPage *viewForumPage = [self.forumParser parsePrivateMessageFromHtml:html];
+            handler(YES, viewForumPage);
+        } else {
+            handler(NO, html);
+        }
+    }];
 }
 
 - (void)listFavoriteForums:(HandlerWithBool)handler {

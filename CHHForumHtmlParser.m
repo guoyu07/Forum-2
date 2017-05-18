@@ -394,7 +394,47 @@
 }
 
 - (ViewForumPage *)parsePrivateMessageFromHtml:(NSString *)html {
-    return nil;
+    ViewForumPage *page = [[ViewForumPage alloc] init];
+
+    IGHTMLDocument *document = [[IGHTMLDocument alloc] initWithHTMLString:html error:nil];
+
+    IGXMLNode *pmRootNode = [document queryNodeWithXPath:@"//*[@id=\"deletepmform\"]/div[1]"];
+
+    PageNumber *pageNumber = [self parserPageNumber:html];
+    page.pageNumber = pageNumber;
+
+    NSMutableArray<Message *> *messagesList = [NSMutableArray array];
+    for (IGXMLNode *pmNode in pmRootNode.children){
+        Message *message = [[Message alloc] init];
+        NSString *newPm = [pmNode attribute:@"class"];
+        BOOL isReaded = ![newPm isEqualToString:@"bbda cur1 cl newpm"];
+        NSString *pmId = [[pmNode attribute:@"id"] componentsSeparatedByString:@"_"].lastObject;
+
+        //*[@id="pmlist_973711"]/dd[2]/text()[1]
+        IGXMLNodeSet *dd = [pmNode queryWithXPath:@"dd[2]/text()"];
+        NSString * title = [[[dd[4] text] trim] stringByReplacingOccurrencesOfString:@"\n" withString:@" "];
+
+        IGXMLNode *authorNode = [pmNode queryWithXPath:@"dd[2]/a"].firstObject;
+        NSString *authorName = [[authorNode text] trim];
+        NSString *authorId = [[authorNode attribute:@"href"] stringWithRegular:@"\\d+"];
+
+        IGXMLNode *timeNode = [pmNode queryWithXPath:@"dd[2]/span[2]"].firstObject;
+        NSString *time = [timeNode text];
+
+        message.isReaded = isReaded;
+        message.pmID = pmId;
+        message.pmAuthor = authorName;
+        message.pmAuthorId = authorId;
+        message.pmTime = time;
+        message.pmTitle = title;
+
+        [messagesList addObject:message];
+
+    }
+
+    page.threadList = messagesList;
+
+    return page;
 }
 
 - (ViewMessagePage *)parsePrivateMessageContent:(NSString *)html avatarBase:(NSString *)avatarBase noavatar:(NSString *)avatarNO {

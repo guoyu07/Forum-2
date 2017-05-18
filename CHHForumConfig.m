@@ -161,7 +161,11 @@
 }
 
 - (NSString *)privateWithType:(int)type withPage:(int)page {
-    return nil;
+    if (type == 0){
+        return [NSString stringWithFormat:@"https://www.chiphell.com/home.php?mod=space&do=pm&filter=privatepm&page=%d", page];
+    } else{
+        return [NSString stringWithFormat:@"https://www.chiphell.com/home.php?mod=space&do=notice&view=mypost&page=%d", page];
+    }
 }
 
 - (NSString *)privateShowWithMessageId:(int)messageId {
