@@ -1234,23 +1234,6 @@ typedef void (^CallBack)(NSString *token, NSString *hash, NSString *time);
     }
 }
 
-- (void)listMyAllThreadPost:(HandlerWithBool)handler {
-    LoginUser *user = [self getLoginUser];
-    if (user == nil || user.userID == nil) {
-        handler(NO, @"未登录");
-        return;
-    }
-
-    NSString *userId = user.userID;
-
-    NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
-    [parameters setValue:@"3" forKey:@"styleid"];
-    [self.browser GETWithURLString:[self.forumConfig searchMyPostWithUserId:userId] parameters:parameters requestCallback:^(BOOL isSuccess, NSString *html) {
-
-        handler(isSuccess, html);
-    }];
-}
-
 - (void)listMyAllThreadsWithPage:(int)page handler:(HandlerWithBool)handler {
     LoginUser *user = [self getLoginUser];
     if (user == nil || user.userID == nil) {

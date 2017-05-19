@@ -327,10 +327,6 @@
 
 }
 
-- (void)listMyAllThreadPost:(HandlerWithBool)handler {
-
-}
-
 - (void)listMyAllThreadsWithPage:(int)page handler:(HandlerWithBool)handler {
 
 }
