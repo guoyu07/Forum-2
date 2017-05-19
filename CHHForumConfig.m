@@ -112,7 +112,7 @@
     return [NSString stringWithFormat:@"https://www.chiphell.com/thread-%@-%d-1.html", threadId, page];
 }
 
-- (NSString *)showThreadWithPostId:(NSString *)postId withPostCout:(int)postCount {
+- (NSString *)copyThreadUrl:(NSString *)postId withPostCout:(int)postCount {
     return nil;
 }
 

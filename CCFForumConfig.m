@@ -124,7 +124,7 @@
     return [NSString stringWithFormat:@"%@showthread.php?t=%@&page=%d", _forumURL.absoluteString, threadId, page];
 }
 
-- (NSString *)showThreadWithPostId:(NSString *)postId withPostCout:(int)postCount {
+- (NSString *)copyThreadUrl:(NSString *)postId withPostCout:(int)postCount {
     return [NSString stringWithFormat:@"%@showpost.php?p=%@&postcount=%d", _forumURL.absoluteString, postId, postCount];
 }
 

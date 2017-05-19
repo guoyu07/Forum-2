@@ -59,8 +59,10 @@
 // ShowThread
 - (NSString *) showThreadWithThreadId:(NSString *) threadId;
 - (NSString *) showThreadWithThreadId:(NSString *) threadId withPage:(int)page;
-- (NSString *) showThreadWithPostId:(NSString *) postId withPostCout:(int) postCount;
 - (NSString *) showThreadWithP:(NSString *) p;
+
+// 复制
+- (NSString *)copyThreadUrl:(NSString *)postId withPostCout:(int) postCount;
 
 // 头像
 - (NSString *) avatar:(NSString *)avatar;

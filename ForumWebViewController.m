@@ -620,7 +620,7 @@
                 AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
                 id<ForumConfigDelegate> forumConfig = [self.forumApi currentConfigDelegate];
 
-                NSString *postUrl = [forumConfig showThreadWithPostId:[NSString stringWithFormat:@"%d",postId] withPostCout:louCeng];//BBS_SHOWTHREAD_POSTCOUNT(postId, louCeng);
+                NSString *postUrl = [forumConfig copyThreadUrl:[NSString stringWithFormat:@"%d", postId] withPostCout:louCeng];
                 UIPasteboard *pasteboard = [UIPasteboard generalPasteboard];
                 pasteboard.string = postUrl;
                 [SVProgressHUD showSuccessWithStatus:@"复制成功" maskType:SVProgressHUDMaskTypeBlack];
