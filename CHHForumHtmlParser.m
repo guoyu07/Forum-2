@@ -243,7 +243,33 @@
 }
 
 - (ViewForumPage *)parseFavThreadListFromHtml:(NSString *)html {
-    return nil;
+    ViewForumPage *page = [[ViewForumPage alloc] init];
+    IGHTMLDocument *document = [[IGHTMLDocument alloc] initWithHTMLString:html error:nil];
+
+    IGXMLNode * favNode = [document queryNodeWithXPath:@"//*[@id=\"favorite_ul\"]"];
+    if (favNode != nil){
+        NSMutableArray<Thread *> *threadList = [NSMutableArray<Thread *> array];
+        for (IGXMLNode * fav in favNode.children){
+            Thread *thread = [[Thread alloc] init];
+            IGXMLNode *titleNode = [fav queryWithXPath:@"a[2]"].firstObject;
+            NSString * title = [titleNode text];
+            NSString *thradId = [[titleNode attribute:@"href"] componentsSeparatedByString:@"-"][1];
+
+            //*[@id="fav_1010109"]/span
+            NSString *favTime = [[fav queryWithXPath:@"span"].firstObject text];
+
+            thread.threadTitle = title;
+            thread.threadID = thradId;
+            thread.lastPostTime = favTime;
+
+            [threadList addObject:thread];
+        }
+        page.threadList = threadList;
+    }
+
+    PageNumber *pageNumber = [self parserPageNumber:html];
+    page.pageNumber = pageNumber;
+    return page;
 }
 
 - (NSString *)parseSecurityToken:(NSString *)html {
