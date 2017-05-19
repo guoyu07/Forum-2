@@ -85,9 +85,6 @@ typedef void (^HandlerWithBool)(BOOL isSuccess, id message);
 // 查看新帖
 - (void)listNewThreadPostsWithPage:(int)page handler:(HandlerWithBool)handler;
 
-// 查看今日新帖
-- (void)listTodayNewThreadsWithPage:(int)page handler:(HandlerWithBool)handler;
-
 // 显示我发表的主题
 - (void)listMyAllThreadsWithPage:(int)page handler:(HandlerWithBool)handler;
 

@@ -26,11 +26,6 @@
     return @"v2x4_48dd_lastcheckfeed";
 }
 
-- (NSString *)cookieLastVisitTimeKey {
-    // name:"v2x4_48dd_lastcheckfeed" value:"238210%7C1494126638" expiresDate:2018-05-07 03:10:38 +0000
-    return @"v2x4_48dd_lastcheckfeed";
-}
-
 - (NSString *)cookieExpTimeKey {
     // name:"v2x4_48dd_lastcheckfeed" value:"238210%7C1494126638" expiresDate:2018-05-07 03:10:38 +0000
     return @"v2x4_48dd_lastcheckfeed";
@@ -57,10 +52,6 @@
 }
 
 - (NSString *)searchThreadWithUserId:(NSString *)userId {
-    return nil;
-}
-
-- (NSString *)searchMyPostWithUserId:(NSString *)userId {
     return nil;
 }
 
@@ -106,10 +97,6 @@
 
 - (NSString *)searchNewThread:(int)page {
     return [NSString stringWithFormat:@"https://www.chiphell.com/forum.php?mod=guide&view=hot&page=%d", page];
-}
-
-- (NSString *)searchNewThreadToday {
-    return nil;
 }
 
 - (NSString *)newReplyWithThreadId:(int)threadId {

@@ -26,10 +26,6 @@
     return @"drluserid";
 }
 
-- (NSString *)cookieLastVisitTimeKey {
-    return @"drllastvisit";
-}
-
 - (NSString *)cookieExpTimeKey {
     return @"IDstack";
 }
@@ -69,10 +65,6 @@
 
 - (NSString *)searchThreadWithUserId:(NSString *)userId {
     return [NSString stringWithFormat:@"%@search.php?do=finduser&u=%@&starteronly=1", _forumURL.absoluteString ,userId];
-}
-
-- (NSString *)searchMyPostWithUserId:(NSString *)userId {
-    return [NSString stringWithFormat:@"%@search.php?do=finduser&userid=%@", _forumURL.absoluteString ,userId];
 }
 
 - (NSString *)searchMyThreadWithUserName:(NSString *)name {
@@ -117,10 +109,6 @@
 
 - (NSString *)searchNewThread:(int)page {
     return [NSString stringWithFormat:@"%@search.php?do=getnew", _forumURL.absoluteString];
-}
-
-- (NSString *)searchNewThreadToday {
-    return [NSString stringWithFormat:@"%@search.php?do=getdaily",_forumURL.absoluteString];
 }
 
 - (NSString *)newReplyWithThreadId:(int)threadId {

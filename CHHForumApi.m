@@ -323,12 +323,15 @@
     }];
 }
 
-- (void)listTodayNewThreadsWithPage:(int)page handler:(HandlerWithBool)handler {
-
-}
-
 - (void)listMyAllThreadsWithPage:(int)page handler:(HandlerWithBool)handler {
-
+    [self.browser GETWithURLString:nil parameters:nil requestCallback:^(BOOL isSuccess, NSString *html) {
+        if (isSuccess) {
+            ViewForumPage *sarchPage = [self.forumParser parseSearchPageFromHtml:html];
+            handler(isSuccess, sarchPage);
+        } else {
+            handler(NO, html);
+        }
+    }];
 }
 
 - (void)listAllUserThreads:(int)userId withPage:(int)page handler:(HandlerWithBool)handler {

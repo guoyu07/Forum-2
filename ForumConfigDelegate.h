@@ -22,8 +22,6 @@
 
 - (NSString *) cookieUserIdKey;
 
-- (NSString *) cookieLastVisitTimeKey;
-
 - (NSString *) cookieExpTimeKey;
 
 // 附件相关
@@ -35,7 +33,6 @@
 - (NSString *) search;
 - (NSString *) searchWithSearchId:(NSString *)searchId withPage:(int)page;
 - (NSString *) searchThreadWithUserId:(NSString *)userId;
-- (NSString *) searchMyPostWithUserId:(NSString *)userId;
 - (NSString *)searchMyThreadWithUserName:(NSString *)name;
 
 // 收藏论坛
@@ -53,11 +50,8 @@
 - (NSString *) forumDisplayWithId:(NSString *)forumId;
 - (NSString *) forumDisplayWithId:(NSString *)forumId withPage:(int)page;
 
-
-
 // 查看新帖
 - (NSString *) searchNewThread:(int) page;
-- (NSString *) searchNewThreadToday;
 
 // 回帖
 - (NSString *) newReplyWithThreadId:(int) threadId;

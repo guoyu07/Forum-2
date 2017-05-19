@@ -1201,39 +1201,6 @@ typedef void (^CallBack)(NSString *token, NSString *hash, NSString *time);
     }
 }
 
-- (void)listTodayNewThreadsWithPage:(int)page handler:(HandlerWithBool)handler {
-    if (todayNewThreadPostSearchId == nil) {
-        NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
-        [parameters setValue:@"3" forKey:@"styleid"];
-        [self.browser GETWithURLString:self.forumConfig.searchNewThreadToday parameters:parameters requestCallback:^(BOOL isSuccess, NSString *html) {
-
-
-            if (isSuccess) {
-                todayNewThreadPostSearchId = [self.forumParser parseListMyThreadSearchid:html];
-            }
-            if (isSuccess) {
-                ViewForumPage *sarchPage = [self.forumParser parseSearchPageFromHtml:html];
-                handler(isSuccess, sarchPage);
-            } else {
-                handler(NO, html);
-            }
-        }];
-    } else {
-        NSString *url = [self.forumConfig searchWithSearchId:todayNewThreadPostSearchId withPage:page];
-
-        NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
-        [parameters setValue:@"3" forKey:@"styleid"];
-        [self.browser GETWithURLString:url parameters:parameters requestCallback:^(BOOL isSuccess, NSString *html) {
-            if (isSuccess) {
-                ViewForumPage *sarchPage = [self.forumParser parseSearchPageFromHtml:html];
-                handler(isSuccess, sarchPage);
-            } else {
-                handler(NO, html);
-            }
-        }];
-    }
-}
-
 - (void)listMyAllThreadsWithPage:(int)page handler:(HandlerWithBool)handler {
     LoginUser *user = [self getLoginUser];
     if (user == nil || user.userID == nil) {
