@@ -112,7 +112,7 @@
     return [NSString stringWithFormat:@"%@search.php?do=getnew", _forumURL.absoluteString];
 }
 
-- (NSString *)newReplyWithThreadId:(int)threadId forForumId:(int)forumId {
+- (NSString *)replyWithThreadId:(int)threadId forForumId:(int)forumId replyPostId:(int)postId {
     return [NSString stringWithFormat:@"%@newreply.php?do=postreply&t=%d", _forumURL.absoluteString, threadId];
 }
 

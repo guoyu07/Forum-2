@@ -205,7 +205,7 @@
                      withImages:(NSArray *)images
                   securitytoken:(NSString *)token handler:(HandlerWithBool)handler {
 
-    NSString *url = [self.forumConfig newReplyWithThreadId:threadId forForumId:forumId];
+    NSString *url = [self.forumConfig replyWithThreadId:threadId forForumId:forumId replyPostId:-1];
 
     if ([NSUserDefaults standardUserDefaults].isSignatureEnabled) {
         message = [message stringByAppendingString:[self buildSignature]];

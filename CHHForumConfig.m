@@ -100,8 +100,13 @@
     return [NSString stringWithFormat:@"https://www.chiphell.com/forum.php?mod=guide&view=hot&page=%d", page];
 }
 
-- (NSString *)newReplyWithThreadId:(int)threadId forForumId:(int)forumId {
-    return [NSString stringWithFormat:@"https://www.chiphell.com/forum.php?mod=post&action=reply&fid=%d&tid=%d&extra=&replysubmit=yes", forumId, threadId];
+- (NSString *)replyWithThreadId:(int)threadId forForumId:(int)forumId replyPostId:(int)postId {
+    //https://www.chiphell.com/forum.php?mod=post&action=reply&fid=201&tid=1737227&reppost=36441207&extra=page%3D1&page=1&infloat=yes&handlekey=reply&inajax=1&ajaxtarget=fwin_content_reply
+    if (postId == -1){
+        return [NSString stringWithFormat:@"https://www.chiphell.com/forum.php?mod=post&action=reply&fid=%d&tid=%d&reppost=%d&extra=page%3D1&page=1&infloat=yes&handlekey=reply&inajax=1&ajaxtarget=fwin_content_reply", forumId, threadId, postId];
+    } else{
+        return [NSString stringWithFormat:@"https://www.chiphell.com/forum.php?mod=post&action=reply&fid=%d&tid=%d&extra=&replysubmit=yes", forumId, threadId];
+    }
 }
 
 - (NSString *)showThreadWithThreadId:(NSString *)threadId withPage:(int)page {
