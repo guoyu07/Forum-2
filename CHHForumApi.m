@@ -201,10 +201,7 @@
 
 }
 
-- (void)seniorReplyWithThreadId:(int)threadId forForumId:(int)forumId andMessage:(NSString *)message
-                     withImages:(NSArray *)images
-                  securitytoken:(NSString *)token handler:(HandlerWithBool)handler {
-
+- (void)seniorReplyWithThreadId:(int)threadId forForumId:(int)forumId replyPostId:(int)replyPostId andMessage:(NSString *)message withImages:(NSArray *)images securitytoken:(NSString *)token handler:(HandlerWithBool)handler {
     NSString *url = [self.forumConfig replyWithThreadId:threadId forForumId:forumId replyPostId:-1];
 
     if ([NSUserDefaults standardUserDefaults].isSignatureEnabled) {

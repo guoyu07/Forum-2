@@ -557,6 +557,89 @@ typedef void (^CallBack)(NSString *token, NSString *hash, NSString *time);
 
 }
 
+- (void)seniorReplyWithThreadId:(int)threadId forForumId:(int)forumId replyPostId:(int)replyPostId andMessage:(NSString *)message withImages:(NSArray *)images securitytoken:(NSString *)token handler:(HandlerWithBool)handler {
+    NSString *url = [self.forumConfig replyWithThreadId:threadId forForumId:-1 replyPostId:-1];
+
+
+    NSMutableDictionary *presparameters = [NSMutableDictionary dictionary];
+    [presparameters setValue:@"" forKey:@"message"];
+    [presparameters setValue:@"0" forKey:@"wysiwyg"];
+    [presparameters setValue:@"2" forKey:@"styleid"];
+    [presparameters setValue:@"1" forKey:@"signature"];
+    [presparameters setValue:@"1" forKey:@"fromquickreply"];
+    [presparameters setValue:@"" forKey:@"s"];
+    [presparameters setValue:token forKey:@"securitytoken"];
+    [presparameters setValue:@"postreply" forKey:@"do"];
+    [presparameters setValue:[NSString stringWithFormat:@"%d", threadId] forKey:@"t"];
+    [presparameters setValue:@"who cares" forKey:@"p"];
+    [presparameters setValue:@"0" forKey:@"specifiedpost"];
+    [presparameters setValue:@"1" forKey:@"parseurl"];
+    LoginUser *user = [self getLoginUser];
+    [presparameters setValue:user.userID forKey:@"loggedinuser"];
+    [presparameters setValue:@"进入高级模式" forKey:@"preview"];
+
+    [self.browser POSTWithURLString:url parameters:presparameters requestCallback:^(BOOL isSuccess, NSString *html) {
+        if (isSuccess) {
+
+            NSString *securityToken = [self.forumParser parseSecurityToken:html];
+            NSString *postHash = [self.forumParser parsePostHash:html];
+            NSString *postStartTime = [self.forumParser parserPostStartTime:html];
+
+            if (images == nil || [images count] == 0) {
+                [self seniorReplyWithThreadId:threadId andMessage:message securitytoken:securityToken posthash:postHash poststarttime:postStartTime handler:^(BOOL success, id result) {
+                    if (success) {
+
+                        NSString *error = [self checkError:result];
+                        if (error != nil) {
+
+                            handler(NO, error);
+                        } else {
+                            ViewThreadPage *thread = [self.forumParser parseShowThreadWithHtml:result];
+                            if (thread.postList.count > 0) {
+                                handler(YES, thread);
+                            } else {
+                                handler(NO, @"未知错误");
+                            }
+                        }
+                    } else {
+                        handler(NO, html);
+                    }
+                }];
+
+            } else {
+
+                __block NSString *uploadImageToken = @"";
+                // 如果有图片，先传图片
+                [self uploadImagePrepairFormSeniorReply:threadId startPostTime:postStartTime postHash:postHash :^(BOOL success, id result) {
+
+                    if (success) {
+                        // 解析出上传图片需要的参数
+                        uploadImageToken = [self.forumParser parseSecurityToken:result];
+                        NSString *uploadTime = [[securityToken componentsSeparatedByString:@"-"] firstObject];
+                        NSString *uploadHash = [self.forumParser parsePostHash:result];
+
+                        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(seniorReplyUploadImage:) name:@"SENIOR_REPLY_UPLOAD_IMAGE" object:nil];
+
+                        toUploadImages = images;
+                        _handlerWithBool = handler;
+                        _message = message;
+
+                        [[NSNotificationCenter defaultCenter] postNotificationName:@"SENIOR_REPLY_UPLOAD_IMAGE" object:self userInfo:@{@"uploadImageToken": uploadImageToken, @"forumId": @(forumId),
+                                @"threadId": @(threadId), @"uploadTime": uploadTime, @"uploadHash": uploadHash, @"imageId": @(0)}];
+                    } else {
+                        handler(NO, result);
+                    }
+
+
+                }];
+            }
+        } else {
+            handler(NO, @"回复失败");
+        }
+    }];
+}
+
+
 // private
 - (void)seniorReplyWithThreadId:(int)threadId andMessage:(NSString *)message securitytoken:(NSString *)token posthash:(NSString *)posthash poststarttime:(NSString *)poststarttime handler:(HandlerWithBool)handler {
 
@@ -692,88 +775,6 @@ typedef void (^CallBack)(NSString *token, NSString *hash, NSString *time);
             callback(YES, responseString);
         } else {
             callback(NO, @"failed");
-        }
-    }];
-}
-
-- (void)seniorReplyWithThreadId:(int)threadId forForumId:(int)forumId andMessage:(NSString *)message withImages:(NSArray *)images securitytoken:(NSString *)token handler:(HandlerWithBool)handler {
-    NSString *url = [self.forumConfig replyWithThreadId:threadId forForumId:-1 replyPostId:-1];
-
-
-    NSMutableDictionary *presparameters = [NSMutableDictionary dictionary];
-    [presparameters setValue:@"" forKey:@"message"];
-    [presparameters setValue:@"0" forKey:@"wysiwyg"];
-    [presparameters setValue:@"2" forKey:@"styleid"];
-    [presparameters setValue:@"1" forKey:@"signature"];
-    [presparameters setValue:@"1" forKey:@"fromquickreply"];
-    [presparameters setValue:@"" forKey:@"s"];
-    [presparameters setValue:token forKey:@"securitytoken"];
-    [presparameters setValue:@"postreply" forKey:@"do"];
-    [presparameters setValue:[NSString stringWithFormat:@"%d", threadId] forKey:@"t"];
-    [presparameters setValue:@"who cares" forKey:@"p"];
-    [presparameters setValue:@"0" forKey:@"specifiedpost"];
-    [presparameters setValue:@"1" forKey:@"parseurl"];
-    LoginUser *user = [self getLoginUser];
-    [presparameters setValue:user.userID forKey:@"loggedinuser"];
-    [presparameters setValue:@"进入高级模式" forKey:@"preview"];
-
-    [self.browser POSTWithURLString:url parameters:presparameters requestCallback:^(BOOL isSuccess, NSString *html) {
-        if (isSuccess) {
-
-            NSString *securityToken = [self.forumParser parseSecurityToken:html];
-            NSString *postHash = [self.forumParser parsePostHash:html];
-            NSString *postStartTime = [self.forumParser parserPostStartTime:html];
-
-            if (images == nil || [images count] == 0) {
-                [self seniorReplyWithThreadId:threadId andMessage:message securitytoken:securityToken posthash:postHash poststarttime:postStartTime handler:^(BOOL success, id result) {
-                    if (success) {
-
-                        NSString *error = [self checkError:result];
-                        if (error != nil) {
-
-                            handler(NO, error);
-                        } else {
-                            ViewThreadPage *thread = [self.forumParser parseShowThreadWithHtml:result];
-                            if (thread.postList.count > 0) {
-                                handler(YES, thread);
-                            } else {
-                                handler(NO, @"未知错误");
-                            }
-                        }
-                    } else {
-                        handler(NO, html);
-                    }
-                }];
-
-            } else {
-
-                __block NSString *uploadImageToken = @"";
-                // 如果有图片，先传图片
-                [self uploadImagePrepairFormSeniorReply:threadId startPostTime:postStartTime postHash:postHash :^(BOOL success, id result) {
-
-                    if (success) {
-                        // 解析出上传图片需要的参数
-                        uploadImageToken = [self.forumParser parseSecurityToken:result];
-                        NSString *uploadTime = [[securityToken componentsSeparatedByString:@"-"] firstObject];
-                        NSString *uploadHash = [self.forumParser parsePostHash:result];
-
-                        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(seniorReplyUploadImage:) name:@"SENIOR_REPLY_UPLOAD_IMAGE" object:nil];
-
-                        toUploadImages = images;
-                        _handlerWithBool = handler;
-                        _message = message;
-
-                        [[NSNotificationCenter defaultCenter] postNotificationName:@"SENIOR_REPLY_UPLOAD_IMAGE" object:self userInfo:@{@"uploadImageToken": uploadImageToken, @"forumId": @(forumId),
-                                @"threadId": @(threadId), @"uploadTime": uploadTime, @"uploadHash": uploadHash, @"imageId": @(0)}];
-                    } else {
-                        handler(NO, result);
-                    }
-
-
-                }];
-            }
-        } else {
-            handler(NO, @"回复失败");
         }
     }];
 }

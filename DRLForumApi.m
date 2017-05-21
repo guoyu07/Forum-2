@@ -560,6 +560,99 @@ typedef void (^CallBack)(NSString *token, NSString *hash, NSString *time);
 
 }
 
+- (void)seniorReplyWithThreadId:(int)threadId forForumId:(int)forumId replyPostId:(int)replyPostId andMessage:(NSString *)message withImages:(NSArray *)images securitytoken:(NSString *)token handler:(HandlerWithBool)handler {
+    NSString *url = [self.forumConfig replyWithThreadId:threadId forForumId:-1 replyPostId:-1];
+
+
+    NSMutableDictionary *presparameters = [NSMutableDictionary dictionary];
+    [presparameters setValue:@"" forKey:@"message"];
+    [presparameters setValue:@"1" forKey:@"fromquickreply"];
+    [presparameters setValue:@"" forKey:@"s"];
+    [presparameters setValue:@"postreply" forKey:@"do"];
+    [presparameters setValue:[NSString stringWithFormat:@"%d", threadId] forKey:@"t"];
+    [presparameters setValue:@"who cares" forKey:@"p"];
+    [presparameters setValue:@"1" forKey:@"parseurl"];
+    [presparameters setValue:@"高级模式" forKey:@"preview"];
+    [presparameters setValue:@"高级模式" forKey:@"clickedelm"];
+
+    [self.browser POSTWithURLString:url parameters:presparameters requestCallback:^(BOOL isSuccess, NSString *html) {
+        if (isSuccess) {
+
+            NSString *postHash = [self.forumParser parsePostHash:html];
+            NSString *postStartTime = [self.forumParser parserPostStartTime:html];
+
+            if (images == nil || [images count] == 0) {
+                [self seniorReplyWithThreadId:threadId andMessage:message posthash:postHash poststarttime:postStartTime handler:^(BOOL success, id result) {
+                    if (success) {
+                        if ([html containsString:@"<ol><li>本论坛允许的发表两个帖子的时间间隔必须大于 30 秒。请等待 "]) {
+                            handler(NO, @"本论坛允许的发表两个帖子的时间间隔必须大于 30 秒");
+                        } else {
+                            ViewThreadPage *thread = [self.forumParser parseShowThreadWithHtml:result];
+                            if (thread.postList.count > 0) {
+                                handler(YES, thread);
+                            } else {
+                                handler(NO, @"未知错误");
+                            }
+                        }
+                    } else {
+                        handler(NO, html);
+                    }
+                }];
+
+            } else {
+
+                NSString *urlStr = self.forumConfig.newattachment;
+                NSURL *uploadImageUrl = [NSURL URLWithString:urlStr];
+                // 如果有图片，先传图片
+                [self uploadImagePrepairFormSeniorReply:threadId startPostTime:postStartTime postHash:postHash :^(BOOL bisSuccess, id result) {
+
+                    __block BOOL uploadSuccess = YES;
+                    int uploadCount = (int) images.count;
+                    for (int i = 0; i < uploadCount && uploadSuccess; i++) {
+                        NSData *image = images[(NSUInteger) i];
+
+                        [NSThread sleepForTimeInterval:2.0f];
+                        [self uploadImageForSeniorReply:uploadImageUrl fId:forumId threadId:threadId postTime:postStartTime hash:postHash :image callback:^(BOOL bsuccess, id uploadResultHtml) {
+                            uploadSuccess = bsuccess;
+                            // 更新token
+                            NSLog(@" 上传第 %d 张图片", i);
+
+                            if (i == images.count - 1) {
+                                [NSThread sleepForTimeInterval:2.0f];
+                                [self seniorReplyWithThreadId:threadId andMessage:message posthash:postHash poststarttime:postStartTime handler:^(BOOL rsuccess, id resultHtml) {
+
+                                    if (rsuccess) {
+                                        if ([html containsString:@"<ol><li>本论坛允许的发表两个帖子的时间间隔必须大于 30 秒。请等待 "]) {
+                                            handler(NO, @"本论坛允许的发表两个帖子的时间间隔必须大于 30 秒");
+                                        } else {
+                                            ViewThreadPage *thread = [self.forumParser parseShowThreadWithHtml:resultHtml];
+                                            if (thread.postList.count > 0) {
+                                                handler(YES, thread);
+                                            } else {
+                                                handler(NO, @"未知错误");
+                                            }
+                                        }
+                                    } else {
+                                        handler(NO, html);
+                                    }
+
+                                }];
+                            }
+                        }];
+                    }
+
+                    if (!uploadSuccess) {
+                        handler(NO, @"上传图片失败！");
+                    }
+                }];
+            }
+        } else {
+            handler(NO, @"回复失败");
+        }
+    }];
+}
+
+
 // private
 - (void)seniorReplyWithThreadId:(int)threadId andMessage:(NSString *)message posthash:(NSString *)posthash poststarttime:(NSString *)poststarttime handler:(HandlerWithBool)handler {
 
@@ -680,98 +773,6 @@ typedef void (^CallBack)(NSString *token, NSString *hash, NSString *time);
             callback(YES, responseString);
         } else {
             callback(NO, @"failed");
-        }
-    }];
-}
-
-- (void)seniorReplyWithThreadId:(int)threadId forForumId:(int)forumId andMessage:(NSString *)message withImages:(NSArray *)images securitytoken:(NSString *)token handler:(HandlerWithBool)handler {
-    NSString *url = [self.forumConfig replyWithThreadId:threadId forForumId:-1 replyPostId:-1];
-
-
-    NSMutableDictionary *presparameters = [NSMutableDictionary dictionary];
-    [presparameters setValue:@"" forKey:@"message"];
-    [presparameters setValue:@"1" forKey:@"fromquickreply"];
-    [presparameters setValue:@"" forKey:@"s"];
-    [presparameters setValue:@"postreply" forKey:@"do"];
-    [presparameters setValue:[NSString stringWithFormat:@"%d", threadId] forKey:@"t"];
-    [presparameters setValue:@"who cares" forKey:@"p"];
-    [presparameters setValue:@"1" forKey:@"parseurl"];
-    [presparameters setValue:@"高级模式" forKey:@"preview"];
-    [presparameters setValue:@"高级模式" forKey:@"clickedelm"];
-
-    [self.browser POSTWithURLString:url parameters:presparameters requestCallback:^(BOOL isSuccess, NSString *html) {
-        if (isSuccess) {
-
-            NSString *postHash = [self.forumParser parsePostHash:html];
-            NSString *postStartTime = [self.forumParser parserPostStartTime:html];
-
-            if (images == nil || [images count] == 0) {
-                [self seniorReplyWithThreadId:threadId andMessage:message posthash:postHash poststarttime:postStartTime handler:^(BOOL success, id result) {
-                    if (success) {
-                        if ([html containsString:@"<ol><li>本论坛允许的发表两个帖子的时间间隔必须大于 30 秒。请等待 "]) {
-                            handler(NO, @"本论坛允许的发表两个帖子的时间间隔必须大于 30 秒");
-                        } else {
-                            ViewThreadPage *thread = [self.forumParser parseShowThreadWithHtml:result];
-                            if (thread.postList.count > 0) {
-                                handler(YES, thread);
-                            } else {
-                                handler(NO, @"未知错误");
-                            }
-                        }
-                    } else {
-                        handler(NO, html);
-                    }
-                }];
-
-            } else {
-
-                NSString *urlStr = self.forumConfig.newattachment;
-                NSURL *uploadImageUrl = [NSURL URLWithString:urlStr];
-                // 如果有图片，先传图片
-                [self uploadImagePrepairFormSeniorReply:threadId startPostTime:postStartTime postHash:postHash :^(BOOL bisSuccess, id result) {
-
-                    __block BOOL uploadSuccess = YES;
-                    int uploadCount = (int) images.count;
-                    for (int i = 0; i < uploadCount && uploadSuccess; i++) {
-                        NSData *image = images[(NSUInteger) i];
-
-                        [NSThread sleepForTimeInterval:2.0f];
-                        [self uploadImageForSeniorReply:uploadImageUrl fId:forumId threadId:threadId postTime:postStartTime hash:postHash :image callback:^(BOOL bsuccess, id uploadResultHtml) {
-                            uploadSuccess = bsuccess;
-                            // 更新token
-                            NSLog(@" 上传第 %d 张图片", i);
-
-                            if (i == images.count - 1) {
-                                [NSThread sleepForTimeInterval:2.0f];
-                                [self seniorReplyWithThreadId:threadId andMessage:message posthash:postHash poststarttime:postStartTime handler:^(BOOL rsuccess, id resultHtml) {
-
-                                    if (rsuccess) {
-                                        if ([html containsString:@"<ol><li>本论坛允许的发表两个帖子的时间间隔必须大于 30 秒。请等待 "]) {
-                                            handler(NO, @"本论坛允许的发表两个帖子的时间间隔必须大于 30 秒");
-                                        } else {
-                                            ViewThreadPage *thread = [self.forumParser parseShowThreadWithHtml:resultHtml];
-                                            if (thread.postList.count > 0) {
-                                                handler(YES, thread);
-                                            } else {
-                                                handler(NO, @"未知错误");
-                                            }
-                                        }
-                                    } else {
-                                        handler(NO, html);
-                                    }
-
-                                }];
-                            }
-                        }];
-                    }
-
-                    if (!uploadSuccess) {
-                        handler(NO, @"上传图片失败！");
-                    }
-                }];
-            }
-        } else {
-            handler(NO, @"回复失败");
         }
     }];
 }

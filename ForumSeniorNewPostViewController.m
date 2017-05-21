@@ -21,10 +21,10 @@
     UIImagePickerController *pickControl;
     NSMutableArray<UIImage *> *images;
     NSString * userName;
-    int threadId ;
     NSString *securityToken;
 
-    NSString *forumIdStr;
+    int forumId;
+    int threadId;
 }
 
 @end
@@ -36,16 +36,12 @@
     userName = [bundle getStringValue:@"USER_NAME"];
     threadId = [bundle getIntValue:@"THREAD_ID"];
     securityToken = [bundle getStringValue:@"SECYRITY_TOKEN"];
-    forumIdStr = [bundle getStringValue:@"FORM_ID"];
+    forumId = [bundle getIntValue:@"FORM_ID"];
 }
 
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-
-    // 传递数据
-
-
 
     _insertCollectionView.delegate = self;
     _insertCollectionView.dataSource = self;
@@ -228,7 +224,7 @@
     }
 
 
-    [self.forumApi seniorReplyWithThreadId:threadId forForumId:[forumIdStr intValue] andMessage:self.replyContent.text withImages:uploadData securitytoken:securityToken handler:^(BOOL isSuccess, id message) {
+    [self.forumApi seniorReplyWithThreadId:threadId forForumId:forumId replyPostId:-1 andMessage:self.replyContent.text withImages:uploadData securitytoken:securityToken handler:^(BOOL isSuccess, id message) {
         if (isSuccess) {
             [SVProgressHUD showSuccessWithStatus:@"回复成功" maskType:SVProgressHUDMaskTypeBlack];
 
