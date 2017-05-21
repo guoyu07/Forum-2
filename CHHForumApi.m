@@ -13,6 +13,9 @@
 #import "ForumParserDelegate.h"
 #import "NSUserDefaults+Setting.h"
 
+#import "IGHTMLDocument+QueryNode.h"
+#import "IGXMLNode+Children.h"
+
 
 @implementation CHHForumApi {
 
@@ -201,36 +204,102 @@
 
 }
 
-- (void)seniorReplyWithThreadId:(int)threadId forForumId:(int)forumId replyPostId:(int)replyPostId andMessage:(NSString *)message withImages:(NSArray *)images securitytoken:(NSString *)token handler:(HandlerWithBool)handler {
-    NSString *url = [self.forumConfig replyWithThreadId:threadId forForumId:forumId replyPostId:-1];
+- (void)seniorReplyWithThreadId:(int)threadId forForumId:(int)forumId replyPostId:(int)replyPostId
+                     andMessage:(NSString *)message
+                     withImages:(NSArray *)images
+                  securitytoken:(NSString *)token handler:(HandlerWithBool)handler {
+
+    NSString *msg = message;
 
     if ([NSUserDefaults standardUserDefaults].isSignatureEnabled) {
-        message = [message stringByAppendingString:[self buildSignature]];
+        msg = [message stringByAppendingString:[self buildSignature]];
     }
 
+    if (replyPostId == -1){     // 表示回复的某一个楼层
+        NSString *preReplyUrl = [NSString stringWithFormat:@"https://www.chiphell.com/forum.php?mod=post&action=reply&fid=%d&tid=%d&reppost=%d&extra=page%3D1&page=1&infloat=yes&handlekey=reply&inajax=1&ajaxtarget=fwin_content_reply", forumId, threadId, replyPostId];
 
-    NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
-    [parameters setValue:message forKey:@"message"];
-    [parameters setValue:token forKey:@"formhash"];
-    long time = (long) [[NSDate date] timeIntervalSince1970];
-    [parameters setValue:[NSString stringWithFormat:@"%li", time] forKey:@"posttime"];
-    [parameters setValue:@"" forKey:@"wysiwyg"];
+        [self.browser GETWithURLString:preReplyUrl parameters:nil requestCallback:^(BOOL isSuccess, NSString *html) {
+            if (isSuccess) {
+                NSString *formHash = nil;
+                NSString *noticeAuthor = nil;
+                NSString *noticeAuthorMsg = nil;
+                int repPid = replyPostId;
+                int repPost = replyPostId;
 
-    [parameters setValue:@"" forKey:@"noticeauthor"];
-    [parameters setValue:@"" forKey:@"noticetrimstr"];
+                IGHTMLDocument * document = [[IGHTMLDocument alloc] initWithXMLString:html error:nil];
+                IGXMLNode *paramNode = [document queryNodeWithXPath:@"//*[@id=\"floatlayout_reply\"]/div"];
+                for (IGXMLNode *node  in paramNode.children) {
+                    if ([[node attribute:@"name"] isEqualToString:@"formhash"]) {
+                        formHash = [node attribute:@"value"];
+                    } else if ([[node attribute:@"name"] isEqualToString:@"noticeauthor"]) {
+                        noticeAuthor = [node attribute:@"value"];
+                    } else if ([[node attribute:@"name"] isEqualToString:@"noticeauthormsg"]) {
+                        noticeAuthorMsg = [node attribute:@"value"];
+                    } else {
+                        continue;
+                    }
+                }
 
-    [parameters setValue:@"" forKey:@"noticeauthormsg"];
-    [parameters setValue:@"" forKey:@"subject"];
-    [parameters setValue:@"0" forKey:@"save"];
+                // 开始回复
+                NSString *url = [self.forumConfig replyWithThreadId:threadId forForumId:forumId replyPostId:replyPostId];
 
-    [self.browser POSTWithURLString:url parameters:parameters requestCallback:^(BOOL isSuccess, NSString *html) {
-        ViewThreadPage *thread = [self.forumParser parseShowThreadWithHtml:html];
-        if (thread.postList.count > 0) {
-            handler(YES, thread);
-        } else {
-            handler(NO, @"未知错误");
-        }
-    }];
+                NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
+                [parameters setValue:token forKey:@"formhash"];
+                [parameters setValue:@"reply" forKey:@"handlekey"];
+                [parameters setValue:noticeAuthor forKey:@"noticeauthor"];
+                [parameters setValue:@"" forKey:@"noticetrimstr"];
+                [parameters setValue:noticeAuthorMsg forKey:@"noticeauthormsg"];
+                [parameters setValue:@"0" forKey:@"usesig"];
+                [parameters setValue:[NSString stringWithFormat:@"%d", repPid] forKey:@"reppid"];
+                [parameters setValue:[NSString stringWithFormat:@"%d", repPost] forKey:@"reppost"];
+                [parameters setValue:@"" forKey:@"subject"];
+                [parameters setValue:msg forKey:@"message"];
+
+//                long time = (long) [[NSDate date] timeIntervalSince1970];
+//                [parameters setValue:[NSString stringWithFormat:@"%li", time] forKey:@"posttime"];
+//                [parameters setValue:@"" forKey:@"wysiwyg"];
+//                [parameters setValue:@"0" forKey:@"save"];
+
+                [self.browser POSTWithURLString:url parameters:parameters requestCallback:^(BOOL repsuccess, NSString *repHtml) {
+                    ViewThreadPage *thread = [self.forumParser parseShowThreadWithHtml:html];
+                    if (thread.postList.count > 0) {
+                        handler(YES, thread);
+                    } else {
+                        handler(NO, @"未知错误");
+                    }
+                }];
+
+            } else {
+                handler(NO, html);
+            }
+        }];
+
+    } else {
+        NSString *url = [self.forumConfig replyWithThreadId:threadId forForumId:forumId replyPostId:replyPostId];
+
+        NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
+        [parameters setValue:msg forKey:@"message"];
+        [parameters setValue:token forKey:@"formhash"];
+        long time = (long) [[NSDate date] timeIntervalSince1970];
+        [parameters setValue:[NSString stringWithFormat:@"%li", time] forKey:@"posttime"];
+        [parameters setValue:@"" forKey:@"wysiwyg"];
+
+        [parameters setValue:@"" forKey:@"noticeauthor"];
+        [parameters setValue:@"" forKey:@"noticetrimstr"];
+
+        [parameters setValue:@"" forKey:@"noticeauthormsg"];
+        [parameters setValue:@"" forKey:@"subject"];
+        [parameters setValue:@"0" forKey:@"save"];
+
+        [self.browser POSTWithURLString:url parameters:parameters requestCallback:^(BOOL isSuccess, NSString *html) {
+            ViewThreadPage *thread = [self.forumParser parseShowThreadWithHtml:html];
+            if (thread.postList.count > 0) {
+                handler(YES, thread);
+            } else {
+                handler(NO, @"未知错误");
+            }
+        }];
+    }
 }
 
 - (void)searchWithKeyWord:(NSString *)keyWord forType:(int)type handler:(HandlerWithBool)handler {

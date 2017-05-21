@@ -25,6 +25,7 @@
 
     int forumId;
     int threadId;
+    int postId;
 }
 
 @end
@@ -37,6 +38,7 @@
     threadId = [bundle getIntValue:@"THREAD_ID"];
     securityToken = [bundle getStringValue:@"SECYRITY_TOKEN"];
     forumId = [bundle getIntValue:@"FORM_ID"];
+    postId = [bundle getIntValue:@"POST_ID"];
 }
 
 
@@ -224,7 +226,7 @@
     }
 
 
-    [self.forumApi seniorReplyWithThreadId:threadId forForumId:forumId replyPostId:-1 andMessage:self.replyContent.text withImages:uploadData securitytoken:securityToken handler:^(BOOL isSuccess, id message) {
+    [self.forumApi seniorReplyWithThreadId:threadId forForumId:forumId replyPostId:postId andMessage:self.replyContent.text withImages:uploadData securitytoken:securityToken handler:^(BOOL isSuccess, id message) {
         if (isSuccess) {
             [SVProgressHUD showSuccessWithStatus:@"回复成功" maskType:SVProgressHUDMaskTypeBlack];
 

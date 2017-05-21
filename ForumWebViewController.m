@@ -576,9 +576,9 @@
 
                 TransBundle *bundle = [[TransBundle alloc] init];
 
+                [bundle putIntValue:currentShowThreadPage.forumId forKey:@"FORM_ID"];
                 [bundle putIntValue:threadID forKey:@"THREAD_ID"];
                 [bundle putIntValue:postId forKey:@"POST_ID"];
-
                 NSString *token = currentShowThreadPage.securityToken;
                 [bundle putStringValue:token forKey:@"SECYRITY_TOKEN"];
                 [bundle putStringValue:currentShowThreadPage.ajaxLastPost forKey:@"AJAX_LAST_POST"];
@@ -594,21 +594,13 @@
 
                 UINavigationController *controller = [storyBoard instantiateViewControllerWithIdentifier:@"SeniorReplySomeOne"];
 
-
                 TransBundle *bundle = [[TransBundle alloc] init];
-
+                [bundle putIntValue:currentShowThreadPage.forumId forKey:@"FORM_ID"];
                 [bundle putIntValue:threadID forKey:@"THREAD_ID"];
-
-
                 [bundle putIntValue:postId forKey:@"POST_ID"];
-
                 NSString *token = currentShowThreadPage.securityToken;
-
-
                 [bundle putStringValue:token forKey:@"SECYRITY_TOKEN"];
-
                 [bundle putStringValue:currentShowThreadPage.ajaxLastPost forKey:@"AJAX_LAST_POST"];
-
                 [bundle putStringValue:userName forKey:@"USER_NAME"];
 
                 [self presentViewController:controller withBundle:bundle forRootController:YES animated:YES completion:^{
@@ -797,11 +789,13 @@
     UINavigationController *controller = [storyBoard instantiateViewControllerWithIdentifier:@"SeniorReplySomeOne"];
 
     TransBundle *bundle = [[TransBundle alloc] init];
+    [bundle putIntValue:currentShowThreadPage.forumId forKey:@"FORM_ID"];
     [bundle putIntValue:threadID forKey:@"THREAD_ID"];
+    [bundle putIntValue:-1 forKey:@"POST_ID"];
+
     NSString *token = currentShowThreadPage.securityToken;
     [bundle putStringValue:token forKey:@"SECYRITY_TOKEN"];
     [bundle putStringValue:threadAuthorName forKey:@"POST_USER"];
-    [bundle putIntValue:currentShowThreadPage.forumId forKey:@"FORM_ID"];
 
     [self presentViewController:controller withBundle:bundle forRootController:YES animated:YES completion:^{
 
