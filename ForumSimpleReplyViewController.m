@@ -50,55 +50,30 @@
 
     [SVProgressHUD showWithStatus:@"正在回复" maskType:SVProgressHUDMaskTypeBlack];
 
+    [self.forumApi quickReplyPostWithThreadId:threadId forPostId:postId
+                                   andMessage:self.replyContent.text
+                                securitytoken:securityToken
+                                 ajaxLastPost:ajaxLastPost handler:^(BOOL isSuccess, id message) {
+                if (isSuccess && message != nil) {
+                    [SVProgressHUD showSuccessWithStatus:@"回复成功" maskType:SVProgressHUDMaskTypeBlack];
 
+                    ViewThreadPage *thread = message;
 
+                    TransBundle * bundle = [[TransBundle alloc] init];
+                    [bundle putObjectValue:thread forKey:@"Simple_Reply_Callback"];
 
-    if (postId != -1) {
-        [self.forumApi quickReplyPostWithThreadId:threadId forPostId:postId andMessage:self.replyContent.text securitytoken:securityToken ajaxLastPost:ajaxLastPost handler:^(BOOL isSuccess, ViewThreadPage *message) {
-            if (isSuccess && message != nil) {
-                [SVProgressHUD showSuccessWithStatus:@"回复成功" maskType:SVProgressHUDMaskTypeBlack];
+                    UITabBarController * presenting = (UITabBarController *) self.presentingViewController;
+                    UINavigationController * selected = presenting.selectedViewController;
+                    UIViewController * detail = selected.topViewController;
 
-                ViewThreadPage *thread = message;
+                    [self dismissViewControllerAnimated:YES backToViewController:detail withBundle:bundle completion:^{
 
-                TransBundle * bundle = [[TransBundle alloc] init];
-                [bundle putObjectValue:thread forKey:@"Simple_Reply_Callback"];
+                    }];
 
-                UITabBarController * presenting = (UITabBarController *) self.presentingViewController;
-                UINavigationController * selected = presenting.selectedViewController;
-                UIViewController * detail = selected.topViewController;
-
-                [self dismissViewControllerAnimated:YES backToViewController:detail withBundle:bundle completion:^{
-
-                }];
-
-            } else {
-                [SVProgressHUD showErrorWithStatus:(NSString *)message maskType:SVProgressHUDMaskTypeBlack];
-            }
-        }];
-    } else {
-        [self.forumApi replyThreadWithId:threadId andMessage:self.replyContent.text handler:^(BOOL isSuccess, id message) {
-
-            if (isSuccess) {
-
-                [SVProgressHUD showSuccessWithStatus:@"回复成功" maskType:SVProgressHUDMaskTypeBlack];
-
-                self.replyContent.text = @"";
-
-                ViewThreadPage *thread = message;
-
-//                ForumReplyNavigationController *navigationController = (ForumReplyNavigationController *) self.navigationController;
-//                self.delegate = (id <ReplyCallbackDelegate>) navigationController.controller;
-//
-//                [self dismissViewControllerAnimated:YES completion:^{
-//                    [self.delegate transReplyValue:thread];
-//                }];
-
-            } else {
-                [SVProgressHUD showErrorWithStatus:@"回复失败" maskType:SVProgressHUDMaskTypeBlack];
-            }
-        }];
-
-    }
+                } else {
+                    [SVProgressHUD showErrorWithStatus:(NSString *)message maskType:SVProgressHUDMaskTypeBlack];
+                }
+            }];
 
 }
 

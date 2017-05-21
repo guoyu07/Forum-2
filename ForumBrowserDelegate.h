@@ -39,9 +39,6 @@ typedef void (^HandlerWithBool)(BOOL isSuccess, id message);
 // 发表一个新的帖子
 - (void)createNewThreadWithForumId:(int)fId withSubject:(NSString *)subject andMessage:(NSString *)message withImages:(NSArray *)images handler:(HandlerWithBool)handler;
 
-// 发表一个回帖
-- (void)replyThreadWithId:(int)threadId andMessage:(NSString *)message handler:(HandlerWithBool)handler;
-
 // 快速回复
 - (void)quickReplyPostWithThreadId:(int)threadId forPostId:(int)postId andMessage:(NSString *)message securitytoken:(NSString *)token ajaxLastPost:(NSString *)ajax_lastpost handler:(HandlerWithBool)handler;
 
