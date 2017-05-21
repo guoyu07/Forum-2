@@ -134,6 +134,8 @@
 
     showThreadPage.postList = postList;
 
+    NSString * forumHash = [self parseSecurityToken:orgHtml];
+    showThreadPage.securityToken = forumHash;
 
     return showThreadPage;
 }
@@ -271,7 +273,10 @@
 }
 
 - (NSString *)parseSecurityToken:(NSString *)html {
-    return nil;
+    //<input type="hidden" name="formhash" value="fc436b99" />
+    NSString *forumHashHtml = [html stringWithRegular:@"<input type=\"hidden\" name=\"formhash\" value=\"\\w+\" />" andChild:@"value=\"\\w+\""];
+    NSString *forumHash = [[forumHashHtml componentsSeparatedByString:@"="].lastObject stringByReplacingOccurrencesOfString:@"\"" withString:@""];
+    return forumHash;
 }
 
 - (NSString *)parsePostHash:(NSString *)html {

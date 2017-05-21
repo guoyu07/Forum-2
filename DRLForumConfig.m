@@ -111,12 +111,8 @@
     return [NSString stringWithFormat:@"%@search.php?do=getnew", _forumURL.absoluteString];
 }
 
-- (NSString *)newReplyWithThreadId:(int)threadId {
+- (NSString *)newReplyWithThreadId:(int)threadId forForumId:(int)forumId {
     return [NSString stringWithFormat:@"%@newreply.php?do=postreply&t=%d",_forumURL.absoluteString, threadId];
-}
-
-- (NSString *)showThreadWithThreadId:(NSString *)threadId {
-    return [NSString stringWithFormat:@"%@showthread.php?t=%@",_forumURL.absoluteString, threadId];
 }
 
 - (NSString *)showThreadWithThreadId:(NSString *)threadId withPage:(int)page {

@@ -25,7 +25,7 @@
 
 @property(nonatomic, strong) NSMutableArray<Post *> *postList;
 
-@property(nonatomic, strong) NSString *securityToken;
+@property(nonatomic, strong) NSString *securityToken;   // forumhash
 @property(nonatomic, strong) NSString *ajaxLastPost;
 
 

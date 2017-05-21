@@ -54,10 +54,9 @@
 - (NSString *) searchNewThread:(int) page;
 
 // 回帖
-- (NSString *) newReplyWithThreadId:(int) threadId;
+- (NSString *) newReplyWithThreadId:(int) threadId forForumId:(int) forumId;
 
 // ShowThread
-- (NSString *) showThreadWithThreadId:(NSString *) threadId;
 - (NSString *) showThreadWithThreadId:(NSString *) threadId withPage:(int)page;
 - (NSString *) showThreadWithP:(NSString *) p;
 

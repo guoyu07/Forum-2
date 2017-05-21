@@ -100,12 +100,8 @@
     return [NSString stringWithFormat:@"https://www.chiphell.com/forum.php?mod=guide&view=hot&page=%d", page];
 }
 
-- (NSString *)newReplyWithThreadId:(int)threadId {
-    return nil;
-}
-
-- (NSString *)showThreadWithThreadId:(NSString *)threadId {
-    return nil;
+- (NSString *)newReplyWithThreadId:(int)threadId forForumId:(int)forumId {
+    return [NSString stringWithFormat:@"https://www.chiphell.com/forum.php?mod=post&action=reply&fid=%d&tid=%d&extra=&replysubmit=yes", forumId, threadId];
 }
 
 - (NSString *)showThreadWithThreadId:(NSString *)threadId withPage:(int)page {

@@ -11,6 +11,7 @@
 #import "AFHTTPSessionManager+SimpleAction.h"
 #import "UIButton+AFNetworking.h"
 #import "ForumParserDelegate.h"
+#import "NSUserDefaults+Setting.h"
 
 
 @implementation CHHForumApi {
@@ -204,8 +205,39 @@
 
 }
 
-- (void)seniorReplyWithThreadId:(int)threadId forForumId:(int)forumId andMessage:(NSString *)message withImages:(NSArray *)images securitytoken:(NSString *)token handler:(HandlerWithBool)handler {
+- (void)seniorReplyWithThreadId:(int)threadId forForumId:(int)forumId andMessage:(NSString *)message
+                     withImages:(NSArray *)images
+                  securitytoken:(NSString *)token handler:(HandlerWithBool)handler {
 
+    NSString *url = [self.forumConfig newReplyWithThreadId:threadId forForumId:forumId];
+
+    if ([NSUserDefaults standardUserDefaults].isSignatureEnabled) {
+        message = [message stringByAppendingString:[self buildSignature]];
+    }
+
+
+    NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
+    [parameters setValue:message forKey:@"message"];
+    [parameters setValue:token forKey:@"formhash"];
+    long time = (long) [[NSDate date] timeIntervalSince1970];
+    [parameters setValue:[NSString stringWithFormat:@"%li", time] forKey:@"posttime"];
+    [parameters setValue:@"" forKey:@"wysiwyg"];
+
+    [parameters setValue:@"" forKey:@"noticeauthor"];
+    [parameters setValue:@"" forKey:@"noticetrimstr"];
+
+    [parameters setValue:@"" forKey:@"noticeauthormsg"];
+    [parameters setValue:@"" forKey:@"subject"];
+    [parameters setValue:@"0" forKey:@"save"];
+
+    [self.browser POSTWithURLString:url parameters:parameters requestCallback:^(BOOL isSuccess, NSString *html) {
+        ViewThreadPage *thread = [self.forumParser parseShowThreadWithHtml:html];
+        if (thread.postList.count > 0) {
+            handler(YES, thread);
+        } else {
+            handler(NO, @"未知错误");
+        }
+    }];
 }
 
 - (void)searchWithKeyWord:(NSString *)keyWord forType:(int)type handler:(HandlerWithBool)handler {
@@ -342,7 +374,8 @@
 
     //https://www.chiphell.com/thread-1732141-2-1.html
 
-    [self.browser GETWithURLString:[self.forumConfig showThreadWithThreadId:[NSString stringWithFormat:@"%d", threadId] withPage:page] parameters:nil requestCallback:^(BOOL isSuccess, NSString *html) {
+    NSString *url = [self.forumConfig showThreadWithThreadId:[NSString stringWithFormat:@"%d", threadId] withPage:page];
+    [self.browser GETWithURLString:url parameters:nil requestCallback:^(BOOL isSuccess, NSString *html) {
 
         if (isSuccess) {
             NSString *error = nil;//[self checkError:html];
@@ -436,7 +469,7 @@
 // private
 - (NSString *)buildSignature {
     NSString *phoneName = [DeviceName deviceNameDetail];
-    NSString *signature = [NSString stringWithFormat:@"\n\n发自 %@ 使用 CCF客户端", phoneName];
+    NSString *signature = [NSString stringWithFormat:@"\n\n发自 %@ 使用 CHH客户端", phoneName];
     return signature;
 }
 
