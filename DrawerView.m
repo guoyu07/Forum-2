@@ -56,7 +56,7 @@
 
 
 - (void)showUserAvatar {
-    AppDelegate *appDelegate = (AppDelegate *) [[UIApplication sharedApplication] delegate];
+    //AppDelegate *appDelegate = (AppDelegate *) [[UIApplication sharedApplication] delegate];
     id <ForumBrowserDelegate> forumApi = [ForumApiHelper forumApi];
     id<ForumConfigDelegate> forumConfig = [forumApi currentConfigDelegate];
     LoginUser *loginUser = [forumApi getLoginUser];

@@ -375,7 +375,7 @@ typedef void (^CallBack)(NSString *token, NSString *hash, NSString *time);
 // private
 - (NSString *)checkError:(NSString *)html {
     NSString *duplicate = @"<p><strong>此帖是您在最后 5 分钟发表的帖子的副本，您将返回该主题。</strong></p>";
-    NSString *tooShot = @"<ol><li>您输入的信息太短，您发布的信息至少为 5 个字符。</li></ol>";
+    //NSString *tooShot = @"<ol><li>您输入的信息太短，您发布的信息至少为 5 个字符。</li></ol>";
     NSString *tooFast = @"<ol><li>本论坛允许的发表两个帖子的时间间隔必须大于 30 秒。请等待";
 
     NSString *searchFailed = @"<ol><li>对不起，没有匹配记录。请尝试采用其他条件查询。";
@@ -966,7 +966,7 @@ typedef void (^CallBack)(NSString *token, NSString *hash, NSString *time);
                         ViewSearchForumPage *page = [self.forumParser parseSearchPageFromHtml:searchResult];
                         [self saveCookie];
 
-                        if (page != nil && page.threadList != nil && page.threadList.count > 0) {
+                        if (page != nil && page.dataList != nil && page.dataList.count > 0) {
                             handler(YES, page);
                         } else {
                             handler(NO, @"未知错误");
@@ -1449,7 +1449,7 @@ typedef void (^CallBack)(NSString *token, NSString *hash, NSString *time);
             } else {
                 ViewSearchForumPage *viewSearchForumPage = [self.forumParser parseSearchPageFromHtml:html];
 
-                if (viewSearchForumPage != nil && viewSearchForumPage.threadList != nil && viewSearchForumPage.threadList.count > 0) {
+                if (viewSearchForumPage != nil && viewSearchForumPage.dataList != nil && viewSearchForumPage.dataList.count > 0) {
                     handler(YES, viewSearchForumPage);
                 } else {
                     handler(NO, @"未知错误");

@@ -36,7 +36,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
 
-    NSDictionary *infoPlist = [[NSBundle mainBundle] infoDictionary];
+    //NSDictionary *infoPlist = [[NSBundle mainBundle] infoDictionary];
 
     AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
     defaultAvatarImage = [UIImage imageNamed:@"defaultAvatar.gif"];

@@ -237,7 +237,7 @@
     
     // forum Id
     NSString * forumId = [[fixedHtml stringWithRegular:@"<option value=\"\\d+\" class=\".*\" selected=\"selected\">" andChild:@"value=\"\\d+\""] stringWithRegular:@"\\d+"];
-    showThreadPage.forumId = forumId;
+    showThreadPage.forumId = [forumId intValue];
     
     // token 【失败】
     NSString * securityToken = [self parseSecurityToken:html];
@@ -468,7 +468,7 @@
             [threadList addObject:normalThread];
         }
     }
-    forumDisplayPage.threadList = threadList;
+    forumDisplayPage.dataList = threadList;
 
     // 总页数
     IGXMLNodeSet *totalPageSet = [document queryWithXPath:@"/html/body/table/tr/td/div[*]/div/div/table[4]/tr/td[2]/div/table/tr/td[1]"];
@@ -504,7 +504,7 @@
     IGHTMLDocument *document = [[IGHTMLDocument alloc] initWithHTMLString:html error:nil];
     IGXMLNodeSet *contents = [document queryWithXPath:path];
 
-    NSInteger totaleListCount = -1;
+   // NSInteger totaleListCount = -1;
 
 
     for (int i = 0; i < contents.count; i++) {
@@ -548,7 +548,7 @@
             [threadList addObject:simpleThread];
         }
     }
-    page.threadList = threadList;
+    page.dataList = threadList;
     
     // 总页数
     IGXMLNode * totalPageNode = [document queryNodeWithClassName:@"vbmenu_control"];
@@ -559,8 +559,8 @@
         pageNumber.currentPageNumber = 1;
     } else{
         NSString *pageText = [totalPageNode.text trim];
-        pageNumber.totalPageNumber = [[pageText stringWithRegular:@"共\\d+页" andChild:@"\\d+"] integerValue];
-        pageNumber.currentPageNumber = [[pageText stringWithRegular:@"第\\d+页" andChild:@"\\d+"] integerValue];
+        pageNumber.totalPageNumber = [[pageText stringWithRegular:@"共\\d+页" andChild:@"\\d+"] intValue];
+        pageNumber.currentPageNumber = [[pageText stringWithRegular:@"第\\d+页" andChild:@"\\d+"] intValue];
     }
     page.pageNumber = pageNumber;
     
@@ -634,10 +634,10 @@
     } else{
         NSArray * page = [[totalPageAndCurrentPageNumberSet text] componentsSeparatedByString:@" "];
         NSString * currentPage = [page[0] stringWithRegular:@"\\d+"];
-        pageNumber.currentPageNumber = [currentPage integerValue];
+        pageNumber.currentPageNumber = [currentPage intValue];
         
         NSString * totalPage = [page[1] stringWithRegular:@"\\d+"];
-        pageNumber.totalPageNumber = [totalPage integerValue];
+        pageNumber.totalPageNumber = [totalPage intValue];
     }
 
     resultPage.pageNumber = pageNumber;
@@ -686,7 +686,7 @@
         }
     }
     
-    resultPage.threadList = post;
+    resultPage.dataList = post;
     
     return resultPage;
 }
@@ -747,14 +747,14 @@
     if (currentPage == nil) {
         pageNumber.currentPageNumber = 1;
     } else{
-        pageNumber.currentPageNumber = [currentPage integerValue];
+        pageNumber.currentPageNumber = [currentPage intValue];
     }
     
     NSString *totalPageCount = [fullText stringWithRegular:@"共\\d+页" andChild:@"\\d+"];
     if (totalPageCount == nil) {
         pageNumber.totalPageNumber = 1;
     } else{
-        pageNumber.totalPageNumber = [totalPageCount integerValue];
+        pageNumber.totalPageNumber = [totalPageCount intValue];
     }
 
     page.pageNumber = pageNumber;
@@ -811,7 +811,7 @@
         }
     }
     
-    page.threadList = messagesList;
+    page.dataList = messagesList;
     
     return page;
 }

@@ -55,7 +55,7 @@
                 [self.tableView.mj_footer endRefreshingWithNoMoreData];
             }
 
-            [self.dataList addObjectsFromArray:message.threadList];
+            [self.dataList addObjectsFromArray:message.dataList];
             [self.tableView reloadData];
         } else {
             NSLog(@"searchBarSearchButtonClicked   ERROR %@", message);
@@ -85,7 +85,7 @@
             currentSearchForumPage = message;
 
             [self.dataList removeAllObjects];
-            [self.dataList addObjectsFromArray:message.threadList];
+            [self.dataList addObjectsFromArray:message.dataList];
             [self.tableView reloadData];
         } else {
             NSLog(@"searchBarSearchButtonClicked   ERROR %@", message);
@@ -144,8 +144,8 @@
     Thread *play = self.dataList[(NSUInteger) indexPath.row];
 
     [self.forumApi favoriteThreadPostWithId:play.threadID handler:^(BOOL isSuccess, id message) {
-        BOOL success = isSuccess;
-        NSString * result = message;
+//        BOOL success = isSuccess;
+//        NSString * result = message;
     }];
 
 

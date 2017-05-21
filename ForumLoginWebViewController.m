@@ -121,9 +121,9 @@
 - (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType {
 
     NSString *urlString = [[request URL] absoluteString];
-    if ([urlString isEqualToString:@"https://www.chiphell.com/?mobile=2"]) {
-        NSArray<NSHTTPCookie *> *cookies = [[NSHTTPCookieStorage sharedHTTPCookieStorage] cookies];
-    }
+//    if ([urlString isEqualToString:@"https://www.chiphell.com/?mobile=2"]) {
+//        NSArray<NSHTTPCookie *> *cookies = [[NSHTTPCookieStorage sharedHTTPCookieStorage] cookies];
+//    }
     NSLog(@"ForumLoginWebViewController.shouldStartLoadWithRequest %@ ", urlString);
     return YES;
 }

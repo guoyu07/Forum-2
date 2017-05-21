@@ -93,7 +93,7 @@
 
 - (NSString *)forumDisplayWithId:(NSString *)forumId withPage:(int)page {
 
-    return [NSString stringWithFormat:@"https://www.chiphell.com/forum.php?mod=forumdisplay&fid=%@&forumdefstyle=yes&page=@d", forumId, page];
+    return [NSString stringWithFormat:@"https://www.chiphell.com/forum.php?mod=forumdisplay&fid=%@&forumdefstyle=yes&page=%d", forumId, page];
 }
 
 - (NSString *)searchNewThread:(int)page {

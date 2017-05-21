@@ -189,7 +189,7 @@
         for (int i = 0; i < childViewControllers.count; ++i) {
             UIViewController *child = childViewControllers[i];
             if ([child isKindOfClass:[ForumThreadListTableViewController class]]) {
-                ForumThreadListTableViewController * ftl = child;
+                ForumThreadListTableViewController * ftl = (ForumThreadListTableViewController *)child;
                 NSString * title = ftl.titleNavigationItem.title;
                 if ([title isEqualToString:@"精品家园"]) {
                     [self transBundle:bundle forController:ftl];
@@ -215,7 +215,7 @@
         for (int i = 0; i < childViewControllers.count; ++i) {
             UIViewController *child = childViewControllers[i];
             if ([child isKindOfClass:[ForumThreadListTableViewController class]]) {
-                ForumThreadListTableViewController * ftl = child;
+                ForumThreadListTableViewController * ftl = (ForumThreadListTableViewController *)child;
                 NSString * title = ftl.titleNavigationItem.title;
                 if ([title isEqualToString:@"二手闲置"]) {
                     [self transBundle:bundle forController:ftl];

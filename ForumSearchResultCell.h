@@ -16,7 +16,7 @@
 @property(weak, nonatomic) IBOutlet UILabel *postAuthor;
 @property(weak, nonatomic) IBOutlet UILabel *postTime;
 @property(weak, nonatomic) IBOutlet UILabel *postBelongForm;
-@property(weak, nonatomic) IBOutlet UIImage *postAuthorAvatar;
+@property(weak, nonatomic) IBOutlet UIImageView *postAuthorAvatar;
 
 - (void)setData:(id)data forIndexPath:(NSIndexPath *)indexPath;
 

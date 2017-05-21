@@ -14,7 +14,7 @@
 #import "ApiTestViewController.h"
 #import "NSUserDefaults+Setting.h"
 #import <AVOSCloud.h>
-#import <AVOSCloudIM.h>
+//#import <AVOSCloudIM.h>
 #import "ForumApiHelper.h"
 #import "UIStoryboard+Forum.h"
 #import "HPURLProtocol.h"
@@ -24,13 +24,14 @@
 #import "ForumTableViewController.h"
 #import "Forums.h"
 #import "SupportForums.h"
+#import <UserNotifications/UserNotifications.h>
 
 static BOOL API_DEBUG = NO;
 static int DB_VERSION = 8;
 
 static NSString *bundleIdentifier;
 
-@interface AppDelegate () {
+@interface AppDelegate ()<UNUserNotificationCenterDelegate> {
 }
 @end
 
@@ -132,7 +133,8 @@ static NSString *bundleIdentifier;
 
 
 
-    [AVOSCloud registerForRemoteNotification];
+    [AVAnalytics trackAppOpenedWithLaunchOptions:launchOptions];
+    [self registerForRemoteNotification];
 
     if (launchOptions[@"UIApplicationLaunchOptionsShortcutItemKey"] == nil) {
         NSLog(@"UIApplicationLaunchOptionsShortcutItemKey yes");
@@ -143,6 +145,59 @@ static NSString *bundleIdentifier;
     }
     
     return YES;
+}
+
+/**
+ * 初始化UNUserNotificationCenter
+ */
+- (void)registerForRemoteNotification {
+    // iOS10 兼容
+    if ([[UIDevice currentDevice].systemVersion floatValue] >= 10.0) {
+        // 使用 UNUserNotificationCenter 来管理通知
+        UNUserNotificationCenter *uncenter = [UNUserNotificationCenter currentNotificationCenter];
+        // 监听回调事件
+        [uncenter setDelegate:self];
+        //iOS10 使用以下方法注册，才能得到授权
+        [uncenter requestAuthorizationWithOptions:(UNAuthorizationOptionAlert+UNAuthorizationOptionBadge+UNAuthorizationOptionSound)
+                                completionHandler:^(BOOL granted, NSError * _Nullable error) {
+                                    [[UIApplication sharedApplication] registerForRemoteNotifications];
+                                    //TODO:授权状态改变
+                                    NSLog(@"%@" , granted ? @"授权成功" : @"授权失败");
+                                }];
+        // 获取当前的通知授权状态, UNNotificationSettings
+        [uncenter getNotificationSettingsWithCompletionHandler:^(UNNotificationSettings * _Nonnull settings) {
+            NSLog(@"%s\nline:%@\n-----\n%@\n\n", __func__, @(__LINE__), settings);
+            /*
+             UNAuthorizationStatusNotDetermined : 没有做出选择
+             UNAuthorizationStatusDenied : 用户未授权
+             UNAuthorizationStatusAuthorized ：用户已授权
+             */
+            if (settings.authorizationStatus == UNAuthorizationStatusNotDetermined) {
+                NSLog(@"未选择");
+            } else if (settings.authorizationStatus == UNAuthorizationStatusDenied) {
+                NSLog(@"未授权");
+            } else if (settings.authorizationStatus == UNAuthorizationStatusAuthorized) {
+                NSLog(@"已授权");
+            }
+        }];
+    }
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
+    if ([[UIDevice currentDevice].systemVersion floatValue] >= 8.0) {
+        UIUserNotificationType types = UIUserNotificationTypeAlert |
+                UIUserNotificationTypeBadge |
+                UIUserNotificationTypeSound;
+        UIUserNotificationSettings *settings = [UIUserNotificationSettings settingsForTypes:types categories:nil];
+
+        [[UIApplication sharedApplication] registerUserNotificationSettings:settings];
+        [[UIApplication sharedApplication] registerForRemoteNotifications];
+    } else {
+        UIRemoteNotificationType types = UIRemoteNotificationTypeBadge |
+                UIRemoteNotificationTypeAlert |
+                UIRemoteNotificationTypeSound;
+        [[UIApplication sharedApplication] registerForRemoteNotificationTypes:types];
+    }
+#pragma clang diagnostic pop
 }
 
 - (NSString *) bundleIdentifier{
@@ -190,21 +245,21 @@ static NSString *bundleIdentifier;
 
 - (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
 
-    // 首先要想LeanCloud保存installation
-    AVInstallation *currentInstallation = [AVInstallation currentInstallation];
-    [currentInstallation setDeviceTokenFromData:deviceToken];
-    [currentInstallation saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
+    if (/* DISABLES CODE */ (NO)){
+        // 首先要想LeanCloud保存installation
+        AVInstallation *currentInstallation = [AVInstallation currentInstallation];
+        [currentInstallation setDeviceTokenFromData:deviceToken];
+        [currentInstallation saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
 
-        if (!succeeded) {
-            NSLog(@"Error-------> :%@", error);
-        }
+            if (!succeeded) {
+                NSLog(@"Error-------> :%@", error);
+            }
 
-    }];
-
-    // 向系统申请推送服务
-    [AVOSCloud handleRemoteNotificationsWithDeviceToken:deviceToken];
-
-
+        }];
+    } else {
+        // 向系统申请推送服务
+        [AVOSCloud handleRemoteNotificationsWithDeviceToken:deviceToken];
+    }
 }
 
 

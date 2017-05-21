@@ -16,8 +16,8 @@
 
 - (void)presentViewController:(UIViewController *)viewControllerToPresent withBundle:(TransBundle *)bundle forRootController:(BOOL)forRootController animated:(BOOL)flag completion:(void (^ __nullable)(void))completion NS_AVAILABLE_IOS(5_0);
 
-- (void)dismissViewControllerAnimated:(BOOL)flag backToViewController:(UIViewController *)controller withBundle:(TransBundle *)bundle completion:(void (^ __nullable)(void))completion NS_AVAILABLE_IOS(5_0);
+- (void)dismissViewControllerAnimated:(BOOL)flag backToViewController:(UIViewController *_Nullable)controller withBundle:(TransBundle *_Nullable)bundle completion:(void (^ __nullable)(void))completion NS_AVAILABLE_IOS(5_0);
 
-- (void)transBundle:(TransBundle *)bundle forController:(UIViewController *)controller;
+- (void)transBundle:(TransBundle *_Nonnull)bundle forController:(UIViewController *_Nullable)controller;
 
 @end

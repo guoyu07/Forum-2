@@ -72,7 +72,7 @@
                 }];
 
             } else {
-                [SVProgressHUD showErrorWithStatus:message maskType:SVProgressHUDMaskTypeBlack];
+                [SVProgressHUD showErrorWithStatus:(NSString *)message maskType:SVProgressHUDMaskTypeBlack];
             }
         }];
     } else {

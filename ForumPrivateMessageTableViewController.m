@@ -79,7 +79,7 @@
             }
 
             [self.dataList removeAllObjects];
-            [self.dataList addObjectsFromArray:message.threadList];
+            [self.dataList addObjectsFromArray:message.dataList];
 
             [self.tableView reloadData];
         }
@@ -100,7 +100,7 @@
                 [self.tableView.mj_footer endRefreshingWithNoMoreData];
             }
 
-            [self.dataList addObjectsFromArray:message.threadList];
+            [self.dataList addObjectsFromArray:message.dataList];
             [self.tableView reloadData];
         }
     }];

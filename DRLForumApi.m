@@ -910,7 +910,7 @@ typedef void (^CallBack)(NSString *token, NSString *hash, NSString *time);
                     } else {
                         ViewSearchForumPage *page = [self.forumParser parseSearchPageFromHtml:result];
 
-                        if (page != nil && page.threadList != nil && page.threadList.count > 0) {
+                        if (page != nil && page.dataList != nil && page.dataList.count > 0) {
                             handler(YES, page);
                         } else {
                             handler(NO, @"未知错误");
@@ -1374,7 +1374,7 @@ typedef void (^CallBack)(NSString *token, NSString *hash, NSString *time);
             } else {
                 ViewSearchForumPage *p = [self.forumParser parseSearchPageFromHtml:html];
 
-                if (p != nil && p.threadList != nil && p.threadList.count > 0) {
+                if (p != nil && p.dataList != nil && p.dataList.count > 0) {
                     handler(YES, p);
                 } else {
                     handler(NO, @"未知错误");

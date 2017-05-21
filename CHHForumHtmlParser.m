@@ -66,10 +66,10 @@
     pageNumber.currentPageNumber = currentPage;
     pageNumber.totalPageNumber = totalPageCount;
 
-    showThreadPage.threadID = threadId;
+    showThreadPage.threadID = [threadId intValue];
     showThreadPage.threadTitle = threadTitle;
-    showThreadPage.forumId= forumId;
-    showThreadPage.originalHtml;
+    showThreadPage.forumId= [forumId intValue];
+    showThreadPage.originalHtml = originHtml;
     showThreadPage.pageNumber = pageNumber;
 
 
@@ -96,8 +96,8 @@
             // User Info
             User * user = [[User alloc] init];
             // UserId
-            NSString * userQuery = [NSString stringWithFormat:@"//*[@id=\"favatar%@\"]", postId];
-            IGXMLNode * userNode = [document queryNodeWithXPath:userQuery];
+            //NSString * userQuery = [NSString stringWithFormat:@"//*[@id=\"favatar%@\"]", postId];
+            //IGXMLNode * userNode = [document queryNodeWithXPath:userQuery];
             NSString * idNameQuery = [NSString stringWithFormat:@"//*[@id=\"favatar%@\"]/div[1]/div/a", postId];
             IGXMLNode *idNameNode = [document queryNodeWithXPath:idNameQuery];
             NSString *userId = [[idNameNode attribute:@"href"] stringWithRegular:@"\\d+"];
@@ -200,13 +200,11 @@
             int totalPage = 1;
             if ([titleNode.html containsString:@"<span class=\"tps\">"]){
                 IGXMLNode * pageNode = [titleNode childrenAtPosition:titleNode.childrenCount -1];
-                NSString * h = [pageNode html];
                 if ([[pageNode text] isEqualToString:@"New"]) {
                     pageNode = [titleNode childrenAtPosition:titleNode.childrenCount -2];
                 }
                 int pageNodeChildCount = pageNode.childrenCount;
                 IGXMLNode * realPageNode = [pageNode childrenAtPosition:pageNodeChildCount -1];
-                NSString * h1 = [realPageNode html];
                 totalPage = [[realPageNode text] intValue];
             }
 
@@ -231,7 +229,7 @@
         }
     }
 
-    page.threadList = threadList;
+    page.dataList = threadList;
 
     // 总页数
 
@@ -264,7 +262,7 @@
 
             [threadList addObject:thread];
         }
-        page.threadList = threadList;
+        page.dataList = threadList;
     }
 
     PageNumber *pageNumber = [self parserPageNumber:html];
@@ -314,7 +312,6 @@
             NSString * tId = [idAttr componentsSeparatedByString:@"_"][1];
             // thread Title
             IGXMLNode * titleNode = [threadNode.firstChild childrenAtPosition:1];
-            NSString * titleHtml = titleNode.html;
 
             int titleIndex = 0;
             NSString *threadTitle = [titleNode childrenAtPosition:titleIndex].text;
@@ -344,13 +341,11 @@
             int totalPage = 1;
             if ([titleNode.html containsString:@"<span class=\"tps\">"]){
                 IGXMLNode * pageNode = [titleNode childrenAtPosition:titleNode.childrenCount -1];
-                NSString * h = [pageNode html];
                 if ([[pageNode text] isEqualToString:@"New"]) {
                     pageNode = [titleNode childrenAtPosition:titleNode.childrenCount -2];
                 }
                 int pageNodeChildCount = pageNode.childrenCount;
                 IGXMLNode * realPageNode = [pageNode childrenAtPosition:pageNodeChildCount -1];
-                NSString * h1 = [realPageNode html];
                 totalPage = [[realPageNode text] intValue];
             }
 
@@ -370,7 +365,7 @@
         }
     }
 
-    page.threadList = threadList;
+    page.dataList = threadList;
 
     // 总页数
     PageNumber *pageNumber = [self parserPageNumber:html];
@@ -464,7 +459,7 @@
 
     }
 
-    page.threadList = messagesList;
+    page.dataList = messagesList;
     PageNumber *pageNumber = [self parserPageNumber:html];
     page.pageNumber = pageNumber;
     return page;
@@ -506,7 +501,7 @@
 
     }
 
-    page.threadList = messagesList;
+    page.dataList = messagesList;
     PageNumber *pageNumber = [self parserPageNumber:html];
     page.pageNumber = pageNumber;
     return page;
@@ -575,8 +570,6 @@
     for (int i = 0; i < size; i++) {
         IGXMLNode * child = [contents childrenAtPosition:i];
 
-        NSString * childHtml = child.html;
-
         if (child.childrenCount == 0){
             Forum *parent = [[Forum alloc] init];
             NSString * name = child.text;
@@ -593,7 +586,6 @@
             IGXMLNodeSet * set = child.children;
             for(IGXMLNode * node in set){
 
-                NSString * nodeHtml = node.html;
                 Forum *childForum = [[Forum alloc] init];
                 NSString * name = node.text;
                 childForum.forumName = name;

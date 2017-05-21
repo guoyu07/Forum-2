@@ -220,7 +220,7 @@
     ViewThreadPage *showThreadPage = [[ViewThreadPage alloc] init];
     showThreadPage.originalHtml = [self postMessages:fuxkHttp];
 
-    showThreadPage.forumId = forumId;
+    showThreadPage.forumId = [forumId intValue];
 
     NSString *securityToken = [self parseSecurityToken:html];
     showThreadPage.securityToken = securityToken;
@@ -244,7 +244,7 @@
 
     NSString *threadIdPattern = @"<input type=\"hidden\" name=\"searchthreadid\" value=\"\\d+\" />";
     NSString *threadID = [html stringWithRegular:threadIdPattern andChild:@"\\d+"];
-    showThreadPage.threadID = threadID;
+    showThreadPage.threadID = [threadID intValue];
 
     IGXMLNodeSet *threadInfoSet = [document queryWithXPath:@"/html/body/div[4]/div/div/table[1]/tr/td[2]/div/table/tr"];
 
@@ -258,8 +258,8 @@
         NSString *currentPageAndTotalPageString = currentPageAndTotalPageNode.text;
         NSArray *pageAndTotalPage = [currentPageAndTotalPageString componentsSeparatedByString:@"页，共"];
 
-        pageNumber.totalPageNumber = (NSUInteger) [[[pageAndTotalPage.lastObject stringByReplacingOccurrencesOfString:@" " withString:@""] stringByReplacingOccurrencesOfString:@"页" withString:@""] intValue];
-        pageNumber.currentPageNumber = (NSUInteger) [[[pageAndTotalPage.firstObject stringByReplacingOccurrencesOfString:@" " withString:@""] stringByReplacingOccurrencesOfString:@"第" withString:@""] intValue];
+        pageNumber.totalPageNumber =  [[[pageAndTotalPage.lastObject stringByReplacingOccurrencesOfString:@" " withString:@""] stringByReplacingOccurrencesOfString:@"页" withString:@""] intValue];
+        pageNumber.currentPageNumber = [[[pageAndTotalPage.firstObject stringByReplacingOccurrencesOfString:@" " withString:@""] stringByReplacingOccurrencesOfString:@"第" withString:@""] intValue];
     }
     showThreadPage.pageNumber = pageNumber;
 
@@ -442,7 +442,7 @@
             [threadList addObject:normalThread];
         }
     }
-    page.threadList = threadList;
+    page.dataList = threadList;
 
     // 总页数
     IGXMLNodeSet *totalPageSet = [document queryWithXPath:@"//*[@id='inlinemodform']/table[4]/tr[1]/td[2]/div/table/tr/td[1]"];
@@ -519,7 +519,7 @@
             [threadList addObject:simpleThread];
         }
     }
-    page.threadList = threadList;
+    page.dataList = threadList;
 
     // 总页数
     //<td class="vbmenu_control" style="font-weight:normal">第 \\d+ 页，共 \\d+ 页</td>
@@ -581,9 +581,9 @@
 
     ViewSearchForumPage *resultPage = [[ViewSearchForumPage alloc] init];
 
-    IGXMLNode *postTotalCountNode = [document queryWithXPath:@"//*[@id='threadslist']/tr[1]/td/span[1]"].firstObject;
+    //IGXMLNode *postTotalCountNode = [document queryWithXPath:@"//*[@id='threadslist']/tr[1]/td/span[1]"].firstObject;
 
-    NSString *postTotalCount = [postTotalCountNode.text stringWithRegular:@"共计 \\d+ 条" andChild:@"\\d+"];
+    //NSString *postTotalCount = [postTotalCountNode.text stringWithRegular:@"共计 \\d+ 条" andChild:@"\\d+"];
     // 1. 结果总条数
     //resultPage.totalPageCount = [postTotalCount integerValue];
 
@@ -594,8 +594,8 @@
         pageNumber.currentPageNumber = 1;
         pageNumber.totalPageNumber = 1;
     } else {
-        pageNumber.currentPageNumber = [[pageNode.text stringWithRegular:@"第 \\d+ 页" andChild:@"\\d+"] integerValue];
-        pageNumber.totalPageNumber = [[pageNode.text stringWithRegular:@"共 \\d+ 页" andChild:@"\\d+"] integerValue];
+        pageNumber.currentPageNumber = [[pageNode.text stringWithRegular:@"第 \\d+ 页" andChild:@"\\d+"] intValue];
+        pageNumber.totalPageNumber = [[pageNode.text stringWithRegular:@"共 \\d+ 页" andChild:@"\\d+"] intValue];
     }
 
     NSMutableArray<Thread *> *post = [NSMutableArray array];
@@ -618,7 +618,7 @@
             IGHTMLDocument *titleTemp = [[IGHTMLDocument alloc] initWithXMLString:titleAndCategory error:nil];
             NSString *titleText = [titleTemp text];
 
-            NSString *postTitle = [[[postForNode text] trim] componentsSeparatedByString:@"\n"].firstObject;
+            //NSString *postTitle = [[[postForNode text] trim] componentsSeparatedByString:@"\n"].firstObject;
             NSString *postAuthor = [[node childrenAtPosition:3] text];
             NSString *postAuthorId = [[node.children[3] html] stringWithRegular:@"=\\d+" andChild:@"\\d+"];
             NSString *postTime = [node.children[4] text];
@@ -647,7 +647,7 @@
     }
 
     resultPage.searchid = [self parseListMyThreadSearchid:html];
-    resultPage.threadList = post;
+    resultPage.dataList = post;
 
     return resultPage;
 }
@@ -706,9 +706,9 @@
     PageNumber *pageNumber = [[PageNumber alloc] init];
     NSString *fullText = [[totalPage firstObject] text];
     NSString *currentPage = [fullText stringWithRegular:@"第 \\d+ 页" andChild:@"\\d+"];
-    pageNumber.currentPageNumber = [currentPage integerValue];
+    pageNumber.currentPageNumber = [currentPage intValue];
     NSString *totalPageCount = [fullText stringWithRegular:@"共 \\d+ 页" andChild:@"\\d+"];
-    pageNumber.totalPageNumber = [totalPageCount integerValue];
+    pageNumber.totalPageNumber = [totalPageCount intValue];
 
     page.pageNumber = pageNumber;
 
@@ -765,7 +765,7 @@
         }
     }
 
-    page.threadList = messagesList;
+    page.dataList = messagesList;
 
     return page;
 }

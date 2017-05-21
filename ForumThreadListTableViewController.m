@@ -68,7 +68,7 @@
             [self.threadTopList removeAllObjects];
             [self.dataList removeAllObjects];
 
-            for (Thread *thread in page.threadList) {
+            for (Thread *thread in page.dataList) {
                 if (thread.isTopThread) {
                     [self.threadTopList addObject:thread];
                 } else {
@@ -95,7 +95,7 @@
                 [self.tableView.mj_footer endRefreshingWithNoMoreData];
             }
 
-            for (Thread *thread in page.threadList) {
+            for (Thread *thread in page.dataList) {
                 if (!thread.isTopThread) {
                     [self.dataList addObject:thread];
                 }
@@ -307,7 +307,7 @@
         ForumThreadListForChildFormUITableViewController *controller = segue.destinationViewController;
 
         NSIndexPath *indexPath = [self.tableView indexPathForSelectedRow];
-        int row = indexPath.row;
+        int row = (int)indexPath.row;
         Forum * forum = childForms[(NSUInteger) row];
         TransBundle * bundle = [[TransBundle alloc] init];
         [bundle putIntValue:forum.forumId forKey:@"ForumId"];

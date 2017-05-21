@@ -144,7 +144,7 @@
 
     NSURL *selectUrl = [info valueForKey:UIImagePickerControllerReferenceURL];
 
-    NSData *date = UIImageJPEGRepresentation(select, 1.0);
+    //NSData *date = UIImageJPEGRepresentation(select, 1.0);
 
     [self fileSizeAtPath:selectUrl];
 

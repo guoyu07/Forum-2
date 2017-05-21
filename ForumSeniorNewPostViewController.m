@@ -36,7 +36,6 @@
     userName = [bundle getStringValue:@"USER_NAME"];
     threadId = [bundle getIntValue:@"THREAD_ID"];
     securityToken = [bundle getStringValue:@"SECYRITY_TOKEN"];
-
     forumIdStr = [bundle getStringValue:@"FORM_ID"];
 }
 

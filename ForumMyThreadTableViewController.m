@@ -33,7 +33,7 @@
             currentForumPage = message;
             [self.dataList removeAllObjects];
 
-            [self.dataList addObjectsFromArray:message.threadList];
+            [self.dataList addObjectsFromArray:message.dataList];
             [self.tableView reloadData];
 
         }
@@ -52,7 +52,7 @@
             if (currentForumPage.pageNumber.currentPageNumber >= currentForumPage.pageNumber.totalPageNumber) {
                 [self.tableView.mj_footer endRefreshingWithNoMoreData];
             }
-            [self.dataList addObjectsFromArray:message.threadList];
+            [self.dataList addObjectsFromArray:message.dataList];
             [self.tableView reloadData];
 
         }

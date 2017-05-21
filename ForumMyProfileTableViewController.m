@@ -47,7 +47,7 @@
 
 - (void)initProfileData {
 
-    NSDictionary *infoPlist = [[NSBundle mainBundle] infoDictionary];
+    //NSDictionary *infoPlist = [[NSBundle mainBundle] infoDictionary];
     
 //    NSString *icon = [[infoPlist valueForKeyPath:@"CFBundleIcons.CFBundlePrimaryIcon.CFBundleIconFiles"] lastObject];
     

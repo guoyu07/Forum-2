@@ -23,7 +23,7 @@
     int forumId;
     UIImagePickerController *pickControl;
     NSMutableArray<UIImage *> *images;
-    Forum * createWhichForum;
+    Forum * createForum;
 }
 
 @end
@@ -146,7 +146,7 @@
 
     NSURL *selectUrl = [info valueForKey:UIImagePickerControllerReferenceURL];
 
-    NSData *date = UIImageJPEGRepresentation(select, 1.0);
+    //NSData *date = UIImageJPEGRepresentation(select, 1.0);
 
     [self fileSizeAtPath:selectUrl];
 
@@ -273,9 +273,9 @@
         ActionSheetStringPicker *picker = [[ActionSheetStringPicker alloc] initWithTitle:@"选择板块" rows:forumNames initialSelection:0 doneBlock:^(ActionSheetStringPicker *picker, NSInteger selectedIndex, id selectedValue) {
             
             self.createWhichForum.text = forumNames[(NSUInteger) selectedIndex];
-            createWhichForum = canCreateThreadFrums[(NSUInteger) selectedIndex];
+            createForum = canCreateThreadFrums[(NSUInteger) selectedIndex];
             
-            forumId = createWhichForum.forumId;
+            forumId = createForum.forumId;
 
         } cancelBlock:^(ActionSheetStringPicker *picker) {
             

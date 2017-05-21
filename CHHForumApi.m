@@ -83,7 +83,7 @@
             NSString * msic = [NSString stringWithFormat:msicT, seccode, random];
             NSLog(@"seccode is : %@", msic);
             
-            NSArray<NSHTTPCookie *> *cookies = [[NSHTTPCookieStorage sharedHTTPCookieStorage] cookies];
+            //NSArray<NSHTTPCookie *> *cookies = [[NSHTTPCookieStorage sharedHTTPCookieStorage] cookies];
 
             [self saveCookie];
             

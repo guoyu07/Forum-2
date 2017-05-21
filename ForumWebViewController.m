@@ -220,7 +220,7 @@
 
         ViewThreadPage *threadPage = message;
         currentShowThreadPage = threadPage;
-        threadID = [threadPage.threadID intValue];
+        threadID = threadPage.threadID;
 
         NSString *title = [NSString stringWithFormat:@"%d/%d", currentShowThreadPage.pageNumber.currentPageNumber, currentShowThreadPage.pageNumber.totalPageNumber];
         self.pageNumber.title = title;
@@ -293,7 +293,7 @@
             UIAlertAction *action = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
                 [self.navigationController popViewControllerAnimated:YES];
 
-                AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+                //AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
 
                 id<ForumConfigDelegate> forumConfig = [self.forumApi currentConfigDelegate];
 
@@ -376,7 +376,7 @@
     }];
 }
 
-- (void)showNextPageOrRefreshCurrentPage:(NSUInteger)currentPage forThreadId:(int)threadId {
+- (void)showNextPageOrRefreshCurrentPage:(int)currentPage forThreadId:(int)threadId {
 
     if (currentPage < currentShowThreadPage.pageNumber.totalPageNumber) {
         [self showThread:threadId page:currentPage + 1 withAnim:YES];
@@ -393,10 +393,10 @@
 
                 NSMutableArray *posts = threadPage.postList;
 
-                AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+                //AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
                 id<ForumConfigDelegate> forumConfig = [self.forumApi currentConfigDelegate];
 
-                for (int i = currentShowThreadPage.postList.count; i < posts.count; i++) {
+                for (NSInteger i = currentShowThreadPage.postList.count; i < posts.count; i++) {
                     Post *post = posts[i];
                     NSString *avatar = [forumConfig avatar:post.postUserInfo.userAvatar];
                     NSString *louceng = [post.postLouCeng stringWithRegular:@"\\d+"];
@@ -439,7 +439,7 @@
 
         NSString *lis = @"";
 
-        AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+        //AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
         id<ForumConfigDelegate> forumConfig = [self.forumApi currentConfigDelegate];
 
         for (Post *post in posts) {
@@ -559,14 +559,14 @@
 
 - (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType {
 
-    NSString *urlString = [[request URL] absoluteString];
+    //NSString *urlString = [[request URL] absoluteString];
 
     if ([request.URL.scheme isEqualToString:@"postid"]) {
         NSDictionary *query = [self dictionaryFromQuery:request.URL.query usingEncoding:NSUTF8StringEncoding];
 
         NSString *userName = [[query valueForKey:@"postuser"] replaceUnicode];
         int postId = [[query valueForKey:@"postid"] intValue];
-        NSString *louCeng = [query valueForKey:@"postlouceng"];
+        int louCeng = [[query valueForKey:@"postlouceng"] intValue];
 
         itemActionSheet = [LCActionSheet sheetWithTitle:userName buttonTitles:@[@"快速回复", @"高级回复", @"复制链接", @"举报此帖"] redButtonIndex:-1 clicked:^(NSInteger buttonIndex) {
             if (buttonIndex == 0) {
@@ -617,7 +617,7 @@
 
             } else if (buttonIndex == 2) {
 
-                AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+                //AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
                 id<ForumConfigDelegate> forumConfig = [self.forumApi currentConfigDelegate];
 
                 NSString *postUrl = [forumConfig copyThreadUrl:[NSString stringWithFormat:@"%d", postId] withPostCout:louCeng];
@@ -770,7 +770,7 @@
             // 复制贴链接
             UIPasteboard *pasteboard = [UIPasteboard generalPasteboard];
 
-            AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+            //AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
             id<ForumConfigDelegate> forumConfig = [self.forumApi currentConfigDelegate];
 
             pasteboard.string = [forumConfig showThreadWithThreadId:[NSString stringWithFormat:@"%d", threadID] withPage:0];
@@ -779,7 +779,7 @@
 
         } else if (buttonIndex == 1) {
             // 在浏览器种查看
-            AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+            //AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
             id<ForumConfigDelegate> forumConfig = [self.forumApi currentConfigDelegate];
             NSURL *url = [NSURL URLWithString:[forumConfig showThreadWithThreadId:[NSString stringWithFormat:@"%d", threadID] withPage:1]];
             [[UIApplication sharedApplication] openURL:url];
@@ -801,7 +801,7 @@
     NSString *token = currentShowThreadPage.securityToken;
     [bundle putStringValue:token forKey:@"SECYRITY_TOKEN"];
     [bundle putStringValue:threadAuthorName forKey:@"POST_USER"];
-    [bundle putStringValue:currentShowThreadPage.forumId forKey:@"FORM_ID"];
+    [bundle putIntValue:currentShowThreadPage.forumId forKey:@"FORM_ID"];
 
     [self presentViewController:controller withBundle:bundle forRootController:YES animated:YES completion:^{
 

@@ -59,7 +59,7 @@
             [self.threadTopList removeAllObjects];
             [self.dataList removeAllObjects];
 
-            for (Thread *thread in page.threadList) {
+            for (Thread *thread in page.dataList) {
                 if (thread.isTopThread) {
                     [self.threadTopList addObject:thread];
                 } else {
@@ -87,7 +87,7 @@
                 [self.tableView.mj_footer endRefreshingWithNoMoreData];
             }
 
-            for (Thread *thread in page.threadList) {
+            for (Thread *thread in page.dataList) {
                 if (!thread.isTopThread) {
                     [self.dataList addObject:thread];
                 }
