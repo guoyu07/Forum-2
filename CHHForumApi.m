@@ -430,6 +430,21 @@
 
 - (void)listAllUserThreads:(int)userId withPage:(int)page handler:(HandlerWithBool)handler {
 
+    NSString *baseUrl = [self.forumConfig searchThreadWithUserId:[NSString stringWithFormat:@"%d", userId]];
+
+    NSString * url = [baseUrl stringByAppendingFormat:@"%d", page];
+
+    NSMutableDictionary *defparameters = [NSMutableDictionary dictionary];
+
+    [self.browser GETWithURLString:url parameters:defparameters requestCallback:^(BOOL isSuccess, NSString *html) {
+
+        if (isSuccess) {
+            ViewForumPage *sarchPage = [self.forumParser parseSearchPageFromHtml:html];
+            handler(isSuccess, sarchPage);
+        } else {
+            handler(NO, html);
+        }
+    }];
 }
 
 - (void)showThreadWithId:(int)threadId andPage:(int)page handler:(HandlerWithBool)handler {

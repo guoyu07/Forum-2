@@ -52,7 +52,7 @@
 }
 
 - (NSString *)searchThreadWithUserId:(NSString *)userId {
-    return nil;
+    return [NSString stringWithFormat:@"https://www.chiphell.com/home.php?mod=space&uid=%@&do=thread&view=me&type=thread&order=dateline&from=space&page=", userId];
 }
 
 - (NSString *)searchMyThreadWithUserName:(NSString *)name {
