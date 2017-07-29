@@ -130,7 +130,7 @@
 }
 
 - (id <ForumConfigDelegate>)currentConfigDelegate {
-    return nil;
+    return self.forumConfig;
 }
 
 

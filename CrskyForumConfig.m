@@ -8,17 +8,26 @@
 
 #import "CrskyForumConfig.h"
 
-@implementation CrskyForumConfig
+@implementation CrskyForumConfig{
+    NSURL *_forumURL;
+}
+
+- (instancetype)init {
+    self = [super init];
+    _forumURL = [NSURL URLWithString:@"https://dream4ever.org/"];
+    return self;
+}
+
 - (UIColor *)themeColor {
-    return nil;
+    return [[UIColor alloc] initWithRed:101.f/255.f green:96.f/255.f blue:65.f/255.f alpha:1];;
 }
 
 - (NSURL *)forumURL {
-    return nil;
+    return _forumURL;
 }
 
 - (NSString *)archive {
-    return nil;
+    return @"http://bbs.crsky.com/simple/";
 }
 
 - (NSString *)cookieUserIdKey {
@@ -174,7 +183,7 @@
 }
 
 - (NSString *)loginControllerId {
-    return nil;
+    return @"CrskyLoginViewController";
 }
 
 

@@ -105,6 +105,7 @@
 		3A92CD9C1F2C7D9B00E41573 /* CrskyForumApi.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A92CD9B1F2C7D9B00E41573 /* CrskyForumApi.m */; };
 		3A92CD9F1F2C7E6000E41573 /* CrskyForumConfig.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A92CD9E1F2C7E6000E41573 /* CrskyForumConfig.m */; };
 		3A92CDA21F2C7E8500E41573 /* CrskyForumHtmlParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A92CDA11F2C7E8500E41573 /* CrskyForumHtmlParser.m */; };
+		3A92CDA51F2C826B00E41573 /* CrskyLoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A92CDA41F2C826B00E41573 /* CrskyLoginViewController.m */; };
 		3ACFFD2C1CF9D6BF000312DC /* HPURLCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 3ACFFD291CF9D6BF000312DC /* HPURLCache.m */; };
 		3ACFFD2D1CF9D6BF000312DC /* SDImageCache+URLCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 3ACFFD2B1CF9D6BF000312DC /* SDImageCache+URLCache.m */; };
 		3ACFFD301CF9DD3C000312DC /* HPURLProtocol.m in Sources */ = {isa = PBXBuildFile; fileRef = 3ACFFD2F1CF9DD3C000312DC /* HPURLProtocol.m */; };
@@ -318,6 +319,8 @@
 		3A92CD9E1F2C7E6000E41573 /* CrskyForumConfig.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CrskyForumConfig.m; sourceTree = "<group>"; };
 		3A92CDA01F2C7E8500E41573 /* CrskyForumHtmlParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CrskyForumHtmlParser.h; sourceTree = "<group>"; };
 		3A92CDA11F2C7E8500E41573 /* CrskyForumHtmlParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CrskyForumHtmlParser.m; sourceTree = "<group>"; };
+		3A92CDA31F2C826B00E41573 /* CrskyLoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CrskyLoginViewController.h; sourceTree = "<group>"; };
+		3A92CDA41F2C826B00E41573 /* CrskyLoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CrskyLoginViewController.m; sourceTree = "<group>"; };
 		3ACFFD281CF9D6BF000312DC /* HPURLCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HPURLCache.h; sourceTree = "<group>"; };
 		3ACFFD291CF9D6BF000312DC /* HPURLCache.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HPURLCache.m; sourceTree = "<group>"; };
 		3ACFFD2A1CF9D6BF000312DC /* SDImageCache+URLCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "SDImageCache+URLCache.h"; sourceTree = "<group>"; };
@@ -392,6 +395,8 @@
 		2F34C7BC164C986C72776D3A /* chh */ = {
 			isa = PBXGroup;
 			children = (
+				2F34CEDC13FE605A95AACC4B /* ForumLoginWebViewController.h */,
+				2F34C9F7371B8DDC9EEA62AB /* ForumLoginWebViewController.m */,
 				2F34C9C1792EF57FF901D717 /* CHHForumApi.h */,
 				2F34C076378D371E57F0863F /* CHHForumApi.m */,
 				2F34CAE13DEE2EFC6579F89E /* CHHForumConfig.h */,
@@ -531,6 +536,8 @@
 		3A2C400F1DE0026400576151 /* ForumControllers */ = {
 			isa = PBXGroup;
 			children = (
+				3A2C3F9D1DDFE0C900576151 /* ForumLoginViewController.h */,
+				3A2C3F9E1DDFE0C900576151 /* ForumLoginViewController.m */,
 				3A5A2CD41EBDEA7100B62F96 /* ForumSupportNavigationController.h */,
 				3A5A2CD51EBDEA7100B62F96 /* ForumSupportNavigationController.m */,
 				4D0D87231DE40C7900DA9034 /* ForumNavigationViewController.h */,
@@ -545,8 +552,6 @@
 				3A2C3F9A1DDFE0C900576151 /* ForumFavFormController.m */,
 				3A2C3F9B1DDFE0C900576151 /* ForumFavThreadPostTableViewController.h */,
 				3A2C3F9C1DDFE0C900576151 /* ForumFavThreadPostTableViewController.m */,
-				3A2C3F9D1DDFE0C900576151 /* ForumLoginViewController.h */,
-				3A2C3F9E1DDFE0C900576151 /* ForumLoginViewController.m */,
 				3A2C3FA01DDFE0C900576151 /* ForumMyProfileTableViewController.h */,
 				3A2C3FA11DDFE0C900576151 /* ForumMyProfileTableViewController.m */,
 				3A2C3FA21DDFE0C900576151 /* ForumMyThreadPostTableViewController.h */,
@@ -589,8 +594,6 @@
 				3A2C3FCD1DDFE0C900576151 /* ForumWritePMViewController.m */,
 				2F34CA3EA8022D958EAEA736 /* ForumShortCutCreateNewThreadViewController.h */,
 				2F34CA129BA2D7ADF167E05D /* ForumShortCutCreateNewThreadViewController.m */,
-				2F34CEDC13FE605A95AACC4B /* ForumLoginWebViewController.h */,
-				2F34C9F7371B8DDC9EEA62AB /* ForumLoginWebViewController.m */,
 			);
 			name = ForumControllers;
 			sourceTree = "<group>";
@@ -667,6 +670,8 @@
 				3A92CD9E1F2C7E6000E41573 /* CrskyForumConfig.m */,
 				3A92CDA01F2C7E8500E41573 /* CrskyForumHtmlParser.h */,
 				3A92CDA11F2C7E8500E41573 /* CrskyForumHtmlParser.m */,
+				3A92CDA31F2C826B00E41573 /* CrskyLoginViewController.h */,
+				3A92CDA41F2C826B00E41573 /* CrskyLoginViewController.m */,
 			);
 			name = crsky;
 			sourceTree = "<group>";
@@ -1004,6 +1009,7 @@
 				3ACFFD341CFA641F000312DC /* NYTExamplePhoto.m in Sources */,
 				3A2C3F7F1DDFC0CD00576151 /* UIStoryboard+Forum.m in Sources */,
 				4DF737201DDECC8D00BF1896 /* ViewThreadPage.m in Sources */,
+				3A92CDA51F2C826B00E41573 /* CrskyLoginViewController.m in Sources */,
 				3A2C3F4D1DDFBF5900576151 /* ForumSimpleThreadTableViewCell.m in Sources */,
 				3A2C3F7A1DDFC0CD00576151 /* NSString+Extensions.m in Sources */,
 				3A2C3F871DDFDF9200576151 /* AFHTTPSessionManager+SimpleAction.m in Sources */,

@@ -45,7 +45,7 @@
         } else if ([host isEqualToString:@"www.chiphell.com"] || [host isEqualToString:@"chiphell.com"]){
             CHHForumApi * api = [[CHHForumApi alloc] initWithConfig:[[CHHForumConfig alloc] init] parser:[[CHHForumHtmlParser alloc] init]];
             return api;
-        } else if ([host isEqualToString:@"bbs.crsky.com/"]){
+        } else if ([host isEqualToString:@"bbs.crsky.com"]){
             CrskyForumApi *api = [[CrskyForumApi alloc] initWithConfig:[[CrskyForumConfig alloc] init] parser:[[CrskyForumHtmlParser alloc] init]];
             return api;
         }
