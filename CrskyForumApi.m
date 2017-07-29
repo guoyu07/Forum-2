@@ -34,7 +34,7 @@
 - (void)listAllForums:(HandlerWithBool)handler {
     NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
 
-    [self.browser GETWithURLString:self.forumConfig.archive parameters:parameters charset:UTF_8 requestCallback:^(BOOL isSuccess, NSString *html) {
+    [self.browser GETWithURLString:self.forumConfig.archive parameters:parameters charset:GBK requestCallback:^(BOOL isSuccess, NSString *html) {
         if (isSuccess) {
             NSArray<Forum *> *parserForums = [self.forumParser parserForums:html forumHost:self.forumConfig.forumURL.host];
             if (parserForums != nil && parserForums.count > 0) {
