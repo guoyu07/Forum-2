@@ -35,7 +35,10 @@
     self.webView.backgroundColor = [UIColor whiteColor];
     [self.webView setOpaque:NO];
 
-    [self.webView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:@"https://www.chiphell.com/member.php?mod=logging&action=login&mobile=2"]]];
+    
+    
+    
+    [self.webView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:@"http://bbs.crsky.com/login.php"]]];
 }
 
 //private
@@ -59,21 +62,21 @@
     NSString *html = [self getResponseHTML:webView];
 
     NSString *currentURL = [webView stringByEvaluatingJavaScriptFromString:@"document.location.href"];
-    if ([currentURL isEqualToString:@"https://www.chiphell.com/member.php?mod=logging&action=login&mobile=2"]){
-        [webView stringByEvaluatingJavaScriptFromString:@"document.getElementsByClassName('footer')[0].style.visibility='hidden';"
-                "document.getElementsByClassName('header')[0].innerHTML='';"];
-    } else if ([currentURL isEqualToString:@"https://www.chiphell.com/forum.php?mobile=yes"]){
 
-        IGHTMLDocument *document = [[IGHTMLDocument alloc] initWithHTMLString:html error:nil];
-        IGXMLNode *logined = [document queryNodeWithXPath:@"/html/body/div[3]/div[1]/a[1]"];
-        NSString *userName = [[logined text] trim];
+    NSLog(@"CrskyLogin.webViewDidFinishLoad->%@", currentURL);
 
-        if (userName != nil) {
-            // 保存Cookie
-            [self saveCookie];
-            // 保存用户名
-            [self saveUserName:userName];
-        }
+    // 使用JS注入获取用户输入的密码
+    NSString * userName = [webView stringByEvaluatingJavaScriptFromString:@"document.getElementsByName('pwuser')[0].value"];
+    NSLog(@"CrskyLogin.userName->%@", userName);
+    if (userName != nil) {
+        // 保存用户名
+        [self saveUserName:userName];
+    }
+
+    if ([currentURL isEqualToString:@"http://bbs.crsky.com/index.php"]){
+
+        // 保存Cookie
+        [self saveCookie];
 
         [self.forumApi listAllForums:^(BOOL isSuccess, id msg) {
             if (isSuccess) {
@@ -102,7 +105,7 @@
         }];
     }
 
-    NSLog(@"ForumLoginWebViewController.webViewDidFinishLoad %@ ", html);
+    NSLog(@"CrskyLogin.webViewDidFinishLoad %@ ", html);
 
 
 }
@@ -110,17 +113,18 @@
 - (void)webViewDidStartLoad:(UIWebView *)webView {
 
     NSString *html = [self getResponseHTML:webView];
-    NSLog(@"ForumLoginWebViewController.webViewDidStartLoad %@ ", html);
+    NSLog(@"CrskyLogin.webViewDidStartLoad %@ ", html);
 }
 
 
 - (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType {
 
     NSString *urlString = [[request URL] absoluteString];
-//    if ([urlString isEqualToString:@"https://www.chiphell.com/?mobile=2"]) {
-//        NSArray<NSHTTPCookie *> *cookies = [[NSHTTPCookieStorage sharedHTTPCookieStorage] cookies];
-//    }
-    NSLog(@"ForumLoginWebViewController.shouldStartLoadWithRequest %@ ", urlString);
+    NSLog(@"CrskyLogin.shouldStartLoadWithRequest %@ ", urlString);
+
+    if ([request.URL.host containsString:@"baidu.com"]) {
+        return NO;
+    }
     return YES;
 }
 
