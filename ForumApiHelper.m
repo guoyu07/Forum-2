@@ -17,6 +17,9 @@
 #import "CHHForumApi.h"
 #import "CHHForumConfig.h"
 #import "CHHForumHtmlParser.h"
+#import "CrskyForumApi.h"
+#import "CrskyForumConfig.h"
+#import "CrskyForumHtmlParser.h"
 
 @implementation ForumApiHelper
 + (id <ForumBrowserDelegate>)forumApi {
@@ -41,6 +44,9 @@
             return _drlForumBrowser;
         } else if ([host isEqualToString:@"www.chiphell.com"] || [host isEqualToString:@"chiphell.com"]){
             CHHForumApi * api = [[CHHForumApi alloc] initWithConfig:[[CHHForumConfig alloc] init] parser:[[CHHForumHtmlParser alloc] init]];
+            return api;
+        } else if ([host isEqualToString:@"bbs.crsky.com/"]){
+            CrskyForumApi *api = [[CrskyForumApi alloc] initWithConfig:[[CrskyForumConfig alloc] init] parser:[[CrskyForumHtmlParser alloc] init]];
             return api;
         }
     }

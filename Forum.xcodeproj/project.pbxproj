@@ -102,6 +102,9 @@
 		3A2C400A1DE0015C00576151 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A2C40091DE0015C00576151 /* main.m */; };
 		3A5A2CD61EBDEA7100B62F96 /* ForumSupportNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A5A2CD51EBDEA7100B62F96 /* ForumSupportNavigationController.m */; };
 		3A6B4F611EB705A600B9CD79 /* DeviceName.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A6B4F601EB705A600B9CD79 /* DeviceName.m */; };
+		3A92CD9C1F2C7D9B00E41573 /* CrskyForumApi.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A92CD9B1F2C7D9B00E41573 /* CrskyForumApi.m */; };
+		3A92CD9F1F2C7E6000E41573 /* CrskyForumConfig.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A92CD9E1F2C7E6000E41573 /* CrskyForumConfig.m */; };
+		3A92CDA21F2C7E8500E41573 /* CrskyForumHtmlParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A92CDA11F2C7E8500E41573 /* CrskyForumHtmlParser.m */; };
 		3ACFFD2C1CF9D6BF000312DC /* HPURLCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 3ACFFD291CF9D6BF000312DC /* HPURLCache.m */; };
 		3ACFFD2D1CF9D6BF000312DC /* SDImageCache+URLCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 3ACFFD2B1CF9D6BF000312DC /* SDImageCache+URLCache.m */; };
 		3ACFFD301CF9DD3C000312DC /* HPURLProtocol.m in Sources */ = {isa = PBXBuildFile; fileRef = 3ACFFD2F1CF9DD3C000312DC /* HPURLProtocol.m */; };
@@ -309,6 +312,12 @@
 		3A5A2CD51EBDEA7100B62F96 /* ForumSupportNavigationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ForumSupportNavigationController.m; sourceTree = "<group>"; };
 		3A6B4F5F1EB705A600B9CD79 /* DeviceName.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DeviceName.h; sourceTree = "<group>"; };
 		3A6B4F601EB705A600B9CD79 /* DeviceName.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DeviceName.m; sourceTree = "<group>"; };
+		3A92CD9A1F2C7D9B00E41573 /* CrskyForumApi.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CrskyForumApi.h; sourceTree = "<group>"; };
+		3A92CD9B1F2C7D9B00E41573 /* CrskyForumApi.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CrskyForumApi.m; sourceTree = "<group>"; };
+		3A92CD9D1F2C7E6000E41573 /* CrskyForumConfig.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CrskyForumConfig.h; sourceTree = "<group>"; };
+		3A92CD9E1F2C7E6000E41573 /* CrskyForumConfig.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CrskyForumConfig.m; sourceTree = "<group>"; };
+		3A92CDA01F2C7E8500E41573 /* CrskyForumHtmlParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CrskyForumHtmlParser.h; sourceTree = "<group>"; };
+		3A92CDA11F2C7E8500E41573 /* CrskyForumHtmlParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CrskyForumHtmlParser.m; sourceTree = "<group>"; };
 		3ACFFD281CF9D6BF000312DC /* HPURLCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HPURLCache.h; sourceTree = "<group>"; };
 		3ACFFD291CF9D6BF000312DC /* HPURLCache.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HPURLCache.m; sourceTree = "<group>"; };
 		3ACFFD2A1CF9D6BF000312DC /* SDImageCache+URLCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "SDImageCache+URLCache.h"; sourceTree = "<group>"; };
@@ -628,6 +637,7 @@
 		3A2C40121DE0439500576151 /* Custom */ = {
 			isa = PBXGroup;
 			children = (
+				3A92CD991F2C7CE100E41573 /* crsky */,
 				3A288A5B1DFD1490002EBBC2 /* drl */,
 				4DFB34D31DF9461E00BD8DD5 /* ccf */,
 				2F34C7BC164C986C72776D3A /* chh */,
@@ -646,6 +656,19 @@
 				3A2C3F161DDFBAB200576151 /* append_post_content.html */,
 			);
 			name = Templet;
+			sourceTree = "<group>";
+		};
+		3A92CD991F2C7CE100E41573 /* crsky */ = {
+			isa = PBXGroup;
+			children = (
+				3A92CD9A1F2C7D9B00E41573 /* CrskyForumApi.h */,
+				3A92CD9B1F2C7D9B00E41573 /* CrskyForumApi.m */,
+				3A92CD9D1F2C7E6000E41573 /* CrskyForumConfig.h */,
+				3A92CD9E1F2C7E6000E41573 /* CrskyForumConfig.m */,
+				3A92CDA01F2C7E8500E41573 /* CrskyForumHtmlParser.h */,
+				3A92CDA11F2C7E8500E41573 /* CrskyForumHtmlParser.m */,
+			);
+			name = crsky;
 			sourceTree = "<group>";
 		};
 		3ACFFD271CF9D6B1000312DC /* NetWork */ = {
@@ -985,7 +1008,9 @@
 				3A2C3F7A1DDFC0CD00576151 /* NSString+Extensions.m in Sources */,
 				3A2C3F871DDFDF9200576151 /* AFHTTPSessionManager+SimpleAction.m in Sources */,
 				4DF7371D1DDECC8D00BF1896 /* UserProfile.m in Sources */,
+				3A92CDA21F2C7E8500E41573 /* CrskyForumHtmlParser.m in Sources */,
 				3A2C3FE11DDFE0C900576151 /* ForumShowPrivateMessageViewController.m in Sources */,
+				3A92CD9C1F2C7D9B00E41573 /* CrskyForumApi.m in Sources */,
 				3A2C40011DDFE30300576151 /* TransBundle.m in Sources */,
 				3A2C3FE01DDFE0C900576151 /* ForumShowNewThreadPostTableViewController.m in Sources */,
 				3A288A571DFC534D002EBBC2 /* SupportForums.m in Sources */,
@@ -1037,6 +1062,7 @@
 				3A2C3F7E1DDFC0CD00576151 /* UIImage+Tint.m in Sources */,
 				3A6B4F611EB705A600B9CD79 /* DeviceName.m in Sources */,
 				3A2C3F6A1DDFC03400576151 /* LeftDrawerItem.m in Sources */,
+				3A92CD9F1F2C7E6000E41573 /* CrskyForumConfig.m in Sources */,
 				3A2C3F691DDFC03400576151 /* CommonUtils.m in Sources */,
 				3A2C3F321DDFBCE800576151 /* CoreDataManager.m in Sources */,
 				3A2C3F881DDFDF9200576151 /* IGHTMLDocument+QueryNode.m in Sources */,
