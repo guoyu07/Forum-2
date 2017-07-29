@@ -222,7 +222,7 @@ static NSString *bundleIdentifier;
     NSDictionary *dictionary = [NSJSONSerialization JSONObjectWithData:data options:(NSJSONReadingOptions) kNilOptions error:nil];
 
     SupportForums *supportForums = [SupportForums modelObjectWithDictionary:dictionary];
-    int size = (int) supportForums.forums;
+    int size = (int) supportForums.forums.count;
 
     // 判断是否登录
     id<ForumBrowserDelegate> forumApi = [ForumApiHelper forumApi];
