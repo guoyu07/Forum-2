@@ -23,7 +23,7 @@
 
 - (void)loginWithName:(NSString *)name andPassWord:(NSString *)passWord withCode:(NSString *)code question:(NSString *)q answer:(NSString *)a handler:(HandlerWithBool)handler {
 
-    [self.browser GETWithURLString:self.forumConfig.login parameters:nil requestCallback:^(BOOL isSuccess, NSString *html) {
+    [self.browser GETWithURLString:self.forumConfig.login parameters:nil charset:UTF_8 requestCallback:^(BOOL isSuccess, NSString *html) {
         if (isSuccess){
 
             NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
@@ -39,7 +39,7 @@
             [parameters setValue:md5pwd forKey:@"vb_login_md5password"];
             [parameters setValue:md5pwd forKey:@"vb_login_md5password_utf"];
 
-            [self.browser POSTWithURLString:self.forumConfig.login parameters:parameters requestCallback:^(BOOL success, NSString *resultHtml) {
+            [self.browser POSTWithURLString:self.forumConfig.login parameters:parameters charset:UTF_8 requestCallback:^(BOOL success, NSString *resultHtml) {
                 if (success) {
 
                     NSString *userName = [resultHtml stringWithRegular:@"<p><strong>.*</strong></p>" andChild:@"，.*。"];
@@ -76,7 +76,7 @@
 }
 
 - (void)refreshVCodeToUIImageView:(UIImageView *)vCodeImageView {
-    [self.browser GETWithURLString:self.forumConfig.login parameters:nil requestCallback:^(BOOL isSuccess, NSString *html) {
+    [self.browser GETWithURLString:self.forumConfig.login parameters:nil charset:UTF_8 requestCallback:^(BOOL isSuccess, NSString *html) {
         if (isSuccess){
             NSString * seccodeFull = [html stringWithRegular:@"<span id=\"seccode_\\w+\"></span>" andChild:@"seccode_\\w+"];
             NSString * seccode = [seccodeFull componentsSeparatedByString:@"_"][1];
@@ -95,7 +95,7 @@
             NSMutableDictionary *p = [NSMutableDictionary dictionary];
             [p setValue:[self loadCookie] forKey:@"cookie"];
             
-            [self.browser GETWithURLString:msic parameters:p requestCallback:^(BOOL success, NSString *codeHtml) {
+            [self.browser GETWithURLString:msic parameters:p charset:UTF_8 requestCallback:^(BOOL success, NSString *codeHtml) {
                 if (success){
                     
                     [self saveCookie];
@@ -182,7 +182,7 @@
 }
 
 - (void)listAllForums:(HandlerWithBool)handler {
-    [self.browser GETWithURLString:self.forumConfig.archive parameters:nil requestCallback:^(BOOL isSuccess, NSString *html) {
+    [self.browser GETWithURLString:self.forumConfig.archive parameters:nil charset:UTF_8 requestCallback:^(BOOL isSuccess, NSString *html) {
         if (isSuccess) {
             NSArray<Forum *> *parserForums = [self.forumParser parserForums:html forumHost:self.forumConfig.forumURL.host];
             if (parserForums != nil && parserForums.count > 0) {
@@ -218,7 +218,7 @@
     if (replyPostId == -1){     // 表示回复的某一个楼层
         NSString *preReplyUrl = [NSString stringWithFormat:@"https://www.chiphell.com/forum.php?mod=post&action=reply&fid=%d&tid=%d&reppost=%d&extra=page%3D1&page=1&infloat=yes&handlekey=reply&inajax=1&ajaxtarget=fwin_content_reply", forumId, threadId, replyPostId];
 
-        [self.browser GETWithURLString:preReplyUrl parameters:nil requestCallback:^(BOOL isSuccess, NSString *html) {
+        [self.browser GETWithURLString:preReplyUrl parameters:nil charset:UTF_8 requestCallback:^(BOOL isSuccess, NSString *html) {
             if (isSuccess) {
                 NSString *formHash = nil;
                 NSString *noticeAuthor = nil;
@@ -260,7 +260,7 @@
 //                [parameters setValue:@"" forKey:@"wysiwyg"];
 //                [parameters setValue:@"0" forKey:@"save"];
 
-                [self.browser POSTWithURLString:url parameters:parameters requestCallback:^(BOOL repsuccess, NSString *repHtml) {
+                [self.browser POSTWithURLString:url parameters:parameters charset:UTF_8 requestCallback:^(BOOL repsuccess, NSString *repHtml) {
                     ViewThreadPage *thread = [self.forumParser parseShowThreadWithHtml:html];
                     if (thread.postList.count > 0) {
                         handler(YES, thread);
@@ -291,7 +291,7 @@
         [parameters setValue:@"" forKey:@"subject"];
         [parameters setValue:@"0" forKey:@"save"];
 
-        [self.browser POSTWithURLString:url parameters:parameters requestCallback:^(BOOL isSuccess, NSString *html) {
+        [self.browser POSTWithURLString:url parameters:parameters charset:UTF_8 requestCallback:^(BOOL isSuccess, NSString *html) {
             ViewThreadPage *thread = [self.forumParser parseShowThreadWithHtml:html];
             if (thread.postList.count > 0) {
                 handler(YES, thread);
@@ -336,7 +336,7 @@
 
 - (void)listPrivateMessageWithType:(int)type andPage:(int)page handler:(HandlerWithBool)handler {
 
-    [self.browser GETWithURLString:[self.forumConfig privateWithType:type withPage:page] parameters:nil requestCallback:^(BOOL isSuccess, NSString *html) {
+    [self.browser GETWithURLString:[self.forumConfig privateWithType:type withPage:page] parameters:nil charset:UTF_8 requestCallback:^(BOOL isSuccess, NSString *html) {
         if (isSuccess) {
             ViewForumPage *viewForumPage = [self.forumParser parsePrivateMessageFromHtml:html forType:type];
             handler(YES, viewForumPage);
@@ -387,7 +387,7 @@
 - (void)listFavoriteForums:(int ) page handler:(HandlerWithBool)handler {
     NSString * baseUrl = self.forumConfig.favoriteForums;
     NSString * favForumsURL = [NSString stringWithFormat:@"%@&page=%d",baseUrl,page];
-    [self.browser GETWithURLString:favForumsURL parameters:nil requestCallback:^(BOOL isSuccess, NSString *html) {
+    [self.browser GETWithURLString:favForumsURL parameters:nil charset:UTF_8 requestCallback:^(BOOL isSuccess, NSString *html) {
         handler(isSuccess, html);
     }];
 }
@@ -395,7 +395,7 @@
 - (void)listFavoriteThreadPostsWithPage:(int)page handler:(HandlerWithBool)handler {
     NSString *url = [self.forumConfig listfavThreadWithId:page];
 
-    [self.browser GETWithURLString:url parameters:nil requestCallback:^(BOOL isSuccess, NSString *html) {
+    [self.browser GETWithURLString:url parameters:nil charset:UTF_8 requestCallback:^(BOOL isSuccess, NSString *html) {
         if (isSuccess) {
             ViewForumPage *viewForumPage = [self.forumParser parseFavThreadListFromHtml:html];
             handler(isSuccess, viewForumPage);
@@ -407,7 +407,7 @@
 
 - (void)listNewThreadPostsWithPage:(int)page handler:(HandlerWithBool)handler {
 
-    [self.browser GETWithURLString:[self.forumConfig searchNewThread:page] parameters:nil requestCallback:^(BOOL isSuccess, NSString *html) {
+    [self.browser GETWithURLString:[self.forumConfig searchNewThread:page] parameters:nil charset:UTF_8 requestCallback:^(BOOL isSuccess, NSString *html) {
         if (isSuccess) {
             ViewSearchForumPage *searchForumPage = [self.forumParser parseSearchPageFromHtml:html];
             handler(isSuccess, searchForumPage);
@@ -418,7 +418,7 @@
 }
 
 - (void)listMyAllThreadsWithPage:(int)page handler:(HandlerWithBool)handler {
-    [self.browser GETWithURLString:nil parameters:nil requestCallback:^(BOOL isSuccess, NSString *html) {
+    [self.browser GETWithURLString:nil parameters:nil charset:UTF_8 requestCallback:^(BOOL isSuccess, NSString *html) {
         if (isSuccess) {
             ViewForumPage *sarchPage = [self.forumParser parseSearchPageFromHtml:html];
             handler(isSuccess, sarchPage);
@@ -436,7 +436,7 @@
 
     NSMutableDictionary *defparameters = [NSMutableDictionary dictionary];
 
-    [self.browser GETWithURLString:url parameters:defparameters requestCallback:^(BOOL isSuccess, NSString *html) {
+    [self.browser GETWithURLString:url parameters:defparameters charset:UTF_8 requestCallback:^(BOOL isSuccess, NSString *html) {
 
         if (isSuccess) {
             ViewForumPage *sarchPage = [self.forumParser parseSearchPageFromHtml:html];
@@ -452,7 +452,7 @@
     //https://www.chiphell.com/thread-1732141-2-1.html
 
     NSString *url = [self.forumConfig showThreadWithThreadId:[NSString stringWithFormat:@"%d", threadId] withPage:page];
-    [self.browser GETWithURLString:url parameters:nil requestCallback:^(BOOL isSuccess, NSString *html) {
+    [self.browser GETWithURLString:url parameters:nil charset:UTF_8 requestCallback:^(BOOL isSuccess, NSString *html) {
 
         if (isSuccess) {
             NSString *error = nil;//[self checkError:html];
@@ -475,7 +475,7 @@
 
 - (void)forumDisplayWithId:(int)forumId andPage:(int)page handler:(HandlerWithBool)handler {
 
-    [self.browser GETWithURLString:[self.forumConfig forumDisplayWithId:[NSString stringWithFormat:@"%d", forumId] withPage:page] parameters:nil requestCallback:^(BOOL isSuccess, NSString *html) {
+    [self.browser GETWithURLString:[self.forumConfig forumDisplayWithId:[NSString stringWithFormat:@"%d", forumId] withPage:page] parameters:nil charset:UTF_8 requestCallback:^(BOOL isSuccess, NSString *html) {
         if (isSuccess) {
             ViewForumPage *viewForumPage = [self.forumParser parseThreadListFromHtml:html withThread:forumId andContainsTop:YES];
             handler(isSuccess, viewForumPage);
@@ -487,7 +487,7 @@
 
 - (void)getAvatarWithUserId:(NSString *)userId handler:(HandlerWithBool)handler {
 
-    [self.browser GETWithURLString:[self.forumConfig memberWithUserId:userId] parameters:nil requestCallback:^(BOOL isSuccess, NSString *html) {
+    [self.browser GETWithURLString:[self.forumConfig memberWithUserId:userId] parameters:nil charset:UTF_8 requestCallback:^(BOOL isSuccess, NSString *html) {
         NSString *avatar = [self.forumParser parseUserAvatar:html userId:userId];
         if (avatar) {
             avatar = [self.forumConfig.avatarBase stringByAppendingString:avatar];
@@ -504,7 +504,7 @@
 }
 
 - (void)showProfileWithUserId:(NSString *)userId handler:(HandlerWithBool)handler {
-    [self.browser GETWithURLString:[self.forumConfig memberWithUserId:userId] parameters:nil requestCallback:^(BOOL isSuccess, NSString *html) {
+    [self.browser GETWithURLString:[self.forumConfig memberWithUserId:userId] parameters:nil charset:UTF_8 requestCallback:^(BOOL isSuccess, NSString *html) {
         if (isSuccess) {
             UserProfile *profile = [self.forumParser parserProfile:html userId:userId];
             handler(YES, profile);

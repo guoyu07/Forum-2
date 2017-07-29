@@ -7,6 +7,8 @@
 //
 
 #import "CrskyForumApi.h"
+#import "ForumParserDelegate.h"
+#import "AFHTTPSessionManager+SimpleAction.h"
 
 @implementation CrskyForumApi
 - (void)loginWithName:(NSString *)name andPassWord:(NSString *)passWord withCode:(NSString *)code question:(NSString *)q answer:(NSString *)a handler:(HandlerWithBool)handler {
@@ -30,7 +32,20 @@
 }
 
 - (void)listAllForums:(HandlerWithBool)handler {
+    NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
 
+    [self.browser GETWithURLString:self.forumConfig.archive parameters:parameters charset:UTF_8 requestCallback:^(BOOL isSuccess, NSString *html) {
+        if (isSuccess) {
+            NSArray<Forum *> *parserForums = [self.forumParser parserForums:html forumHost:self.forumConfig.forumURL.host];
+            if (parserForums != nil && parserForums.count > 0) {
+                handler(YES, parserForums);
+            } else {
+                handler(NO, html);
+            }
+        } else {
+            handler(NO, html);
+        }
+    }];
 }
 
 - (void)createNewThreadWithForumId:(int)fId withSubject:(NSString *)subject andMessage:(NSString *)message withImages:(NSArray *)images handler:(HandlerWithBool)handler {

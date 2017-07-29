@@ -51,6 +51,7 @@
     [[NSUserDefaults standardUserDefaults] saveUserName:name];
 }
 
+// private
 - (NSString*) getResponseHTML:(UIWebView *)webView {
     NSString *lJs = @"document.documentElement.outerHTML";
     NSString *html = [webView stringByEvaluatingJavaScriptFromString:lJs];
@@ -73,8 +74,28 @@
         [self saveUserName:userName];
     }
 
-    if ([currentURL isEqualToString:@"http://bbs.crsky.com/index.php"]){
+    NSLog(@"CrskyLogin.webViewDidFinishLoad %@ ", html);
 
+
+}
+
+- (void)webViewDidStartLoad:(UIWebView *)webView {
+
+    NSString *html = [self getResponseHTML:webView];
+    NSLog(@"CrskyLogin.webViewDidStartLoad %@ ", html);
+}
+
+
+- (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType {
+
+    NSString *urlString = [[request URL] absoluteString];
+    NSLog(@"CrskyLogin.shouldStartLoadWithRequest %@ ", urlString);
+
+    if ([request.URL.host containsString:@"baidu.com"]) {
+        return NO;
+    }
+
+    if ([request.URL.absoluteString isEqualToString:@"http://bbs.crsky.com/index.php"]){
         // 保存Cookie
         [self saveCookie];
 
@@ -103,28 +124,11 @@
 
             }
         }];
-    }
 
-    NSLog(@"CrskyLogin.webViewDidFinishLoad %@ ", html);
-
-
-}
-
-- (void)webViewDidStartLoad:(UIWebView *)webView {
-
-    NSString *html = [self getResponseHTML:webView];
-    NSLog(@"CrskyLogin.webViewDidStartLoad %@ ", html);
-}
-
-
-- (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType {
-
-    NSString *urlString = [[request URL] absoluteString];
-    NSLog(@"CrskyLogin.shouldStartLoadWithRequest %@ ", urlString);
-
-    if ([request.URL.host containsString:@"baidu.com"]) {
         return NO;
     }
+
+
     return YES;
 }
 

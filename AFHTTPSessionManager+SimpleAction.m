@@ -12,36 +12,49 @@
 @implementation AFHTTPSessionManager (SimpleAction)
 
 
-- (void)GETWithURL:(NSURL *)url parameters:(NSDictionary *)parameters requestCallback:(RequestCallback)callback {
+- (void)GETWithURL:(NSURL *)url parameters:(NSDictionary *)parameters charset:(Charset)charset requestCallback:(RequestCallback)callback {
 
     [self GET:[url absoluteString] parameters:parameters progress:nil success:^(NSURLSessionDataTask *_Nonnull task, id _Nullable responseObject) {
-        
-        NSString *orgHtml = [responseObject utf8String];
-        NSString *html = [orgHtml replaceUnicode];
-        
-        callback(YES, html);
+
+        if (charset == GBK){
+
+            NSStringEncoding enc = CFStringConvertEncodingToNSStringEncoding(kCFStringEncodingGB_18030_2000);
+            NSString * encodeStr = [[NSString alloc] initWithBytes:[responseObject bytes] length:[responseObject length] encoding:enc];
+            callback(YES, encodeStr);
+        } else{
+            NSString *orgHtml = [responseObject utf8String];
+            NSString *html = [orgHtml replaceUnicode];
+
+            callback(YES, html);
+        }
+
     } failure:^(NSURLSessionDataTask *_Nullable task, NSError *_Nonnull error) {
         callback(NO, @"网络异常");
     }];
 }
 
-- (void)POSTWithURL:(NSURL *)url parameters:(id)parameters requestCallback:(RequestCallback)callback {
-//    [self setTaskWillPerformHTTPRedirectionBlock:^NSURLRequest *(NSURLSession *session, NSURLSessionTask *task, NSURLResponse *response, NSURLRequest *request) {
-//        return request;
-//    }];
-    [self POST:[url absoluteString] parameters:parameters progress:nil success:^(NSURLSessionDataTask *_Nonnull task, id _Nullable responseObject) {
-        
-        NSString *orgHtml = [responseObject utf8String];
-        NSString *html = [orgHtml replaceUnicode];
+- (void)POSTWithURL:(NSURL *)url parameters:(id)parameters charset:(Charset)charset requestCallback:(RequestCallback)callback {
 
-        callback(YES, html);
+    [self POST:[url absoluteString] parameters:parameters progress:nil success:^(NSURLSessionDataTask *_Nonnull task, id _Nullable responseObject) {
+
+        if (charset == GBK){
+            NSStringEncoding enc = CFStringConvertEncodingToNSStringEncoding(kCFStringEncodingGB_18030_2000);
+            NSString * encodeStr = [[NSString alloc] initWithBytes:[responseObject bytes] length:[responseObject length] encoding:enc];
+            callback(YES, encodeStr);
+        } else{
+            NSString *orgHtml = [responseObject utf8String];
+            NSString *html = [orgHtml replaceUnicode];
+
+            callback(YES, html);
+        }
+
     }  failure:^(NSURLSessionDataTask *_Nullable task, NSError *_Nonnull error) {
         callback(NO, @"网络异常");
     }];
 
 }
 
-- (void)POSTWithURL:(NSURL *)url parameters:(id)parameters constructingBodyWithBlock:(void (^)(id <AFMultipartFormData>))block requestCallback:(RequestCallback)callback {
+- (void)POSTWithURL:(NSURL *)url parameters:(id)parameters constructingBodyWithBlock:(void (^)(id <AFMultipartFormData>))block charset:(Charset)charset requestCallback:(RequestCallback)callback {
 
 
     [self POST:[url absoluteString] parameters:parameters constructingBodyWithBlock:^(id <AFMultipartFormData> _Nonnull formData) {
@@ -50,10 +63,16 @@
 
     }  success:^(NSURLSessionDataTask *_Nonnull task, id _Nullable responseObject) {
 
-        NSString *orgHtml = [responseObject utf8String];
-        NSString *html = [orgHtml replaceUnicode];
+        if (charset == GBK){
+            NSStringEncoding enc = CFStringConvertEncodingToNSStringEncoding(kCFStringEncodingGB_18030_2000);
+            NSString * encodeStr = [[NSString alloc] initWithBytes:[responseObject bytes] length:[responseObject length] encoding:enc];
+            callback(YES, encodeStr);
+        } else{
+            NSString *orgHtml = [responseObject utf8String];
+            NSString *html = [orgHtml replaceUnicode];
 
-        callback(YES, html);
+            callback(YES, html);
+        }
 
     }  failure:^(NSURLSessionDataTask *_Nullable task, NSError *_Nonnull error) {
         NSLog(@"AFHTTPSessionManager+SimpleAction POSTWithURL  %@", error);
@@ -61,24 +80,20 @@
     }];
 }
 
--(void)GETWithURLString:(NSString *)url parameters:(NSDictionary *)parameters requestCallback:(RequestCallback)callback{
-//    NSMutableDictionary * parameters = [NSMutableDictionary dictionary];
-//    [parameters setValue:@"2" forKey:@"styleid"];
-//    [parameters setValue:@"1" forKey:@"langid"];
+- (void)GETWithURLString:(NSString *)url parameters:(NSDictionary *)parameters charset:(Charset)charset requestCallback:(RequestCallback)callback {
     NSURL *nsurl = [NSURL URLWithString:url];
-    [self GETWithURL:nsurl parameters:parameters requestCallback:callback];
+    [self GETWithURL:nsurl parameters:parameters charset:charset requestCallback:callback];
 }
 
-- (void)POSTWithURLString:(NSString *)url parameters:(id)parameters constructingBodyWithBlock:(void (^)(id <AFMultipartFormData>))block requestCallback:(RequestCallback)callback {
+- (void)POSTWithURLString:(NSString *)url parameters:(id)parameters charset:(Charset)charset requestCallback:(RequestCallback)callback {
     NSURL *nsurl = [NSURL URLWithString:url];
-
-    [self POSTWithURL:nsurl parameters:parameters constructingBodyWithBlock:block requestCallback:callback];
+    [self POSTWithURL:nsurl parameters:parameters charset:charset requestCallback:callback];
 }
 
-
-- (void)POSTWithURLString:(NSString *)url parameters:(id)parameters requestCallback:(RequestCallback)callback {
+- (void)POSTWithURLString:(NSString *)url parameters:(id)parameters constructingBodyWithBlock:(void (^)(id <AFMultipartFormData> formData))block charset:(Charset)charset requestCallback:(RequestCallback)callback {
     NSURL *nsurl = [NSURL URLWithString:url];
-    [self POSTWithURL:nsurl parameters:parameters requestCallback:callback];
+
+    [self POSTWithURL:nsurl parameters:parameters constructingBodyWithBlock:block charset:charset requestCallback:callback];
 }
 
 @end
