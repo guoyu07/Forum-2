@@ -13,8 +13,95 @@
 #import "NSString+Extensions.h"
 
 @implementation CrskyForumHtmlParser
+
+
+// private
+- (NSMutableArray<Post *> *)parseShowThreadPosts:(IGHTMLDocument *)document {
+
+    IGXMLNodeSet * postSetNode = [document queryWithClassName:@"t5 t2"];
+
+    NSMutableArray *posts = [NSMutableArray array];
+
+    for (IGXMLNode * postNode in postSetNode) {
+        Post * post = [[Post alloc] init];
+        // 1. postId
+        NSString *pid = [postNode.html stringWithRegular:@"(?<=pid=)\\d+"];
+        if (!pid){
+            pid = @"tpc";
+        }
+        post.postID = pid;
+
+        //2. 楼层
+        NSString *louceng = [postNode.html stringWithRegular:@"(?<=title=\"复制此楼地址\">)\\d+"];
+        if (!louceng){
+            louceng = @"楼主";
+        }
+        post.postLouCeng = louceng;
+
+        //3. time
+        NSString *time = [postNode.html stringWithRegular:@"(?<=<span class=\"fl gray\" title=\"Array\" style=\"white-space:nowrap;\">发表于: )dddd-dd-dd dd:dd:dd"];
+        post.postTime = time;
+
+        //4. content
+        IGHTMLDocument *contentDoc = [[IGHTMLDocument alloc] initWithHTMLString:postNode.html error:nil];
+        IGXMLNode *contentNode = [contentDoc queryNodeWithClassName:@"tpc_content"];
+        NSString *content = contentNode.html;
+        post.postContent = content;
+
+        //5. user
+        User * user = [[User alloc] init];
+        post.postUserInfo = user;
+
+        [posts addObject:post];
+    }
+
+    return posts;
+}
+
+// private
+- (NSString *)postMessages:(NSString *)html {
+    IGHTMLDocument *document = [[IGHTMLDocument alloc] initWithHTMLString:html error:nil];
+    IGXMLNodeSet *postMessages = [document queryWithXPath:@"//*[@id='posts']/div[*]/div/div/div/table/tr[1]/td[2]"];
+    NSMutableString *messages = [NSMutableString string];
+
+    for (IGXMLNode *node in postMessages) {
+        [messages appendString:node.text];
+    }
+    return [messages copy];
+}
+
 - (ViewThreadPage *)parseShowThreadWithHtml:(NSString *)html {
-    return nil;
+
+    IGHTMLDocument *document = [[IGHTMLDocument alloc] initWithHTMLString:html error:nil];
+
+    ViewThreadPage *showThreadPage = [[ViewThreadPage alloc] init];
+    //1. tid
+    int tid = [[html stringWithRegular:@"(?<=tid=)\\d+"] intValue];
+    showThreadPage.threadID = tid;
+
+    //2. fid
+    int fid = [[html stringWithRegular:@"(?<=fid=)\\d+"] intValue];
+    showThreadPage.forumId = fid;
+
+    //3. title
+    IGXMLNode *titleNode = [document queryNodeWithClassName:@"crumbs-item current"];
+    NSString *title = titleNode.text.trim;
+    showThreadPage.threadTitle = title;
+
+    //4. posts
+    NSMutableArray * posts = [self parseShowThreadPosts:document];
+    showThreadPage.postList = posts;
+
+    //5. orgHtml
+    NSString *orgHtml = [self postMessages:html];
+    showThreadPage.originalHtml = orgHtml;
+
+    //6. number
+    PageNumber *pageNumber = [self pageNumber:document];
+    showThreadPage.pageNumber = pageNumber;
+
+
+    return showThreadPage;
 }
 
 

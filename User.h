@@ -9,12 +9,13 @@
 
 @interface User : NSObject
 
-@property(nonatomic, strong) NSString *userID;
-@property(nonatomic, strong) NSString *userName;
-@property(nonatomic, strong) NSString *userAvatar;
-@property(nonatomic, strong) NSString *userRank;
-@property(nonatomic, strong) NSString *userSignDate;
-@property(nonatomic, strong) NSString *userPostCount;
-@property(nonatomic, strong) NSString *forumHost;
+@property(nonatomic, strong) NSString *userID;          //1. userId
+
+@property(nonatomic, strong) NSString *userName;        //2. userName
+@property(nonatomic, strong) NSString *userAvatar;      //3. avatar
+@property(nonatomic, strong) NSString *userRank;        //4. rank
+@property(nonatomic, strong) NSString *userSignDate;    //5. signDate
+@property(nonatomic, strong) NSString *userPostCount;   //6. postCount
+@property(nonatomic, strong) NSString *forumHost;       //7. forumHost
 
 @end

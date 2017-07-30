@@ -9,6 +9,8 @@
 #import "CrskyForumApi.h"
 #import "ForumParserDelegate.h"
 #import "AFHTTPSessionManager+SimpleAction.h"
+#import "DeviceName.h"
+#import "NSUserDefaults+Extensions.h"
 
 @implementation CrskyForumApi
 - (void)loginWithName:(NSString *)name andPassWord:(NSString *)passWord withCode:(NSString *)code question:(NSString *)q answer:(NSString *)a handler:(HandlerWithBool)handler {
@@ -16,11 +18,52 @@
 }
 
 - (void)refreshVCodeToUIImageView:(UIImageView *)vCodeImageView {
+    //  No Need OverWrite
+}
 
+// private
+- (NSString *)loadCookie {
+    return [[NSUserDefaults standardUserDefaults] loadCookie];
+}
+
+// private
+- (void)saveUserName:(NSString *)name {
+    [[NSUserDefaults standardUserDefaults] saveUserName:name];
+}
+
+//private
+- (NSString *)userName:(NSString *)host {
+    return [[NSUserDefaults standardUserDefaults] userName:host];
+}
+
+//private
+- (void)saveCookie {
+    [[NSUserDefaults standardUserDefaults] saveCookie];
+}
+
+// private
+- (NSString *)buildSignature {
+    NSString *phoneName = [DeviceName deviceNameDetail];
+    NSString *signature = [NSString stringWithFormat:@"\n\n发自 %@ 使用 霏凡客户端", phoneName];
+    return signature;
 }
 
 - (LoginUser *)getLoginUser {
-    return nil;
+    NSArray<NSHTTPCookie *> *cookies = [[NSHTTPCookieStorage sharedHTTPCookieStorage] cookies];
+
+    LoginUser *user = [[LoginUser alloc] init];
+    user.userName = [self userName:self.currentConfigDelegate.forumURL.host];
+
+    for (int i = 0; i < cookies.count; i++) {
+        NSHTTPCookie *cookie = cookies[(NSUInteger) i];
+
+        if ([cookie.name isEqualToString:self.forumConfig.cookieUserIdKey]) {
+            user.userID = cookie.value;
+        } else if ([cookie.name isEqualToString:self.forumConfig.cookieExpTimeKey]) {
+            user.expireTime = cookie.expiresDate;
+        }
+    }
+    return user;
 }
 
 - (BOOL)isHaveLogin:(NSString *)host {
@@ -36,7 +79,16 @@
 }
 
 - (void)logout {
+    [[NSUserDefaults standardUserDefaults] clearCookie];
 
+    NSURL *url = self.forumConfig.forumURL;
+    if (url) {
+        NSArray *cookies = [[NSHTTPCookieStorage sharedHTTPCookieStorage] cookiesForURL:url];
+        for (int i = 0; i < [cookies count]; i++) {
+            NSHTTPCookie *cookie = (NSHTTPCookie *) cookies[(NSUInteger) i];
+            [[NSHTTPCookieStorage sharedHTTPCookieStorage] deleteCookie:cookie];
+        }
+    }
 }
 
 - (void)listAllForums:(HandlerWithBool)handler {
@@ -165,7 +217,20 @@
 }
 
 - (void)showThreadWithId:(int)threadId andPage:(int)page handler:(HandlerWithBool)handler {
+    NSMutableDictionary *defparameters = [NSMutableDictionary dictionary];
+    [defparameters setValue:@"winds" forKey:@"skinco"];
 
+    NSString * url = [self.forumConfig showThreadWithThreadId:[NSString stringWithFormat:@"%d", threadId] withPage:page];
+    [self.browser GETWithURLString:url parameters:defparameters charset:GBK requestCallback:^(BOOL isSuccess, NSString *html) {
+
+        if (isSuccess) {
+            ViewThreadPage *detail = [self.forumParser parseShowThreadWithHtml:html];
+            handler(isSuccess, detail);
+        } else {
+            handler(NO, html);
+        }
+
+    }];
 }
 
 - (void)showThreadWithP:(NSString *)p handler:(HandlerWithBool)handler {

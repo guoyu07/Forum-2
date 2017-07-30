@@ -11,12 +11,12 @@
 
 @interface Post : NSObject
 
-@property(nonatomic, strong) NSString *postID;
+@property(nonatomic, strong) NSString *postID;          //1. postId
 
-@property(nonatomic, strong) NSString *postLouCeng;    // 帖子楼层
-@property(nonatomic, strong) NSString *postTime;
-@property(nonatomic, strong) NSString *postContent;
+@property(nonatomic, strong) NSString *postLouCeng;     //2. 帖子楼层
+@property(nonatomic, strong) NSString *postTime;        //3. 帖子时间
+@property(nonatomic, strong) NSString *postContent;     //4. content html
 
-@property(nonatomic, strong) User *postUserInfo;
+@property(nonatomic, strong) User *postUserInfo;        //5. user
 
 @end

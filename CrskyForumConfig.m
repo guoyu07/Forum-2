@@ -111,7 +111,7 @@
 }
 
 - (NSString *)showThreadWithThreadId:(NSString *)threadId withPage:(int)page {
-    return nil;
+    return [NSString stringWithFormat:@"http://bbs.crsky.com/read.php?tid=%@&fpage=0&toread=&page=%d",threadId, page];
 }
 
 - (NSString *)showThreadWithP:(NSString *)p {

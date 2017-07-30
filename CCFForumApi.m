@@ -30,6 +30,8 @@ typedef void (^CallBack)(NSString *token, NSString *hash, NSString *time);
     NSString *_message;
     NSString *_subject;
 }
+
+
 //------
 // private
 - (NSString *)loadCookie {
