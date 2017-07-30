@@ -158,8 +158,8 @@
         
         // 存到本地
         NSMutableArray * ids = [NSMutableArray array];
-        for (NSString *forumId in favForumIds){
-            [ids addObject:@([forumId intValue])];
+        for (NSString *fid in favForumIds){
+            [ids addObject:@([fid intValue])];
         }
         [[NSUserDefaults standardUserDefaults] saveFavFormIds:ids];
     }
@@ -169,7 +169,31 @@
 }
 
 - (void)unfavouriteForumsWithId:(NSString *)forumId handler:(HandlerWithBool)handler {
+    NSString *key = [self.forumConfig.forumURL.host stringByAppendingString:@"-favForums"];
 
+    NSUbiquitousKeyValueStore * store = [NSUbiquitousKeyValueStore defaultStore];
+
+    NSString * data = [store stringForKey:key];
+    NSArray * favForumIds = [data componentsSeparatedByString:@","];
+    NSLog(@"favoriteForumsWithId \t%@", favForumIds);
+    if ([favForumIds containsObject:forumId]){
+        NSMutableArray * array = [favForumIds mutableCopy];
+        [array removeObject:forumId];
+
+        // 存到云端
+        NSString * newForums = [array componentsJoinedByString:@","];
+        [store setString:newForums forKey:key];
+        [store synchronize];
+
+        // 存到本地
+        NSMutableArray * ids = [NSMutableArray array];
+        for (NSString *fid in favForumIds){
+            [ids addObject:@([fid intValue])];
+        }
+        [[NSUserDefaults standardUserDefaults] saveFavFormIds:ids];
+    }
+
+    handler(YES, @"SUCCESS");
 }
 
 - (void)favoriteThreadPostWithId:(NSString *)threadPostId handler:(HandlerWithBool)handler {
