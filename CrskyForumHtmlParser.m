@@ -296,7 +296,14 @@
 }
 
 - (NSString *)parseUserAvatar:(NSString *)html userId:(NSString *)userId {
-    return nil;
+    IGHTMLDocument *document = [[IGHTMLDocument alloc] initWithHTMLString:html error:nil];
+    IGXMLNode *picNode = [document queryNodeWithClassName:@"pic"];
+    NSString *src = [picNode attribute:@"src"];
+    if ([src hasPrefix:@"http"]){
+        return src;
+    } else {
+        return [@"http://bbs.crsky.com/" stringByAppendingString:src];
+    }
 }
 
 - (NSString *)parseListMyThreadSearchid:(NSString *)html {

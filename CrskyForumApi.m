@@ -188,7 +188,17 @@
 }
 
 - (void)getAvatarWithUserId:(NSString *)userId handler:(HandlerWithBool)handler {
+    NSMutableDictionary *defparameters = [NSMutableDictionary dictionary];
+    [defparameters setValue:@"winds" forKey:@"skinco"];
 
+    [self.browser GETWithURLString:[self.forumConfig memberWithUserId:userId] parameters:defparameters charset:GBK requestCallback:^(BOOL isSuccess, NSString *html) {
+        NSString *avatar = [self.forumParser parseUserAvatar:html userId:userId];
+        if (!avatar){
+            avatar = self.forumConfig.avatarNo;
+        }
+        NSLog(@"getAvatarWithUserId \t%@", avatar);
+        handler(isSuccess, avatar);
+    }];
 }
 
 - (void)listSearchResultWithSearchid:(NSString *)searchid andPage:(int)page handler:(HandlerWithBool)handler {

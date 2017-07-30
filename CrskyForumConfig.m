@@ -135,7 +135,7 @@
 }
 
 - (NSString *)memberWithUserId:(NSString *)userId {
-    return nil;
+    return [NSString stringWithFormat:@"http://bbs.crsky.com/u.php?action=show&uid=%@",userId];
 }
 
 - (NSString *)login {
