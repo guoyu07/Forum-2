@@ -38,12 +38,13 @@
         }
         post.postLouCeng = louceng;
 
+        IGHTMLDocument *contentDoc = [[IGHTMLDocument alloc] initWithHTMLString:postNode.html error:nil];
         //3. time
-        NSString *time = [postNode.html stringWithRegular:@"(?<=<span class=\"fl gray\" title=\"Array\" style=\"white-space:nowrap;\">发表于: )dddd-dd-dd dd:dd:dd"];
+        IGXMLNode *timeNode = [contentDoc queryNodeWithClassName:@"fl gray"];
+        NSString *time = [timeNode.text.trim stringByReplacingOccurrencesOfString:@"发表于: " withString:@""];
         post.postTime = time;
 
         //4. content
-        IGHTMLDocument *contentDoc = [[IGHTMLDocument alloc] initWithHTMLString:postNode.html error:nil];
         IGXMLNode *contentNode = [contentDoc queryNodeWithClassName:@"tpc_content"];
         NSString *content = contentNode.html;
         post.postContent = content;
@@ -56,8 +57,6 @@
         
         //2. userName
         IGXMLNode *userNameNode = [contentDoc queryNodeWithClassName:@"fl"];
-        NSString * debugHtml = userNameNode.html;
-        
         NSString *uname = userNameNode.text.trim;
         user.userName = uname;
         
