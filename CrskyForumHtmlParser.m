@@ -89,112 +89,102 @@
 }
 
 - (ViewForumPage *)parseThreadListFromHtml:(NSString *)html withThread:(int)threadId andContainsTop:(BOOL)containTop {
-    ViewForumPage *page = [[ViewForumPage alloc] init];
-
-    NSString *path = [NSString stringWithFormat:@"//*[@id='threadbits_forum_%d']/tr", threadId];
-
-    NSMutableArray<Thread *> *threadList = [NSMutableArray<Thread *> array];
 
     IGHTMLDocument *document = [[IGHTMLDocument alloc] initWithHTMLString:html error:nil];
-    IGXMLNodeSet *contents = [document queryWithXPath:path];
+    IGXMLNodeSet *threadNodeSet = [document queryWithClassName:@"tr3 t_one"];
 
-    for (int i = 0; i < contents.count; i++) {
-        IGXMLNode *normallThreadNode = contents[(NSUInteger) i];
+    ViewForumPage *threadListPage = [[ViewForumPage alloc] init];
+    NSMutableArray<Thread *> *threads = [NSMutableArray<Thread *> array];
 
-        if (normallThreadNode.children.count >= 8) { // 要>=8的原因是：过滤已经被删除的帖子 以及 被移动的帖子
+    for (int i = 0; i < threadNodeSet.count; i++) {
+        IGXMLNode *threadNode = threadNodeSet[(NSUInteger) i];
 
-            Thread *normalThread = [[Thread alloc] init];
+        if (threadNode.children.count >= 5) { // 要>=5的原因是：过滤已经被删除的帖子 以及 被移动的帖子
 
-            // 由于各个论坛的帖子格式可能不一样，因此此处的标题等所在的列也会发生变化
-            // 需要根据不同的论坛计算不同的位置
-
-            NSInteger childColumnCount = normallThreadNode.children.count;
-
-            int titlePosition = 2;
-
-            if (childColumnCount == 8) {
-                titlePosition = 2;
-            } else if (childColumnCount == 7) {
-                titlePosition = 1;
-            }
+            Thread *thread = [[Thread alloc] init];
 
             // title Node
-            IGXMLNode *threadTitleNode = [normallThreadNode childrenAtPosition:titlePosition];
+            IGXMLNode *category = [threadNode childrenAtPosition:1].children[0];
+            IGXMLNode *title = [threadNode childrenAtPosition:1].children[1];
 
-            // title all html
-            NSString *titleHtml = [threadTitleNode html];
+            NSString *fullTitle = [category.text stringByAppendingString:title.text];
 
-            // 回帖页数
-            normalThread.totalPostPageCount = [self threadPostPageCount:titleHtml];
+//            IGXMLNode *threadTitleNode = [threadNode childrenAtPosition:titlePosition];
+//
+//            // title all html
+//            NSString *titleHtml = [threadTitleNode html];
+//
+//            // 回帖页数
+//            thread.totalPostPageCount = [self threadPostPageCount:titleHtml];
+//
+//            // title inner html
+//            NSString *titleInnerHtml = [threadTitleNode innerHtml];
+//
+//            // 判断是不是置顶主题
+//            thread.isTopThread = [self isStickyThread:titleHtml];
+//
+//            // 判断是不是精华帖子
+//            thread.isGoodNess = [self isGoodNessThread:titleHtml];
+//
+//            // 是否包含小别针
+//            thread.isContainsImage = [self isContainsImagesThread:titleHtml];
+//
+//            // 主题和分类
+//            NSString *titleAndCategory = [self parseTitle:titleInnerHtml];
+//            IGHTMLDocument *titleTemp = [[IGHTMLDocument alloc] initWithXMLString:titleAndCategory error:nil];
+//
+//            NSString *titleText = [titleTemp text];
+//            if ([titleText hasPrefix:@"【"]) {
+//                titleText = [titleText stringByReplacingOccurrencesOfString:@"【" withString:@"["];
+//                titleText = [titleText stringByReplacingOccurrencesOfString:@"】" withString:@"]"];
+//            } else {
+//                titleText = [@"[讨论]" stringByAppendingString:titleText];
+//            }
+//
+//            // 分离出主题
+//            thread.threadTitle = titleText;
+//
+//            //[@"showthread.php?t=" length]    17的由来
+//            thread.threadID = [[titleTemp attribute:@"href"] substringFromIndex:17];
+//
+//            // 作者相关
+//            int authorNodePosition = 3;
+//            if (childColumnCount == 7) {
+//                authorNodePosition = 2;
+//            }
+//            IGXMLNode *authorNode = [threadNode childrenAtPosition:authorNodePosition];
+//            NSString *authorIdStr = [authorNode innerHtml];
+//            thread.threadAuthorID = [authorIdStr stringWithRegular:@"\\d+"];
+//            thread.threadAuthorName = [authorNode text];
+//
+//            // 最后回帖时间
+//            int lastPostTimePosition = 4;
+//            if (childColumnCount == 7) {
+//                lastPostTimePosition = 3;
+//            }
+//            IGXMLNode *lastPostTime = [threadNode childrenAtPosition:lastPostTimePosition];
+//            thread.lastPostTime = [self timeForShort:[[lastPostTime text] trim] withFormat:@"yyyy-MM-dd HH:mm:ss"];
+//
+//            // 回帖数量
+//            int commentCountPosition = 5;
+//            if (childColumnCount == 7) {
+//                commentCountPosition = 4;
+//            }
+//            IGXMLNode *commentCountNode = [threadNode childrenAtPosition:commentCountPosition];
+//            thread.postCount = [commentCountNode text];
+//
+//            // 查看数量
+//            int openCountNodePosition = 6;
+//            if (childColumnCount == 7) {
+//                openCountNodePosition = 5;
+//            }
+//            IGXMLNode *openCountNode = [threadNode childrenAtPosition:openCountNodePosition];
+//            thread.openCount = [openCountNode text];
 
-            // title inner html
-            NSString *titleInnerHtml = [threadTitleNode innerHtml];
-
-            // 判断是不是置顶主题
-            normalThread.isTopThread = [self isStickyThread:titleHtml];
-
-            // 判断是不是精华帖子
-            normalThread.isGoodNess = [self isGoodNessThread:titleHtml];
-
-            // 是否包含小别针
-            normalThread.isContainsImage = [self isContainsImagesThread:titleHtml];
-
-            // 主题和分类
-            NSString *titleAndCategory = [self parseTitle:titleInnerHtml];
-            IGHTMLDocument *titleTemp = [[IGHTMLDocument alloc] initWithXMLString:titleAndCategory error:nil];
-
-            NSString *titleText = [titleTemp text];
-            if ([titleText hasPrefix:@"【"]) {
-                titleText = [titleText stringByReplacingOccurrencesOfString:@"【" withString:@"["];
-                titleText = [titleText stringByReplacingOccurrencesOfString:@"】" withString:@"]"];
-            } else {
-                titleText = [@"[讨论]" stringByAppendingString:titleText];
-            }
-
-            // 分离出主题
-            normalThread.threadTitle = titleText;
-
-            //[@"showthread.php?t=" length]    17的由来
-            normalThread.threadID = [[titleTemp attribute:@"href"] substringFromIndex:17];
-
-            // 作者相关
-            int authorNodePosition = 3;
-            if (childColumnCount == 7) {
-                authorNodePosition = 2;
-            }
-            IGXMLNode *authorNode = [normallThreadNode childrenAtPosition:authorNodePosition];
-            NSString *authorIdStr = [authorNode innerHtml];
-            normalThread.threadAuthorID = [authorIdStr stringWithRegular:@"\\d+"];
-            normalThread.threadAuthorName = [authorNode text];
-
-            // 最后回帖时间
-            int lastPostTimePosition = 4;
-            if (childColumnCount == 7) {
-                lastPostTimePosition = 3;
-            }
-            IGXMLNode *lastPostTime = [normallThreadNode childrenAtPosition:lastPostTimePosition];
-            normalThread.lastPostTime = [self timeForShort:[[lastPostTime text] trim] withFormat:@"yyyy-MM-dd HH:mm:ss"];
-
-            // 回帖数量
-            int commentCountPosition = 5;
-            if (childColumnCount == 7) {
-                commentCountPosition = 4;
-            }
-            IGXMLNode *commentCountNode = [normallThreadNode childrenAtPosition:commentCountPosition];
-            normalThread.postCount = [commentCountNode text];
-
-            // 查看数量
-            int openCountNodePosition = 6;
-            if (childColumnCount == 7) {
-                openCountNodePosition = 5;
-            }
-            IGXMLNode *openCountNode = [normallThreadNode childrenAtPosition:openCountNodePosition];
-            normalThread.openCount = [openCountNode text];
-
-            [threadList addObject:normalThread];
+            [threads addObject:thread];
         }
     }
-    page.dataList = threadList;
+    threadListPage.dataList = threads;
 
     // 总页数
     IGXMLNodeSet *totalPageSet = [document queryWithXPath:@"//*[@id='inlinemodform']/table[4]/tr[1]/td[2]/div/table/tr/td[1]"];
@@ -211,9 +201,9 @@
         pageNumber.totalPageNumber = [[totalPageText stringWithRegular:@"\\d+"] intValue];
         pageNumber.currentPageNumber = [[currentPageText stringWithRegular:@"\\d+"] intValue];
     }
-    page.pageNumber = pageNumber;
+    threadListPage.pageNumber = pageNumber;
 
-    return page;
+    return threadListPage;
 }
 
 - (ViewForumPage *)parseFavThreadListFromHtml:(NSString *)html {
