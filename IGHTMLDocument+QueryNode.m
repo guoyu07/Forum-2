@@ -15,13 +15,13 @@
 
 // http://stackoverflow.com/questions/1604471/how-can-i-find-an-element-by-css-class-with-xpath
 - (IGXMLNode *)queryNodeWithClassName:(NSString *)name {
-    NSString *xpath = [NSString stringWithFormat:@"//*[contains(concat(' ', normalize-space(@class), ' '), ' %@ ')]", name];
+    NSString *xpath = [NSString stringWithFormat:@"//*[contains(concat('  ', normalize-space(@class), '  '), '  %@  ')]", name];
     IGXMLNode * node = [self queryNodeWithXPath:xpath];
     return node;
 }
 
 - (IGXMLNodeSet *)queryWithClassName:(NSString *)name {
-    NSString *xpath = [NSString stringWithFormat:@"//*[contains(concat(' ', normalize-space(@class), ' '), ' %@ ')]", name];
+    NSString *xpath = [NSString stringWithFormat:@"//*[contains(concat('  ', normalize-space(@class), '  '), '  %@  ')]", name];
     IGXMLNodeSet * set = [self queryWithXPath:xpath];
     return set;
 }

@@ -123,7 +123,7 @@
 }
 
 - (NSString *)avatar:(NSString *)avatar {
-    return nil;
+    return avatar;
 }
 
 - (NSString *)avatarBase {

@@ -50,6 +50,31 @@
 
         //5. user
         User * user = [[User alloc] init];
+        //1. userId
+        NSString *uid = [postNode.html stringWithRegular:@"(?<=uid=)\\d+"];
+        user.userID = uid;
+        
+        //2. userName
+        IGXMLNode *userNameNode = [contentDoc queryNodeWithClassName:@"fl"];
+        NSString * debugHtml = userNameNode.html;
+        
+        NSString *uname = userNameNode.text.trim;
+        user.userName = uname;
+        
+        //3. avatar
+        IGXMLNode *userAvatarNode = [contentDoc queryNodeWithClassName:@"pic"];
+        NSString *avatar = [userAvatarNode attribute:@"src"].trim;
+        if (avatar){
+            if (![avatar hasPrefix:@"http"]){
+                avatar = [@"http://bbs.crsky.com/" stringByAppendingString:avatar];
+            }
+        }
+        user.userAvatar = avatar;
+        
+        //4. rank
+        //5. signDate
+        //6. postCount
+        //7.forumHost
         post.postUserInfo = user;
 
         [posts addObject:post];
