@@ -11,6 +11,7 @@
 #import "AFHTTPSessionManager+SimpleAction.h"
 #import "DeviceName.h"
 #import "NSUserDefaults+Extensions.h"
+#import "ForumCoreDataManager.h"
 
 @implementation CrskyForumApi
 - (void)loginWithName:(NSString *)name andPassWord:(NSString *)passWord withCode:(NSString *)code question:(NSString *)q answer:(NSString *)a handler:(HandlerWithBool)handler {
@@ -139,6 +140,32 @@
 
 - (void)favoriteForumsWithId:(NSString *)forumId handler:(HandlerWithBool)handler {
 
+    NSString *key = [self.forumConfig.forumURL.host stringByAppendingString:@"-favForums"];
+
+    NSUbiquitousKeyValueStore * store = [NSUbiquitousKeyValueStore defaultStore];
+
+    NSString * data = [store stringForKey:key];
+    NSArray * favForumIds = [data componentsSeparatedByString:@","];
+    NSLog(@"favoriteForumsWithId \t%@", favForumIds);
+    if (![favForumIds containsObject:forumId]){
+        NSMutableArray * array = [favForumIds mutableCopy];
+        [array addObject:forumId];
+
+        // 存到云端
+        NSString * newForums = [array componentsJoinedByString:@","];
+        [store setString:newForums forKey:key];
+        [store synchronize];
+        
+        // 存到本地
+        NSMutableArray * ids = [NSMutableArray array];
+        for (NSString *forumId in favForumIds){
+            [ids addObject:@([forumId intValue])];
+        }
+        [[NSUserDefaults standardUserDefaults] saveFavFormIds:ids];
+    }
+
+    handler(YES, @"SUCCESS");
+
 }
 
 - (void)unfavouriteForumsWithId:(NSString *)forumId handler:(HandlerWithBool)handler {
@@ -159,6 +186,22 @@
 
 - (void)listFavoriteForums:(HandlerWithBool)handler {
 
+    NSString *key = [self.forumConfig.forumURL.host stringByAppendingString:@"-favForums"];
+
+    NSUbiquitousKeyValueStore * store = [NSUbiquitousKeyValueStore defaultStore];
+
+    NSString * data = [store stringForKey:key];
+    NSArray * favForumIds = [data componentsSeparatedByString:@","];
+    NSMutableArray * ids = [NSMutableArray array];
+    for (NSString *forumId in favForumIds){
+        [ids addObject:@([forumId intValue])];
+    }
+    [[NSUserDefaults standardUserDefaults] saveFavFormIds:ids];
+
+    ForumCoreDataManager *manager = [[ForumCoreDataManager alloc] initWithEntryType:EntryTypeForm];
+    NSArray *forms = [[manager selectFavForums:ids] mutableCopy];
+
+    handler(YES, forms);
 }
 
 - (void)listFavoriteThreadPostsWithPage:(int)page handler:(HandlerWithBool)handler {
