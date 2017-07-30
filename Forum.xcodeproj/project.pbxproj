@@ -321,6 +321,7 @@
 		3A92CDA11F2C7E8500E41573 /* CrskyForumHtmlParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CrskyForumHtmlParser.m; sourceTree = "<group>"; };
 		3A92CDA31F2C826B00E41573 /* CrskyLoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CrskyLoginViewController.h; sourceTree = "<group>"; };
 		3A92CDA41F2C826B00E41573 /* CrskyLoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CrskyLoginViewController.m; sourceTree = "<group>"; };
+		3A92CDAA1F2E119100E41573 /* Forum.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Forum.entitlements; sourceTree = "<group>"; };
 		3ACFFD281CF9D6BF000312DC /* HPURLCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HPURLCache.h; sourceTree = "<group>"; };
 		3ACFFD291CF9D6BF000312DC /* HPURLCache.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HPURLCache.m; sourceTree = "<group>"; };
 		3ACFFD2A1CF9D6BF000312DC /* SDImageCache+URLCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "SDImageCache+URLCache.h"; sourceTree = "<group>"; };
@@ -701,6 +702,7 @@
 		4D339D821C31454A0022A6A4 = {
 			isa = PBXGroup;
 			children = (
+				3A92CDAA1F2E119100E41573 /* Forum.entitlements */,
 				3A288A511DFC533E002EBBC2 /* SupportForums */,
 				3A2C40121DE0439500576151 /* Custom */,
 				3A2C40111DE0423500576151 /* ApiTest */,
@@ -878,6 +880,9 @@
 						SystemCapabilities = {
 							com.apple.Push = {
 								enabled = 0;
+							};
+							com.apple.iCloud = {
+								enabled = 1;
 							};
 						};
 					};
@@ -1183,6 +1188,7 @@
 			baseConfigurationReference = F9DDCAE3994600C1B70E3DBC /* Pods-Forum.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = Forum.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				DEVELOPMENT_TEAM = "";
@@ -1214,6 +1220,7 @@
 			baseConfigurationReference = DC2C41C75F27D6D0DA04D195 /* Pods-Forum.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = Forum.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				DEVELOPMENT_TEAM = "";
