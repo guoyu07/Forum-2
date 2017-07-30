@@ -15,7 +15,6 @@
 
 - (NSString *)md5HexDigest;
 
-
 - (NSString *)stringWithRegular:(NSString *)regular;
 
 - (NSString *)stringWithRegular:(NSString *)regular andChild:(NSString *)childRegular;

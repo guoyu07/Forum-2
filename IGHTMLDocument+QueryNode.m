@@ -19,4 +19,11 @@
     IGXMLNode * node = [self queryNodeWithXPath:xpath];
     return node;
 }
+
+- (IGXMLNodeSet *)queryWithClassName:(NSString *)name {
+    NSString *xpath = [NSString stringWithFormat:@"//*[contains(concat(' ', normalize-space(@class), ' '), ' %@ ')]", name];
+    IGXMLNodeSet * set = [self queryWithXPath:xpath];
+    return set;
+}
+
 @end

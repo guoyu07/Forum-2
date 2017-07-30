@@ -14,7 +14,7 @@
 
 - (instancetype)init {
     self = [super init];
-    _forumURL = [NSURL URLWithString:@"https://dream4ever.org/"];
+    _forumURL = [NSURL URLWithString:@"http://bbs.crsky.com/"];
     return self;
 }
 
@@ -99,11 +99,11 @@
 }
 
 - (NSString *)forumDisplayWithId:(NSString *)forumId withPage:(int)page {
-    return nil;
+    return [NSString stringWithFormat:@"http://bbs.crsky.com/thread.php?fid=%@&page=%d", forumId, page];
 }
 
 - (NSString *)searchNewThread:(int)page {
-    return nil;
+    return @"http://bbs.crsky.com/search.php?sch_time=all&orderway=lastpost&asc=desc&newatc=1";
 }
 
 - (NSString *)replyWithThreadId:(int)threadId forForumId:(int)forumId replyPostId:(int)postId {

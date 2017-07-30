@@ -24,6 +24,14 @@
 }
 
 - (BOOL)isHaveLogin:(NSString *)host {
+    NSArray<NSHTTPCookie *> *cookies = [[NSHTTPCookieStorage sharedHTTPCookieStorage] cookies];
+
+    NSDate *date = [NSDate date];
+    for (NSHTTPCookie * cookie in cookies) {
+        if ([cookie.domain containsString:host] && [cookie.expiresDate compare:date] != NSOrderedAscending){
+            return YES;
+        }
+    }
     return NO;
 }
 
@@ -36,7 +44,8 @@
 
     [self.browser GETWithURLString:self.forumConfig.archive parameters:parameters charset:GBK requestCallback:^(BOOL isSuccess, NSString *html) {
         if (isSuccess) {
-            NSArray<Forum *> *parserForums = [self.forumParser parserForums:html forumHost:self.forumConfig.forumURL.host];
+            NSString * host = self.forumConfig.forumURL.host;
+            NSArray<Forum *> *parserForums = [self.forumParser parserForums:html forumHost:host];
             if (parserForums != nil && parserForums.count > 0) {
                 handler(YES, parserForums);
             } else {
@@ -105,7 +114,46 @@
 }
 
 - (void)listNewThreadPostsWithPage:(int)page handler:(HandlerWithBool)handler {
+    NSUserDefaults *userDefault = [NSUserDefaults standardUserDefaults];
 
+    NSDate *date = [NSDate date];
+    NSInteger timeStamp = (NSInteger) [date timeIntervalSince1970];
+
+    NSInteger searchId = [userDefault integerForKey:[self.forumConfig.forumURL.host stringByAppendingString:@"-search_id"]];
+    NSInteger lastTimeStamp = [userDefault integerForKey:[self.forumConfig.forumURL.host stringByAppendingString:@"-search_time"]];
+
+    NSMutableDictionary *defparameters = [NSMutableDictionary dictionary];
+    [defparameters setValue:@"winds" forKey:@"skinco"];
+
+    long spaceTime = timeStamp - lastTimeStamp;
+    if (YES || page == 1 && (searchId == 0 || spaceTime > 60 * 10)) {
+
+        [self.browser GETWithURLString:[self.forumConfig searchNewThread:page] parameters:defparameters charset:GBK requestCallback:^(BOOL isSuccess, NSString *html) {
+            if (isSuccess) {
+                NSUInteger newThreadPostSearchId = (NSUInteger) [[self.forumParser parseListMyThreadSearchid:html] integerValue];
+                [userDefault setInteger:timeStamp forKey:[self.forumConfig.forumURL.host stringByAppendingString:@"-search_time"]];
+                [userDefault setInteger:newThreadPostSearchId forKey:[self.forumConfig.forumURL.host stringByAppendingString:@"-search_id"]];
+            }
+            if (isSuccess) {
+                ViewForumPage *sarchPage = [self.forumParser parseSearchPageFromHtml:html];
+                handler(isSuccess, sarchPage);
+            } else {
+                handler(NO, html);
+            }
+        }];
+    } else {
+        NSString *searchIdStr = [NSString stringWithFormat:@"%ld", (long) searchId];
+        NSString *url = [self.forumConfig searchWithSearchId:searchIdStr withPage:page];
+
+        [self.browser GETWithURLString:url parameters:defparameters charset:UTF_8 requestCallback:^(BOOL isSuccess, NSString *html) {
+            if (isSuccess) {
+                ViewForumPage *sarchPage = [self.forumParser parseSearchPageFromHtml:html];
+                handler(isSuccess, sarchPage);
+            } else {
+                handler(NO, html);
+            }
+        }];
+    }
 }
 
 - (void)listMyAllThreadsWithPage:(int)page handler:(HandlerWithBool)handler {
@@ -125,7 +173,17 @@
 }
 
 - (void)forumDisplayWithId:(int)forumId andPage:(int)page handler:(HandlerWithBool)handler {
+    NSMutableDictionary *defparameters = [NSMutableDictionary dictionary];
+    [defparameters setValue:@"winds" forKey:@"skinco"];
 
+    [self.browser GETWithURLString:[self.forumConfig forumDisplayWithId:[NSString stringWithFormat:@"%d", forumId] withPage:page] parameters:defparameters charset:UTF_8 requestCallback:^(BOOL isSuccess, NSString *html) {
+        if (isSuccess) {
+            ViewForumPage *viewForumPage = [self.forumParser parseThreadListFromHtml:html withThread:forumId andContainsTop:YES];
+            handler(isSuccess, viewForumPage);
+        } else {
+            handler(NO, html);
+        }
+    }];
 }
 
 - (void)getAvatarWithUserId:(NSString *)userId handler:(HandlerWithBool)handler {

@@ -26,10 +26,10 @@
 
     id<ForumBrowserDelegate> forumApi = [ForumApiHelper forumApi];
 
-    [forumApi listAllForums:^(BOOL isSuccess, id message) {
-
+    [forumApi listNewThreadPostsWithPage:1 handler:^(BOOL isSuccess, id message) {
+        
+        
     }];
-
 }
 
 
