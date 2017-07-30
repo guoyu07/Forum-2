@@ -128,48 +128,6 @@
     return showThreadPage;
 }
 
-
-// private 判断是不是置顶帖子
-- (BOOL)isStickyThread:(NSString *)postTitleHtml {
-    return [postTitleHtml containsString:@"images/CCFStyle/misc/sticky.gif"];
-}
-
-// private 判断是不是精华帖子
-- (BOOL)isGoodNessThread:(NSString *)postTitleHtml {
-    return [postTitleHtml containsString:@"images/CCFStyle/misc/goodnees.gif"];
-}
-
-// private 判断是否包含图片
-- (BOOL)isContainsImagesThread:(NSString *)postTitlehtml {
-    return [postTitlehtml containsString:@"images/CCFStyle/misc/paperclip.gif"];
-}
-
-// private 获取回帖的页数
-- (int)threadPostPageCount:(NSString *)postTitlehtml {
-    NSArray *postPages = [postTitlehtml arrayWithRegular:@"page=\\d+"];
-    if (postPages == nil || postPages.count == 0) {
-        return 1;
-    } else {
-        NSString *countStr = [postPages.lastObject stringWithRegular:@"\\d+"];
-        return [countStr intValue];
-    }
-}
-
-// private
-- (NSString *)parseTitle:(NSString *)html {
-    NSString *searchText = html;
-
-    NSString *pattern = @"<a href=\"showthread.php\\?t.*";
-
-    NSRange range = [searchText rangeOfString:pattern options:NSRegularExpressionSearch];
-
-    if (range.location != NSNotFound) {
-        //NSLog(@"%@", [searchText substringWithRange:range]);
-        return [searchText substringWithRange:range];
-    }
-    return nil;
-}
-
 // private
 - (NSString *)timeForShort:(NSString *)time withFormat:(NSString *)format {
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
@@ -344,40 +302,88 @@
 - (ViewSearchForumPage *)parseSearchPageFromHtml:(NSString *)html {
     IGHTMLDocument *document = [[IGHTMLDocument alloc] initWithHTMLString:html error:nil];
 
+    ViewSearchForumPage *resultPage = [[ViewSearchForumPage alloc] init];
+    NSMutableArray<Thread *> *threads = [NSMutableArray array];
+
     IGXMLNodeSet *searchNodeSet = [document queryWithClassName:@"tr3 tac"];
     
-    for (IGXMLNode *node in searchNodeSet) {
-        NSString * h = node.html;
+    for (IGXMLNode *threadNode in searchNodeSet) {
+        NSString * h = threadNode.html;
         NSLog(@"Scrsky_parser \t%@", h);
+
+        Thread *thread = [[Thread alloc] init];
+
+        // 1. ID
+        NSString *tID = [threadNode.html stringWithRegular:@"(?<=tid=)\\d+"];
+        thread.threadID = tID;
+
+        // 2. 标题
+        // 分类和标题的节点
+        IGXMLNode *categoryTitleNode = [threadNode childrenAtPosition:1];
+        NSString *title = [categoryTitleNode.text.trim stringByReplacingOccurrencesOfString:@"&nbsp" withString:@""];
+        thread.threadTitle = title;
+
+        //3 是否是置顶帖子
+        BOOL isTop = NO;
+        thread.isTopThread = isTop;
+
+        //4 是否是精华帖子
+        BOOL isGoodness = NO;
+        thread.isGoodNess = isGoodness;
+
+        //5 是否包含图片
+        BOOL isContainsImage = NO;
+        thread.isContainsImage = isContainsImage;
+
+        //6 总回帖页数
+        int totalPage = 1;
+        thread.totalPostPageCount = totalPage;
+
+        IGXMLNode *authorNode = [threadNode childrenAtPosition:3];
+        //7. 帖子作者
+        NSString *authorName = [authorNode childrenAtPosition:0].text.trim;
+        thread.threadAuthorName = authorName;
+
+        //8. 作者ID
+        NSString *authorId = [[authorNode childrenAtPosition:0].html stringWithRegular:@"(?<=uid=)\\d+"];
+        thread.threadAuthorID = authorId;
+
+        //9. 回复数量
+        IGXMLNode *postCountNode = [threadNode childrenAtPosition:4];
+        NSString * postCount = postCountNode.text.trim;
+        thread.postCount = postCount;
+
+        //10. 查看数量
+        IGXMLNode *openCountNode = [threadNode childrenAtPosition:5];
+        NSString * openCount = openCountNode.text.trim;
+        thread.openCount = openCount;
+
+        IGXMLNode *lastPostTimeNode = [threadNode childrenAtPosition:6];
+        //11. 最后回帖时间
+        NSString *lastPostTime = [lastPostTimeNode childrenAtPosition:0].text.trim;
+        thread.lastPostTime = lastPostTime;
+
+        //12. 最后发表的人
+        NSString *lastPostAuthorName = [lastPostTimeNode.text componentsSeparatedByString:@"by: "].lastObject;
+        thread.lastPostAuthorName = lastPostAuthorName;
+
+        //13. 所属论坛名称
+        IGXMLNode *fourumNmaeNode = [threadNode childrenAtPosition:2];
+        NSString *forumName = fourumNmaeNode.text.trim;
+        thread.fromFormName = forumName;
+
+        [threads addObject:thread];
     }
 
-    int count = searchNodeSet.count;
+    resultPage.dataList = threads;
 
-    if (searchNodeSet == nil) {
-        return nil;
-    }
+    // search id
+    NSString *searchId = [html stringWithRegular:@"(?<=sid=)\\d+"];
+    resultPage.searchid = searchId;
 
+    // page Number
+    resultPage.pageNumber = [self pageNumber:document];
 
-    ViewSearchForumPage *resultPage = [[ViewSearchForumPage alloc] init];
-
-    IGXMLNode *pageNode = [document queryNodeWithClassName:@"pagesone"];
-    NSString * h = pageNode.html;
-    NSLog(@"Scrsky_parser >>>>>>>>> \t%@", h);
-    
-    PageNumber *pageNumber = [[PageNumber alloc] init];
-    // 2. 当前页数 和 总页数
-    if (pageNode == nil) {
-        pageNumber.currentPageNumber = 1;
-        pageNumber.totalPageNumber = 1;
-    } else {
-        pageNumber.currentPageNumber = [[pageNode.text stringWithRegular:@"第 \\d+ 页" andChild:@"\\d+"] intValue];
-        pageNumber.totalPageNumber = [[pageNode.text stringWithRegular:@"共 \\d+ 页" andChild:@"\\d+"] intValue];
-    }
-
-    NSMutableArray<Thread *> *post = [NSMutableArray array];
-
-    resultPage.searchid = [self parseListMyThreadSearchid:html];
-    resultPage.dataList = post;
 
     return resultPage;
 }

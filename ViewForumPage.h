@@ -11,9 +11,9 @@
 
 @interface ViewForumPage : NSObject
 
-@property(nonatomic, assign) BOOL isCanCreateThread;
 @property(nonatomic, strong) NSMutableArray *dataList;
 @property(nonatomic, strong) PageNumber *pageNumber;
 
+@property(nonatomic, assign) BOOL isCanCreateThread;
 
 @end

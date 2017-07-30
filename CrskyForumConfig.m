@@ -55,7 +55,7 @@
 }
 
 - (NSString *)searchWithSearchId:(NSString *)searchId withPage:(int)page {
-    return nil;
+    return [NSString stringWithFormat:@"http://bbs.crsky.com/search.php?step=2&sid=%@&seekfid=all&page=%d", searchId, page];
 }
 
 - (NSString *)searchThreadWithUserId:(NSString *)userId {

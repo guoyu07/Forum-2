@@ -174,11 +174,12 @@
     NSInteger searchId = [userDefault integerForKey:[self.forumConfig.forumURL.host stringByAppendingString:@"-search_id"]];
     NSInteger lastTimeStamp = [userDefault integerForKey:[self.forumConfig.forumURL.host stringByAppendingString:@"-search_time"]];
 
+    // 参数
     NSMutableDictionary *defparameters = [NSMutableDictionary dictionary];
     [defparameters setValue:@"winds" forKey:@"skinco"];
 
     long spaceTime = timeStamp - lastTimeStamp;
-    if (YES || page == 1 && (searchId == 0 || spaceTime > 60 * 10)) {
+    if (searchId == 0 || spaceTime > 60 * 10) {
 
         [self.browser GETWithURLString:[self.forumConfig searchNewThread:page] parameters:defparameters charset:GBK requestCallback:^(BOOL isSuccess, NSString *html) {
             if (isSuccess) {
@@ -187,7 +188,7 @@
                 [userDefault setInteger:newThreadPostSearchId forKey:[self.forumConfig.forumURL.host stringByAppendingString:@"-search_id"]];
             }
             if (isSuccess) {
-                ViewForumPage *sarchPage = [self.forumParser parseSearchPageFromHtml:html];
+                ViewSearchForumPage *sarchPage = [self.forumParser parseSearchPageFromHtml:html];
                 handler(isSuccess, sarchPage);
             } else {
                 handler(NO, html);
@@ -197,7 +198,7 @@
         NSString *searchIdStr = [NSString stringWithFormat:@"%ld", (long) searchId];
         NSString *url = [self.forumConfig searchWithSearchId:searchIdStr withPage:page];
 
-        [self.browser GETWithURLString:url parameters:defparameters charset:UTF_8 requestCallback:^(BOOL isSuccess, NSString *html) {
+        [self.browser GETWithURLString:url parameters:defparameters charset:GBK requestCallback:^(BOOL isSuccess, NSString *html) {
             if (isSuccess) {
                 ViewForumPage *sarchPage = [self.forumParser parseSearchPageFromHtml:html];
                 handler(isSuccess, sarchPage);
