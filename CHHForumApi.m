@@ -306,7 +306,7 @@
 
 }
 
-- (void)showPrivateContentById:(int)pmId handler:(HandlerWithBool)handler {
+- (void)showPrivateMessageContentWithId:(int)pmId handler:(HandlerWithBool)handler {
 
 }
 

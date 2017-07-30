@@ -863,7 +863,7 @@ typedef void (^CallBack)(NSString *token, NSString *hash, NSString *time);
 
 }
 
-- (void)showPrivateContentById:(int)pmId handler:(HandlerWithBool)handler {
+- (void)showPrivateMessageContentWithId:(int)pmId handler:(HandlerWithBool)handler {
     NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
     [parameters setValue:@"3" forKey:@"styleid"];
 

@@ -54,15 +54,15 @@
 
     self.webView.scrollView.mj_header = [MJRefreshNormalHeader headerWithRefreshingBlock:^{
 
-        [self.forumApi showPrivateContentById:[transPrivateMessage.pmID intValue] handler:^(BOOL isSuccess, id message) {
-            
+        [self.forumApi showPrivateMessageContentWithId:[transPrivateMessage.pmID intValue] handler:^(BOOL isSuccess, id message) {
+
             ViewMessagePage *content = message;
-            
+
             NSString *postInfo = [NSString stringWithFormat:PRIVATE_MESSAGE, content.pmUserInfo.userID, content.pmUserInfo.userAvatar, content.pmUserInfo.userName, content.pmTime, content.pmContent];
 
             NSString *html = [NSString stringWithFormat:THREAD_PAGE, content.pmTitle, postInfo];
 
-            AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+            AppDelegate *appDelegate = (AppDelegate *) [[UIApplication sharedApplication] delegate];
             [self.webView loadHTMLString:html baseURL:[NSURL URLWithString:appDelegate.forumBaseUrl]];
 
             [self.webView.scrollView.mj_header endRefreshing];

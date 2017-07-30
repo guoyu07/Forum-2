@@ -50,7 +50,7 @@ typedef void (^HandlerWithBool)(BOOL isSuccess, id message);
 - (void)searchWithKeyWord:(NSString *)keyWord forType:(int)type handler:(HandlerWithBool)handler;
 
 // 根据PM ID 显示一条私信内容
-- (void)showPrivateContentById:(int)pmId handler:(HandlerWithBool)handler;
+- (void)showPrivateMessageContentWithId:(int)pmId handler:(HandlerWithBool)handler;
 
 // 发送站内短信
 - (void)sendPrivateMessageToUserName:(NSString *)name andTitle:(NSString *)title andMessage:(NSString *)message handler:(HandlerWithBool)handler;

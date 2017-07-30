@@ -14,8 +14,9 @@
 #import "ForumCoreDataManager.h"
 
 @implementation CrskyForumApi
-- (void)loginWithName:(NSString *)name andPassWord:(NSString *)passWord withCode:(NSString *)code question:(NSString *)q answer:(NSString *)a handler:(HandlerWithBool)handler {
 
+- (void)loginWithName:(NSString *)name andPassWord:(NSString *)passWord withCode:(NSString *)code question:(NSString *)q answer:(NSString *)a handler:(HandlerWithBool)handler {
+    // 采用网页登录，这里不需要了
 }
 
 - (void)refreshVCodeToUIImageView:(UIImageView *)vCodeImageView {
@@ -126,7 +127,7 @@
 
 }
 
-- (void)showPrivateContentById:(int)pmId handler:(HandlerWithBool)handler {
+- (void)showPrivateMessageContentWithId:(int)pmId handler:(HandlerWithBool)handler {
 
 }
 
