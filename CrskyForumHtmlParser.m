@@ -104,8 +104,8 @@
             Thread *thread = [[Thread alloc] init];
 
             // 1. ID
-            NSString *threadId = [threadNode.html stringWithRegular:@"(?<=tid=)\\d+"];
-            thread.threadID = threadId;
+            NSString *tID = [threadNode.html stringWithRegular:@"(?<=tid=)\\d+"];
+            thread.threadID = tID;
 
             // 2. 标题
             NSString *title = nil;
@@ -192,24 +192,22 @@
     }
     threadListPage.dataList = threads;
 
-    // 总页数
-    IGXMLNodeSet *totalPageSet = [document queryWithXPath:@"//*[@id='inlinemodform']/table[4]/tr[1]/td[2]/div/table/tr/td[1]"];
-    PageNumber *pageNumber = [[PageNumber alloc] init];
-    if (totalPageSet == nil) {
-        pageNumber.totalPageNumber = 1;
-        pageNumber.currentPageNumber = 1;
-    } else {
-        IGXMLNode *totalPage = totalPageSet.firstObject;
-        NSString *pageText = [totalPage innerHtml];                                             //@"第 1 页，共 4123 页"
-        NSString *currentPageText = [pageText componentsSeparatedByString:@"，"].firstObject;   //第 1 页
-        NSString *totalPageText = [pageText componentsSeparatedByString:@"，"].lastObject;      //共 4123 页
-
-        pageNumber.totalPageNumber = [[totalPageText stringWithRegular:@"\\d+"] intValue];
-        pageNumber.currentPageNumber = [[currentPageText stringWithRegular:@"\\d+"] intValue];
-    }
+    PageNumber * pageNumber = [self pageNumber:document];
     threadListPage.pageNumber = pageNumber;
 
     return threadListPage;
+}
+
+- (PageNumber *) pageNumber:(IGHTMLDocument *) document{
+    IGXMLNode *pageNode = [document queryNodeWithClassName:@"pagesone"];
+    NSString *pageStr = [pageNode.text.trim stringByReplacingOccurrencesOfString:@" Go " withString:@""];
+    PageNumber * pageNumber = [[PageNumber alloc] init];
+    int currentPageNumber = [[pageStr componentsSeparatedByString:@"/"][0] intValue];
+    int totalPageNumber = [[pageStr componentsSeparatedByString:@"/"][1] intValue];
+    pageNumber.currentPageNumber = currentPageNumber;
+    pageNumber.totalPageNumber = totalPageNumber;
+
+    return pageNumber;
 }
 
 - (ViewForumPage *)parseFavThreadListFromHtml:(NSString *)html {
