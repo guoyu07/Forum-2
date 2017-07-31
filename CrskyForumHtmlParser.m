@@ -277,7 +277,7 @@
         currentPageNumber = 1;
         totalPageNumber = 1;
     }
-    
+
     pageNumber.currentPageNumber = currentPageNumber;
     pageNumber.totalPageNumber = totalPageNumber;
 
