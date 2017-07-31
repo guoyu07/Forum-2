@@ -248,22 +248,25 @@
 
     IGXMLNodeSet *threadInfoSet = [document queryWithXPath:@"/html/body/div[4]/div/div/table[1]/tr/td[2]/div/table/tr"];
 
-    PageNumber *pageNumber = [[PageNumber alloc] init];
-    if (threadInfoSet == nil || threadInfoSet.count == 0) {
-        pageNumber.totalPageNumber = 1;
-        pageNumber.currentPageNumber = 1;
-
-    } else {
-        IGXMLNode *currentPageAndTotalPageNode = threadInfoSet.firstObject.firstChild;
-        NSString *currentPageAndTotalPageString = currentPageAndTotalPageNode.text;
-        NSArray *pageAndTotalPage = [currentPageAndTotalPageString componentsSeparatedByString:@"页，共"];
-
-        pageNumber.totalPageNumber =  [[[pageAndTotalPage.lastObject stringByReplacingOccurrencesOfString:@" " withString:@""] stringByReplacingOccurrencesOfString:@"页" withString:@""] intValue];
-        pageNumber.currentPageNumber = [[[pageAndTotalPage.firstObject stringByReplacingOccurrencesOfString:@" " withString:@""] stringByReplacingOccurrencesOfString:@"第" withString:@""] intValue];
-    }
+    PageNumber *pageNumber = [self pageNumber:html];
     showThreadPage.pageNumber = pageNumber;
 
     return showThreadPage;
+}
+
+- (PageNumber *) pageNumber:(NSString *) html{
+    NSString *pageStr = [html stringWithRegular:@"(?<=<td class=\"vbmenu_control\" style=\"font-weight:normal\">)第 \\d+ 页，共 \\d+ 页(?=</td>)"];
+    PageNumber * pageNumber = [[PageNumber alloc] init];
+    int currentPageNumber = [[[pageStr componentsSeparatedByString:@"，"][0] stringWithRegular:@"\\d+"] intValue];
+    int totalPageNumber = [[[pageStr componentsSeparatedByString:@"，"][1] stringWithRegular:@"\\d+"] intValue];
+    if (currentPageNumber == 0 || totalPageNumber == 0){
+        currentPageNumber = 1;
+        totalPageNumber = 1;
+    }
+    pageNumber.currentPageNumber = currentPageNumber;
+    pageNumber.totalPageNumber = totalPageNumber;
+
+    return pageNumber;
 }
 
 // private 判断是不是置顶帖子
@@ -445,20 +448,7 @@
     page.dataList = threadList;
 
     // 总页数
-    IGXMLNodeSet *totalPageSet = [document queryWithXPath:@"//*[@id='inlinemodform']/table[4]/tr[1]/td[2]/div/table/tr/td[1]"];
-    PageNumber *pageNumber = [[PageNumber alloc] init];
-    if (totalPageSet == nil) {
-        pageNumber.totalPageNumber = 1;
-        pageNumber.currentPageNumber = 1;
-    } else {
-        IGXMLNode *totalPage = totalPageSet.firstObject;
-        NSString *pageText = [totalPage innerHtml];                                             //@"第 1 页，共 4123 页"
-        NSString *currentPageText = [pageText componentsSeparatedByString:@"，"].firstObject;   //第 1 页
-        NSString *totalPageText = [pageText componentsSeparatedByString:@"，"].lastObject;      //共 4123 页
-
-        pageNumber.totalPageNumber = [[totalPageText stringWithRegular:@"\\d+"] intValue];
-        pageNumber.currentPageNumber = [[currentPageText stringWithRegular:@"\\d+"] intValue];
-    }
+    PageNumber *pageNumber = [self pageNumber:html];
     page.pageNumber = pageNumber;
 
     return page;
@@ -522,17 +512,7 @@
     page.dataList = threadList;
 
     // 总页数
-    //<td class="vbmenu_control" style="font-weight:normal">第 \\d+ 页，共 \\d+ 页</td>
-    NSString * pageString = [html stringWithRegular:@"<td class=\"vbmenu_control\" style=\"font-weight:normal\">第 \\d+ 页，共 \\d+ 页</td>"];
-
-    PageNumber *pageNumber = [[PageNumber alloc] init];
-    if (pageString == nil) {
-        pageNumber.totalPageNumber = 1;
-        pageNumber.currentPageNumber = 1;
-    } else {
-        pageNumber.totalPageNumber = [[pageString stringWithRegular:@"共 \\d+ 页" andChild:@"\\d+"] intValue];
-        pageNumber.currentPageNumber = [[pageString stringWithRegular:@"第 \\d+ 页" andChild:@"\\d+"] intValue];;
-    }
+    PageNumber *pageNumber = [self pageNumber:html];
 
     page.pageNumber = pageNumber;
 
@@ -701,14 +681,8 @@
 
     IGHTMLDocument *document = [[IGHTMLDocument alloc] initWithHTMLString:html error:nil];
 
-    IGXMLNodeSet *totalPage = [document queryWithXPath:@"//*[@id='pmform']/table[1]/tr/td/div/table/tr/td[1]"];
-    //<td class="vbmenu_control" style="font-weight:normal">第 1 页，共 5 页</td>
-    PageNumber *pageNumber = [[PageNumber alloc] init];
-    NSString *fullText = [[totalPage firstObject] text];
-    NSString *currentPage = [fullText stringWithRegular:@"第 \\d+ 页" andChild:@"\\d+"];
-    pageNumber.currentPageNumber = [currentPage intValue];
-    NSString *totalPageCount = [fullText stringWithRegular:@"共 \\d+ 页" andChild:@"\\d+"];
-    pageNumber.totalPageNumber = [totalPageCount intValue];
+
+    PageNumber *pageNumber = [self pageNumber:html];
 
     page.pageNumber = pageNumber;
 
