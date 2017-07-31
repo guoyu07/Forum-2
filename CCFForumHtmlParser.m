@@ -248,25 +248,10 @@
 
     IGXMLNodeSet *threadInfoSet = [document queryWithXPath:@"/html/body/div[4]/div/div/table[1]/tr/td[2]/div/table/tr"];
 
-    PageNumber *pageNumber = [self pageNumber:html];
+    PageNumber *pageNumber = [self parserPageNumber:html];
     showThreadPage.pageNumber = pageNumber;
 
     return showThreadPage;
-}
-
-- (PageNumber *) pageNumber:(NSString *) html{
-    NSString *pageStr = [html stringWithRegular:@"(?<=<td class=\"vbmenu_control\" style=\"font-weight:normal\">)第 \\d+ 页，共 \\d+ 页(?=</td>)"];
-    PageNumber * pageNumber = [[PageNumber alloc] init];
-    int currentPageNumber = [[[pageStr componentsSeparatedByString:@"，"][0] stringWithRegular:@"\\d+"] intValue];
-    int totalPageNumber = [[[pageStr componentsSeparatedByString:@"，"][1] stringWithRegular:@"\\d+"] intValue];
-    if (currentPageNumber == 0 || totalPageNumber == 0){
-        currentPageNumber = 1;
-        totalPageNumber = 1;
-    }
-    pageNumber.currentPageNumber = currentPageNumber;
-    pageNumber.totalPageNumber = totalPageNumber;
-
-    return pageNumber;
 }
 
 // private 判断是不是置顶帖子
@@ -448,7 +433,7 @@
     page.dataList = threadList;
 
     // 总页数
-    PageNumber *pageNumber = [self pageNumber:html];
+    PageNumber *pageNumber = [self parserPageNumber:html];
     page.pageNumber = pageNumber;
 
     return page;
@@ -512,7 +497,7 @@
     page.dataList = threadList;
 
     // 总页数
-    PageNumber *pageNumber = [self pageNumber:html];
+    PageNumber *pageNumber = [self parserPageNumber:html];
 
     page.pageNumber = pageNumber;
 
@@ -562,7 +547,7 @@
     ViewSearchForumPage *resultPage = [[ViewSearchForumPage alloc] init];
 
     // 1. 结果总条数
-    PageNumber *pageNumber = [self pageNumber:html];
+    PageNumber *pageNumber = [self parserPageNumber:html];
     
     resultPage.pageNumber = pageNumber;
     
@@ -660,7 +645,17 @@
 }
 
 - (PageNumber *)parserPageNumber:(NSString *)html {
-    return nil;
+    NSString *pageStr = [html stringWithRegular:@"(?<=<td class=\"vbmenu_control\" style=\"font-weight:normal\">)第 \\d+ 页，共 \\d+ 页(?=</td>)"];
+    PageNumber * pageNumber = [[PageNumber alloc] init];
+    int currentPageNumber = [[[pageStr componentsSeparatedByString:@"，"][0] stringWithRegular:@"\\d+"] intValue];
+    int totalPageNumber = [[[pageStr componentsSeparatedByString:@"，"][1] stringWithRegular:@"\\d+"] intValue];
+    if (currentPageNumber == 0 || totalPageNumber == 0){
+        currentPageNumber = 1;
+        totalPageNumber = 1;
+    }
+    pageNumber.currentPageNumber = currentPageNumber;
+    pageNumber.totalPageNumber = totalPageNumber;
+    return pageNumber;
 }
 
 
@@ -670,7 +665,7 @@
     IGHTMLDocument *document = [[IGHTMLDocument alloc] initWithHTMLString:html error:nil];
 
 
-    PageNumber *pageNumber = [self pageNumber:html];
+    PageNumber *pageNumber = [self parserPageNumber:html];
 
     page.pageNumber = pageNumber;
 

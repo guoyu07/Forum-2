@@ -121,7 +121,7 @@
     showThreadPage.originalHtml = orgHtml;
 
     //6. number
-    PageNumber *pageNumber = [self pageNumber:document];
+    PageNumber *pageNumber = [self parserPageNumber:html];
     showThreadPage.pageNumber = pageNumber;
 
 
@@ -261,28 +261,12 @@
     }
     threadListPage.dataList = threads;
 
-    PageNumber * pageNumber = [self pageNumber:document];
+    PageNumber * pageNumber = [self parserPageNumber:html];
     threadListPage.pageNumber = pageNumber;
 
     return threadListPage;
 }
 
-- (PageNumber *) pageNumber:(IGHTMLDocument *) document{
-    IGXMLNode *pageNode = [document queryNodeWithClassName:@"pagesone"];
-    NSString *pageStr = [pageNode.text.trim stringByReplacingOccurrencesOfString:@" Go " withString:@""];
-    PageNumber * pageNumber = [[PageNumber alloc] init];
-    int currentPageNumber = [[pageStr componentsSeparatedByString:@"/"][0] intValue];
-    int totalPageNumber = [[pageStr componentsSeparatedByString:@"/"][1] intValue];
-    if (currentPageNumber == 0 || totalPageNumber == 0){
-        currentPageNumber = 1;
-        totalPageNumber = 1;
-    }
-
-    pageNumber.currentPageNumber = currentPageNumber;
-    pageNumber.totalPageNumber = totalPageNumber;
-
-    return pageNumber;
-}
 
 - (ViewForumPage *)parseFavThreadListFromHtml:(NSString *)html {
     return nil;
@@ -387,7 +371,7 @@
     resultPage.searchid = searchId;
 
     // page Number
-    resultPage.pageNumber = [self pageNumber:document];
+    resultPage.pageNumber = [self parserPageNumber:html];
 
 
     return resultPage;
@@ -531,7 +515,22 @@
 }
 
 - (PageNumber *)parserPageNumber:(NSString *)html {
-    return nil;
+
+    IGHTMLDocument *document = [[IGHTMLDocument alloc] initWithHTMLString:html error:nil];
+    IGXMLNode *pageNode = [document queryNodeWithClassName:@"pagesone"];
+    NSString *pageStr = [pageNode.text.trim stringByReplacingOccurrencesOfString:@" Go " withString:@""];
+    PageNumber * pageNumber = [[PageNumber alloc] init];
+    int currentPageNumber = [[pageStr componentsSeparatedByString:@"/"][0] intValue];
+    int totalPageNumber = [[pageStr componentsSeparatedByString:@"/"][1] intValue];
+    if (currentPageNumber == 0 || totalPageNumber == 0){
+        currentPageNumber = 1;
+        totalPageNumber = 1;
+    }
+
+    pageNumber.currentPageNumber = currentPageNumber;
+    pageNumber.totalPageNumber = totalPageNumber;
+
+    return pageNumber;
 }
 
 

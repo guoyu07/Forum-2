@@ -49,27 +49,14 @@
     NSString * originHtml = [document queryNodeWithXPath:@"//*[@id=\"postlist\"]"].html;
 
 
-    // totalPageCount
-    int  totalPageCount = 1;
-    int  currentPage = 1;
-    IGXMLNode * totalPageNode = [document queryNodeWithXPath:@"//*[@id=\"pgt\"]/div/div/label/span"];
-    if (threadTitleNode != nil){
-        totalPageCount = [[[totalPageNode text] stringWithRegular:@"\\d+"] intValue];
-        IGXMLNode * currentPageNode = [document queryNodeWithXPath:@"//*[@id=\"pgt\"]/div/div"];
-        for (IGXMLNode * node in currentPageNode.children){
-            if ([node.html hasPrefix:@"<strong>"] && [node.html hasSuffix:@"</strong>"]){
-                currentPage = [[[node text] trim] intValue];
-            }
-        }
-    }
-    PageNumber *pageNumber = [[PageNumber alloc] init];
-    pageNumber.currentPageNumber = currentPage;
-    pageNumber.totalPageNumber = totalPageCount;
+    // pageNumber
+    PageNumber *pageNumber = [self parserPageNumber:fixImagesHtml];
 
     showThreadPage.threadID = [threadId intValue];
     showThreadPage.threadTitle = threadTitle;
     showThreadPage.forumId= [forumId intValue];
     showThreadPage.originalHtml = originHtml;
+    
     showThreadPage.pageNumber = pageNumber;
 
 
@@ -636,25 +623,13 @@
 
     IGXMLNode * pageNode = [document queryNodeWithClassName:@"pg"];
 
-    if (pageNode == nil){
+    NSString * nodeHtml = pageNode.html;
+    pageNumber.currentPageNumber = [[nodeHtml stringWithRegular:@"(?<=<strong>)\\d+(?=</strong>)"] intValue];
+    pageNumber.totalPageNumber = [[nodeHtml stringWithRegular:@"(?<=<span title=\"共 )\\d+(?= 页\">)"] intValue];
+
+    if (pageNumber.currentPageNumber == 0 || pageNumber.totalPageNumber == 0){
         pageNumber.currentPageNumber = 1;
         pageNumber.totalPageNumber = 1;
-    } else{
-        IGXMLNodeSet * childNodes = pageNode.children;
-        for (IGXMLNode * node in childNodes) {
-            NSString * childHtml = node.html;
-            if ([childHtml hasPrefix:@"<strong>"] && [childHtml hasSuffix:@"</strong>"]){
-                int currentPage = [[[node text] trim] intValue];
-                pageNumber.currentPageNumber = currentPage;
-                continue;
-            }
-
-            if ([childHtml hasPrefix:@"<label>"] && [childHtml hasSuffix:@"</label>"]){
-                int totalPage = [[node.text stringWithRegular:@"\\d+"] intValue];
-                pageNumber.totalPageNumber = totalPage;
-                continue;
-            }
-        }
     }
     return pageNumber;
 }
