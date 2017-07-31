@@ -561,23 +561,11 @@
 
     ViewSearchForumPage *resultPage = [[ViewSearchForumPage alloc] init];
 
-    //IGXMLNode *postTotalCountNode = [document queryWithXPath:@"//*[@id='threadslist']/tr[1]/td/span[1]"].firstObject;
-
-    //NSString *postTotalCount = [postTotalCountNode.text stringWithRegular:@"共计 \\d+ 条" andChild:@"\\d+"];
     // 1. 结果总条数
-    //resultPage.totalPageCount = [postTotalCount integerValue];
-
-    IGXMLNode *pageNode = [document queryWithXPath:@"/html/body/div[2]/div/div/table[3]/tr/td/div/table/tr/td[1]"].firstObject;
-    PageNumber *pageNumber = [[PageNumber alloc] init];
-    // 2. 当前页数 和 总页数
-    if (pageNode == nil) {
-        pageNumber.currentPageNumber = 1;
-        pageNumber.totalPageNumber = 1;
-    } else {
-        pageNumber.currentPageNumber = [[pageNode.text stringWithRegular:@"第 \\d+ 页" andChild:@"\\d+"] intValue];
-        pageNumber.totalPageNumber = [[pageNode.text stringWithRegular:@"共 \\d+ 页" andChild:@"\\d+"] intValue];
-    }
-
+    PageNumber *pageNumber = [self pageNumber:html];
+    
+    resultPage.pageNumber = pageNumber;
+    
     NSMutableArray<Thread *> *post = [NSMutableArray array];
 
     for (IGXMLNode *node in searchNodeSet) {
