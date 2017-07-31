@@ -273,6 +273,11 @@
     PageNumber * pageNumber = [[PageNumber alloc] init];
     int currentPageNumber = [[pageStr componentsSeparatedByString:@"/"][0] intValue];
     int totalPageNumber = [[pageStr componentsSeparatedByString:@"/"][1] intValue];
+    if (currentPageNumber == 0 || totalPageNumber == 0){
+        currentPageNumber = 1;
+        totalPageNumber = 1;
+    }
+    
     pageNumber.currentPageNumber = currentPageNumber;
     pageNumber.totalPageNumber = totalPageNumber;
 
