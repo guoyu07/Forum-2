@@ -522,7 +522,7 @@
     return attrSrc;
 }
 
-- (NSString *)parseListMyThreadSearchid:(NSString *)html {
+- (NSString *)parseListMyThreadSearchId:(NSString *)html {
     return nil;
 }
 

@@ -599,7 +599,7 @@
         }
     }
 
-    resultPage.searchid = [self parseListMyThreadSearchid:html];
+    resultPage.searchid = [self parseListMyThreadSearchId:html];
     resultPage.dataList = post;
 
     return resultPage;
@@ -826,7 +826,7 @@
     return avatar;
 }
 
-- (NSString *)parseListMyThreadSearchid:(NSString *)html {
+- (NSString *)parseListMyThreadSearchId:(NSString *)html {
     NSString *xPath = @"/html/body/div[2]/div/div/table[2]/tr/td[1]/table/tr[2]/td/a";
     IGHTMLDocument *document = [[IGHTMLDocument alloc] initWithHTMLString:html error:nil];
     IGXMLNodeSet *nodeSet = [document queryWithXPath:xPath];

@@ -859,7 +859,7 @@
     return avatar;
 }
 
-- (NSString *)parseListMyThreadSearchid:(NSString *)html {
+- (NSString *)parseListMyThreadSearchId:(NSString *)html {
     NSString *searchid = [html stringWithRegular:@"/search.php\\?searchid=\\d+" andChild:@"\\d+"];
     return searchid;
 }

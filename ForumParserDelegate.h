@@ -23,27 +23,28 @@
 @protocol ForumParserDelegate <NSObject>
 
 @required
+
+// 页面相关
 - (ViewThreadPage *)parseShowThreadWithHtml:(NSString *)html;
 
 - (ViewForumPage *)parseThreadListFromHtml:(NSString *)html withThread:(int)threadId andContainsTop:(BOOL)containTop;
 
 - (ViewForumPage *)parseFavThreadListFromHtml:(NSString *)html;
 
-- (NSString *)parseSecurityToken:(NSString *)html;
-
-- (NSString *)parsePostHash:(NSString *)html;
-
-- (NSString *)parserPostStartTime:(NSString *)html;
-
-- (NSString *)parseLoginErrorMessage:(NSString *)html;
+- (ViewForumPage *)parsePrivateMessageFromHtml:(NSString *)html forType:(int) type;
 
 - (ViewSearchForumPage *)parseSearchPageFromHtml:(NSString *)html;
 
+- (ViewMessagePage *)parsePrivateMessageContent:(NSString *)html avatarBase:(NSString *) avatarBase noavatar:(NSString *) avatarNO;
+
+- (UserProfile *)parserProfile:(NSString *)html userId:(NSString *)userId;
+
+- (NSArray<Forum *> *)parserForums:(NSString *)html forumHost:(NSString *) host;
+
 - (NSMutableArray<Forum *> *)parseFavForumFromHtml:(NSString *)html;
 
-- (ViewForumPage *)parsePrivateMessageFromHtml:(NSString *)html forType:(int) type;
-
-- (ViewMessagePage *)parsePrivateMessageContent:(NSString *)html avatarBase:(NSString *) avatarBase noavatar:(NSString *) avatarNO;
+// 动作相关
+- (PageNumber *) parserPageNumber:(NSString *)html;
 
 - (NSString *)parseQuickReplyQuoteContent:(NSString *)html;
 
@@ -53,12 +54,15 @@
 
 - (NSString *)parseUserAvatar:(NSString *)html userId:(NSString *)userId;
 
-- (NSString *)parseListMyThreadSearchid:(NSString *)html;
+- (NSString *)parseListMyThreadSearchId:(NSString *)html;
 
-- (UserProfile *)parserProfile:(NSString *)html userId:(NSString *)userId;
+// vBulletin
+- (NSString *)parseSecurityToken:(NSString *)html;
 
-- (NSArray<Forum *> *)parserForums:(NSString *)html forumHost:(NSString *) host;
+- (NSString *)parsePostHash:(NSString *)html;
 
-- (PageNumber *) parserPageNumber:(NSString *)html;
+- (NSString *)parserPostStartTime:(NSString *)html;
+
+- (NSString *)parseLoginErrorMessage:(NSString *)html;
 
 @end

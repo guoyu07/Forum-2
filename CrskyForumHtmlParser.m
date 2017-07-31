@@ -412,7 +412,7 @@
     }
 }
 
-- (NSString *)parseListMyThreadSearchid:(NSString *)html {
+- (NSString *)parseListMyThreadSearchId:(NSString *)html {
     NSString * sid = [html stringWithRegular:@"(?<=sid=)\\d+"];
     return sid;
 }

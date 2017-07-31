@@ -1107,7 +1107,7 @@ typedef void (^CallBack)(NSString *token, NSString *hash, NSString *time);
         [self.browser GETWithURLString:[self.forumConfig searchNewThread:page] parameters:parameters charset:UTF_8 requestCallback:^(BOOL isSuccess, NSString *html) {
 
             if (isSuccess) {
-                NSUInteger newThreadPostSearchId = (NSUInteger) [[self.forumParser parseListMyThreadSearchid:html] integerValue];
+                NSUInteger newThreadPostSearchId = (NSUInteger) [[self.forumParser parseListMyThreadSearchId:html] integerValue];
                 [userDefault setInteger:timeStamp forKey:[self.forumConfig.forumURL.host stringByAppendingString:@"-search_time"]];
                 [userDefault setInteger:newThreadPostSearchId forKey:[self.forumConfig.forumURL.host stringByAppendingString:@"-search_id"]];
             }
@@ -1152,7 +1152,7 @@ typedef void (^CallBack)(NSString *token, NSString *hash, NSString *time);
         [self.browser GETWithURLString:[self.forumConfig searchMyThreadWithUserName:encodeName] parameters:parameters charset:UTF_8 requestCallback:^(BOOL isSuccess, NSString *html) {
 
             if (listMyThreadSearchId == nil) {
-                listMyThreadSearchId = [self.forumParser parseListMyThreadSearchid:html];
+                listMyThreadSearchId = [self.forumParser parseListMyThreadSearchId:html];
             }
 
             if (isSuccess) {
@@ -1191,7 +1191,7 @@ typedef void (^CallBack)(NSString *token, NSString *hash, NSString *time);
                 listUserThreadRedirectUrlDictionary = [NSMutableDictionary dictionary];
             }
 
-            NSString *searchId = [self.forumParser parseListMyThreadSearchid:html];
+            NSString *searchId = [self.forumParser parseListMyThreadSearchId:html];
 
             listUserThreadRedirectUrlDictionary[@(userId)] = searchId;
 
