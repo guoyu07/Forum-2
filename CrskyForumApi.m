@@ -347,7 +347,7 @@
     NSMutableDictionary *defparameters = [NSMutableDictionary dictionary];
     [defparameters setValue:@"winds" forKey:@"skinco"];
 
-    [self.browser GETWithURLString:[self.forumConfig memberWithUserId:userId] parameters:defparameters charset:UTF_8 requestCallback:^(BOOL isSuccess, NSString *html) {
+    [self.browser GETWithURLString:[self.forumConfig memberWithUserId:userId] parameters:defparameters charset:GBK requestCallback:^(BOOL isSuccess, NSString *html) {
         if (isSuccess) {
             UserProfile *profile = [self.forumParser parserProfile:html userId:userId];
             handler(YES, profile);
