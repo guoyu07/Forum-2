@@ -35,7 +35,7 @@
 }
 
 - (NSString *)cookieExpTimeKey {
-    return nil;
+    return @"217cd_ol_offset";
 }
 
 - (NSString *)newattachmentForThread:(int)threadId time:(NSString *)time postHash:(NSString *)postHash {

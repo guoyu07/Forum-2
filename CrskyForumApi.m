@@ -12,6 +12,7 @@
 #import "DeviceName.h"
 #import "NSUserDefaults+Extensions.h"
 #import "ForumCoreDataManager.h"
+#import "NSString+Extensions.h"
 
 @implementation CrskyForumApi
 
@@ -42,13 +43,12 @@
 
     LoginUser *user = [[LoginUser alloc] init];
     user.userName = [[NSUserDefaults standardUserDefaults] userName];
+    user.userID = [[NSUserDefaults standardUserDefaults] userId];
 
     for (int i = 0; i < cookies.count; i++) {
         NSHTTPCookie *cookie = cookies[(NSUInteger) i];
 
-        if ([cookie.name isEqualToString:self.forumConfig.cookieUserIdKey]) {
-            user.userID = cookie.value;
-        } else if ([cookie.name isEqualToString:self.forumConfig.cookieExpTimeKey]) {
+        if ([cookie.name isEqualToString:self.forumConfig.cookieExpTimeKey]) {
             user.expireTime = cookie.expiresDate;
         }
     }
@@ -95,6 +95,23 @@
         } else {
             handler(NO, html);
         }
+    }];
+}
+
+- (void)fetchUserId:(HandlerWithBool)handler {
+    NSMutableDictionary *defparameters = [NSMutableDictionary dictionary];
+    [defparameters setValue:@"winds" forKey:@"skinco"];
+
+    NSString * url = self.forumConfig.forumURL.absoluteString;
+    [self.browser GETWithURLString:url parameters:defparameters charset:GBK requestCallback:^(BOOL isSuccess, NSString *html) {
+
+        if (isSuccess) {
+            NSString *uid = [html stringWithRegular:@"(?<=UID: )\\d+"];
+            handler(isSuccess, uid);
+        } else {
+            handler(NO, html);
+        }
+
     }];
 }
 

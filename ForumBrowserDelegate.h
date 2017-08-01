@@ -26,6 +26,9 @@ typedef void (^HandlerWithBool)(BOOL isSuccess, id message);
 @optional
 - (void)refreshVCodeToUIImageView:(UIImageView *)vCodeImageView;
 
+@optional
+- (void)fetchUserId:(HandlerWithBool)handler;
+
 // 获取当前登录的账户信息
 - (LoginUser *)getLoginUser;
 

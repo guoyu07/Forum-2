@@ -100,31 +100,42 @@
         // 保存Cookie
         [self saveCookie];
 
-        [self.forumApi listAllForums:^(BOOL isSuccess, id msg) {
-            if (isSuccess) {
-                NSMutableArray<Forum *> *needInsert = msg;
-                ForumCoreDataManager *formManager = [[ForumCoreDataManager alloc] initWithEntryType:EntryTypeForm];
-                // 需要先删除之前的老数据
-                [formManager deleteData:^NSPredicate * {
-                    return [NSPredicate predicateWithFormat:@"forumHost = %@", self.currentForumHost];;
+        [self.forumApi fetchUserId:^(BOOL isSuccess, NSString * userId) {
+
+            if (isSuccess){
+
+                [[NSUserDefaults standardUserDefaults] saveUserId:userId];
+
+                [self.forumApi listAllForums:^(BOOL success, id msg) {
+                    if (success) {
+                        NSMutableArray<Forum *> *needInsert = msg;
+                        ForumCoreDataManager *formManager = [[ForumCoreDataManager alloc] initWithEntryType:EntryTypeForm];
+                        // 需要先删除之前的老数据
+                        [formManager deleteData:^NSPredicate * {
+                            return [NSPredicate predicateWithFormat:@"forumHost = %@", self.currentForumHost];;
+                        }];
+
+                        AppDelegate *appDelegate = (AppDelegate *) [[UIApplication sharedApplication] delegate];
+
+                        [formManager insertData:needInsert operation:^(NSManagedObject *target, id src) {
+                            ForumEntry *newsInfo = (ForumEntry *) target;
+                            newsInfo.forumId = [src valueForKey:@"forumId"];
+                            newsInfo.forumName = [src valueForKey:@"forumName"];
+                            newsInfo.parentForumId = [src valueForKey:@"parentForumId"];
+                            newsInfo.forumHost = appDelegate.forumHost;
+
+                        }];
+
+                        UIStoryboard *stortboard = [UIStoryboard mainStoryboard];
+                        [stortboard changeRootViewControllerTo:kForumTabBarControllerId];
+
+                    }
                 }];
-
-                AppDelegate *appDelegate = (AppDelegate *) [[UIApplication sharedApplication] delegate];
-
-                [formManager insertData:needInsert operation:^(NSManagedObject *target, id src) {
-                    ForumEntry *newsInfo = (ForumEntry *) target;
-                    newsInfo.forumId = [src valueForKey:@"forumId"];
-                    newsInfo.forumName = [src valueForKey:@"forumName"];
-                    newsInfo.parentForumId = [src valueForKey:@"parentForumId"];
-                    newsInfo.forumHost = appDelegate.forumHost;
-
-                }];
-
-                UIStoryboard *stortboard = [UIStoryboard mainStoryboard];
-                [stortboard changeRootViewControllerTo:kForumTabBarControllerId];
 
             }
+
         }];
+
 
         return NO;
     }
