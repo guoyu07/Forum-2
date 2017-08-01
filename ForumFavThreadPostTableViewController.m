@@ -28,7 +28,7 @@
 }
 
 - (void)onPullRefresh {
-    [self.forumApi listFavoriteThreadPostsWithPage:1 handler:^(BOOL isSuccess, ViewForumPage *resultPage) {
+    [self.forumApi listFavoriteThreadWithPage:1 handler:^(BOOL isSuccess, ViewForumPage *resultPage) {
 
         [self.tableView.mj_header endRefreshing];
         if (isSuccess) {
@@ -45,7 +45,7 @@
 
 - (void)onLoadMore {
     int toLoadPage = currentForumPage == nil ? 1: currentForumPage.pageNumber.currentPageNumber + 1;
-    [self.forumApi listFavoriteThreadPostsWithPage:toLoadPage handler:^(BOOL isSuccess, ViewForumPage *resultPage) {
+    [self.forumApi listFavoriteThreadWithPage:toLoadPage handler:^(BOOL isSuccess, ViewForumPage *resultPage) {
 
         [self.tableView.mj_footer endRefreshing];
 
@@ -91,7 +91,7 @@
 
     Thread *list = self.dataList[(NSUInteger) cell.indexPath.row];
 
-    [self.forumApi unfavoriteThreadPostWithId:list.threadID handler:^(BOOL isSuccess, id message) {
+    [self.forumApi unFavoriteThreadWithId:list.threadID handler:^(BOOL isSuccess, id message) {
         NSLog(@">>>>>>>>>>>> %@", message);
     }];
 

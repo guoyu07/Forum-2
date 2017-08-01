@@ -44,7 +44,7 @@
     }
 
     int toLoadPage = self.pageNumber == nil ? 1: self.pageNumber.currentPageNumber + 1;
-    [self.forumApi listSearchResultWithSearchid:_searchid andPage:toLoadPage handler:^(BOOL isSuccess, ViewSearchForumPage *message) {
+    [self.forumApi listSearchResultWithSearchId:_searchid andPage:toLoadPage handler:^(BOOL isSuccess, ViewSearchForumPage *message) {
         [self.tableView.mj_footer endRefreshing];
 
         if (isSuccess) {
@@ -143,7 +143,7 @@
 
     Thread *play = self.dataList[(NSUInteger) indexPath.row];
 
-    [self.forumApi favoriteThreadPostWithId:play.threadID handler:^(BOOL isSuccess, id message) {
+    [self.forumApi favoriteThreadWithId:play.threadID handler:^(BOOL isSuccess, id message) {
 //        BOOL success = isSuccess;
 //        NSString * result = message;
     }];

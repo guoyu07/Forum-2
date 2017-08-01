@@ -326,11 +326,11 @@
 
 }
 
-- (void)favoriteThreadPostWithId:(NSString *)threadPostId handler:(HandlerWithBool)handler {
+- (void)favoriteThreadWithId:(NSString *)threadPostId handler:(HandlerWithBool)handler {
 
 }
 
-- (void)unfavoriteThreadPostWithId:(NSString *)threadPostId handler:(HandlerWithBool)handler {
+- (void)unFavoriteThreadWithId:(NSString *)threadPostId handler:(HandlerWithBool)handler {
 
 }
 
@@ -392,7 +392,7 @@
     }];
 }
 
-- (void)listFavoriteThreadPostsWithPage:(int)page handler:(HandlerWithBool)handler {
+- (void)listFavoriteThreadWithPage:(int)page handler:(HandlerWithBool)handler {
     NSString *url = [self.forumConfig listfavThreadWithId:page];
 
     [self.browser GETWithURLString:url parameters:nil charset:UTF_8 requestCallback:^(BOOL isSuccess, NSString *html) {
@@ -405,7 +405,7 @@
     }];
 }
 
-- (void)listNewThreadPostsWithPage:(int)page handler:(HandlerWithBool)handler {
+- (void)listNewThreadWithPage:(int)page handler:(HandlerWithBool)handler {
 
     [self.browser GETWithURLString:[self.forumConfig searchNewThread:page] parameters:nil charset:UTF_8 requestCallback:^(BOOL isSuccess, NSString *html) {
         if (isSuccess) {
@@ -499,7 +499,7 @@
 
 }
 
-- (void)listSearchResultWithSearchid:(NSString *)searchid andPage:(int)page handler:(HandlerWithBool)handler {
+- (void)listSearchResultWithSearchId:(NSString *)searchid andPage:(int)page handler:(HandlerWithBool)handler {
 
 }
 

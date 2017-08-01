@@ -1051,7 +1051,7 @@ typedef void (^CallBack)(NSString *token, NSString *hash, NSString *time);
     }];
 }
 
-- (void)favoriteThreadPostWithId:(NSString *)threadPostId handler:(HandlerWithBool)handler {
+- (void)favoriteThreadWithId:(NSString *)threadPostId handler:(HandlerWithBool)handler {
     NSString *preUrl = [self.forumConfig favThreadWithIdPre:threadPostId];
     NSMutableDictionary *defparameters = [NSMutableDictionary dictionary];
     [defparameters setValue:@"2" forKey:@"styleid"];
@@ -1082,7 +1082,7 @@ typedef void (^CallBack)(NSString *token, NSString *hash, NSString *time);
     }];
 }
 
-- (void)unfavoriteThreadPostWithId:(NSString *)threadPostId handler:(HandlerWithBool)handler {
+- (void)unFavoriteThreadWithId:(NSString *)threadPostId handler:(HandlerWithBool)handler {
     NSString *url = [self.forumConfig unfavThreadWithId:threadPostId];
     NSMutableDictionary *defparameters = [NSMutableDictionary dictionary];
     [defparameters setValue:@"2" forKey:@"styleid"];
@@ -1123,7 +1123,7 @@ typedef void (^CallBack)(NSString *token, NSString *hash, NSString *time);
     }];
 }
 
-- (void)listFavoriteThreadPostsWithPage:(int)page handler:(HandlerWithBool)handler {
+- (void)listFavoriteThreadWithPage:(int)page handler:(HandlerWithBool)handler {
     NSString *url = [self.forumConfig listfavThreadWithId:page];
     NSMutableDictionary *defparameters = [NSMutableDictionary dictionary];
     [defparameters setValue:@"2" forKey:@"styleid"];
@@ -1139,7 +1139,7 @@ typedef void (^CallBack)(NSString *token, NSString *hash, NSString *time);
     }];
 }
 
-- (void)listNewThreadPostsWithPage:(int)page handler:(HandlerWithBool)handler {
+- (void)listNewThreadWithPage:(int)page handler:(HandlerWithBool)handler {
     NSUserDefaults *userDefault = [NSUserDefaults standardUserDefaults];
 
     NSDate *date = [NSDate date];
@@ -1350,7 +1350,7 @@ typedef void (^CallBack)(NSString *token, NSString *hash, NSString *time);
     }];
 }
 
-- (void)listSearchResultWithSearchid:(NSString *)searchid andPage:(int)page handler:(HandlerWithBool)handler {
+- (void)listSearchResultWithSearchId:(NSString *)searchid andPage:(int)page handler:(HandlerWithBool)handler {
     NSString *searchedUrl = [self.forumConfig searchWithSearchId:searchid withPage:page];
 
     NSMutableDictionary *defparameters = [NSMutableDictionary dictionary];

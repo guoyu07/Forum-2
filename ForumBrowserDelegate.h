@@ -17,11 +17,13 @@ typedef void (^HandlerWithBool)(BOOL isSuccess, id message);
 
 @protocol ForumBrowserDelegate <NSObject>
 
-@required
+
 // 登录论坛
+@optional
 - (void)loginWithName:(NSString *)name andPassWord:(NSString *)passWord withCode:(NSString*) code question:(NSString *) q answer:(NSString *) a handler:(HandlerWithBool)handler;
 
 // 刷新验证码
+@optional
 - (void)refreshVCodeToUIImageView:(UIImageView *)vCodeImageView;
 
 // 获取当前登录的账户信息
@@ -65,10 +67,10 @@ typedef void (^HandlerWithBool)(BOOL isSuccess, id message);
 - (void)unfavouriteForumsWithId:(NSString *)forumId handler:(HandlerWithBool)handler;
 
 // 收藏一个主题帖子
-- (void)favoriteThreadPostWithId:(NSString *)threadPostId handler:(HandlerWithBool)handler;
+- (void)favoriteThreadWithId:(NSString *)threadPostId handler:(HandlerWithBool)handler;
 
 // 取消收藏一个主题帖子
-- (void)unfavoriteThreadPostWithId:(NSString *)threadPostId handler:(HandlerWithBool)handler;
+- (void)unFavoriteThreadWithId:(NSString *)threadPostId handler:(HandlerWithBool)handler;
 
 // 读取论坛站内私信List   type 0 表示收件箱   -1表示发件箱
 - (void)listPrivateMessageWithType:(int)type andPage:(int)page handler:(HandlerWithBool)handler;
@@ -77,10 +79,10 @@ typedef void (^HandlerWithBool)(BOOL isSuccess, id message);
 - (void)listFavoriteForums:(HandlerWithBool)handler;
 
 // 获取收藏的主题帖子
-- (void)listFavoriteThreadPostsWithPage:(int)page handler:(HandlerWithBool)handler;
+- (void)listFavoriteThreadWithPage:(int)page handler:(HandlerWithBool)handler;
 
 // 查看新帖
-- (void)listNewThreadPostsWithPage:(int)page handler:(HandlerWithBool)handler;
+- (void)listNewThreadWithPage:(int)page handler:(HandlerWithBool)handler;
 
 // 显示我发表的主题
 - (void)listMyAllThreadsWithPage:(int)page handler:(HandlerWithBool)handler;
@@ -97,7 +99,7 @@ typedef void (^HandlerWithBool)(BOOL isSuccess, id message);
 
 - (void)getAvatarWithUserId:(NSString *)userId handler:(HandlerWithBool)handler;
 
-- (void)listSearchResultWithSearchid:(NSString *)searchid andPage:(int)page handler:(HandlerWithBool)handler;
+- (void)listSearchResultWithSearchId:(NSString *)searchid andPage:(int)page handler:(HandlerWithBool)handler;
 
 // 显示用户信息页面
 - (void)showProfileWithUserId:(NSString *)userId handler:(HandlerWithBool)handler;

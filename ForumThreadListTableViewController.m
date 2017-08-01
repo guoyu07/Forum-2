@@ -226,13 +226,13 @@
     } else if (indexPath.section == 1) {
         Thread *play = self.threadTopList[(NSUInteger) indexPath.row];
 
-        [self.forumApi favoriteThreadPostWithId:play.threadID handler:^(BOOL isSuccess, id message) {
+        [self.forumApi favoriteThreadWithId:play.threadID handler:^(BOOL isSuccess, id message) {
 
         }];
     } else {
         Thread *play = self.dataList[(NSUInteger) indexPath.row];
 
-        [self.forumApi favoriteThreadPostWithId:play.threadID handler:^(BOOL isSuccess, id message) {
+        [self.forumApi favoriteThreadWithId:play.threadID handler:^(BOOL isSuccess, id message) {
 
         }];
     }

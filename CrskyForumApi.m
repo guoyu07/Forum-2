@@ -15,14 +15,6 @@
 
 @implementation CrskyForumApi
 
-- (void)loginWithName:(NSString *)name andPassWord:(NSString *)passWord withCode:(NSString *)code question:(NSString *)q answer:(NSString *)a handler:(HandlerWithBool)handler {
-    // 采用网页登录，这里不需要了
-}
-
-- (void)refreshVCodeToUIImageView:(UIImageView *)vCodeImageView {
-    //  No Need OverWrite
-}
-
 // private
 - (NSString *)loadCookie {
     return [[NSUserDefaults standardUserDefaults] loadCookie];
@@ -197,11 +189,11 @@
     handler(YES, @"SUCCESS");
 }
 
-- (void)favoriteThreadPostWithId:(NSString *)threadPostId handler:(HandlerWithBool)handler {
+- (void)favoriteThreadWithId:(NSString *)threadPostId handler:(HandlerWithBool)handler {
 
 }
 
-- (void)unfavoriteThreadPostWithId:(NSString *)threadPostId handler:(HandlerWithBool)handler {
+- (void)unFavoriteThreadWithId:(NSString *)threadPostId handler:(HandlerWithBool)handler {
 
 }
 
@@ -229,11 +221,11 @@
     handler(YES, forms);
 }
 
-- (void)listFavoriteThreadPostsWithPage:(int)page handler:(HandlerWithBool)handler {
+- (void)listFavoriteThreadWithPage:(int)page handler:(HandlerWithBool)handler {
 
 }
 
-- (void)listNewThreadPostsWithPage:(int)page handler:(HandlerWithBool)handler {
+- (void)listNewThreadWithPage:(int)page handler:(HandlerWithBool)handler {
     NSUserDefaults *userDefault = [NSUserDefaults standardUserDefaults];
 
     NSDate *date = [NSDate date];
@@ -335,7 +327,7 @@
     }];
 }
 
-- (void)listSearchResultWithSearchid:(NSString *)searchid andPage:(int)page handler:(HandlerWithBool)handler {
+- (void)listSearchResultWithSearchId:(NSString *)searchid andPage:(int)page handler:(HandlerWithBool)handler {
 
 }
 

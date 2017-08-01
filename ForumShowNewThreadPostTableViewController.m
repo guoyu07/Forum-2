@@ -23,7 +23,7 @@
 }
 
 - (void)onPullRefresh {
-    [self.forumApi listNewThreadPostsWithPage:1 handler:^(BOOL isSuccess, ViewForumPage *message) {
+    [self.forumApi listNewThreadWithPage:1 handler:^(BOOL isSuccess, ViewForumPage *message) {
         [self.tableView.mj_header endRefreshing];
         if (isSuccess) {
             [self.tableView.mj_footer endRefreshing];
@@ -44,7 +44,7 @@
 
 - (void)onLoadMore {
     int toLoadPage = currentForumPage == nil ? 1 : currentForumPage.pageNumber.currentPageNumber + 1;
-    [self.forumApi listNewThreadPostsWithPage:toLoadPage handler:^(BOOL isSuccess, ViewForumPage *message) {
+    [self.forumApi listNewThreadWithPage:toLoadPage handler:^(BOOL isSuccess, ViewForumPage *message) {
         [self.tableView.mj_footer endRefreshing];
         if (isSuccess) {
 
@@ -107,7 +107,7 @@
 
     Thread *play = self.dataList[(NSUInteger) indexPath.row];
 
-    [self.forumApi favoriteThreadPostWithId:play.threadID handler:^(BOOL isSuccess, id message) {
+    [self.forumApi favoriteThreadWithId:play.threadID handler:^(BOOL isSuccess, id message) {
 
     }];
 
