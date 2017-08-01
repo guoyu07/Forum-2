@@ -26,11 +26,6 @@
 }
 
 //private
-- (NSString *)userName:(NSString *)host {
-    return [[NSUserDefaults standardUserDefaults] userName:host];
-}
-
-//private
 - (void)saveCookie {
     [[NSUserDefaults standardUserDefaults] saveCookie];
 }
@@ -46,7 +41,7 @@
     NSArray<NSHTTPCookie *> *cookies = [[NSHTTPCookieStorage sharedHTTPCookieStorage] cookies];
 
     LoginUser *user = [[LoginUser alloc] init];
-    user.userName = [self userName:self.currentConfigDelegate.forumURL.host];
+    user.userName = [[NSUserDefaults standardUserDefaults] userName];
 
     for (int i = 0; i < cookies.count; i++) {
         NSHTTPCookie *cookie = cookies[(NSUInteger) i];
@@ -332,7 +327,17 @@
 }
 
 - (void)showProfileWithUserId:(NSString *)userId handler:(HandlerWithBool)handler {
+    NSMutableDictionary *defparameters = [NSMutableDictionary dictionary];
+    [defparameters setValue:@"winds" forKey:@"skinco"];
 
+    [self.browser GETWithURLString:[self.forumConfig memberWithUserId:userId] parameters:defparameters charset:UTF_8 requestCallback:^(BOOL isSuccess, NSString *html) {
+        if (isSuccess) {
+            UserProfile *profile = [self.forumParser parserProfile:html userId:userId];
+            handler(YES, profile);
+        } else {
+            handler(NO, @"未知错误");
+        }
+    }];
 }
 
 - (void)reportThreadPost:(int)postId andMessage:(NSString *)message handler:(HandlerWithBool)handler {

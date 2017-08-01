@@ -44,11 +44,6 @@ typedef void (^CallBack)(NSString *token, NSString *hash, NSString *time);
 }
 
 //private
-- (NSString *)userName:(NSString *)host {
-    return [[NSUserDefaults standardUserDefaults] userName:host];
-}
-
-//private
 - (void)saveCookie {
     [[NSUserDefaults standardUserDefaults] saveCookie];
 }
@@ -122,7 +117,7 @@ typedef void (^CallBack)(NSString *token, NSString *hash, NSString *time);
     NSArray<NSHTTPCookie *> *cookies = [[NSHTTPCookieStorage sharedHTTPCookieStorage] cookies];
 
     LoginUser *user = [[LoginUser alloc] init];
-    user.userName = [self userName:self.currentConfigDelegate.forumURL.host];
+    user.userName = [[NSUserDefaults standardUserDefaults] userName];
 
     for (int i = 0; i < cookies.count; i++) {
         NSHTTPCookie *cookie = cookies[(NSUInteger) i];

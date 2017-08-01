@@ -142,7 +142,7 @@
     NSArray<NSHTTPCookie *> *cookies = [[NSHTTPCookieStorage sharedHTTPCookieStorage] cookies];
 
     LoginUser *user = [[LoginUser alloc] init];
-    user.userName = [self userName:self.currentConfigDelegate.forumURL.host];
+    user.userName = [[NSUserDefaults standardUserDefaults] userName];
 
     for (int i = 0; i < cookies.count; i++) {
         NSHTTPCookie *cookie = cookies[(NSUInteger) i];
@@ -531,11 +531,6 @@
 // private
 - (void)saveUserName:(NSString *)name {
     [[NSUserDefaults standardUserDefaults] saveUserName:name];
-}
-
-//private
-- (NSString *)userName:(NSString *)host {
-    return [[NSUserDefaults standardUserDefaults] userName:host];
 }
 
 //private

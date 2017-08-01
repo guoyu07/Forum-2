@@ -56,14 +56,13 @@
 
 
 - (void)showUserAvatar {
-    //AppDelegate *appDelegate = (AppDelegate *) [[UIApplication sharedApplication] delegate];
+
     id <ForumBrowserDelegate> forumApi = [ForumApiHelper forumApi];
-    id<ForumConfigDelegate> forumConfig = [forumApi currentConfigDelegate];
     LoginUser *loginUser = [forumApi getLoginUser];
 
     [self showAvatar:_avatarUIImageView userId:loginUser.userID];
 
-    self.userName.text = [[NSUserDefaults standardUserDefaults] userName:forumConfig.forumURL.host];
+    self.userName.text = [[NSUserDefaults standardUserDefaults] userName];
 
 }
 

@@ -61,12 +61,25 @@
 
 
 - (void)saveUserName:(NSString *)name {
-    [self setValue:name forKey:[[self currentForumHost] stringByAppendingString:@"-UserName"]];
+    NSString *key = [[self currentForumHost] stringByAppendingString:@"-UserName"];
+    [self setValue:name forKey:key];
 }
 
-- (NSString *)userName:(NSString *) host{
-    return [self valueForKey:[host stringByAppendingString:@"-UserName"]];
+- (NSString *)userName{
+    NSString *key = [[self currentForumHost] stringByAppendingString:@"-UserName"];
+    return [self valueForKey:key];
 }
+
+- (void)saveUserId:(NSString *)uid {
+    NSString *key = [[self currentForumHost] stringByAppendingString:@"-UserId"];
+    [self setValue:uid forKey:key];
+}
+
+- (NSString *)userId {
+    NSString *key = [[self currentForumHost] stringByAppendingString:@"-UserId"];
+    return [self valueForKey:key];
+}
+
 
 - (NSString *)currentForumURL {
     AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
