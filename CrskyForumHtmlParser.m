@@ -388,39 +388,44 @@
 
     NSMutableArray<Message *> *messagesList = [NSMutableArray array];
 
+    PageNumber *pageNumber = [self parserPageNumber:html];
+
     if (type == 0){
 
-        IGXMLNodeSet *systemMessageSet = [document queryWithXPath:@"//*[@id=\"info_public\"]/table/tr[position()>1]"];
-        for (IGXMLNode *node in systemMessageSet) {
-            long childCount = (long) [[node children] count];
-            if (childCount == 5) {
-                // 有4个节点说明是正常的站内短信
-                Message *message = [[Message alloc] init];
+        if (pageNumber.currentPageNumber < 2){
 
-                NSString * msgHtml = node.html;
+            IGXMLNodeSet *systemMessageSet = [document queryWithXPath:@"//*[@id=\"info_public\"]/table/tr[position()>1]"];
+            for (IGXMLNode *node in systemMessageSet) {
+                long childCount = (long) [[node children] count];
+                if (childCount == 5) {
+                    // 有4个节点说明是正常的站内短信
+                    Message *message = [[Message alloc] init];
 
-                // 1. 是不是未读短信
-                message.isReaded = ![msgHtml containsString:@"class=\"b\""];
+                    NSString * msgHtml = node.html;
 
-                // 2. 标题
-                IGXMLNode *title = [node childrenAtPosition:2];
-                message.pmTitle = title.text.trim;
+                    // 1. 是不是未读短信
+                    message.isReaded = ![msgHtml containsString:@"class=\"b\""];
 
-                // Message Id
-                message.pmID = [msgHtml stringWithRegular:@"(?<=mid=)\\d+"];
+                    // 2. 标题
+                    IGXMLNode *title = [node childrenAtPosition:2];
+                    message.pmTitle = title.text.trim;
 
-                // 3. 发送PM作者
-                IGXMLNode *author = [node childrenAtPosition:1];
-                message.pmAuthor = author.text.trim;
+                    // Message Id
+                    message.pmID = [msgHtml stringWithRegular:@"(?<=mid=)\\d+"];
 
-                // 4. 发送者ID
-                message.pmAuthorId = @"-1";
+                    // 3. 发送PM作者
+                    IGXMLNode *author = [node childrenAtPosition:1];
+                    message.pmAuthor = author.text.trim;
 
-                // 5. 时间
-                message.pmTime = [node childrenAtPosition:3].text.trim;
+                    // 4. 发送者ID
+                    message.pmAuthorId = @"-1";
 
-                [messagesList addObject:message];
+                    // 5. 时间
+                    message.pmTime = [node childrenAtPosition:3].text.trim;
 
+                    [messagesList addObject:message];
+
+                }
             }
         }
 
