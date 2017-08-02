@@ -131,8 +131,18 @@
 
 }
 
-- (void)showPrivateMessageContentWithId:(int)pmId handler:(HandlerWithBool)handler {
+- (void)showPrivateMessageContentWithId:(int)pmId withType:(int)type handler:(HandlerWithBool)handler {
+    NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
+    [parameters setValue:@"winds" forKey:@"skinco"];
 
+    [self.browser GETWithURLString:[self.forumConfig privateShowWithMessageId:pmId withType:type] parameters:parameters charset:GBK requestCallback:^(BOOL isSuccess, NSString *html) {
+        if (isSuccess) {
+            ViewMessagePage *content = [self.forumParser parsePrivateMessageContent:html avatarBase:self.forumConfig.avatarBase noavatar:self.forumConfig.avatarNo];
+            handler(YES, content);
+        } else {
+            handler(NO, html);
+        }
+    }];
 }
 
 - (void)sendPrivateMessageToUserName:(NSString *)name andTitle:(NSString *)title andMessage:(NSString *)message handler:(HandlerWithBool)handler {

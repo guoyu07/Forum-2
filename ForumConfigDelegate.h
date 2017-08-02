@@ -81,7 +81,7 @@
 
 // 站内短信
 - (NSString *) privateWithType:(int)type withPage:(int)page;
-- (NSString *) privateShowWithMessageId:(int)messageId;
+- (NSString *) privateShowWithMessageId:(int)messageId withType:(int) type;
 - (NSString *) privateReplyWithMessageIdPre:(int)messageId;
 - (NSString *) privateReplyWithMessage;
 - (NSString *) privateNewPre;

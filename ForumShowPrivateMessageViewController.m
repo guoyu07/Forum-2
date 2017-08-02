@@ -42,7 +42,7 @@
     self.webView.delegate = self;
     self.webView.backgroundColor = [UIColor whiteColor];
 
-    for (UIView *view in [[[self.webView subviews] objectAtIndex:0] subviews]) {
+    for (UIView *view in [[self.webView subviews][0] subviews]) {
         if ([view isKindOfClass:[UIImageView class]]) {
             view.hidden = YES;
         }
@@ -54,7 +54,7 @@
 
     self.webView.scrollView.mj_header = [MJRefreshNormalHeader headerWithRefreshingBlock:^{
 
-        [self.forumApi showPrivateMessageContentWithId:[transPrivateMessage.pmID intValue] handler:^(BOOL isSuccess, id message) {
+        [self.forumApi showPrivateMessageContentWithId:[transPrivateMessage.pmID intValue] withType:0 handler:^(BOOL isSuccess, id message) {
 
             ViewMessagePage *content = message;
 

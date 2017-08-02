@@ -306,8 +306,7 @@
 
 }
 
-- (void)showPrivateMessageContentWithId:(int)pmId handler:(HandlerWithBool)handler {
-
+- (void)showPrivateMessageContentWithId:(int)pmId withType:(int)type handler:(HandlerWithBool)handler {
 }
 
 - (void)sendPrivateMessageToUserName:(NSString *)name andTitle:(NSString *)title andMessage:(NSString *)message handler:(HandlerWithBool)handler {

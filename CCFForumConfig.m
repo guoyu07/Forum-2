@@ -160,7 +160,7 @@
     return [NSString stringWithFormat:@"%@private.php?folderid=%d&pp=30&sort=date&page=%d", _forumURL.absoluteString, type, page];
 }
 
-- (NSString *)privateShowWithMessageId:(int)messageId {
+- (NSString *)privateShowWithMessageId:(int)messageId withType:(int)type {
     return [NSString stringWithFormat:@"%@private.php?do=showpm&pmid=%d", _forumURL.absoluteString, messageId];
 }
 

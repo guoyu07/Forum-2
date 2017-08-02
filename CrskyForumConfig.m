@@ -160,8 +160,12 @@
     }
 }
 
-- (NSString *)privateShowWithMessageId:(int)messageId {
-    return nil;
+- (NSString *)privateShowWithMessageId:(int)messageId withType:(int)type {
+    if (type == 0){
+        return [NSString stringWithFormat:@"http://bbs.crsky.com/message.php?action=readpub&mid=%d",messageId];
+    } else {
+        return [NSString stringWithFormat:@"http://bbs.crsky.com/message.php?action=read&mid=%d",messageId];
+    }
 }
 
 - (NSString *)privateReplyWithMessageIdPre:(int)messageId {

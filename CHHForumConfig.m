@@ -157,7 +157,7 @@
     }
 }
 
-- (NSString *)privateShowWithMessageId:(int)messageId {
+- (NSString *)privateShowWithMessageId:(int)messageId withType:(int)type {
     return nil;
 }
 

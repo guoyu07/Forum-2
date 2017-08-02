@@ -780,10 +780,6 @@
     NSString *postCount = [[[[[[[userInfoNode childrenAtPosition:4] childrenAtPosition:1] childrenAtPosition:2] text] trim] componentsSeparatedByString:@": "] lastObject];
     pmAuthor.userPostCount = postCount;
 
-    // 精华 和 解答
-
-    //===========
-
     privateMessage.pmUserInfo = pmAuthor;
     return privateMessage;
 }
