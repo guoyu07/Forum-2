@@ -382,7 +382,121 @@
 }
 
 - (ViewForumPage *)parsePrivateMessageFromHtml:(NSString *)html forType:(int)type {
-    return nil;
+    ViewForumPage *page = [[ViewForumPage alloc] init];
+
+    IGHTMLDocument *document = [[IGHTMLDocument alloc] initWithHTMLString:html error:nil];
+
+    NSMutableArray<Message *> *messagesList = [NSMutableArray array];
+
+    if (type == 0){
+
+        IGXMLNodeSet *systemMessageSet = [document queryWithXPath:@"//*[@id=\"info_public\"]/table/tr[position()>1]"];
+        for (IGXMLNode *node in systemMessageSet) {
+            long childCount = (long) [[node children] count];
+            if (childCount == 5) {
+                // 有4个节点说明是正常的站内短信
+                Message *message = [[Message alloc] init];
+
+                NSString * msgHtml = node.html;
+
+                // 1. 是不是未读短信
+                message.isReaded = ![msgHtml containsString:@"class=\"b\""];
+
+                // 2. 标题
+                IGXMLNode *title = [node childrenAtPosition:2];
+                message.pmTitle = title.text.trim;
+
+                // Message Id
+                message.pmID = [msgHtml stringWithRegular:@"(?<=mid=)\\d+"];
+
+                // 3. 发送PM作者
+                IGXMLNode *author = [node childrenAtPosition:1];
+                message.pmAuthor = author.text.trim;
+
+                // 4. 发送者ID
+                message.pmAuthorId = @"-1";
+
+                // 5. 时间
+                message.pmTime = [node childrenAtPosition:3].text.trim;
+
+                [messagesList addObject:message];
+
+            }
+        }
+
+        IGXMLNodeSet *privateMessageSet = [document queryWithXPath:@"//*[@id=\"info_base\"]/div[1]/table/tr[position()>2]"];
+        for (IGXMLNode *node in privateMessageSet) {
+            long childCount = (long) [[node children] count];
+            if (childCount == 5) {
+                // 有4个节点说明是正常的站内短信
+                Message *message = [[Message alloc] init];
+
+                NSString * msgHtml = node.html;
+
+                // 1. 是不是未读短信
+                message.isReaded = ![msgHtml containsString:@"class=\"b\""];
+
+                // 2. 标题
+                IGXMLNode *title = [node childrenAtPosition:2];
+                message.pmTitle = title.text.trim;
+
+                // Message Id
+                message.pmID = [msgHtml stringWithRegular:@"(?<=mid=)\\d+"];
+
+                // 3. 发送PM作者
+                IGXMLNode *author = [node childrenAtPosition:1];
+                message.pmAuthor = author.text.trim;
+
+                // 4. 发送者ID
+                message.pmAuthorId =[msgHtml stringWithRegular:@"(?<=uid=)\\d+"];
+
+                // 5. 时间
+                message.pmTime = [node childrenAtPosition:3].text.trim;
+
+                [messagesList addObject:message];
+
+            }
+        }
+    } else{
+        IGXMLNodeSet *privateMessageSet = [document queryWithXPath:@"//*[@id=\"info_base\"]/table/tr[position()>1]"];
+        for (IGXMLNode *node in privateMessageSet) {
+            long childCount = (long) [[node children] count];
+            if (childCount == 5) {
+                // 有4个节点说明是正常的站内短信
+                Message *message = [[Message alloc] init];
+
+                NSString * msgHtml = node.html;
+
+                // 1. 是不是未读短信
+                message.isReaded = ![msgHtml containsString:@"class=\"b\""];
+
+                // 2. 标题
+                IGXMLNode *title = [node childrenAtPosition:2];
+                message.pmTitle = title.text.trim;
+
+                // Message Id
+                message.pmID = [msgHtml stringWithRegular:@"(?<=mid=)\\d+"];
+
+                // 3. 发送PM作者
+                IGXMLNode *author = [node childrenAtPosition:1];
+                message.pmAuthor = author.text.trim;
+
+                // 4. 发送者ID
+                message.pmAuthorId =[msgHtml stringWithRegular:@"(?<=uid=)\\d+"];
+
+                // 5. 时间
+                message.pmTime = [node childrenAtPosition:3].text.trim;
+
+                [messagesList addObject:message];
+
+            }
+        }
+    }
+
+    page.pageNumber = [self parserPageNumber:html];
+    page.dataList = messagesList;
+
+    return page;
 }
 
 - (ViewMessagePage *)parsePrivateMessageContent:(NSString *)html avatarBase:(NSString *)avatarBase noavatar:(NSString *)avatarNO {
@@ -418,7 +532,6 @@
 }
 
 - (UserProfile *)parserProfile:(NSString *)html userId:(NSString *)userId {
-    IGHTMLDocument *document = [[IGHTMLDocument alloc] initWithHTMLString:html error:nil];
     UserProfile *profile = [[UserProfile alloc] init];
     // 用户名
     profile.profileName = [html stringWithRegular:@"(?<=<h1 class=\"u-h1\">)\\S+(?=</h1>)"];

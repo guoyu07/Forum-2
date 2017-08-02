@@ -664,12 +664,6 @@
 
     IGHTMLDocument *document = [[IGHTMLDocument alloc] initWithHTMLString:html error:nil];
 
-
-    PageNumber *pageNumber = [self parserPageNumber:html];
-
-    page.pageNumber = pageNumber;
-
-
     NSMutableArray<Message *> *messagesList = [NSMutableArray array];
 
     IGXMLNodeSet *messages = [document queryWithXPath:@"//*[@id='pmform']/table[2]/tbody[*]/tr"];
@@ -722,6 +716,7 @@
         }
     }
 
+    page.pageNumber = [self parserPageNumber:html];
     page.dataList = messagesList;
 
     return page;

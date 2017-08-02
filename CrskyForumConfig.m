@@ -151,7 +151,13 @@
 }
 
 - (NSString *)privateWithType:(int)type withPage:(int)page {
-    return nil;
+    //  0 receive box
+    if (type == 0){
+        return [NSString stringWithFormat:@"http://bbs.crsky.com/message.php?action=receivebox&page=%d", page];
+    } else{
+    //  -1 send box
+        return [NSString stringWithFormat:@"http://bbs.crsky.com/message.php?action=sendbox&page=%d", page];
+    }
 }
 
 - (NSString *)privateShowWithMessageId:(int)messageId {
