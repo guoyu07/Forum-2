@@ -431,10 +431,12 @@
 
     // 最近活动时间
     NSString *lastDay = [html stringWithRegular:@"(?<=<td>最后登录</td> \t\t\t\t\t<th>)\\d+-\\d+-\\d+ \\d+:\\d+:\\d+(?=</th>)"];
+    profile.profileRecentLoginDate = lastDay;
 
     // 帖子总数
     NSString *postCount = [html stringWithRegular:@"(?<=<td>发帖</td> 					<th>)\\d+(?= </th>)"];
     profile.profileTotalPostCount = postCount;
+
 
     profile.profileUserId = userId;
     return profile;
