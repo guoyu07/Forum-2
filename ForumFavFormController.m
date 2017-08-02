@@ -151,7 +151,7 @@
 
     Forum *parent = self.dataList[(NSUInteger) cell.indexPath.row];
 
-    [self.forumApi unfavouriteForumsWithId:[NSString stringWithFormat:@"%d", parent.forumId] handler:^(BOOL isSuccess, id message) {
+    [self.forumApi unFavouriteForumWithId:[NSString stringWithFormat:@"%d", parent.forumId] handler:^(BOOL isSuccess, id message) {
 
     }];
 

@@ -318,11 +318,11 @@
 
 }
 
-- (void)favoriteForumsWithId:(NSString *)forumId handler:(HandlerWithBool)handler {
+- (void)favoriteForumWithId:(NSString *)forumId handler:(HandlerWithBool)handler {
 
 }
 
-- (void)unfavouriteForumsWithId:(NSString *)forumId handler:(HandlerWithBool)handler {
+- (void)unFavouriteForumWithId:(NSString *)forumId handler:(HandlerWithBool)handler {
 
 }
 

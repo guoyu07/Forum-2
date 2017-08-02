@@ -143,7 +143,7 @@
 
 }
 
-- (void)favoriteForumsWithId:(NSString *)forumId handler:(HandlerWithBool)handler {
+- (void)favoriteForumWithId:(NSString *)forumId handler:(HandlerWithBool)handler {
 
     NSString *key = [self.forumConfig.forumURL.host stringByAppendingString:@"-favForums"];
 
@@ -173,7 +173,7 @@
 
 }
 
-- (void)unfavouriteForumsWithId:(NSString *)forumId handler:(HandlerWithBool)handler {
+- (void)unFavouriteForumWithId:(NSString *)forumId handler:(HandlerWithBool)handler {
     NSString *key = [self.forumConfig.forumURL.host stringByAppendingString:@"-favForums"];
 
     NSUbiquitousKeyValueStore * store = [NSUbiquitousKeyValueStore defaultStore];

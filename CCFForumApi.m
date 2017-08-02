@@ -1001,7 +1001,7 @@ typedef void (^CallBack)(NSString *token, NSString *hash, NSString *time);
     }];
 }
 
-- (void)favoriteForumsWithId:(NSString *)forumId handler:(HandlerWithBool)handler {
+- (void)favoriteForumWithId:(NSString *)forumId handler:(HandlerWithBool)handler {
     NSString *preUrl = [self.forumConfig favForumWithId:forumId];
 
     NSMutableDictionary *defparameters = [NSMutableDictionary dictionary];
@@ -1035,7 +1035,7 @@ typedef void (^CallBack)(NSString *token, NSString *hash, NSString *time);
     }];
 }
 
-- (void)unfavouriteForumsWithId:(NSString *)forumId handler:(HandlerWithBool)handler {
+- (void)unFavouriteForumWithId:(NSString *)forumId handler:(HandlerWithBool)handler {
     NSString *url = [self.forumConfig unfavForumWithId:forumId];
     NSMutableDictionary *defparameters = [NSMutableDictionary dictionary];
     [defparameters setValue:@"2" forKey:@"styleid"];

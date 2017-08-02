@@ -64,10 +64,10 @@ typedef void (^HandlerWithBool)(BOOL isSuccess, id message);
 - (void)replyPrivateMessageWithId:(int)pmId andMessage:(NSString *)message handler:(HandlerWithBool)handler;
 
 // 收藏这个论坛
-- (void)favoriteForumsWithId:(NSString *)forumId handler:(HandlerWithBool)handler;
+- (void)favoriteForumWithId:(NSString *)forumId handler:(HandlerWithBool)handler;
 
 // 取消收藏论坛
-- (void)unfavouriteForumsWithId:(NSString *)forumId handler:(HandlerWithBool)handler;
+- (void)unFavouriteForumWithId:(NSString *)forumId handler:(HandlerWithBool)handler;
 
 // 收藏一个主题帖子
 - (void)favoriteThreadWithId:(NSString *)threadPostId handler:(HandlerWithBool)handler;
