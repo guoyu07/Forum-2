@@ -229,7 +229,7 @@
     return page;
 }
 
-- (ViewForumPage *)parseFavThreadListFromHtml:(NSString *)html {
+- (ViewForumPage *)parseFavorThreadListFromHtml:(NSString *)html {
     ViewForumPage *page = [[ViewForumPage alloc] init];
     IGHTMLDocument *document = [[IGHTMLDocument alloc] initWithHTMLString:html error:nil];
 

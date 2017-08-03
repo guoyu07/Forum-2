@@ -481,7 +481,7 @@
     return forumDisplayPage;
 }
 
-- (ViewForumPage *)parseFavThreadListFromHtml:(NSString *)html {
+- (ViewForumPage *)parseFavorThreadListFromHtml:(NSString *)html {
     ViewForumPage *page = [[ViewForumPage alloc] init];
     
     NSString *path = @"/html/body/table/tr/td/div[2]/div/div/table[2]/tr/td[3]/form[2]/table/tr[position()>2]";

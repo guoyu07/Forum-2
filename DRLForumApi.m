@@ -1076,7 +1076,7 @@ typedef void (^CallBack)(NSString *token, NSString *hash, NSString *time);
     [self.browser GETWithURLString:url parameters:parameters charset:UTF_8 requestCallback:^(BOOL isSuccess, NSString *html) {
 
         if (isSuccess) {
-            ViewForumPage *p = [self.forumParser parseFavThreadListFromHtml:html];
+            ViewForumPage *p = [self.forumParser parseFavorThreadListFromHtml:html];
             handler(isSuccess, p);
         } else {
             handler(NO, html);

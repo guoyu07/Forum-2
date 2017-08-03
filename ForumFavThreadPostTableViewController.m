@@ -47,7 +47,9 @@
 
 - (void)onLoadMore {
     int toLoadPage = currentForumPage == nil ? 1: currentForumPage.pageNumber.currentPageNumber + 1;
-    [self.forumApi listFavoriteThreads:0 withPage:toLoadPage handler:^(BOOL isSuccess, ViewForumPage *resultPage) {
+    LoginUser *user = self.forumApi.getLoginUser;
+    int userId = [user.userID intValue];
+    [self.forumApi listFavoriteThreads:userId withPage:toLoadPage handler:^(BOOL isSuccess, ViewForumPage *resultPage) {
 
         [self.tableView.mj_footer endRefreshing];
 

@@ -29,7 +29,7 @@
 
 - (ViewForumPage *)parseThreadListFromHtml:(NSString *)html withThread:(int)threadId andContainsTop:(BOOL)containTop;
 
-- (ViewForumPage *)parseFavThreadListFromHtml:(NSString *)html;
+- (ViewForumPage *)parseFavorThreadListFromHtml:(NSString *)html;
 
 - (ViewForumPage *)parsePrivateMessageFromHtml:(NSString *)html forType:(int) type;
 

@@ -396,7 +396,7 @@
 
     [self.browser GETWithURLString:url parameters:nil charset:UTF_8 requestCallback:^(BOOL isSuccess, NSString *html) {
         if (isSuccess) {
-            ViewForumPage *viewForumPage = [self.forumParser parseFavThreadListFromHtml:html];
+            ViewForumPage *viewForumPage = [self.forumParser parseFavorThreadListFromHtml:html];
             handler(isSuccess, viewForumPage);
         } else {
             handler(NO, html);

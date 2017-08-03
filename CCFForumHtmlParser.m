@@ -439,7 +439,7 @@
     return page;
 }
 
-- (ViewForumPage *)parseFavThreadListFromHtml:(NSString *)html {
+- (ViewForumPage *)parseFavorThreadListFromHtml:(NSString *)html {
     ViewForumPage *page = [[ViewForumPage alloc] init];
 
     NSString *path = @"/html/body/div[2]/div/div/table[3]/tr/td[3]/form[2]/table/tr[position()>2]";
@@ -452,7 +452,7 @@
     IGXMLNodeSet *contents = [document queryWithXPath:path];
 
     for (int i = 0; i < contents.count; i++) {
-        IGXMLNode *threadListNode = contents[i];
+        IGXMLNode *threadListNode = contents[(NSUInteger) i];
 
         if (threadListNode.children.count >= 7) { // 要大于7的原因是：过滤已经被删除的帖子 和已经被移动的帖子
 

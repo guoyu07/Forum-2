@@ -91,7 +91,7 @@
 }
 
 - (NSString *)listFavorThreads:(int)userId withPage:(int)page {
-    return nil;
+    return [NSString stringWithFormat:@"http://bbs.crsky.com/u.php?action=favor&uid=%d", userId];
 }
 
 - (NSString *)forumDisplayWithId:(NSString *)forumId {
