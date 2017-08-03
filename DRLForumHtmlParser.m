@@ -398,7 +398,7 @@
             }
             
             // title Node
-            IGXMLNode *threadTitleNode = [normallThreadNode childrenAtPosition:titlePosition];
+            IGXMLNode *threadTitleNode = [normallThreadNode childAt:titlePosition];
             
             // title all html
             NSString *titleHtml = [threadTitleNode html];
@@ -439,7 +439,7 @@
             if (childColumnCount == 7) {
                 authorNodePosition = 2;
             }
-            IGXMLNode *authorNode = [normallThreadNode childrenAtPosition:authorNodePosition];
+            IGXMLNode *authorNode = [normallThreadNode childAt:authorNodePosition];
             NSString *authorIdStr = [authorNode innerHtml];
             normalThread.threadAuthorID = [authorIdStr stringWithRegular:@"\\d+"];
             normalThread.threadAuthorName = [[authorNode text] trim];
@@ -449,7 +449,7 @@
             if (childColumnCount == 7) {
                 lastPostTimePosition = 3;
             }
-            IGXMLNode *lastPostTime = [normallThreadNode childrenAtPosition:lastPostTimePosition];
+            IGXMLNode *lastPostTime = [normallThreadNode childAt:lastPostTimePosition];
             normalThread.lastPostTime = [self timeForShort:[[lastPostTime text] trim] withFormat:@"MM-dd-yyyy HH:mm"];
             
             // 回帖数量
@@ -457,7 +457,7 @@
             if (childColumnCount == 7) {
                 commentCountPosition = 4;
             }
-            IGXMLNode *commentCountNode = [normallThreadNode childrenAtPosition:commentCountPosition];
+            IGXMLNode *commentCountNode = [normallThreadNode childAt:commentCountPosition];
             normalThread.postCount = [commentCountNode text];
             
             // 查看数量
@@ -465,7 +465,7 @@
             if (childColumnCount == 7) {
                 openCountNodePosition = 5;
             }
-            IGXMLNode *openCountNode = [normallThreadNode childrenAtPosition:openCountNodePosition];
+            IGXMLNode *openCountNode = [normallThreadNode childAt:openCountNodePosition];
             normalThread.openCount = [openCountNode text];
             
             [threadList addObject:normalThread];
@@ -616,7 +616,7 @@
             // 9个节点是正确的输出结果
             Thread * searchThread = [[Thread alloc]init];
             
-            IGXMLNode * postForNode = [node childrenAtPosition:2];
+            IGXMLNode * postForNode = [node childAt:2];
             
             NSLog(@"--------------------- %ld", (long) [postForNode children].count);
             
@@ -624,7 +624,7 @@
             NSString * postId = [postIdNode stringWithRegular:@"t=\\d+" andChild:@"\\d+"];
             
             NSString * postTitle = [[[postForNode text] trim] componentsSeparatedByString:@"\n"].firstObject;
-            NSString * postAuthor = [[[node childrenAtPosition:3] text] trim];
+            NSString * postAuthor = [[[node childAt:3] text] trim];
             NSString * postAuthorId = [[node.children[3] html] stringWithRegular:@"=\\d+" andChild:@"\\d+"];
             NSString * postTime = [[node.children[4] text] trim];
             NSString * postBelongForm = [node.children[8] text];
@@ -913,8 +913,8 @@
 // private
 - (Forum *)node2Form:(IGXMLNode *)node parentFormId:(int)parentFormId replaceId:(int)replaceId {
     Forum *parent = [[Forum alloc] init];
-    NSString *name = [[node childrenAtPosition:0] text];
-    NSString *url = [[node childrenAtPosition:0] html];
+    NSString *name = [[node childAt:0] text];
+    NSString *url = [[node childAt:0] html];
     int forumId = [[url stringWithRegular:@"f-\\d+" andChild:@"\\d+"] intValue];
     int fixForumId = forumId == 0 ? replaceId : forumId;
     parent.forumId = fixForumId;
@@ -922,7 +922,7 @@
     parent.forumName = name;
     
     if (node.childrenCount == 2) {
-        IGXMLNodeSet *childSet = [node childrenAtPosition:1].children;
+        IGXMLNodeSet *childSet = [node childAt:1].children;
         NSMutableArray<Forum *> *childForms = [NSMutableArray array];
         
         for (IGXMLNode *childNode in childSet) {

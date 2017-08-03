@@ -355,7 +355,7 @@
             }
 
             // title Node
-            IGXMLNode *threadTitleNode = [normallThreadNode childrenAtPosition:titlePosition];
+            IGXMLNode *threadTitleNode = [normallThreadNode childAt:titlePosition];
 
             // title all html
             NSString *titleHtml = [threadTitleNode html];
@@ -398,7 +398,7 @@
             if (childColumnCount == 7) {
                 authorNodePosition = 2;
             }
-            IGXMLNode *authorNode = [normallThreadNode childrenAtPosition:authorNodePosition];
+            IGXMLNode *authorNode = [normallThreadNode childAt:authorNodePosition];
             NSString *authorIdStr = [authorNode innerHtml];
             normalThread.threadAuthorID = [authorIdStr stringWithRegular:@"\\d+"];
             normalThread.threadAuthorName = [authorNode text];
@@ -408,7 +408,7 @@
             if (childColumnCount == 7) {
                 lastPostTimePosition = 3;
             }
-            IGXMLNode *lastPostTime = [normallThreadNode childrenAtPosition:lastPostTimePosition];
+            IGXMLNode *lastPostTime = [normallThreadNode childAt:lastPostTimePosition];
             normalThread.lastPostTime = [self timeForShort:[[lastPostTime text] trim] withFormat:@"yyyy-MM-dd HH:mm:ss"];
 
             // 回帖数量
@@ -416,7 +416,7 @@
             if (childColumnCount == 7) {
                 commentCountPosition = 4;
             }
-            IGXMLNode *commentCountNode = [normallThreadNode childrenAtPosition:commentCountPosition];
+            IGXMLNode *commentCountNode = [normallThreadNode childAt:commentCountPosition];
             normalThread.postCount = [commentCountNode text];
 
             // 查看数量
@@ -424,7 +424,7 @@
             if (childColumnCount == 7) {
                 openCountNodePosition = 5;
             }
-            IGXMLNode *openCountNode = [normallThreadNode childrenAtPosition:openCountNodePosition];
+            IGXMLNode *openCountNode = [normallThreadNode childAt:openCountNodePosition];
             normalThread.openCount = [openCountNode text];
 
             [threadList addObject:normalThread];
@@ -559,7 +559,7 @@
             // 9个节点是正确的输出结果
             Thread *searchThread = [[Thread alloc] init];
 
-            IGXMLNode *postForNode = [node childrenAtPosition:2];
+            IGXMLNode *postForNode = [node childAt:2];
 
             NSLog(@"--------------------- %ld title: %@", (long) [postForNode children].count, [[postForNode text] trim]);
 
@@ -572,7 +572,7 @@
             NSString *titleText = [titleTemp text];
 
             //NSString *postTitle = [[[postForNode text] trim] componentsSeparatedByString:@"\n"].firstObject;
-            NSString *postAuthor = [[node childrenAtPosition:3] text];
+            NSString *postAuthor = [[node childAt:3] text];
             NSString *postAuthorId = [[node.children[3] html] stringWithRegular:@"=\\d+" andChild:@"\\d+"];
             NSString *postTime = [node.children[4] text];
 
@@ -754,14 +754,14 @@
     User *pmAuthor = [[User alloc] init];
     IGXMLNode *userInfoNode = [document queryNodeWithXPath:@"//*[@id='post']/tr[1]/td[1]"];
     // 用户名
-    NSString *name = [[[userInfoNode childrenAtPosition:0] childrenAtPosition:0] text];
+    NSString *name = [[[userInfoNode childAt:0] childAt:0] text];
     pmAuthor.userName = name;
     // 用户ID
-    NSString *userId = [[[[userInfoNode childrenAtPosition:0] childrenAtPosition:0] attribute:@"href"] stringWithRegular:@"\\d+"];
+    NSString *userId = [[[[userInfoNode childAt:0] childAt:0] attribute:@"href"] stringWithRegular:@"\\d+"];
     pmAuthor.userID = userId;
 
     // 用户头像
-    NSString *userAvatar = [[[[[[userInfoNode childrenAtPosition:1] childrenAtPosition:1] childrenAtPosition:0] attribute:@"src"] componentsSeparatedByString:@"/"] lastObject];
+    NSString *userAvatar = [[[[[[userInfoNode childAt:1] childAt:1] childAt:0] attribute:@"src"] componentsSeparatedByString:@"/"] lastObject];
     if (userAvatar) {
         NSString *avatarPattern = @"%@/%@";
         userAvatar = [NSString stringWithFormat:avatarPattern, avatarBase, userAvatar];
@@ -771,13 +771,13 @@
     pmAuthor.userAvatar = userAvatar;
 
     // 用户等级
-    NSString *userRank = [[userInfoNode childrenAtPosition:3] text];
+    NSString *userRank = [[userInfoNode childAt:3] text];
     pmAuthor.userRank = userRank;
     // 注册日期
-    NSString *userSignDate = [[[[[[userInfoNode childrenAtPosition:4] childrenAtPosition:1] childrenAtPosition:1] text] componentsSeparatedByString:@": "] lastObject];
+    NSString *userSignDate = [[[[[[userInfoNode childAt:4] childAt:1] childAt:1] text] componentsSeparatedByString:@": "] lastObject];
     pmAuthor.userSignDate = userSignDate;
     // 帖子数量
-    NSString *postCount = [[[[[[[userInfoNode childrenAtPosition:4] childrenAtPosition:1] childrenAtPosition:2] text] trim] componentsSeparatedByString:@": "] lastObject];
+    NSString *postCount = [[[[[[[userInfoNode childAt:4] childAt:1] childAt:2] text] trim] componentsSeparatedByString:@": "] lastObject];
     pmAuthor.userPostCount = postCount;
 
     privateMessage.pmUserInfo = pmAuthor;
@@ -874,8 +874,8 @@
 // private
 - (Forum *)node2Form:(IGXMLNode *)node forumHost:(NSString *) host parentFormId:(int)parentFormId replaceId:(int)replaceId {
     Forum *parent = [[Forum alloc] init];
-    NSString *name = [[node childrenAtPosition:0] text];
-    NSString *url = [[node childrenAtPosition:0] html];
+    NSString *name = [[node childAt:0] text];
+    NSString *url = [[node childAt:0] html];
     int forumId = [[url stringWithRegular:@"f-\\d+" andChild:@"\\d+"] intValue];
     int fixForumId = forumId == 0 ? replaceId : forumId;
     parent.forumId = fixForumId;
@@ -884,7 +884,7 @@
     parent.forumHost = host;
 
     if (node.childrenCount == 2) {
-        IGXMLNodeSet *childSet = [node childrenAtPosition:1].children;
+        IGXMLNodeSet *childSet = [node childAt:1].children;
         NSMutableArray<Forum *> *childForms = [NSMutableArray array];
 
         for (IGXMLNode *childNode in childSet) {

@@ -9,7 +9,7 @@
 
 @implementation IGXMLNode (Children)
 
-- (IGXMLNode *)childrenAtPosition:(int)position {
+- (IGXMLNode *)childAt:(int)position {
     return self.children[position];
 }
 

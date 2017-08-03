@@ -9,7 +9,7 @@
 
 @interface IGXMLNode (Children)
 
-- (IGXMLNode *)childrenAtPosition:(int)position;
+- (IGXMLNode *)childAt:(int)position;
 
 - (int)childrenCount;
 @end

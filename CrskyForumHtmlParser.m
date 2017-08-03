@@ -179,9 +179,9 @@
             // 2. 标题
             NSString *title = nil;
             // 分类和标题的节点
-            IGXMLNode *categoryTitleNode = [threadNode childrenAtPosition:1];
+            IGXMLNode *categoryTitleNode = [threadNode childAt:1];
 
-            NSString *tag = [categoryTitleNode childrenAtPosition:0].tag;
+            NSString *tag = [categoryTitleNode childAt:0].tag;
 
             if ([tag isEqualToString:@"h3"]){
                 // 置顶公告
@@ -189,11 +189,11 @@
                 continue;
             } else if ([tag isEqualToString:@"img"]){
                 // 置顶公告
-                title = [categoryTitleNode childrenAtPosition:1].text.trim;
+                title = [categoryTitleNode childAt:1].text.trim;
             } else if ([tag isEqualToString:@"a"]){
                 // 正常的主题
-                NSString *c = [categoryTitleNode childrenAtPosition:0].text.trim;
-                NSString *t = [categoryTitleNode childrenAtPosition:1].text.trim;
+                NSString *c = [categoryTitleNode childAt:0].text.trim;
+                NSString *t = [categoryTitleNode childAt:1].text.trim;
                 title = [c stringByAppendingString:t];
             } else {
                 NSLog(@"p_title >>>>>>>>>>>>>>>>>>>>>>");
@@ -228,17 +228,17 @@
             thread.totalPostPageCount = totalPage;
 
 
-            IGXMLNode *authorNode = [threadNode childrenAtPosition:2];
+            IGXMLNode *authorNode = [threadNode childAt:2];
             //7. 帖子作者
-            NSString *authorName = [authorNode childrenAtPosition:0].text.trim;
+            NSString *authorName = [authorNode childAt:0].text.trim;
             thread.threadAuthorName = authorName;
 
             //8. 作者ID
-            NSString *authorId = [[authorNode childrenAtPosition:0].html stringWithRegular:@"(?<=uid=)\\d+"];
+            NSString *authorId = [[authorNode childAt:0].html stringWithRegular:@"(?<=uid=)\\d+"];
             thread.threadAuthorID = authorId;
 
             //9. 回复数量
-            IGXMLNode *postOpenNode = [threadNode childrenAtPosition:3];
+            IGXMLNode *postOpenNode = [threadNode childAt:3];
             NSString * postOpen = postOpenNode.text.trim;
             NSString * postCount = [postOpen componentsSeparatedByString:@"/"][0].trim;
             thread.postCount = postCount;
@@ -247,13 +247,13 @@
             NSString * openCount = [postOpen componentsSeparatedByString:@"/"][1].trim;
             thread.openCount = openCount;
 
-            IGXMLNode *lastPostTimeNode = [threadNode childrenAtPosition:4];
+            IGXMLNode *lastPostTimeNode = [threadNode childAt:4];
             //11. 最后回帖时间
-            NSString *lastPostTime = [lastPostTimeNode childrenAtPosition:0].text.trim;
+            NSString *lastPostTime = [lastPostTimeNode childAt:0].text.trim;
             thread.lastPostTime = lastPostTime;
 
             //12. 最后发表的人
-            NSString *lastPostAuthorName = [[lastPostTimeNode childrenAtPosition:1].text.trim stringByReplacingOccurrencesOfString:@"by: " withString:@""];
+            NSString *lastPostAuthorName = [[lastPostTimeNode childAt:1].text.trim stringByReplacingOccurrencesOfString:@"by: " withString:@""];
             thread.lastPostAuthorName = lastPostAuthorName;
             
             [threads addObject:thread];
@@ -308,7 +308,7 @@
 
         // 2. 标题
         // 分类和标题的节点
-        IGXMLNode *categoryTitleNode = [threadNode childrenAtPosition:1];
+        IGXMLNode *categoryTitleNode = [threadNode childAt:1];
         NSString *title = [categoryTitleNode.text.trim stringByReplacingOccurrencesOfString:@"&nbsp" withString:@""];
         thread.threadTitle = title;
 
@@ -328,28 +328,28 @@
         int totalPage = 1;
         thread.totalPostPageCount = totalPage;
 
-        IGXMLNode *authorNode = [threadNode childrenAtPosition:3];
+        IGXMLNode *authorNode = [threadNode childAt:3];
         //7. 帖子作者
-        NSString *authorName = [authorNode childrenAtPosition:0].text.trim;
+        NSString *authorName = [authorNode childAt:0].text.trim;
         thread.threadAuthorName = authorName;
 
         //8. 作者ID
-        NSString *authorId = [[authorNode childrenAtPosition:0].html stringWithRegular:@"(?<=uid=)\\d+"];
+        NSString *authorId = [[authorNode childAt:0].html stringWithRegular:@"(?<=uid=)\\d+"];
         thread.threadAuthorID = authorId;
 
         //9. 回复数量
-        IGXMLNode *postCountNode = [threadNode childrenAtPosition:4];
+        IGXMLNode *postCountNode = [threadNode childAt:4];
         NSString * postCount = postCountNode.text.trim;
         thread.postCount = postCount;
 
         //10. 查看数量
-        IGXMLNode *openCountNode = [threadNode childrenAtPosition:5];
+        IGXMLNode *openCountNode = [threadNode childAt:5];
         NSString * openCount = openCountNode.text.trim;
         thread.openCount = openCount;
 
-        IGXMLNode *lastPostTimeNode = [threadNode childrenAtPosition:6];
+        IGXMLNode *lastPostTimeNode = [threadNode childAt:6];
         //11. 最后回帖时间
-        NSString *lastPostTime = [lastPostTimeNode childrenAtPosition:0].text.trim;
+        NSString *lastPostTime = [lastPostTimeNode childAt:0].text.trim;
         thread.lastPostTime = lastPostTime;
 
         //12. 最后发表的人
@@ -357,7 +357,7 @@
         thread.lastPostAuthorName = lastPostAuthorName;
 
         //13. 所属论坛名称
-        IGXMLNode *fourumNmaeNode = [threadNode childrenAtPosition:2];
+        IGXMLNode *fourumNmaeNode = [threadNode childAt:2];
         NSString *forumName = fourumNmaeNode.text.trim;
         thread.fromFormName = forumName;
 
@@ -407,21 +407,21 @@
                     message.isReaded = ![msgHtml containsString:@"class=\"b\""];
 
                     // 2. 标题
-                    IGXMLNode *title = [node childrenAtPosition:2];
+                    IGXMLNode *title = [node childAt:2];
                     message.pmTitle = title.text.trim;
 
                     // Message Id
                     message.pmID = [msgHtml stringWithRegular:@"(?<=mid=)\\d+"];
 
                     // 3. 发送PM作者
-                    IGXMLNode *author = [node childrenAtPosition:1];
+                    IGXMLNode *author = [node childAt:1];
                     message.pmAuthor = author.text.trim;
 
                     // 4. 发送者ID
                     message.pmAuthorId = @"-1";
 
                     // 5. 时间
-                    message.pmTime = [node childrenAtPosition:3].text.trim;
+                    message.pmTime = [node childAt:3].text.trim;
 
                     [messagesList addObject:message];
 
@@ -442,21 +442,21 @@
                 message.isReaded = ![msgHtml containsString:@"class=\"b\""];
 
                 // 2. 标题
-                IGXMLNode *title = [node childrenAtPosition:2];
+                IGXMLNode *title = [node childAt:2];
                 message.pmTitle = title.text.trim;
 
                 // Message Id
                 message.pmID = [msgHtml stringWithRegular:@"(?<=mid=)\\d+"];
 
                 // 3. 发送PM作者
-                IGXMLNode *author = [node childrenAtPosition:1];
+                IGXMLNode *author = [node childAt:1];
                 message.pmAuthor = author.text.trim;
 
                 // 4. 发送者ID
                 message.pmAuthorId =[msgHtml stringWithRegular:@"(?<=uid=)\\d+"];
 
                 // 5. 时间
-                message.pmTime = [node childrenAtPosition:3].text.trim;
+                message.pmTime = [node childAt:3].text.trim;
 
                 [messagesList addObject:message];
 
@@ -476,21 +476,21 @@
                 message.isReaded = ![msgHtml containsString:@"class=\"b\""];
 
                 // 2. 标题
-                IGXMLNode *title = [node childrenAtPosition:2];
+                IGXMLNode *title = [node childAt:2];
                 message.pmTitle = title.text.trim;
 
                 // Message Id
                 message.pmID = [msgHtml stringWithRegular:@"(?<=mid=)\\d+"];
 
                 // 3. 发送PM作者
-                IGXMLNode *author = [node childrenAtPosition:1];
+                IGXMLNode *author = [node childAt:1];
                 message.pmAuthor = author.text.trim;
 
                 // 4. 发送者ID
                 message.pmAuthorId =[msgHtml stringWithRegular:@"(?<=uid=)\\d+"];
 
                 // 5. 时间
-                message.pmTime = [node childrenAtPosition:3].text.trim;
+                message.pmTime = [node childAt:3].text.trim;
 
                 [messagesList addObject:message];
 
@@ -505,7 +505,32 @@
 }
 
 - (ViewMessagePage *)parsePrivateMessageContent:(NSString *)html avatarBase:(NSString *)avatarBase noavatar:(NSString *)avatarNO {
-    return nil;
+    ViewMessagePage *privateMessage = [[ViewMessagePage alloc] init];
+
+    IGHTMLDocument *document = [[IGHTMLDocument alloc] initWithHTMLString:html error:nil];
+    IGXMLNode * infoBaseNode = [document queryNodeWithXPath:@"//*[@id=\"info_base\"]"];
+    // pm ID
+    NSString * pmId = [infoBaseNode.html stringWithRegular:@"(?<=mid=)\\d+"];
+    privateMessage.pmID = pmId;
+    
+    // pm Title	
+    NSString *pmTitle = [[[infoBaseNode childAt:0] childAt:1] childAt:1].text.trim;
+    privateMessage.pmTitle = pmTitle;
+
+    NSString *pmTime = [[[infoBaseNode childAt:0] childAt:2] childAt:1].text.trim;
+    privateMessage.pmTime = pmTime;
+
+    NSString *pmContent = [[[infoBaseNode childAt:0] childAt:3] childAt:1].html;
+    NSString * content = [NSString stringWithFormat:@"<div style=\"overflow-x: hidden;\">%@</div>", pmContent];
+    privateMessage.pmContent = content;
+
+    User *pmAuthor = [[User alloc] init];
+    IGXMLNode *authorNode = [[[infoBaseNode childAt:0] childAt:0] childAt:1];
+    pmAuthor.userName = authorNode.text.trim;
+    pmAuthor.userID = [authorNode.html stringWithRegular:@"(?<=uid=)\\d+"];
+
+    privateMessage.pmUserInfo = pmAuthor;
+    return privateMessage;
 }
 
 - (NSString *)parseQuickReplyQuoteContent:(NSString *)html {
@@ -573,7 +598,7 @@
             currentForum = [[Forum alloc] init];
             NSString * name = [node.text trim];
             currentForum.forumName = name;
-            NSString *url = [[node childrenAtPosition:0] attribute:@"href"];
+            NSString *url = [[node childAt:0] attribute:@"href"];
             int forumId = [[url stringWithRegular:@"f\\d+" andChild:@"\\d+"] intValue];
             currentForum.forumId = forumId;
 
@@ -604,7 +629,7 @@
     
     NSMutableArray<Forum *> *forms = [NSMutableArray array];
     for (int i = 0; i < size; i++) {
-        IGXMLNode * child = [contents childrenAtPosition:i];
+        IGXMLNode * child = [contents childAt:i];
 
         NSLog(@"parserForums-> %@", child.html);
         if ([child.html hasPrefix:@"<li>"]){

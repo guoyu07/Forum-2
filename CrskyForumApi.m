@@ -135,7 +135,8 @@
     NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
     [parameters setValue:@"winds" forKey:@"skinco"];
 
-    [self.browser GETWithURLString:[self.forumConfig privateShowWithMessageId:pmId withType:type] parameters:parameters charset:GBK requestCallback:^(BOOL isSuccess, NSString *html) {
+    NSString * url = [self.forumConfig privateShowWithMessageId:pmId withType:type];
+    [self.browser GETWithURLString:url parameters:parameters charset:GBK requestCallback:^(BOOL isSuccess, NSString *html) {
         if (isSuccess) {
             ViewMessagePage *content = [self.forumParser parsePrivateMessageContent:html avatarBase:self.forumConfig.avatarBase noavatar:self.forumConfig.avatarNo];
             handler(YES, content);

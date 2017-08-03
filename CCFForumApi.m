@@ -901,7 +901,7 @@ typedef void (^CallBack)(NSString *token, NSString *hash, NSString *time);
     [parameters setValue:@"2" forKey:@"styleid"];
     [parameters setValue:@"1" forKey:@"langid"];
 
-    [self.browser GETWithURLString:[self.forumConfig privateShowWithMessageId:pmId] parameters:parameters charset:UTF_8 requestCallback:^(BOOL isSuccess, NSString *html) {
+    [self.browser GETWithURLString:[self.forumConfig privateShowWithMessageId:pmId withType:0] parameters:parameters charset:UTF_8 requestCallback:^(BOOL isSuccess, NSString *html) {
         if (isSuccess) {
             ViewMessagePage *content = [self.forumParser parsePrivateMessageContent:html avatarBase:self.forumConfig.avatarBase noavatar:self.forumConfig.avatarNo];
             handler(YES, content);
@@ -960,7 +960,7 @@ typedef void (^CallBack)(NSString *token, NSString *hash, NSString *time);
     [defparameters setValue:@"2" forKey:@"styleid"];
     [defparameters setValue:@"1" forKey:@"langid"];
 
-    [self.browser GETWithURLString:[self.forumConfig privateShowWithMessageId:pmId] parameters:defparameters charset:UTF_8 requestCallback:^(BOOL isSuccess, NSString *html) {
+    [self.browser GETWithURLString:[self.forumConfig privateShowWithMessageId:pmId withType:0] parameters:defparameters charset:UTF_8 requestCallback:^(BOOL isSuccess, NSString *html) {
         if (isSuccess) {
             NSString *token = [self.forumParser parseSecurityToken:html];
 

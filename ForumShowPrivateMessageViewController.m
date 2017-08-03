@@ -54,7 +54,11 @@
 
     self.webView.scrollView.mj_header = [MJRefreshNormalHeader headerWithRefreshingBlock:^{
 
-        [self.forumApi showPrivateMessageContentWithId:[transPrivateMessage.pmID intValue] withType:0 handler:^(BOOL isSuccess, id message) {
+        int type = 1;
+        if ([transPrivateMessage.pmAuthorId isEqualToString:@"-1"]){
+            type = 0;
+        }
+        [self.forumApi showPrivateMessageContentWithId:[transPrivateMessage.pmID intValue] withType:type handler:^(BOOL isSuccess, id message) {
 
             ViewMessagePage *content = message;
 

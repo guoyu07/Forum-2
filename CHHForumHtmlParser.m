@@ -138,7 +138,7 @@
     int childCount = contents.childrenCount;
 
     for (int i = 0; i < childCount; ++i) {
-        IGXMLNode * threadNode = [contents childrenAtPosition:i];
+        IGXMLNode * threadNode = [contents childAt:i];
         if (threadNode.childrenCount == 1 && threadNode.firstChild.childrenCount == 5){
             NSString * threadNodeHtml = threadNode.html;
             NSLog(@"%@", threadNodeHtml);
@@ -151,7 +151,7 @@
             }
             NSString * tId = [idAttr componentsSeparatedByString:@"_"][1];
             // thread Title
-            IGXMLNode * titleNode = [threadNode.firstChild childrenAtPosition:1];
+            IGXMLNode * titleNode = [threadNode.firstChild childAt:1];
             NSString * titleHtml = titleNode.html;
             int c = titleNode.childrenCount;
             if (c < 5) {
@@ -162,43 +162,43 @@
             if (![titleHtml containsString:@"<em>[<a href=\"forum.php?mod=forumdisplay&amp;fid="]) {
                 titleIndex = 2;
             }
-            NSString *threadTitle = [titleNode childrenAtPosition:titleIndex].text;
+            NSString *threadTitle = [titleNode childAt:titleIndex].text;
             // 作者
-            IGXMLNode * authorNode = [threadNode.firstChild childrenAtPosition:2];
-            NSString *threadAuthor = [[[authorNode childrenAtPosition:0] text] trim];
+            IGXMLNode * authorNode = [threadNode.firstChild childAt:2];
+            NSString *threadAuthor = [[[authorNode childAt:0] text] trim];
             // 作者ID
             NSString *threadAuthorId = [authorNode.innerHtml stringWithRegular:@"space-uid-\\d+" andChild:@"\\d+"];
             //最后发表时间
-            IGXMLNode * lastAuthorNode = [threadNode.firstChild childrenAtPosition:4];
-            NSString *lastPostTime = [[lastAuthorNode childrenAtPosition:1].text trim];
+            IGXMLNode * lastAuthorNode = [threadNode.firstChild childAt:4];
+            NSString *lastPostTime = [[lastAuthorNode childAt:1].text trim];
             // 是否是精华
             // 都不是
             // 是否包含图片
             BOOL isHaveImage = [threadNode.html containsString:@"<img src=\"static/image/filetype/image_s.gif\" alt=\"attach_img\" title=\"图片附件\" align=\"absmiddle\">"];
 
             // 回复数量
-            IGXMLNode * numberNode = [threadNode.firstChild childrenAtPosition:3];
+            IGXMLNode * numberNode = [threadNode.firstChild childAt:3];
             NSString * huitieShu = numberNode.firstChild.text.trim;
             // 查看数量
-            NSString * chakanShu = [[[numberNode childrenAtPosition:1] text] trim];
+            NSString * chakanShu = [[[numberNode childAt:1] text] trim];
 
             // 最后发表的人
-            NSString *lastAuthorName = [[lastAuthorNode childrenAtPosition:0].text trim];
+            NSString *lastAuthorName = [[lastAuthorNode childAt:0].text trim];
 
             // 帖子回帖页数
             int totalPage = 1;
             if ([titleNode.html containsString:@"<span class=\"tps\">"]){
-                IGXMLNode * pageNode = [titleNode childrenAtPosition:titleNode.childrenCount -1];
+                IGXMLNode * pageNode = [titleNode childAt:titleNode.childrenCount - 1];
                 if ([[pageNode text] isEqualToString:@"New"]) {
-                    pageNode = [titleNode childrenAtPosition:titleNode.childrenCount -2];
+                    pageNode = [titleNode childAt:titleNode.childrenCount - 2];
                 }
                 int pageNodeChildCount = pageNode.childrenCount;
-                IGXMLNode * realPageNode = [pageNode childrenAtPosition:pageNodeChildCount -1];
+                IGXMLNode * realPageNode = [pageNode childAt:pageNodeChildCount - 1];
                 totalPage = [[realPageNode text] intValue];
             }
 
             // 是否是置顶
-            IGXMLNode * iconNode = [threadNode.firstChild childrenAtPosition:0];
+            IGXMLNode * iconNode = [threadNode.firstChild childAt:0];
             BOOL isPin = [iconNode.html containsString:@"<img src=\"static/image/common/pin"];
 
             thread.threadID = tId;
@@ -290,7 +290,7 @@
     int childCount = contents.childrenCount;
 
     for (int i = 0; i < childCount; ++i) {
-        IGXMLNode * threadNode = [contents childrenAtPosition:i];
+        IGXMLNode * threadNode = [contents childAt:i];
         if (threadNode.childrenCount == 1 && threadNode.firstChild.childrenCount == 6){
             NSString * threadNodeHtml = threadNode.html;
             NSLog(@"%@", threadNodeHtml);
@@ -303,41 +303,41 @@
             }
             NSString * tId = [idAttr componentsSeparatedByString:@"_"][1];
             // thread Title
-            IGXMLNode * titleNode = [threadNode.firstChild childrenAtPosition:1];
+            IGXMLNode * titleNode = [threadNode.firstChild childAt:1];
 
             int titleIndex = 0;
-            NSString *threadTitle = [titleNode childrenAtPosition:titleIndex].text;
+            NSString *threadTitle = [titleNode childAt:titleIndex].text;
             // 作者
-            IGXMLNode * authorNode = [threadNode.firstChild childrenAtPosition:3];
-            NSString *threadAuthor = [[[authorNode childrenAtPosition:0] text] trim];
+            IGXMLNode * authorNode = [threadNode.firstChild childAt:3];
+            NSString *threadAuthor = [[[authorNode childAt:0] text] trim];
             // 作者ID
             NSString *threadAuthorId = [authorNode.innerHtml stringWithRegular:@"space-uid-\\d+" andChild:@"\\d+"];
             //最后发表时间
-            IGXMLNode * lastAuthorNode = [threadNode.firstChild childrenAtPosition:5];
-            NSString *lastPostTime = [[lastAuthorNode childrenAtPosition:1].text trim];
+            IGXMLNode * lastAuthorNode = [threadNode.firstChild childAt:5];
+            NSString *lastPostTime = [[lastAuthorNode childAt:1].text trim];
             // 是否是精华
             // 都不是
             // 是否包含图片
             BOOL isHaveImage = [threadNode.html containsString:@"<img src=\"static/image/filetype/image_s.gif\" alt=\"attach_img\" title=\"图片附件\" align=\"absmiddle\">"];
 
             // 回复数量
-            IGXMLNode * numberNode = [threadNode.firstChild childrenAtPosition:4];
+            IGXMLNode * numberNode = [threadNode.firstChild childAt:4];
             NSString * huitieShu = numberNode.firstChild.text.trim;
             // 查看数量
-            NSString * chakanShu = [[[numberNode childrenAtPosition:1] text] trim];
+            NSString * chakanShu = [[[numberNode childAt:1] text] trim];
 
             // 最后发表的人
-            NSString *lastAuthorName = [[lastAuthorNode childrenAtPosition:0].text trim];
+            NSString *lastAuthorName = [[lastAuthorNode childAt:0].text trim];
 
             // 帖子回帖页数
             int totalPage = 1;
             if ([titleNode.html containsString:@"<span class=\"tps\">"]){
-                IGXMLNode * pageNode = [titleNode childrenAtPosition:titleNode.childrenCount -1];
+                IGXMLNode * pageNode = [titleNode childAt:titleNode.childrenCount - 1];
                 if ([[pageNode text] isEqualToString:@"New"]) {
-                    pageNode = [titleNode childrenAtPosition:titleNode.childrenCount -2];
+                    pageNode = [titleNode childAt:titleNode.childrenCount - 2];
                 }
                 int pageNodeChildCount = pageNode.childrenCount;
-                IGXMLNode * realPageNode = [pageNode childrenAtPosition:pageNodeChildCount -1];
+                IGXMLNode * realPageNode = [pageNode childAt:pageNodeChildCount - 1];
                 totalPage = [[realPageNode text] intValue];
             }
 
@@ -376,7 +376,7 @@
     NSMutableArray *ids = [NSMutableArray array];
 
     for (IGXMLNode *favLi in favoriteLis){
-        IGXMLNode * forumIdNode = [favLi childrenAtPosition:2];
+        IGXMLNode * forumIdNode = [favLi childAt:2];
         NSString * forumIdNodeHtml = forumIdNode.html;
         //<a href="forum-196-1.html" target="_blank">GALAX</a>
         NSString *idsStr = [forumIdNodeHtml stringWithRegular:@"forum-\\d+" andChild:@"\\d+"];
@@ -560,7 +560,7 @@
     int replaceId = 10000;
     Forum * current;
     for (int i = 0; i < size; i++) {
-        IGXMLNode * child = [contents childrenAtPosition:i];
+        IGXMLNode * child = [contents childAt:i];
 
         if (child.childrenCount == 0){
             Forum *parent = [[Forum alloc] init];
@@ -582,7 +582,7 @@
                 NSString * name = node.text;
                 childForum.forumName = name;
 
-                NSString *url = [[node childrenAtPosition:0] attribute:@"href"];
+                NSString *url = [[node childAt:0] attribute:@"href"];
                 int forumId = [[url stringWithRegular:@"fid-\\d+" andChild:@"\\d+"] intValue];
                 childForum.forumId = forumId;
                 childForum.forumHost = host;
