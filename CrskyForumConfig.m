@@ -127,11 +127,11 @@
 }
 
 - (NSString *)avatarBase {
-    return nil;
+    return @"";
 }
 
 - (NSString *)avatarNo {
-    return nil;
+    return @"/no_avatar.gif";
 }
 
 - (NSString *)memberWithUserId:(NSString *)userId {

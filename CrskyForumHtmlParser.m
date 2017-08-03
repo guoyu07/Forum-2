@@ -527,7 +527,12 @@
     User *pmAuthor = [[User alloc] init];
     IGXMLNode *authorNode = [[[infoBaseNode childAt:0] childAt:0] childAt:1];
     pmAuthor.userName = authorNode.text.trim;
-    pmAuthor.userID = [authorNode.html stringWithRegular:@"(?<=uid=)\\d+"];
+    NSString * uid = [authorNode.html stringWithRegular:@"(?<=uid=)\\d+"];
+    if ([uid isEqualToString:@"0"]){
+        pmAuthor.userID = @"-1";
+    } else{
+        pmAuthor.userID = uid;
+    }
 
     privateMessage.pmUserInfo = pmAuthor;
     return privateMessage;

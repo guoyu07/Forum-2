@@ -139,7 +139,15 @@
     [self.browser GETWithURLString:url parameters:parameters charset:GBK requestCallback:^(BOOL isSuccess, NSString *html) {
         if (isSuccess) {
             ViewMessagePage *content = [self.forumParser parsePrivateMessageContent:html avatarBase:self.forumConfig.avatarBase noavatar:self.forumConfig.avatarNo];
-            handler(YES, content);
+            if (![content.pmUserInfo.userID isEqualToString:@"-1"]){
+                [self getAvatarWithUserId:content.pmUserInfo.userID handler:^(BOOL success, id message) {
+                    content.pmUserInfo.userAvatar = message;
+                    handler(YES, content);
+                }];
+            } else{
+                content.pmUserInfo.userAvatar = self.forumConfig.avatarNo;
+                handler(YES, content);
+            }
         } else {
             handler(NO, html);
         }
