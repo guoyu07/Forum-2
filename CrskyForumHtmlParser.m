@@ -756,7 +756,9 @@
         IGXMLNode *nameNode = [document queryNodeWithClassName:@"u-h1"];
         simpleThread.threadAuthorName = nameNode.text.trim;
 
-        simpleThread.lastPostTime = [[node childAt:0] childAt:3].text.trim;
+        simpleThread.lastPostTime = [[[[node childAt:0] childAt:3].text.trim
+                stringByReplacingOccurrencesOfString:@"[" withString:@""]
+                stringByReplacingOccurrencesOfString:@"]" withString:@""];
 
         simpleThread.fromFormName = [[node childAt:0] childAt:2].text.trim;
 
