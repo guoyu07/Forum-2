@@ -31,6 +31,9 @@
 
 - (ViewForumPage *)parseFavorThreadListFromHtml:(NSString *)html;
 
+@optional
+- (ViewForumPage *)parseListMyAllThreadsFromHtml:(NSString *)html;
+
 - (ViewForumPage *)parsePrivateMessageFromHtml:(NSString *)html forType:(int) type;
 
 - (ViewSearchForumPage *)parseSearchPageFromHtml:(NSString *)html;

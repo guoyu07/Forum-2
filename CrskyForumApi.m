@@ -329,7 +329,7 @@
 
     [self.browser GETWithURLString:url parameters:defparameters charset:GBK requestCallback:^(BOOL isSuccess, NSString *html) {
         if (isSuccess) {
-            ViewForumPage *viewForumPage = [self.forumParser parseFavorThreadListFromHtml:html];
+            ViewForumPage *viewForumPage = [self.forumParser parseListMyAllThreadsFromHtml:html];
             handler(isSuccess, viewForumPage);
         } else {
             handler(NO, html);
@@ -346,7 +346,7 @@
 
     [self.browser GETWithURLString:url parameters:defparameters charset:GBK requestCallback:^(BOOL isSuccess, NSString *html) {
         if (isSuccess) {
-            ViewForumPage *viewForumPage = [self.forumParser parseFavorThreadListFromHtml:html];
+            ViewForumPage *viewForumPage = [self.forumParser parseListMyAllThreadsFromHtml:html];
             handler(isSuccess, viewForumPage);
         } else {
             handler(NO, html);

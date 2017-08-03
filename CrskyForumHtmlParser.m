@@ -273,6 +273,7 @@
     NSMutableArray<Thread *> *threadList = [NSMutableArray<Thread *> array];
 
     IGHTMLDocument *document = [[IGHTMLDocument alloc] initWithHTMLString:html error:nil];
+
     IGXMLNodeSet *contents = [document queryWithXPath:@"//*[@id=\"u-contentmain\"]/form/table/tr[position()>1]"];
 
     for (IGXMLNode *node in contents) {
@@ -730,6 +731,42 @@
     pageNumber.totalPageNumber = totalPageNumber;
 
     return pageNumber;
+}
+
+- (ViewForumPage *)parseListMyAllThreadsFromHtml:(NSString *)html {
+    ViewForumPage *page = [[ViewForumPage alloc] init];
+
+    NSMutableArray<Thread *> *threadList = [NSMutableArray<Thread *> array];
+
+    IGHTMLDocument *document = [[IGHTMLDocument alloc] initWithHTMLString:html error:nil];
+
+    IGXMLNodeSet *contents = [document queryWithXPath:@"//*[@id=\"u-contentmain\"]/table/tr[position()>1]"];
+
+    for (IGXMLNode *node in contents) {
+        Thread *simpleThread = [[Thread alloc] init];
+
+        //分离出Title
+        simpleThread.threadTitle = [[node childAt:0] childAt:0].text.trim;
+
+        // Id
+        simpleThread.threadID = [[node childAt:0].html stringWithRegular:@"(?<=tid=)\\d+"];
+
+        simpleThread.threadAuthorID = [self userId:html];
+
+        IGXMLNode *nameNode = [document queryNodeWithClassName:@"u-h1"];
+        simpleThread.threadAuthorName = nameNode.text.trim;
+
+        simpleThread.lastPostTime = [[node childAt:0] childAt:3].text.trim;
+
+        simpleThread.fromFormName = [[node childAt:0] childAt:2].text.trim;
+
+        [threadList addObject:simpleThread];
+    }
+
+    page.pageNumber = [self parserPageNumber:html];
+    page.dataList = threadList;
+
+    return page;
 }
 
 
