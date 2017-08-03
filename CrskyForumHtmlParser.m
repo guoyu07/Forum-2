@@ -52,8 +52,7 @@
         //5. user
         User * user = [[User alloc] init];
         //1. userId
-        NSString *uid = [postNode.html stringWithRegular:@"(?<=uid=)\\d+"];
-        user.userID = uid;
+        user.userID = [self userId:postNode.html];
         
         //2. userName
         IGXMLNode *userNameNode = [contentDoc queryNodeWithClassName:@"fl"];
@@ -234,8 +233,7 @@
             thread.threadAuthorName = authorName;
 
             //8. 作者ID
-            NSString *authorId = [[authorNode childAt:0].html stringWithRegular:@"(?<=uid=)\\d+"];
-            thread.threadAuthorID = authorId;
+            thread.threadAuthorID = [self userId:[authorNode childAt:0].html];
 
             //9. 回复数量
             IGXMLNode *postOpenNode = [threadNode childAt:3];
@@ -334,8 +332,7 @@
         thread.threadAuthorName = authorName;
 
         //8. 作者ID
-        NSString *authorId = [[authorNode childAt:0].html stringWithRegular:@"(?<=uid=)\\d+"];
-        thread.threadAuthorID = authorId;
+        thread.threadAuthorID = [self userId:[authorNode childAt:0].html];
 
         //9. 回复数量
         IGXMLNode *postCountNode = [threadNode childAt:4];
@@ -453,7 +450,7 @@
                 message.pmAuthor = author.text.trim;
 
                 // 4. 发送者ID
-                message.pmAuthorId =[msgHtml stringWithRegular:@"(?<=uid=)\\d+"];
+                message.pmAuthorId = [self userId:msgHtml];
 
                 // 5. 时间
                 message.pmTime = [node childAt:3].text.trim;
@@ -487,7 +484,7 @@
                 message.pmAuthor = author.text.trim;
 
                 // 4. 发送者ID
-                message.pmAuthorId =[msgHtml stringWithRegular:@"(?<=uid=)\\d+"];
+                message.pmAuthorId = [self userId:msgHtml];
 
                 // 5. 时间
                 message.pmTime = [node childAt:3].text.trim;
@@ -527,15 +524,19 @@
     User *pmAuthor = [[User alloc] init];
     IGXMLNode *authorNode = [[[infoBaseNode childAt:0] childAt:0] childAt:1];
     pmAuthor.userName = authorNode.text.trim;
-    NSString * uid = [authorNode.html stringWithRegular:@"(?<=uid=)\\d+"];
-    if ([uid isEqualToString:@"0"]){
-        pmAuthor.userID = @"-1";
-    } else{
-        pmAuthor.userID = uid;
-    }
+    pmAuthor.userID = [self userId:authorNode.html];
 
     privateMessage.pmUserInfo = pmAuthor;
     return privateMessage;
+}
+
+- (NSString *) userId:(NSString *)html{
+    NSString * uid = [html stringWithRegular:@"(?<=uid=)\\d+"].trim;
+    if ([uid isEqualToString:@"0"]){
+        return @"-1";
+    } else{
+        return uid;
+    }
 }
 
 - (NSString *)parseQuickReplyQuoteContent:(NSString *)html {
