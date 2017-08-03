@@ -322,11 +322,36 @@
 }
 
 - (void)listMyAllThreadsWithPage:(int)page handler:(HandlerWithBool)handler {
+    LoginUser *user = [self getLoginUser];
+    NSString *url = [self.forumConfig listUserThreads:user.userID withPage:page];
+    NSMutableDictionary *defparameters = [NSMutableDictionary dictionary];
+    [defparameters setValue:@"winds" forKey:@"skinco"];
 
+    [self.browser GETWithURLString:url parameters:defparameters charset:GBK requestCallback:^(BOOL isSuccess, NSString *html) {
+        if (isSuccess) {
+            ViewForumPage *viewForumPage = [self.forumParser parseFavorThreadListFromHtml:html];
+            handler(isSuccess, viewForumPage);
+        } else {
+            handler(NO, html);
+        }
+    }];
 }
 
 - (void)listAllUserThreads:(int)userId withPage:(int)page handler:(HandlerWithBool)handler {
+    NSString * uid = [NSString stringWithFormat:@"%d", userId];
 
+    NSString *url = [self.forumConfig listUserThreads:uid withPage:page];
+    NSMutableDictionary *defparameters = [NSMutableDictionary dictionary];
+    [defparameters setValue:@"winds" forKey:@"skinco"];
+
+    [self.browser GETWithURLString:url parameters:defparameters charset:GBK requestCallback:^(BOOL isSuccess, NSString *html) {
+        if (isSuccess) {
+            ViewForumPage *viewForumPage = [self.forumParser parseFavorThreadListFromHtml:html];
+            handler(isSuccess, viewForumPage);
+        } else {
+            handler(NO, html);
+        }
+    }];
 }
 
 - (void)showThreadWithId:(int)threadId andPage:(int)page handler:(HandlerWithBool)handler {

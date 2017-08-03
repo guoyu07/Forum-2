@@ -196,5 +196,7 @@
     return @"CrskyLoginViewController";
 }
 
-
+- (NSString *)listUserThreads:(NSString *)userId withPage:(int)page {
+    return [NSString stringWithFormat:@"http://bbs.crsky.com/u.php?action=topic&uid=%@&page=%d" ,userId, page];
+}
 @end

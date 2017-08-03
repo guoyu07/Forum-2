@@ -1144,10 +1144,12 @@ typedef void (^CallBack)(NSString *token, NSString *hash, NSString *time);
     NSInteger lastTimeStamp = [userDefault integerForKey:[self.forumConfig.forumURL.host stringByAppendingString:@"-search_time"]];
 
     long spaceTime = timeStamp - lastTimeStamp;
+
+    NSMutableDictionary *defparameters = [NSMutableDictionary dictionary];
+    [defparameters setValue:@"2" forKey:@"styleid"];
+    [defparameters setValue:@"1" forKey:@"langid"];
+
     if (page == 1 && (searchId == 0 || spaceTime > 60 * 10)) {
-        NSMutableDictionary *defparameters = [NSMutableDictionary dictionary];
-        [defparameters setValue:@"2" forKey:@"styleid"];
-        [defparameters setValue:@"1" forKey:@"langid"];
 
         [self.browser GETWithURLString:[self.forumConfig searchNewThread:page] parameters:defparameters charset:UTF_8 requestCallback:^(BOOL isSuccess, NSString *html) {
             if (isSuccess) {
@@ -1165,9 +1167,6 @@ typedef void (^CallBack)(NSString *token, NSString *hash, NSString *time);
     } else {
         NSString *searchIdStr = [NSString stringWithFormat:@"%ld", (long) searchId];
         NSString *url = [self.forumConfig searchWithSearchId:searchIdStr withPage:page];
-        NSMutableDictionary *defparameters = [NSMutableDictionary dictionary];
-        [defparameters setValue:@"2" forKey:@"styleid"];
-        [defparameters setValue:@"1" forKey:@"langid"];
 
         [self.browser GETWithURLString:url parameters:defparameters charset:UTF_8 requestCallback:^(BOOL isSuccess, NSString *html) {
             if (isSuccess) {
@@ -1187,13 +1186,13 @@ typedef void (^CallBack)(NSString *token, NSString *hash, NSString *time);
         return;
     }
 
+    NSMutableDictionary *defparameters = [NSMutableDictionary dictionary];
+    [defparameters setValue:@"2" forKey:@"styleid"];
+    [defparameters setValue:@"1" forKey:@"langid"];
+
     if (listMyThreadSearchId == nil) {
 
         NSString *encodeName = [user.userName stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
-
-        NSMutableDictionary *defparameters = [NSMutableDictionary dictionary];
-        [defparameters setValue:@"2" forKey:@"styleid"];
-        [defparameters setValue:@"1" forKey:@"langid"];
 
         [self.browser GETWithURLString:[self.forumConfig searchMyThreadWithUserName:encodeName] parameters:defparameters charset:UTF_8 requestCallback:^(BOOL isSuccess, NSString *html) {
 
@@ -1211,10 +1210,6 @@ typedef void (^CallBack)(NSString *token, NSString *hash, NSString *time);
     } else {
         NSString *url = [self.forumConfig searchWithSearchId:listMyThreadSearchId withPage:page];
 
-        NSMutableDictionary *defparameters = [NSMutableDictionary dictionary];
-        [defparameters setValue:@"2" forKey:@"styleid"];
-        [defparameters setValue:@"1" forKey:@"langid"];
-
         [self.browser GETWithURLString:url parameters:defparameters charset:UTF_8 requestCallback:^(BOOL isSuccess, NSString *html) {
             if (isSuccess) {
                 ViewForumPage *sarchPage = [self.forumParser parseSearchPageFromHtml:html];
@@ -1227,12 +1222,14 @@ typedef void (^CallBack)(NSString *token, NSString *hash, NSString *time);
 }
 
 - (void)listAllUserThreads:(int)userId withPage:(int)page handler:(HandlerWithBool)handler {
-    NSString *baseUrl = [self.forumConfig searchThreadWithUserId:[NSString stringWithFormat:@"%d", userId]];
-    if (listUserThreadRedirectUrlDictionary == nil || listUserThreadRedirectUrlDictionary[@(userId)] == nil) {
 
-        NSMutableDictionary *defparameters = [NSMutableDictionary dictionary];
-        [defparameters setValue:@"2" forKey:@"styleid"];
-        [defparameters setValue:@"1" forKey:@"langid"];
+    NSMutableDictionary *defparameters = [NSMutableDictionary dictionary];
+    [defparameters setValue:@"2" forKey:@"styleid"];
+    [defparameters setValue:@"1" forKey:@"langid"];
+
+    NSString *baseUrl = [self.forumConfig searchThreadWithUserId:[NSString stringWithFormat:@"%d", userId]];
+
+    if (listUserThreadRedirectUrlDictionary == nil || listUserThreadRedirectUrlDictionary[@(userId)] == nil) {
 
         [self.browser GETWithURLString:baseUrl parameters:defparameters charset:UTF_8 requestCallback:^(BOOL isSuccess, NSString *html) {
             if (listUserThreadRedirectUrlDictionary == nil) {
@@ -1254,10 +1251,6 @@ typedef void (^CallBack)(NSString *token, NSString *hash, NSString *time);
         NSString *searchId = listUserThreadRedirectUrlDictionary[@(userId)];
 
         NSString *url = [self.forumConfig searchWithSearchId:searchId withPage:page];
-
-        NSMutableDictionary *defparameters = [NSMutableDictionary dictionary];
-        [defparameters setValue:@"2" forKey:@"styleid"];
-        [defparameters setValue:@"1" forKey:@"langid"];
 
         [self.browser GETWithURLString:url parameters:defparameters charset:UTF_8 requestCallback:^(BOOL isSuccess, NSString *html) {
             if (isSuccess) {

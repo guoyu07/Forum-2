@@ -114,4 +114,7 @@
 - (NSString *)reportWithPostId:(int)postId;
 
 - (NSString *)loginControllerId;
+
+@optional
+- (NSString *) listUserThreads:(NSString *) userId withPage:(int) page;
 @end
