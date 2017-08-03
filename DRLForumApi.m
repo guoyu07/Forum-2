@@ -1030,7 +1030,7 @@ typedef void (^CallBack)(NSString *token, NSString *hash, NSString *time);
 }
 
 - (void)unFavoriteThreadWithId:(NSString *)threadPostId handler:(HandlerWithBool)handler {
-    NSString *url = [self.forumConfig unfavThreadWithId:threadPostId];
+    NSString *url = [self.forumConfig unFavorThreadWithId:threadPostId];
 
     NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
     [parameters setValue:@"3" forKey:@"styleid"];
@@ -1068,9 +1068,8 @@ typedef void (^CallBack)(NSString *token, NSString *hash, NSString *time);
     }];
 }
 
-- (void)listFavoriteThreadWithPage:(int)page handler:(HandlerWithBool)handler {
-    NSString *url = [self.forumConfig listfavThreadWithId:page];
-
+- (void)listFavoriteThreads:(int)userId withPage:(int)page handler:(HandlerWithBool)handler {
+    NSString *url = [self.forumConfig listFavorThreads:userId withPage:page];
 
     NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
     [parameters setValue:@"3" forKey:@"styleid"];

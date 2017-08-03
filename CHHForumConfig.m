@@ -79,11 +79,11 @@
     return nil;
 }
 
-- (NSString *)unfavThreadWithId:(NSString *)threadId {
+- (NSString *)unFavorThreadWithId:(NSString *)threadId {
     return nil;
 }
 
-- (NSString *)listfavThreadWithId:(int)page {
+- (NSString *)listFavorThreads:(int)userId withPage:(int)page {
     return [NSString stringWithFormat:@"https://www.chiphell.com/home.php?mod=space&do=favorite&type=thread&page=%d", page];
 }
 

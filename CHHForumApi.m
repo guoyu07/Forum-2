@@ -391,8 +391,8 @@
     }];
 }
 
-- (void)listFavoriteThreadWithPage:(int)page handler:(HandlerWithBool)handler {
-    NSString *url = [self.forumConfig listfavThreadWithId:page];
+- (void)listFavoriteThreads:(int)userId withPage:(int)page handler:(HandlerWithBool)handler {
+    NSString *url = [self.forumConfig listFavorThreads:userId withPage:page];
 
     [self.browser GETWithURLString:url parameters:nil charset:UTF_8 requestCallback:^(BOOL isSuccess, NSString *html) {
         if (isSuccess) {

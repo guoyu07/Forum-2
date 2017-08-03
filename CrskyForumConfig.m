@@ -86,11 +86,11 @@
     return nil;
 }
 
-- (NSString *)unfavThreadWithId:(NSString *)threadId {
+- (NSString *)unFavorThreadWithId:(NSString *)threadId {
     return nil;
 }
 
-- (NSString *)listfavThreadWithId:(int)page {
+- (NSString *)listFavorThreads:(int)userId withPage:(int)page {
     return nil;
 }
 

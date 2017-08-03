@@ -14,84 +14,104 @@
 @protocol ForumConfigDelegate <NSObject>
 
 @required
-- (UIColor *) themeColor;
+- (UIColor *)themeColor;
 
-- (NSURL *) forumURL;
+- (NSURL *)forumURL;
 
-- (NSString *) archive;
+- (NSString *)archive;
 
-- (NSString *) cookieUserIdKey;
+- (NSString *)cookieUserIdKey;
 
-- (NSString *) cookieExpTimeKey;
+- (NSString *)cookieExpTimeKey;
 
 // 附件相关
-- (NSString *)newattachmentForThread:(int) threadId time:(NSString *)time postHash:(NSString *)postHash;
-- (NSString *)newattachmentForForum:(int) forumId time:(NSString *)time postHash:(NSString *)postHash;
+- (NSString *)newattachmentForThread:(int)threadId time:(NSString *)time postHash:(NSString *)postHash;
+
+- (NSString *)newattachmentForForum:(int)forumId time:(NSString *)time postHash:(NSString *)postHash;
+
 - (NSString *)newattachment;
 
 // 搜索相关
-- (NSString *) search;
-- (NSString *) searchWithSearchId:(NSString *)searchId withPage:(int)page;
-- (NSString *) searchThreadWithUserId:(NSString *)userId;
+- (NSString *)search;
+
+- (NSString *)searchWithSearchId:(NSString *)searchId withPage:(int)page;
+
+- (NSString *)searchThreadWithUserId:(NSString *)userId;
+
 - (NSString *)searchMyThreadWithUserName:(NSString *)name;
 
 // 收藏论坛
-- (NSString *) favForumWithId:(NSString *)forumId;
-- (NSString *) favForumWithIdParam:(NSString *)forumId;
-- (NSString *) unfavForumWithId:(NSString *)forumId;
+- (NSString *)favForumWithId:(NSString *)forumId;
+
+- (NSString *)favForumWithIdParam:(NSString *)forumId;
+
+- (NSString *)unfavForumWithId:(NSString *)forumId;
 
 // 收藏主题
-- (NSString *) favThreadWithIdPre:(NSString *)threadId;
-- (NSString *) favThreadWithId:(NSString *)threadId;
-- (NSString *) unfavThreadWithId:(NSString *)threadId;
-- (NSString *) listfavThreadWithId:(int)page;
+- (NSString *)favThreadWithIdPre:(NSString *)threadId;
+
+- (NSString *)favThreadWithId:(NSString *)threadId;
+
+- (NSString *)unFavorThreadWithId:(NSString *)threadId;
+
+- (NSString *)listFavorThreads:(int)userId withPage:(int) page;
 
 // FormDisplay
-- (NSString *) forumDisplayWithId:(NSString *)forumId;
-- (NSString *) forumDisplayWithId:(NSString *)forumId withPage:(int)page;
+- (NSString *)forumDisplayWithId:(NSString *)forumId;
+
+- (NSString *)forumDisplayWithId:(NSString *)forumId withPage:(int)page;
 
 // 查看新帖
-- (NSString *) searchNewThread:(int) page;
+- (NSString *)searchNewThread:(int)page;
 
 // 回帖
-- (NSString *)replyWithThreadId:(int)threadId forForumId:(int) forumId replyPostId:(int)postId;
+- (NSString *)replyWithThreadId:(int)threadId forForumId:(int)forumId replyPostId:(int)postId;
 
 // ShowThread
-- (NSString *) showThreadWithThreadId:(NSString *) threadId withPage:(int)page;
-- (NSString *) showThreadWithP:(NSString *) p;
+- (NSString *)showThreadWithThreadId:(NSString *)threadId withPage:(int)page;
+
+- (NSString *)showThreadWithP:(NSString *)p;
 
 // 复制
-- (NSString *)copyThreadUrl:(NSString *)postId withPostCout:(int) postCount;
+- (NSString *)copyThreadUrl:(NSString *)postId withPostCout:(int)postCount;
 
 // 头像
-- (NSString *) avatar:(NSString *)avatar;
-- (NSString *) avatarBase;
-- (NSString *) avatarNo;
+- (NSString *)avatar:(NSString *)avatar;
+
+- (NSString *)avatarBase;
+
+- (NSString *)avatarNo;
 
 // User Page
-- (NSString *) memberWithUserId:(NSString *)userId;
+- (NSString *)memberWithUserId:(NSString *)userId;
 
 // 登录
-- (NSString *) login;
-- (NSString *) loginvCode;
+- (NSString *)login;
+
+- (NSString *)loginvCode;
 
 
 // 发表新帖子
-- (NSString *) newThreadWithForumId:(NSString *)forumId;
+- (NSString *)newThreadWithForumId:(NSString *)forumId;
 
 // 站内短信
-- (NSString *) privateWithType:(int)type withPage:(int)page;
-- (NSString *) privateShowWithMessageId:(int)messageId withType:(int) type;
-- (NSString *) privateReplyWithMessageIdPre:(int)messageId;
-- (NSString *) privateReplyWithMessage;
-- (NSString *) privateNewPre;
+- (NSString *)privateWithType:(int)type withPage:(int)page;
+
+- (NSString *)privateShowWithMessageId:(int)messageId withType:(int)type;
+
+- (NSString *)privateReplyWithMessageIdPre:(int)messageId;
+
+- (NSString *)privateReplyWithMessage;
+
+- (NSString *)privateNewPre;
 
 // UserCP
 - (NSString *)favoriteForums;
 
 // report
-- (NSString *) report;
-- (NSString *) reportWithPostId:(int) postId;
+- (NSString *)report;
 
--(NSString *) loginControllerId;
+- (NSString *)reportWithPostId:(int)postId;
+
+- (NSString *)loginControllerId;
 @end

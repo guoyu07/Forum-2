@@ -28,7 +28,9 @@
 }
 
 - (void)onPullRefresh {
-    [self.forumApi listFavoriteThreadWithPage:1 handler:^(BOOL isSuccess, ViewForumPage *resultPage) {
+    LoginUser *user = self.forumApi.getLoginUser;
+    int userId = [user.userID intValue];
+    [self.forumApi listFavoriteThreads:userId withPage:1 handler:^(BOOL isSuccess, ViewForumPage *resultPage) {
 
         [self.tableView.mj_header endRefreshing];
         if (isSuccess) {
@@ -45,7 +47,7 @@
 
 - (void)onLoadMore {
     int toLoadPage = currentForumPage == nil ? 1: currentForumPage.pageNumber.currentPageNumber + 1;
-    [self.forumApi listFavoriteThreadWithPage:toLoadPage handler:^(BOOL isSuccess, ViewForumPage *resultPage) {
+    [self.forumApi listFavoriteThreads:0 withPage:toLoadPage handler:^(BOOL isSuccess, ViewForumPage *resultPage) {
 
         [self.tableView.mj_footer endRefreshing];
 

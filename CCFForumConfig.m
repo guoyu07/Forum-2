@@ -92,11 +92,11 @@
     return [NSString stringWithFormat:@"%@subscription.php?do=doaddsubscription&threadid=%@", _forumURL.absoluteString, threadId];
 }
 
-- (NSString *)unfavThreadWithId:(NSString *)threadId {
+- (NSString *)unFavorThreadWithId:(NSString *)threadId {
     return [NSString stringWithFormat:@"%@subscription.php?do=removesubscription&t=%@", _forumURL.absoluteString, threadId];
 }
 
-- (NSString *)listfavThreadWithId:(int)page {
+- (NSString *)listFavorThreads:(int)userId withPage:(int)page {
     return [NSString stringWithFormat:@"%@subscription.php?do=viewsubscription&pp=35&folderid=0&sort=lastpost&order=desc&page=%d", _forumURL.absoluteString, page];
 }
 

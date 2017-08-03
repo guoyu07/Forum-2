@@ -262,8 +262,19 @@
     handler(YES, forms);
 }
 
-- (void)listFavoriteThreadWithPage:(int)page handler:(HandlerWithBool)handler {
+- (void)listFavoriteThreads:(int)userId withPage:(int)page handler:(HandlerWithBool)handler {
+    NSString *url = [self.forumConfig listFavorThreads:userId withPage:page];
+    NSMutableDictionary *defparameters = [NSMutableDictionary dictionary];
+    [defparameters setValue:@"winds" forKey:@"skinco"];
 
+    [self.browser GETWithURLString:url parameters:defparameters charset:GBK requestCallback:^(BOOL isSuccess, NSString *html) {
+        if (isSuccess) {
+            ViewForumPage *viewForumPage = [self.forumParser parseFavThreadListFromHtml:html];
+            handler(isSuccess, viewForumPage);
+        } else {
+            handler(NO, html);
+        }
+    }];
 }
 
 - (void)listNewThreadWithPage:(int)page handler:(HandlerWithBool)handler {
