@@ -129,6 +129,42 @@
 
 - (void)searchWithKeyWord:(NSString *)keyWord forType:(int)type handler:(HandlerWithBool)handler {
 
+    NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
+    [parameters setValue:@"2" forKey:@"step"];
+
+    [parameters setValue:@"OR" forKey:@"method"];
+
+    if (type == 0){         // search tile
+        [parameters setValue:@"0" forKey:@"sch_area"];
+        [parameters setValue:keyWord forKey:@"keyword"];
+        [parameters setValue:@"" forKey:@"pwuser"];
+    } else if(type == 1){   // search content
+        [parameters setValue:@"2" forKey:@"sch_area"];
+        [parameters setValue:keyWord forKey:@"keyword"];
+        [parameters setValue:@"" forKey:@"pwuser"];
+    } else{                 //  search user
+        [parameters setValue:@"0" forKey:@"sch_area"];
+        [parameters setValue:@"" forKey:@"keyword"];
+        [parameters setValue:keyWord forKey:@"pwuser"];
+    }
+
+    [parameters setValue:@"1" forKey:@"ttable"];
+    [parameters setValue:@"0" forKey:@"ptable"];
+
+    [parameters setValue:@"all" forKey:@"f_fid"];
+    [parameters setValue:@"all" forKey:@"sch_time"];
+    [parameters setValue:@"lastpost" forKey:@"orderway"];
+    [parameters setValue:@"DESC" forKey:@"asc"];
+
+    [self.browser POSTWithURLString:self.forumConfig.search parameters:parameters charset:GBK requestCallback:^(BOOL searchSuccess, NSString *searchResult) {
+        ViewSearchForumPage *page = [self.forumParser parseSearchPageFromHtml:searchResult];
+
+        if (page != nil && page.dataList != nil && page.dataList.count > 0) {
+            handler(YES, page);
+        } else {
+            handler(NO, @"未知错误");
+        }
+    }];
 }
 
 - (void)showPrivateMessageContentWithId:(int)pmId withType:(int)type handler:(HandlerWithBool)handler {

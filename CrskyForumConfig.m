@@ -51,7 +51,7 @@
 }
 
 - (NSString *)search {
-    return nil;
+    return @"http://bbs.crsky.com/search.php?";
 }
 
 - (NSString *)searchWithSearchId:(NSString *)searchId withPage:(int)page {
