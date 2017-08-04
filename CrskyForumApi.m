@@ -127,10 +127,30 @@
 
 }
 
-- (void)searchWithKeyWord:(NSString *)keyWord forType:(int)type handler:(HandlerWithBool)handler {
-    NSString *encodeKeyWord = keyWord;//[keyWord stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
+#pragma mark Encode Chinese to GB2312 in URL
+-(NSString *)EncodeGB2312Str:(NSString *)encodeStr{
+    CFStringRef nonAlphaNumValidChars = CFSTR("![        DISCUZ_CODE_1        ]’()*+,-./:;=?@_~");
+    NSString *preprocessedString = (NSString *)CFBridgingRelease(CFURLCreateStringByReplacingPercentEscapesUsingEncoding(kCFAllocatorDefault, (CFStringRef)encodeStr, CFSTR(""), kCFStringEncodingGB_18030_2000));
+    NSString *newStr = (NSString *)CFBridgingRelease(CFURLCreateStringByAddingPercentEscapes(kCFAllocatorDefault,(CFStringRef)preprocessedString,NULL,nonAlphaNumValidChars,kCFStringEncodingGB_18030_2000));
+    return newStr;
+}
 
-    NSLog(@"searchWithKeyWord-->\t%@",  encodeKeyWord);
+#pragma mark -
+#pragma mark Encode Chinese to ISO8859-1 in URL
+-(NSString *)EncodeUTF8Str:(NSString *)encodeStr{
+    CFStringRef nonAlphaNumValidChars = CFSTR("![        DISCUZ_CODE_1        ]’()*+,-./:;=?@_~");
+    NSString *preprocessedString = (NSString *)CFBridgingRelease(CFURLCreateStringByReplacingPercentEscapesUsingEncoding(kCFAllocatorDefault, (CFStringRef)encodeStr, CFSTR(""), kCFStringEncodingUTF8));
+    NSString *newStr = (NSString *)CFBridgingRelease(CFURLCreateStringByAddingPercentEscapes(kCFAllocatorDefault,(CFStringRef)preprocessedString,NULL,nonAlphaNumValidChars,kCFStringEncodingUTF8));
+    return newStr;
+}
+
+- (void)searchWithKeyWord:(NSString *)keyWord forType:(int)type handler:(HandlerWithBool)handler {
+
+    NSString *encodeKeyWord = [self EncodeGB2312Str:@"苹果"];
+    NSString *encode1 = @"苹果";
+
+
+    NSLog(@"searchWithKeyWord-->\t%@",  encode1);
 
     NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
     [parameters setValue:@"2" forKey:@"step"];
@@ -139,16 +159,16 @@
 
     if (type == 0){         // search tile
         [parameters setValue:@"0" forKey:@"sch_area"];
-        [parameters setValue:encodeKeyWord forKey:@"keyword"];
+        [parameters setValue:encode1 forKey:@"keyword"];
         [parameters setValue:@"" forKey:@"pwuser"];
     } else if(type == 1){   // search content
         [parameters setValue:@"2" forKey:@"sch_area"];
-        [parameters setValue:encodeKeyWord forKey:@"keyword"];
+        [parameters setValue:encode1 forKey:@"keyword"];
         [parameters setValue:@"" forKey:@"pwuser"];
     } else{                 //  search user
         [parameters setValue:@"0" forKey:@"sch_area"];
         [parameters setValue:@"" forKey:@"keyword"];
-        [parameters setValue:encodeKeyWord forKey:@"pwuser"];
+        [parameters setValue:encode1 forKey:@"pwuser"];
     }
 
     [parameters setValue:@"1" forKey:@"ttable"];
@@ -158,6 +178,10 @@
     [parameters setValue:@"all" forKey:@"sch_time"];
     [parameters setValue:@"lastpost" forKey:@"orderway"];
     [parameters setValue:@"DESC" forKey:@"asc"];
+
+    NSStringEncoding enc = CFStringConvertEncodingToNSStringEncoding (kCFStringEncodingGB_18030_2000);
+    self.browser.responseSerializer.acceptableContentTypes = [NSSet setWithObject:@"text/html"];
+    self.browser.requestSerializer.stringEncoding = enc;
 
     [self.browser POSTWithURLString:self.forumConfig.search parameters:parameters charset:GBK requestCallback:^(BOOL searchSuccess, NSString *searchResult) {
         ViewSearchForumPage *page = [self.forumParser parseSearchPageFromHtml:searchResult];
