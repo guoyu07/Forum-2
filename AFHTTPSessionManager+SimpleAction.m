@@ -38,8 +38,7 @@
     [self POST:[url absoluteString] parameters:parameters progress:nil success:^(NSURLSessionDataTask *_Nonnull task, id _Nullable responseObject) {
 
         if (charset == GBK){
-            NSStringEncoding enc = CFStringConvertEncodingToNSStringEncoding(kCFStringEncodingGB_2312_80);
-            NSString * encodeStr = [[NSString alloc] initWithBytes:[responseObject bytes] length:[responseObject length] encoding:enc];
+            NSString * encodeStr = [responseObject gbkString];
             callback(YES, encodeStr);
         } else{
             NSString *orgHtml = [responseObject utf8String];
@@ -87,12 +86,17 @@
 
 - (void)POSTWithURLString:(NSString *)url parameters:(id)parameters charset:(Charset)charset requestCallback:(RequestCallback)callback {
     NSURL *nsurl = [NSURL URLWithString:url];
+
+//    NSStringEncoding enc = CFStringConvertEncodingToNSStringEncoding (kCFStringEncodingGB_2312_80);
+//    self.responseSerializer.acceptableContentTypes = [NSSet setWithObject:@"text/html"];
+//    self.requestSerializer.stringEncoding = enc;
     [self POSTWithURL:nsurl parameters:parameters charset:charset requestCallback:callback];
 }
 
 - (void)POSTWithURLString:(NSString *)url parameters:(id)parameters constructingBodyWithBlock:(void (^)(id <AFMultipartFormData> formData))block charset:(Charset)charset requestCallback:(RequestCallback)callback {
     NSURL *nsurl = [NSURL URLWithString:url];
-
+//    NSStringEncoding enc = CFStringConvertEncodingToNSStringEncoding (kCFStringEncodingGB_18030_2000);
+//    self.requestSerializer.stringEncoding = enc;
     [self POSTWithURL:nsurl parameters:parameters constructingBodyWithBlock:block charset:charset requestCallback:callback];
 }
 

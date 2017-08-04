@@ -9,6 +9,10 @@
 
 - (NSData *)UTF8Data;
 
-- (NSString *) utf8String;
+- (NSString *)utf8String;
+
+- (NSData *)GBKData;
+
+- (NSString *)gbkString;
 
 @end

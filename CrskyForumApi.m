@@ -128,6 +128,9 @@
 }
 
 - (void)searchWithKeyWord:(NSString *)keyWord forType:(int)type handler:(HandlerWithBool)handler {
+    NSString *encodeKeyWord = keyWord;//[keyWord stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
+
+    NSLog(@"searchWithKeyWord-->\t%@",  encodeKeyWord);
 
     NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
     [parameters setValue:@"2" forKey:@"step"];
@@ -136,16 +139,16 @@
 
     if (type == 0){         // search tile
         [parameters setValue:@"0" forKey:@"sch_area"];
-        [parameters setValue:keyWord forKey:@"keyword"];
+        [parameters setValue:encodeKeyWord forKey:@"keyword"];
         [parameters setValue:@"" forKey:@"pwuser"];
     } else if(type == 1){   // search content
         [parameters setValue:@"2" forKey:@"sch_area"];
-        [parameters setValue:keyWord forKey:@"keyword"];
+        [parameters setValue:encodeKeyWord forKey:@"keyword"];
         [parameters setValue:@"" forKey:@"pwuser"];
     } else{                 //  search user
         [parameters setValue:@"0" forKey:@"sch_area"];
         [parameters setValue:@"" forKey:@"keyword"];
-        [parameters setValue:keyWord forKey:@"pwuser"];
+        [parameters setValue:encodeKeyWord forKey:@"pwuser"];
     }
 
     [parameters setValue:@"1" forKey:@"ttable"];

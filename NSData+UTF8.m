@@ -118,4 +118,71 @@
 
     return resData;
 }
+
+- (NSString *)gbkString {
+    NSStringEncoding enc = CFStringConvertEncodingToNSStringEncoding(kCFStringEncodingGB_18030_2000);
+    NSString * encodeStr = [[NSString alloc] initWithData:[self GBKData] encoding:enc];
+    return encodeStr;
+}
+
+- (NSData *)GBKData {
+    //保存结果
+    NSMutableData *resData = [[NSMutableData alloc] initWithCapacity:self.length];
+
+    NSData *replacement = [@"�" dataUsingEncoding:NSUTF8StringEncoding];
+
+    uint64_t index = 0;
+    const uint8_t *bytes = self.bytes;
+
+    long dataLength = (long) self.length;
+
+    while (index < dataLength) {
+        uint8_t len = 0;
+        uint8_t firstChar = bytes[index];
+
+        // 1个字节
+        if (0x00 <= firstChar && firstChar <= 0x7F){
+            len = 1;
+        }
+            // 2字节 或者 3字节
+        else if (0x81 <= firstChar && firstChar <= 0xFE) {
+            if (index + 1 < dataLength) {
+                uint8_t secondChar = bytes[index + 1];
+                if (secondChar != 0x7F && 0x40 <= secondChar && secondChar <= 0xFE) {
+                    len = 2;
+                } else if (0x30 <= secondChar && secondChar <= 0x39){
+                    if (index + 3 < dataLength && 0x81 <= firstChar && firstChar <= 0x84) {
+                        uint8_t thirdChar = bytes[index + 2];
+                        uint8_t fourthChar = bytes[index + 3];
+                        if (0x81 <= thirdChar && thirdChar <= 0xFE && 0x30 <= fourthChar && fourthChar <= 0x39){
+                            len = 3;
+                        }
+                    }
+                }
+            }
+        }
+            // 4字节
+        else if (0x90 <= firstChar && firstChar <= 0xE3) {
+            if (index + 3 < dataLength) {
+                uint8_t secondChar = bytes[index + 1];
+                uint8_t thirdChar = bytes[index + 2];
+                uint8_t fourthChar = bytes[index + 3];
+
+                if (0x30 <= secondChar && secondChar <= 0x39 && 0x81 <= thirdChar && thirdChar <= 0xFE && 0x30 <= fourthChar && fourthChar <= 0x39){
+                    len = 4;
+                }
+            }
+        }
+
+        if (len == 0) {
+            index++;
+            [resData appendData:replacement];
+        } else {
+            [resData appendBytes:bytes + index length:len];
+            index += len;
+        }
+    }
+
+    return resData;
+}
 @end
