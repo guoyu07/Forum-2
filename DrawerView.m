@@ -134,7 +134,6 @@
 - (id)init {
     if (self = [super init]) {
 
-        //_forumBrowser = [ForumBrowserFactory browserWithForumConfig:[ForumConfig configWithForumHost:[self currentForumHost]]];
         _forumApi = [ForumApiHelper forumApi];
         [self setDrawerType:DrawerViewTypeLeft];
 
@@ -227,6 +226,8 @@
     NSURL *url = [NSURL URLWithString:forums.url];
 
     [[NSUserDefaults standardUserDefaults] saveCurrentForumURL:forums.url];
+
+    _forumApi = [ForumApiHelper forumApi];
 
     [self closeLeftDrawer:^{
         [self showUserAvatar];
