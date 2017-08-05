@@ -90,4 +90,51 @@
     return [stringArray copy];
 }
 
+- (NSString *)encodeWithGBKEncoding {
+    NSStringEncoding enc = CFStringConvertEncodingToNSStringEncoding (kCFStringEncodingGB_18030_2000);
+    NSString *encoded = [self stringByAddingPercentEscapesUsingEncoding:enc];
+    return encoded;
+}
+
+- (NSString *)decodeWithGBKEncoding {
+    NSString *cleanString = [self stringByReplacingOccurrencesOfString:@"%" withString:@""];
+
+    NSData * data = [self stringFromHexStringNew:cleanString];
+    NSStringEncoding encoding =CFStringConvertEncodingToNSStringEncoding(kCFStringEncodingGB_18030_2000);
+    NSString* decoded = [[NSString alloc]initWithData:data encoding:encoding];
+    return decoded;
+}
+
+- (NSData *)stringFromHexString:(NSString *)hexString {
+    char *myBuffer = (char *)malloc((int)[hexString length] / 2 + 1);
+    bzero(myBuffer, [hexString length] / 2 + 1);
+    for (int i = 0; i < [hexString length] - 1; i += 2) {
+        unsigned int anInt;
+        NSString * hexCharStr = [hexString substringWithRange:NSMakeRange(i, 2)];
+        NSScanner * scanner = [[NSScanner alloc] initWithString:hexCharStr];
+        [scanner scanHexInt:&anInt];
+        myBuffer[i / 2] = (char)anInt;
+    }
+    NSData* data = [NSData dataWithBytes:myBuffer length:[hexString length] / 2 + 1];
+    return data;
+}
+
+- (NSData *)stringFromHexStringNew:(NSString *)hexString {
+
+    NSMutableData *resData = [[NSMutableData alloc] initWithCapacity:[hexString length] / 4];
+
+    for (int i = 0; i < [hexString length] - 1; i += 2) {
+
+        NSString * hexCharStr = [hexString substringWithRange:NSMakeRange(i, 2)];
+        NSString * temp10 = [NSString stringWithFormat:@"%lu",strtoul([hexCharStr UTF8String],0,16)];
+        NSLog(@"心跳数字 10进制 %@",temp10);
+        //转成数字
+        int cycleNumber = [temp10 intValue];
+        NSLog(@"心跳数字 ：%d",cycleNumber);
+
+        [resData appendBytes:&cycleNumber length:1];
+    }
+    return [resData copy];
+}
+
 @end

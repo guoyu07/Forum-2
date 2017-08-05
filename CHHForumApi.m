@@ -3,7 +3,7 @@
 // Copyright (c) 2017 andforce. All rights reserved.
 //
 
-#import <AFNetworking/UIImageView+AFNetworking.h>
+#import "UIImageView+AFNetworking.h"
 #import "CHHForumApi.h"
 #import "NSUserDefaults+Extensions.h"
 #import "DeviceName.h"

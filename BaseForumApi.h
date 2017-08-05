@@ -6,7 +6,7 @@
 #import <Foundation/Foundation.h>
 
 #import "ForumConfigDelegate.h"
-#import <AFImageDownloader.h>
+#import "AFImageDownloader.h"
 
 @protocol ForumParserDelegate;
 

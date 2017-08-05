@@ -23,5 +23,7 @@
 
 - (NSArray *)arrayWithRegular:(NSString *)regular;
 
+- (NSString *) encodeWithGBKEncoding;
 
+- (NSString *) decodeWithGBKEncoding;
 @end

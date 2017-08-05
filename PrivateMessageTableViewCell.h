@@ -8,7 +8,7 @@
 #import <UIKit/UIKit.h>
 
 #import "NSString+Extensions.h"
-#import <UIImageView+AFNetworking.h>
+#import "UIImageView+AFNetworking.h"
 #import "ForumCoreDataManager.h"
 #import "UserEntry+CoreDataProperties.h"
 #import "ForumApiHelper.h"

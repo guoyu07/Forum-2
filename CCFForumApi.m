@@ -9,7 +9,7 @@
 #import "NSUserDefaults+Extensions.h"
 #import "NSUserDefaults+Setting.h"
 #import "AFHTTPSessionManager+SimpleAction.h"
-#import <AFNetworking/UIImageView+AFNetworking.h>
+#import "UIImageView+AFNetworking.h"
 #import "DeviceName.h"
 #import "ForumParserDelegate.h"
 
