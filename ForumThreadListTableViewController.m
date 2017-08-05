@@ -279,6 +279,7 @@
         ForumCreateNewThreadViewController *newPostController = segue.destinationViewController;
         TransBundle * bundle = [[TransBundle alloc] init];
         [bundle putIntValue:transForm.forumId forKey:@"FORM_ID"];
+        [bundle putObjectValue:currentForumPage forKey:@"CREATE_THREAD_IN"];
         [self transBundle:bundle forController:newPostController];
 
 
@@ -342,6 +343,7 @@
 
     TransBundle *bundle = [[TransBundle alloc] init];
     [bundle putIntValue:transForm.forumId forKey:@"FORM_ID"];
+    [bundle putObjectValue:currentForumPage forKey:@"CREATE_THREAD_IN"];
     [self presentViewController:(id) createController withBundle:bundle forRootController:YES animated:YES completion:^{
 
     }];

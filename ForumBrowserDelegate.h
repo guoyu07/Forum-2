@@ -44,7 +44,7 @@ typedef void (^HandlerWithBool)(BOOL isSuccess, id message);
 - (void)listAllForums:(HandlerWithBool)handler;
 
 // 发表一个新的帖子
-- (void)createNewThreadWithForumId:(int)fId withSubject:(NSString *)subject andMessage:(NSString *)message withImages:(NSArray *)images handler:(HandlerWithBool)handler;
+- (void)createNewThreadWithSubject:(NSString *)subject andMessage:(NSString *)message withImages:(NSArray *)images inPage:(ViewForumPage *) page handler:(HandlerWithBool)handler;
 
 // 快速回复
 - (void)quickReplyPostWithMessage:(NSString *)message toPostId:(NSString *)postId thread:(ViewThreadPage *)threadPage handler:(HandlerWithBool)handler;

@@ -11,6 +11,9 @@
 
 @interface ViewForumPage : NSObject
 
+@property(nonatomic, assign) int forumId;
+@property(nonatomic, strong) NSString *token;
+
 @property(nonatomic, strong) NSMutableArray *dataList;
 @property(nonatomic, strong) PageNumber *pageNumber;
 

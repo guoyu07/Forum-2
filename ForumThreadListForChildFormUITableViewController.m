@@ -180,6 +180,7 @@
         ForumCreateNewThreadViewController *newPostController = segue.destinationViewController;
         TransBundle * bundle = [[TransBundle alloc] init];
         [bundle putIntValue:forumId forKey:@"FORM_ID"];
+        [bundle putObjectValue:currentForumPage forKey:@"CREATE_THREAD_IN"];
         [self transBundle:bundle forController:newPostController];
         
     } else if ([sender isKindOfClass:[UITableViewCell class]]) {

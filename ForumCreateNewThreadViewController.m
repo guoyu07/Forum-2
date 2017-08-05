@@ -25,6 +25,8 @@
     int forumId;
     UIImagePickerController *pickControl;
     NSMutableArray<UIImage *> *images;
+
+    ViewForumPage *currentForumPage;
 }
 
 @end
@@ -33,13 +35,12 @@
 
 - (void)transBundle:(TransBundle *)bundle {
     forumId = [bundle getIntValue:@"FORM_ID"];
+    currentForumPage = [bundle getObjectValue:@"CREATE_THREAD_IN"];
 }
 
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-
-//    _forumBrowser = [ForumBrowserFactory browserWithForumConfig:[ForumConfig configWithForumHost:self.currentForumHost]];
 
     _forumApi = [ForumApiHelper forumApi];
 
@@ -204,8 +205,7 @@
         [uploadData addObject:data];
     }
 
-    [_forumApi createNewThreadWithForumId:forumId withSubject:title andMessage:message withImages:[uploadData copy] handler:^(BOOL isSuccess, id message) {
-
+    [_forumApi createNewThreadWithSubject:title andMessage:message withImages:[uploadData copy] inPage:currentForumPage handler:^(BOOL isSuccess, id message) {
         [self dismissViewControllerAnimated:YES completion:^{
 
         }];

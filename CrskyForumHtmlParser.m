@@ -124,10 +124,15 @@
     showThreadPage.pageNumber = pageNumber;
 
     //7. token
-    NSString * token = [html stringWithRegular:@"(?<=<input type=\"hidden\" name=\"verify\" value=\")\\S+(?=\" />)"];
+    NSString * token = [self token:html];
     showThreadPage.securityToken = token;
 
     return showThreadPage;
+}
+
+-(NSString *) token:(NSString *)html{
+    NSString * token = [html stringWithRegular:@"(?<=<input type=\"hidden\" name=\"verify\" value=\")\\S+(?=\" />)"];
+    return token;
 }
 
 // private
@@ -265,6 +270,12 @@
     PageNumber * pageNumber = [self parserPageNumber:html];
     threadListPage.pageNumber = pageNumber;
 
+    //forumID
+    IGXMLNode * forumId = [document queryNodeWithClassName:@"crumbs-item current"];
+    int fid = [[forumId.html stringWithRegular:@"(?<=fid=)\\d+"] intValue];
+    threadListPage.forumId = fid;
+
+    threadListPage.token = [self token:html];
     return threadListPage;
 }
 

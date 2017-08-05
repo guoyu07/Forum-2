@@ -212,8 +212,9 @@
         [uploadData addObject:data];
     }
 
-    [_forumApi createNewThreadWithForumId:forumId withSubject:title andMessage:message withImages:[uploadData copy] handler:^(BOOL isSuccess, id message) {
-
+    ViewForumPage * viewForumPage = [[ViewForumPage alloc] init];
+    viewForumPage.forumId = forumId;
+    [_forumApi createNewThreadWithSubject:title andMessage:message withImages:[uploadData copy] inPage:viewForumPage handler:^(BOOL isSuccess, id message) {
         [self dismissViewControllerAnimated:YES completion:^{
 
         }];

@@ -116,8 +116,77 @@
     }];
 }
 
-- (void)createNewThreadWithForumId:(int)fId withSubject:(NSString *)subject andMessage:(NSString *)message withImages:(NSArray *)images handler:(HandlerWithBool)handler {
+- (void)createNewThreadWithSubject:(NSString *)subject andMessage:(NSString *)message withImages:(NSArray *)images inPage:(ViewForumPage *)page handler:(HandlerWithBool)handler {
 
+    NSString *token = page.token;
+    NSString *url = [self.forumConfig newThreadWithForumId:nil];
+
+    if ([NSUserDefaults standardUserDefaults].isSignatureEnabled) {
+        message = [message stringByAppendingString:[self buildSignature]];
+    }
+
+    NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
+
+    self.browser.requestSerializer.stringEncoding = kCFStringEncodingGB_18030_2000;
+    [self.browser POSTWithURLString:url parameters:parameters constructingBodyWithBlock:^(id <AFMultipartFormData> formData) {
+
+        [formData appendPartWithFormData:[@"" dataForUTF8] name:@"magicname"];
+        [formData appendPartWithFormData:[@"" dataForUTF8] name:@"magicid"];
+        [formData appendPartWithFormData:[token dataForUTF8] name:@"verify"];
+        [formData appendPartWithFormData:[@"2" dataForUTF8] name:@"p_type"];
+
+        [formData appendPartWithFormData:[subject dataForGBK] name:@"atc_title"];
+        [formData appendPartWithFormData:[@"2" dataForUTF8] name:@"atc_iconid"];
+
+        [formData appendPartWithFormData:[message dataForGBK] name:@"atc_content"];
+        [formData appendPartWithFormData:[@"1" dataForUTF8] name:@"atc_autourl"];
+        [formData appendPartWithFormData:[@"1" dataForUTF8] name:@"atc_usesign"];
+        [formData appendPartWithFormData:[@"1" dataForUTF8] name:@"atc_convert"];
+        [formData appendPartWithFormData:[@"0" dataForUTF8] name:@"atc_rvrc"];
+
+        [formData appendPartWithFormData:[@"rvrc" dataForUTF8] name:@"atc_enhidetype"];
+        [formData appendPartWithFormData:[@"0" dataForUTF8] name:@"atc_money"];
+        [formData appendPartWithFormData:[@"money" dataForUTF8] name:@"atc_credittype"];
+        [formData appendPartWithFormData:[@"" dataForUTF8] name:@"atc_desc1"];
+//        [formData appendPartWithFormData:[@"money" dataForUTF8] name:@"att_ctype1"];
+        [formData appendPartWithFormData:[@"0" dataForUTF8] name:@"atc_needrvrc1"];
+        [formData appendPartWithFormData:[@"" dataForUTF8] name:@"atc_desc2"];
+        [formData appendPartWithFormData:[@"0" dataForUTF8] name:@"atc_needrvrc2"];
+        [formData appendPartWithFormData:[@"2" dataForUTF8] name:@"step"];
+        [formData appendPartWithFormData:[@"" dataForUTF8] name:@"pid"];
+        [formData appendPartWithFormData:[@"new" dataForUTF8] name:@"action"];
+        [formData appendPartWithFormData:[[NSString stringWithFormat:@"%d", page.forumId] dataForUTF8] name:@"fid"];
+        [formData appendPartWithFormData:[@"" dataForUTF8] name:@"tid"];
+        [formData appendPartWithFormData:[@"" dataForUTF8] name:@"article"];
+        [formData appendPartWithFormData:[@"0" dataForUTF8] name:@"special"];
+        [formData appendPartWithFormData:[@"0" dataForUTF8] name:@"att_special2"];
+        [formData appendPartWithFormData:[@"money" dataForUTF8] name:@"att_ctype2"];
+
+        if (images){
+            for (int i = 0; i < images.count; ++i) {
+                NSString *type = [self contentTypeForImageData:images[i]];
+                NSString *extNmae = [type stringByReplacingOccurrencesOfString:@"image/" withString:@""];
+                [formData appendPartWithFileData:images[i] name:[NSString stringWithFormat:@"attachment_%d", i] fileName:[NSString stringWithFormat:@"attachment_%d.%@", i, extNmae] mimeType:type];
+            }
+        } else {
+            [formData appendPartWithFormData:[@"" dataForUTF8] name:@"attachment_1"];
+            [formData appendPartWithFormData:[@"" dataForUTF8] name:@"attachment_2"];
+        }
+
+
+    } charset:GBK requestCallback:^(BOOL isSuccess, NSString *html) {
+        if (isSuccess) {
+
+            ViewThreadPage *thread = [self.forumParser parseShowThreadWithHtml:html];
+            if (thread.postList.count > 0) {
+                handler(YES, thread);
+            } else {
+                handler(NO, @"未知错误");
+            }
+        } else {
+            handler(NO, html);
+        }
+    }];
 }
 
 - (void)quickReplyPostWithMessage:(NSString *)message toPostId:(NSString *)postId thread:(ViewThreadPage *)threadPage handler:(HandlerWithBool)handler {
@@ -206,7 +275,7 @@
 
         [formData appendPartWithFormData:[@"0" dataForUTF8] name:@"atc_needrvrc2"];
         [formData appendPartWithFormData:[@"2" dataForUTF8] name:@"step"];
-        [formData appendPartWithFormData:[@"" dataForUTF8] name:@"pod"];
+        [formData appendPartWithFormData:[@"" dataForUTF8] name:@"pid"];
         [formData appendPartWithFormData:[@"reply" dataForUTF8] name:@"action"];
         [formData appendPartWithFormData:[[NSString stringWithFormat:@"%d", threadPage.forumId] dataForUTF8] name:@"fid"];
         [formData appendPartWithFormData:[[NSString stringWithFormat:@"%d", threadId] dataForUTF8] name:@"tid"];
