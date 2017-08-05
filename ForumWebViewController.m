@@ -801,6 +801,7 @@
     NSString *token = currentShowThreadPage.securityToken;
     [bundle putStringValue:token forKey:@"SECYRITY_TOKEN"];
     [bundle putStringValue:threadAuthorName forKey:@"POST_USER"];
+    [bundle putObjectValue:currentShowThreadPage forKey:@"QUICK_REPLY_THREAD"];
 
     [self presentViewController:controller withBundle:bundle forRootController:YES animated:YES completion:^{
 

@@ -584,7 +584,10 @@ typedef void (^CallBack)(NSString *token, NSString *hash, NSString *time);
 
 }
 
-- (void)seniorReplyWithThreadId:(int)threadId forForumId:(int)forumId replyPostId:(int)replyPostId andMessage:(NSString *)message withImages:(NSArray *)images securitytoken:(NSString *)token handler:(HandlerWithBool)handler {
+- (void)seniorReplyPostWithMessage:(NSString *)message withImages:(NSArray *)images toPostId:(NSString *)postId thread:(ViewThreadPage *)threadPage handler:(HandlerWithBool)handler {
+
+    int threadId = threadPage.threadID;
+    NSString *token = threadPage.securityToken;
     NSString *url = [self.forumConfig replyWithThreadId:threadId forForumId:-1 replyPostId:-1];
 
 
@@ -665,7 +668,6 @@ typedef void (^CallBack)(NSString *token, NSString *hash, NSString *time);
         }
     }];
 }
-
 
 // private
 - (void)seniorReplyWithThreadId:(int)threadId andMessage:(NSString *)message securitytoken:(NSString *)token posthash:(NSString *)posthash poststarttime:(NSString *)poststarttime handler:(HandlerWithBool)handler {

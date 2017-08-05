@@ -204,16 +204,20 @@
 
 }
 
-- (void)seniorReplyWithThreadId:(int)threadId forForumId:(int)forumId replyPostId:(int)replyPostId
-                     andMessage:(NSString *)message
-                     withImages:(NSArray *)images
-                  securitytoken:(NSString *)token handler:(HandlerWithBool)handler {
+- (void)quickReplyPostWithMessage:(NSString *)message toPostId:(NSString *)postId thread:(ViewThreadPage *)threadPage handler:(HandlerWithBool)handler {
 
+}
+- (void)seniorReplyPostWithMessage:(NSString *)message withImages:(NSArray *)images toPostId:(NSString *)postId thread:(ViewThreadPage *)threadPage handler:(HandlerWithBool)handler {
     NSString *msg = message;
 
     if ([NSUserDefaults standardUserDefaults].isSignatureEnabled) {
         msg = [message stringByAppendingString:[self buildSignature]];
     }
+
+    int replyPostId = [postId intValue];
+    NSString *token = threadPage.securityToken;
+    int threadId = threadPage.threadID;
+    int forumId = threadPage.forumId;
 
     if (replyPostId == -1){     // 表示回复的某一个楼层
         NSString *preReplyUrl = [NSString stringWithFormat:@"https://www.chiphell.com/forum.php?mod=post&action=reply&fid=%d&tid=%d&reppost=%d&extra=page%3D1&page=1&infloat=yes&handlekey=reply&inajax=1&ajaxtarget=fwin_content_reply", forumId, threadId, replyPostId];

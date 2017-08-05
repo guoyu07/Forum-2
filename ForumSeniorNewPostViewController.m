@@ -25,7 +25,9 @@
 
     int forumId;
     int threadId;
-    int postId;
+    NSString * postId;
+
+    ViewThreadPage *replyThread;
 }
 
 @end
@@ -38,7 +40,10 @@
     threadId = [bundle getIntValue:@"THREAD_ID"];
     securityToken = [bundle getStringValue:@"SECYRITY_TOKEN"];
     forumId = [bundle getIntValue:@"FORM_ID"];
-    postId = [bundle getIntValue:@"POST_ID"];
+    int pid = [bundle getIntValue:@"POST_ID"];
+    postId = [NSString stringWithFormat:@"%d", pid];
+
+    replyThread = [bundle getObjectValue:@"QUICK_REPLY_THREAD"];
 }
 
 
@@ -225,8 +230,7 @@
         [uploadData addObject:data];
     }
 
-
-    [self.forumApi seniorReplyWithThreadId:threadId forForumId:forumId replyPostId:postId andMessage:self.replyContent.text withImages:uploadData securitytoken:securityToken handler:^(BOOL isSuccess, id message) {
+    [self.forumApi seniorReplyPostWithMessage:self.replyContent.text withImages:uploadData toPostId:postId thread:replyThread handler:^(BOOL isSuccess, id message) {
         if (isSuccess) {
             [SVProgressHUD showSuccessWithStatus:@"回复成功" maskType:SVProgressHUDMaskTypeBlack];
 

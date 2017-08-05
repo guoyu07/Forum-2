@@ -168,7 +168,12 @@
         }
     }];
 }
-- (void)quickReplyPostWithThreadId:(int)threadId forPostId:(int)postId andMessage:(NSString *)message securitytoken:(NSString *)token ajaxLastPost:(NSString *)ajax_lastpost handler:(HandlerWithBool)handler {
+
+
+- (void)seniorReplyPostWithMessage:(NSString *)message withImages:(NSArray *)images toPostId:(NSString *)postId thread:(ViewThreadPage *)threadPage handler:(HandlerWithBool)handler {
+
+    int threadId = threadPage.threadID;
+    NSString *token = threadPage.securityToken;
     NSString *url = [self.forumConfig replyWithThreadId:threadId forForumId:-1 replyPostId:-1];
 
     if ([NSUserDefaults standardUserDefaults].isSignatureEnabled) {
@@ -177,32 +182,29 @@
 
     NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
 
-    [parameters setValue:@"1" forKey:@"atc_usesign"];
-    [parameters setValue:@"1" forKey:@"atc_convert"];
-    [parameters setValue:@"0" forKey:@"atc_money"];
-    [parameters setValue:@"money" forKey:@"atc_credittype"];
-    [parameters setValue:@"0" forKey:@"atc_rvrc"];
-    //[parameters setValue:@"1" forKey:@"atc_title"];
-    [parameters setValue:@"1" forKey:@"atc_autourl"];
-
-
-    [parameters setValue:message forKey:@"atc_content"];
-
-    [parameters setValue:@"2" forKey:@"step"];
-    [parameters setValue:@"reply" forKey:@"action"];
-
-    //[parameters setValue:@"19" forKey:@"fid"];
-    [parameters setValue:[NSString stringWithFormat:@"%d", threadId] forKey:@"tid"];
-    [parameters setValue:token forKey:@"verify"];
-
-    [parameters setValue:@"" forKey:@"atc_desc1"];
-    [parameters setValue:@"" forKey:@"attachment_1"];
-    [parameters setValue:@"0" forKey:@"att_special1"];
-    [parameters setValue:@"money" forKey:@"att_ctype1"];
-    [parameters setValue:@"0" forKey:@"atc_needrvrc1"];
-
     self.browser.requestSerializer.stringEncoding = kCFStringEncodingGB_18030_2000;
-    [self.browser POSTWithURLString:url parameters:parameters charset:GBK requestCallback:^(BOOL isSuccess, NSString *html) {
+    [self.browser POSTWithURLString:url parameters:parameters constructingBodyWithBlock:^(id <AFMultipartFormData> formData) {
+
+        [formData appendPartWithFormData:[@"1" dataForUTF8] name:@"atc_usesign"];
+        [formData appendPartWithFormData:[@"1" dataForUTF8] name:@"atc_convert"];
+        [formData appendPartWithFormData:[@"0" dataForUTF8] name:@"atc_money"];
+        [formData appendPartWithFormData:[@"money" dataForUTF8] name:@"atc_credittype"];
+        [formData appendPartWithFormData:[@"0" dataForUTF8] name:@"atc_rvrc"];
+        [formData appendPartWithFormData:[@"RE:" dataForUTF8] name:@"atc_title"];
+        [formData appendPartWithFormData:[@"1" dataForUTF8] name:@"atc_autourl"];
+        [formData appendPartWithFormData:[message dataForGBK] name:@"atc_content"];
+        [formData appendPartWithFormData:[@"2" dataForUTF8] name:@"step"];
+        [formData appendPartWithFormData:[@"reply" dataForUTF8] name:@"action"];
+        [formData appendPartWithFormData:[[NSString stringWithFormat:@"%d", threadPage.forumId] dataForUTF8] name:@"fid"];
+        [formData appendPartWithFormData:[[NSString stringWithFormat:@"%d", threadId] dataForUTF8] name:@"tid"];
+        [formData appendPartWithFormData:[token dataForUTF8] name:@"verify"];
+        [formData appendPartWithFormData:[@"" dataForUTF8] name:@"atc_desc1"];
+        [formData appendPartWithFormData:[@"" dataForUTF8] name:@"attachment_1"];
+        [formData appendPartWithFormData:[@"0" dataForUTF8] name:@"att_special1"];
+        [formData appendPartWithFormData:[@"money" dataForUTF8] name:@"att_ctype1"];
+        [formData appendPartWithFormData:[@"0" dataForUTF8] name:@"atc_needrvrc1"];
+
+    } charset:GBK requestCallback:^(BOOL isSuccess, NSString *html) {
         if (isSuccess) {
 
             ViewThreadPage *thread = [self.forumParser parseShowThreadWithHtml:html];
@@ -216,26 +218,9 @@
         }
     }];
 
-//    [self.browser POSTWithURLString:url parameters:parameters constructingBodyWithBlock:^(id <AFMultipartFormData> formData) {
-//
-//    } charset:GBK requestCallback:^(BOOL isSuccess, NSString *html) {
-//        if (isSuccess) {
-//
-//            ViewThreadPage *thread = [self.forumParser parseShowThreadWithHtml:html];
-//            if (thread.postList.count > 0) {
-//                handler(YES, thread);
-//            } else {
-//                handler(NO, @"未知错误");
-//            }
-//        } else {
-//            handler(NO, html);
-//        }
-//    }];
 }
 
-- (void)seniorReplyWithThreadId:(int)threadId forForumId:(int)forumId replyPostId:(int)replyPostId andMessage:(NSString *)message withImages:(NSArray *)images securitytoken:(NSString *)token handler:(HandlerWithBool)handler {
 
-}
 
 
 - (void)searchWithKeyWord:(NSString *)keyWord forType:(int)type handler:(HandlerWithBool)handler {
