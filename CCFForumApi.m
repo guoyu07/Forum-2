@@ -589,6 +589,7 @@ typedef void (^CallBack)(NSString *token, NSString *hash, NSString *time);
     int threadId = threadPage.threadID;
     NSString *token = threadPage.securityToken;
     NSString *url = [self.forumConfig replyWithThreadId:threadId forForumId:-1 replyPostId:-1];
+    int forumId = threadPage.forumId;
 
 
     NSMutableDictionary *presparameters = [NSMutableDictionary dictionary];

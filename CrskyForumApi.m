@@ -185,24 +185,47 @@
     self.browser.requestSerializer.stringEncoding = kCFStringEncodingGB_18030_2000;
     [self.browser POSTWithURLString:url parameters:parameters constructingBodyWithBlock:^(id <AFMultipartFormData> formData) {
 
+        [formData appendPartWithFormData:[@"" dataForUTF8] name:@"magicname"];
+        [formData appendPartWithFormData:[@"" dataForUTF8] name:@"magicid"];
+        [formData appendPartWithFormData:[token dataForUTF8] name:@"verify"];
+        [formData appendPartWithFormData:[@"RE:" dataForUTF8] name:@"atc_title"];
+        [formData appendPartWithFormData:[@"0" dataForUTF8] name:@"atc_iconid"];
+        [formData appendPartWithFormData:[message dataForGBK] name:@"atc_content"];
+        [formData appendPartWithFormData:[@"1" dataForUTF8] name:@"atc_autourl"];
         [formData appendPartWithFormData:[@"1" dataForUTF8] name:@"atc_usesign"];
         [formData appendPartWithFormData:[@"1" dataForUTF8] name:@"atc_convert"];
+        [formData appendPartWithFormData:[@"0" dataForUTF8] name:@"atc_rvrc"];
+        [formData appendPartWithFormData:[@"rvrc" dataForUTF8] name:@"atc_enhidetype"];
         [formData appendPartWithFormData:[@"0" dataForUTF8] name:@"atc_money"];
         [formData appendPartWithFormData:[@"money" dataForUTF8] name:@"atc_credittype"];
-        [formData appendPartWithFormData:[@"0" dataForUTF8] name:@"atc_rvrc"];
-        [formData appendPartWithFormData:[@"RE:" dataForUTF8] name:@"atc_title"];
-        [formData appendPartWithFormData:[@"1" dataForUTF8] name:@"atc_autourl"];
-        [formData appendPartWithFormData:[message dataForGBK] name:@"atc_content"];
+        [formData appendPartWithFormData:[@"" dataForUTF8] name:@"atc_desc1"];
+
+        [formData appendPartWithFormData:[@"money" dataForUTF8] name:@"att_ctype1"];
+        [formData appendPartWithFormData:[@"0" dataForUTF8] name:@"atc_needrvrc1"];
+        [formData appendPartWithFormData:[@"" dataForUTF8] name:@"atc_desc2"];
+
+        [formData appendPartWithFormData:[@"0" dataForUTF8] name:@"atc_needrvrc2"];
         [formData appendPartWithFormData:[@"2" dataForUTF8] name:@"step"];
+        [formData appendPartWithFormData:[@"" dataForUTF8] name:@"pod"];
         [formData appendPartWithFormData:[@"reply" dataForUTF8] name:@"action"];
         [formData appendPartWithFormData:[[NSString stringWithFormat:@"%d", threadPage.forumId] dataForUTF8] name:@"fid"];
         [formData appendPartWithFormData:[[NSString stringWithFormat:@"%d", threadId] dataForUTF8] name:@"tid"];
-        [formData appendPartWithFormData:[token dataForUTF8] name:@"verify"];
-        [formData appendPartWithFormData:[@"" dataForUTF8] name:@"atc_desc1"];
-        [formData appendPartWithFormData:[@"" dataForUTF8] name:@"attachment_1"];
-        [formData appendPartWithFormData:[@"0" dataForUTF8] name:@"att_special1"];
-        [formData appendPartWithFormData:[@"money" dataForUTF8] name:@"att_ctype1"];
-        [formData appendPartWithFormData:[@"0" dataForUTF8] name:@"atc_needrvrc1"];
+        [formData appendPartWithFormData:[@"" dataForUTF8] name:@"article"];
+        [formData appendPartWithFormData:[@"0" dataForUTF8] name:@"special"];
+        [formData appendPartWithFormData:[@"0" dataForUTF8] name:@"att_special2"];
+        [formData appendPartWithFormData:[@"money" dataForUTF8] name:@"att_ctype2"];
+
+        if (images){
+            for (int i = 0; i < images.count; ++i) {
+                NSString *type = [self contentTypeForImageData:images[i]];
+                NSString *extNmae = [type stringByReplacingOccurrencesOfString:@"image/" withString:@""];
+                [formData appendPartWithFileData:images[i] name:[NSString stringWithFormat:@"attachment_%d", i] fileName:[NSString stringWithFormat:@"attachment_%d.%@", i, extNmae] mimeType:type];
+            }
+        } else {
+            [formData appendPartWithFormData:[@"" dataForUTF8] name:@"attachment_1"];
+            [formData appendPartWithFormData:[@"" dataForUTF8] name:@"attachment_2"];
+        }
+
 
     } charset:GBK requestCallback:^(BOOL isSuccess, NSString *html) {
         if (isSuccess) {
@@ -220,7 +243,24 @@
 
 }
 
+// private
+- (NSString *)contentTypeForImageData:(NSData *)data {
+    uint8_t c;
+    [data getBytes:&c length:1];
 
+    switch (c) {
+        case 0xFF:
+            return @"image/jpeg";
+        case 0x89:
+            return @"image/png";
+        case 0x47:
+            return @"image/gif";
+        case 0x49:
+        case 0x4D:
+            return @"image/tiff";
+    }
+    return nil;
+}
 
 
 - (void)searchWithKeyWord:(NSString *)keyWord forType:(int)type handler:(HandlerWithBool)handler {
