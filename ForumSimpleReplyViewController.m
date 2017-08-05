@@ -10,10 +10,12 @@
 
 @interface ForumSimpleReplyViewController ()<TransBundleDelegate> {
     NSString * userName;
-    int postId;
+    NSString * postId;
     int threadId;
     NSString *securityToken;
     NSString *ajaxLastPost;
+
+    ViewThreadPage *replyThread;
 }
 
 @end
@@ -21,10 +23,13 @@
 @implementation ForumSimpleReplyViewController
 
 - (void)transBundle:(TransBundle *)bundle {
+    replyThread = [bundle getObjectValue:@"QUICK_REPLY_THREAD"];
+
     userName = [bundle getStringValue:@"POST_USER"];
 
     threadId = [bundle getIntValue:@"THREAD_ID"];
-    postId = [bundle getIntValue:@"POST_ID"];
+    int pid = [bundle getIntValue:@"POST_ID"];
+    postId = [NSString stringWithFormat:@"%d", pid];
     securityToken = [bundle getStringValue:@"SECYRITY_TOKEN"];
     ajaxLastPost = [bundle getStringValue:@"AJAX_LAST_POST"];
 }
@@ -50,31 +55,27 @@
 
     [SVProgressHUD showWithStatus:@"正在回复" maskType:SVProgressHUDMaskTypeBlack];
 
-    [self.forumApi quickReplyPostWithThreadId:threadId forPostId:postId
-                                   andMessage:self.replyContent.text
-                                securitytoken:securityToken
-                                 ajaxLastPost:ajaxLastPost handler:^(BOOL isSuccess, id message) {
-                if (isSuccess && message != nil) {
-                    [SVProgressHUD showSuccessWithStatus:@"回复成功" maskType:SVProgressHUDMaskTypeBlack];
+    [self.forumApi quickReplyPostWithMessage:self.replyContent.text toPostId:postId thread:replyThread handler:^(BOOL isSuccess, id message) {
+        if (isSuccess && message != nil) {
+            [SVProgressHUD showSuccessWithStatus:@"回复成功" maskType:SVProgressHUDMaskTypeBlack];
 
-                    ViewThreadPage *thread = message;
+            ViewThreadPage *thread = message;
 
-                    TransBundle * bundle = [[TransBundle alloc] init];
-                    [bundle putObjectValue:thread forKey:@"Simple_Reply_Callback"];
+            TransBundle * bundle = [[TransBundle alloc] init];
+            [bundle putObjectValue:thread forKey:@"Simple_Reply_Callback"];
 
-                    UITabBarController * presenting = (UITabBarController *) self.presentingViewController;
-                    UINavigationController * selected = presenting.selectedViewController;
-                    UIViewController * detail = selected.topViewController;
+            UITabBarController * presenting = (UITabBarController *) self.presentingViewController;
+            UINavigationController * selected = presenting.selectedViewController;
+            UIViewController * detail = selected.topViewController;
 
-                    [self dismissViewControllerAnimated:YES backToViewController:detail withBundle:bundle completion:^{
+            [self dismissViewControllerAnimated:YES backToViewController:detail withBundle:bundle completion:^{
 
-                    }];
-
-                } else {
-                    [SVProgressHUD showErrorWithStatus:(NSString *)message maskType:SVProgressHUDMaskTypeBlack];
-                }
             }];
 
+        } else {
+            [SVProgressHUD showErrorWithStatus:(NSString *)message maskType:SVProgressHUDMaskTypeBlack];
+        }
+    }];
 }
 
 

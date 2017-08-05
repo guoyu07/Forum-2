@@ -105,6 +105,17 @@
     return decoded;
 }
 
+- (NSData *)dataForGBK {
+    NSString * encodeStr = [[self encodeWithGBKEncoding] stringByReplacingOccurrencesOfString:@"%" withString:@""];
+
+    return [self stringFromHexString:encodeStr];
+}
+
+- (NSData *)dataForUTF8 {
+    return [self dataUsingEncoding:NSUTF8StringEncoding];
+}
+
+
 - (NSData *)stringFromHexString:(NSString *)hexString {
     char *myBuffer = (char *)malloc((int)[hexString length] / 2 + 1);
     bzero(myBuffer, [hexString length] / 2 + 1);

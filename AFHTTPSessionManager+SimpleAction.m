@@ -56,9 +56,7 @@
 - (void)POSTWithURL:(NSURL *)url parameters:(id)parameters constructingBodyWithBlock:(void (^)(id <AFMultipartFormData>))block charset:(Charset)charset requestCallback:(RequestCallback)callback {
 
 
-    [self POST:[url absoluteString] parameters:parameters constructingBodyWithBlock:^(id <AFMultipartFormData> _Nonnull formData) {
-
-    } progress:^(NSProgress *_Nonnull uploadProgress) {
+    [self POST:[url absoluteString] parameters:parameters constructingBodyWithBlock:block progress:^(NSProgress *_Nonnull uploadProgress) {
 
     }  success:^(NSURLSessionDataTask *_Nonnull task, id _Nullable responseObject) {
 

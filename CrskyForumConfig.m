@@ -107,7 +107,7 @@
 }
 
 - (NSString *)replyWithThreadId:(int)threadId forForumId:(int)forumId replyPostId:(int)postId {
-    return nil;
+    return @"http://bbs.crsky.com/post.php?";
 }
 
 - (NSString *)showThreadWithThreadId:(NSString *)threadId withPage:(int)page {

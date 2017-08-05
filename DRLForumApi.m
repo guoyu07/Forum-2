@@ -509,7 +509,11 @@ typedef void (^CallBack)(NSString *token, NSString *hash, NSString *time);
     return [[NSUserDefaults standardUserDefaults] valueForKey:kSecurityToken];
 }
 
-- (void)quickReplyPostWithThreadId:(int)threadId forPostId:(int)postId andMessage:(NSString *)message securitytoken:(NSString *)token ajaxLastPost:(NSString *)ajax_lastpost handler:(HandlerWithBool)handler {
+- (void)quickReplyPostWithMessage:(NSString *)message toPostId:(NSString *)postId thread:(ViewThreadPage *)threadPage handler:(HandlerWithBool)handler {
+
+    int threadId = threadPage.threadID;
+    NSString *token = threadPage.securityToken;
+
     NSString *url = [self.forumConfig replyWithThreadId:threadId forForumId:-1 replyPostId:-1];
 
     if ([NSUserDefaults standardUserDefaults].isSignatureEnabled) {
@@ -528,7 +532,7 @@ typedef void (^CallBack)(NSString *token, NSString *hash, NSString *time);
     [parameters setValue:token forKey:@"securitytoken"];
     [parameters setValue:@"postreply" forKey:@"do"];
     [parameters setValue:[NSString stringWithFormat:@"%d", threadId] forKey:@"t"];
-    [parameters setValue:[NSString stringWithFormat:@"%d", postId] forKey:@"p"];
+    [parameters setValue:postId forKey:@"p"];
     [parameters setValue:@"1" forKey:@"specifiedpost"];
     [parameters setValue:@"1" forKey:@"parseurl"];
 
@@ -552,7 +556,6 @@ typedef void (^CallBack)(NSString *token, NSString *hash, NSString *time);
             handler(NO, html);
         }
     }];
-
 }
 
 - (void)seniorReplyWithThreadId:(int)threadId forForumId:(int)forumId replyPostId:(int)replyPostId andMessage:(NSString *)message withImages:(NSArray *)images securitytoken:(NSString *)token handler:(HandlerWithBool)handler {

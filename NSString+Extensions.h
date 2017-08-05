@@ -26,4 +26,8 @@
 - (NSString *) encodeWithGBKEncoding;
 
 - (NSString *) decodeWithGBKEncoding;
+
+- (NSData *) dataForGBK;
+
+- (NSData *) dataForUTF8;
 @end

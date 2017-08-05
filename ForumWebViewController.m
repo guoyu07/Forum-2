@@ -583,6 +583,8 @@
                 [bundle putStringValue:token forKey:@"SECYRITY_TOKEN"];
                 [bundle putStringValue:currentShowThreadPage.ajaxLastPost forKey:@"AJAX_LAST_POST"];
                 [bundle putStringValue:userName forKey:@"POST_USER"];
+                
+                [bundle putObjectValue:currentShowThreadPage forKey:@"QUICK_REPLY_THREAD"];
 
                 [self presentViewController:simpleReplyController withBundle:bundle forRootController:YES animated:YES completion:^{
 
@@ -595,6 +597,7 @@
                 UINavigationController *controller = [storyBoard instantiateViewControllerWithIdentifier:@"SeniorReplySomeOne"];
 
                 TransBundle *bundle = [[TransBundle alloc] init];
+
                 [bundle putIntValue:currentShowThreadPage.forumId forKey:@"FORM_ID"];
                 [bundle putIntValue:threadID forKey:@"THREAD_ID"];
                 [bundle putIntValue:postId forKey:@"POST_ID"];
@@ -602,6 +605,8 @@
                 [bundle putStringValue:token forKey:@"SECYRITY_TOKEN"];
                 [bundle putStringValue:currentShowThreadPage.ajaxLastPost forKey:@"AJAX_LAST_POST"];
                 [bundle putStringValue:userName forKey:@"USER_NAME"];
+
+                [bundle putObjectValue:currentShowThreadPage forKey:@"QUICK_REPLY_THREAD"];
 
                 [self presentViewController:controller withBundle:bundle forRootController:YES animated:YES completion:^{
 

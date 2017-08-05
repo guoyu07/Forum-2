@@ -123,6 +123,9 @@
     PageNumber *pageNumber = [self parserPageNumber:html];
     showThreadPage.pageNumber = pageNumber;
 
+    //7. token
+    NSString * token = [html stringWithRegular:@"(?<=<input type=\"hidden\" name=\"verify\" value=\")\\S+(?=\" />)"];
+    showThreadPage.securityToken = token;
 
     return showThreadPage;
 }
