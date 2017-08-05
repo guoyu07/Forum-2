@@ -44,7 +44,7 @@ NS_ASSUME_NONNULL_BEGIN
  
  @return The percent-escaped string.
  */
-FOUNDATION_EXPORT NSString * AFPercentEscapedStringFromString(NSString *string);
+FOUNDATION_EXPORT NSString * AFPercentEscapedStringFromString(NSString *string, NSStringEncoding stringEncoding);
 
 /**
  A helper method to generate encoded url query parameters for appending to the end of a URL.
@@ -53,7 +53,7 @@ FOUNDATION_EXPORT NSString * AFPercentEscapedStringFromString(NSString *string);
 
  @return A url encoded query string
  */
-FOUNDATION_EXPORT NSString * AFQueryStringFromParameters(NSDictionary *parameters);
+FOUNDATION_EXPORT NSString * AFQueryStringFromParameters(NSDictionary *parameters, NSStringEncoding stringEncoding);
 
 /**
  The `AFURLRequestSerialization` protocol is adopted by an object that encodes parameters for a specified HTTP requests. Request serializers may encode parameters as query strings, HTTP bodies, setting the appropriate HTTP header fields as necessary.

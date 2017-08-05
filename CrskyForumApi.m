@@ -159,6 +159,7 @@
     [parameters setValue:@"lastpost" forKey:@"orderway"];
     [parameters setValue:@"DESC" forKey:@"asc"];
 
+    self.browser.requestSerializer.stringEncoding = kCFStringEncodingGB_18030_2000;
     [self.browser POSTWithURLString:self.forumConfig.search parameters:parameters charset:GBK requestCallback:^(BOOL searchSuccess, NSString *searchResult) {
         ViewSearchForumPage *page = [self.forumParser parseSearchPageFromHtml:searchResult];
 

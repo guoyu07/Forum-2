@@ -46,7 +46,7 @@ typedef NSString * (^AFQueryStringSerializationBlock)(NSURLRequest *request, id 
     - parameter string: The string to be percent-escaped.
     - returns: The percent-escaped string.
  */
-NSString * AFPercentEscapedStringFromString(NSString *string) {
+NSString * AFPercentEscapedStringFromString(NSString *string, NSStringEncoding stringEncoding) {
     static NSString * const kAFCharactersGeneralDelimitersToEncode = @":#[]@"; // does not include "?" or "/" due to RFC 3986 - Section 3.4
     static NSString * const kAFCharactersSubDelimitersToEncode = @"!$&'()*+,;=";
 
@@ -69,7 +69,13 @@ NSString * AFPercentEscapedStringFromString(NSString *string) {
         range = [string rangeOfComposedCharacterSequencesForRange:range];
 
         NSString *substring = [string substringWithRange:range];
-        NSString *encoded = [substring stringByAddingPercentEncodingWithAllowedCharacters:allowedCharacterSet];
+        NSString *encoded = nil;
+
+        if (stringEncoding == kCFStringEncodingGB_18030_2000){
+            encoded = [substring encodeWithGBKEncoding];
+        } else {
+            encoded = [substring stringByAddingPercentEncodingWithAllowedCharacters:allowedCharacterSet];
+        }
         [escaped appendString:encoded];
 
         index += range.length;
@@ -87,7 +93,7 @@ NSString * AFPercentEscapedStringFromString(NSString *string) {
 
 - (instancetype)initWithField:(id)field value:(id)value;
 
-- (NSString *)URLEncodedStringValue;
+- (NSString *)URLEncodedStringValueWithNSStringEncoding:(NSStringEncoding)stringEncoding;
 @end
 
 @implementation AFQueryStringPair
@@ -104,13 +110,12 @@ NSString * AFPercentEscapedStringFromString(NSString *string) {
     return self;
 }
 
-- (NSString *)URLEncodedStringValue {
+- (NSString *)URLEncodedStringValueWithNSStringEncoding:(NSStringEncoding)stringEncoding {
     if (!self.value || [self.value isEqual:[NSNull null]]) {
-        return AFPercentEscapedStringFromString([self.field description]);
+        return AFPercentEscapedStringFromString([self.field description], stringEncoding);
     } else {
-
-        NSString * gbkValue = [[self.value description] encodeWithGBKEncoding];
-        NSString * encode = [NSString stringWithFormat:@"%@=%@", AFPercentEscapedStringFromString([self.field description]), gbkValue];
+        NSString * encode = [NSString stringWithFormat:@"%@=%@", AFPercentEscapedStringFromString([self.field description], stringEncoding),
+                        AFPercentEscapedStringFromString([self.value description],stringEncoding)];
         return encode;
     }
 }
@@ -122,10 +127,10 @@ NSString * AFPercentEscapedStringFromString(NSString *string) {
 FOUNDATION_EXPORT NSArray * AFQueryStringPairsFromDictionary(NSDictionary *dictionary);
 FOUNDATION_EXPORT NSArray * AFQueryStringPairsFromKeyAndValue(NSString *key, id value);
 
-NSString * AFQueryStringFromParameters(NSDictionary *parameters) {
+NSString * AFQueryStringFromParameters(NSDictionary *parameters, NSStringEncoding stringEncoding) {
     NSMutableArray *mutablePairs = [NSMutableArray array];
     for (AFQueryStringPair *pair in AFQueryStringPairsFromDictionary(parameters)) {
-        [mutablePairs addObject:[pair URLEncodedStringValue]];
+        [mutablePairs addObject:[pair URLEncodedStringValueWithNSStringEncoding:stringEncoding]];
     }
 
     return [mutablePairs componentsJoinedByString:@"&"];
@@ -507,7 +512,7 @@ forHTTPHeaderField:(NSString *)field
         } else {
             switch (self.queryStringSerializationStyle) {
                 case AFHTTPRequestQueryStringDefaultStyle:
-                    query = AFQueryStringFromParameters(parameters);
+                    query = AFQueryStringFromParameters(parameters, self.stringEncoding);
                     break;
             }
         }
@@ -525,7 +530,14 @@ forHTTPHeaderField:(NSString *)field
         if (![mutableRequest valueForHTTPHeaderField:@"Content-Type"]) {
             [mutableRequest setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"Content-Type"];
         }
-        [mutableRequest setHTTPBody:[query dataUsingEncoding:self.stringEncoding]];
+        
+        NSData * httpBody;
+        if (self.stringEncoding == kCFStringEncodingGB_18030_2000) {
+            httpBody = [query dataUsingEncoding:NSUTF8StringEncoding];
+        } else {
+            httpBody = [query dataUsingEncoding:self.stringEncoding];
+        }
+        [mutableRequest setHTTPBody:httpBody];
     }
 
     return mutableRequest;
