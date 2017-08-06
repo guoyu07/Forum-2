@@ -20,6 +20,7 @@
 
             NSStringEncoding enc = CFStringConvertEncodingToNSStringEncoding(kCFStringEncodingGB_18030_2000);
             NSString * encodeStr = [[NSString alloc] initWithBytes:[responseObject bytes] length:[responseObject length] encoding:enc];
+//            NSString *encodeStr = [responseObject gbkString];
             callback(YES, encodeStr);
         } else{
             NSString *orgHtml = [responseObject utf8String];
@@ -38,7 +39,8 @@
     [self POST:[url absoluteString] parameters:parameters progress:nil success:^(NSURLSessionDataTask *_Nonnull task, id _Nullable responseObject) {
 
         if (charset == GBK){
-            NSString * encodeStr = [responseObject gbkString];
+            NSStringEncoding enc = CFStringConvertEncodingToNSStringEncoding(kCFStringEncodingGB_18030_2000);
+            NSString * encodeStr = [[NSString alloc] initWithBytes:[responseObject bytes] length:[responseObject length] encoding:enc];
             callback(YES, encodeStr);
         } else{
             NSString *orgHtml = [responseObject utf8String];

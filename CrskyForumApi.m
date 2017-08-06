@@ -136,10 +136,10 @@
         [formData appendPartWithFormData:[token dataForUTF8] name:@"verify"];
         [formData appendPartWithFormData:[@"2" dataForUTF8] name:@"p_type"];
 
-        [formData appendPartWithFormData:[subject dataForGBK] name:@"atc_title"];
+        [formData appendPartWithFormData:[self buildContent:subject] name:@"atc_title"];
         [formData appendPartWithFormData:[@"2" dataForUTF8] name:@"atc_iconid"];
 
-        [formData appendPartWithFormData:[message dataForGBK] name:@"atc_content"];
+        [formData appendPartWithFormData:[self buildContent:message] name:@"atc_content"];
         [formData appendPartWithFormData:[@"1" dataForUTF8] name:@"atc_autourl"];
         [formData appendPartWithFormData:[@"1" dataForUTF8] name:@"atc_usesign"];
         [formData appendPartWithFormData:[@"1" dataForUTF8] name:@"atc_convert"];
@@ -190,66 +190,7 @@
     }];
 }
 
-- (void)quickReplyPostWithMessage:(NSString *)message toPostId:(NSString *)postId thread:(ViewThreadPage *)threadPage handler:(HandlerWithBool)handler {
-
-    int threadId = threadPage.threadID;
-    NSString *token = threadPage.securityToken;
-    NSString *url = [self.forumConfig replyWithThreadId:threadId forForumId:-1 replyPostId:-1];
-
-    if ([NSUserDefaults standardUserDefaults].isSignatureEnabled) {
-        message = [message stringByAppendingString:[self buildSignature]];
-    }
-
-    NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
-
-    self.browser.requestSerializer.stringEncoding = kCFStringEncodingGB_18030_2000;
-    [self.browser POSTWithURLString:url parameters:parameters constructingBodyWithBlock:^(id <AFMultipartFormData> formData) {
-
-        [formData appendPartWithFormData:[@"1" dataForUTF8] name:@"atc_usesign"];
-        [formData appendPartWithFormData:[@"1" dataForUTF8] name:@"atc_convert"];
-        [formData appendPartWithFormData:[@"0" dataForUTF8] name:@"atc_money"];
-        [formData appendPartWithFormData:[@"money" dataForUTF8] name:@"atc_credittype"];
-        [formData appendPartWithFormData:[@"0" dataForUTF8] name:@"atc_rvrc"];
-        [formData appendPartWithFormData:[@"RE:" dataForUTF8] name:@"atc_title"];
-        [formData appendPartWithFormData:[@"1" dataForUTF8] name:@"atc_autourl"];
-        [formData appendPartWithFormData:[message dataForGBK] name:@"atc_content"];
-        [formData appendPartWithFormData:[@"2" dataForUTF8] name:@"step"];
-        [formData appendPartWithFormData:[@"reply" dataForUTF8] name:@"action"];
-        [formData appendPartWithFormData:[[NSString stringWithFormat:@"%d", threadPage.forumId] dataForUTF8] name:@"fid"];
-        [formData appendPartWithFormData:[[NSString stringWithFormat:@"%d", threadId] dataForUTF8] name:@"tid"];
-        [formData appendPartWithFormData:[token dataForUTF8] name:@"verify"];
-        [formData appendPartWithFormData:[@"" dataForUTF8] name:@"atc_desc1"];
-        [formData appendPartWithFormData:[@"" dataForUTF8] name:@"attachment_1"];
-        [formData appendPartWithFormData:[@"0" dataForUTF8] name:@"att_special1"];
-        [formData appendPartWithFormData:[@"money" dataForUTF8] name:@"att_ctype1"];
-        [formData appendPartWithFormData:[@"0" dataForUTF8] name:@"atc_needrvrc1"];
-
-    } charset:GBK requestCallback:^(BOOL isSuccess, NSString *html) {
-        if (isSuccess) {
-
-            ViewThreadPage *thread = [self.forumParser parseShowThreadWithHtml:html];
-            if (thread.postList.count > 0) {
-                handler(YES, thread);
-            } else {
-                handler(NO, @"未知错误");
-            }
-        } else {
-            handler(NO, html);
-        }
-    }];
-}
-
-
-- (void)seniorReplyPostWithMessage:(NSString *)message withImages:(NSArray *)images toPostId:(NSString *)postId thread:(ViewThreadPage *)threadPage handler:(HandlerWithBool)handler {
-
-    int threadId = threadPage.threadID;
-    NSString *token = threadPage.securityToken;
-    NSString *url = [self.forumConfig replyWithThreadId:threadId forForumId:-1 replyPostId:-1];
-
-    if ([NSUserDefaults standardUserDefaults].isSignatureEnabled) {
-        message = [message stringByAppendingString:[self buildSignature]];
-    }
-
+-(NSData *)buildContent:(NSString *)message{
     NSMutableData * contentData = [[NSMutableData alloc] init];
     NSMutableString * eng = [NSMutableString string];
     NSMutableString * chn = [NSMutableString string];
@@ -281,20 +222,74 @@
                 isEng = YES;
             }
         } else {
-
+            // 非法字符忽略
         }
-//        NSString *s = [message substringWithRange:range];
-//        if (s.length == 1) {
-//            unichar c = [s characterAtIndex:0];
-//            if ([CharUtils isChinese:c]){
-//                NSLog(@">>>>> cn [%@] %lu", s, (unsigned long)s.length);
-//                [contentData appendData:[s dataForGBK]];
-//            } else {
-//                NSLog(@">>>>> en [%@] %lu", s, (unsigned long)s.length);
-//                [contentData appendData:[s dataForUTF8]];
-//            }
-//        }
     }
+    return [contentData copy];
+}
+
+- (void)quickReplyPostWithMessage:(NSString *)message toPostId:(NSString *)postId thread:(ViewThreadPage *)threadPage handler:(HandlerWithBool)handler {
+
+    int threadId = threadPage.threadID;
+    NSString *token = threadPage.securityToken;
+    NSString *url = [self.forumConfig replyWithThreadId:threadId forForumId:-1 replyPostId:-1];
+
+    if ([NSUserDefaults standardUserDefaults].isSignatureEnabled) {
+        message = [message stringByAppendingString:[self buildSignature]];
+    }
+
+    NSData * contentData = [self buildContent:message];
+
+    NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
+
+    self.browser.requestSerializer.stringEncoding = kCFStringEncodingGB_18030_2000;
+    [self.browser POSTWithURLString:url parameters:parameters constructingBodyWithBlock:^(id <AFMultipartFormData> formData) {
+
+        [formData appendPartWithFormData:[@"1" dataForUTF8] name:@"atc_usesign"];
+        [formData appendPartWithFormData:[@"1" dataForUTF8] name:@"atc_convert"];
+        [formData appendPartWithFormData:[@"0" dataForUTF8] name:@"atc_money"];
+        [formData appendPartWithFormData:[@"money" dataForUTF8] name:@"atc_credittype"];
+        [formData appendPartWithFormData:[@"0" dataForUTF8] name:@"atc_rvrc"];
+        [formData appendPartWithFormData:[@"RE:" dataForUTF8] name:@"atc_title"];
+        [formData appendPartWithFormData:[@"1" dataForUTF8] name:@"atc_autourl"];
+        [formData appendPartWithFormData:contentData name:@"atc_content"];
+        [formData appendPartWithFormData:[@"2" dataForUTF8] name:@"step"];
+        [formData appendPartWithFormData:[@"reply" dataForUTF8] name:@"action"];
+        [formData appendPartWithFormData:[[NSString stringWithFormat:@"%d", threadPage.forumId] dataForUTF8] name:@"fid"];
+        [formData appendPartWithFormData:[[NSString stringWithFormat:@"%d", threadId] dataForUTF8] name:@"tid"];
+        [formData appendPartWithFormData:[token dataForUTF8] name:@"verify"];
+        [formData appendPartWithFormData:[@"" dataForUTF8] name:@"atc_desc1"];
+        [formData appendPartWithFormData:[@"" dataForUTF8] name:@"attachment_1"];
+        [formData appendPartWithFormData:[@"0" dataForUTF8] name:@"att_special1"];
+        [formData appendPartWithFormData:[@"money" dataForUTF8] name:@"att_ctype1"];
+        [formData appendPartWithFormData:[@"0" dataForUTF8] name:@"atc_needrvrc1"];
+
+    } charset:GBK requestCallback:^(BOOL isSuccess, NSString *html) {
+        if (isSuccess) {
+
+            ViewThreadPage *thread = [self.forumParser parseShowThreadWithHtml:html];
+            if (thread.postList.count > 0) {
+                handler(YES, thread);
+            } else {
+                handler(NO, @"未知错误");
+            }
+        } else {
+            handler(NO, html);
+        }
+    }];
+}
+
+- (void)seniorReplyPostWithMessage:(NSString *)message withImages:(NSArray *)images toPostId:(NSString *)postId thread:(ViewThreadPage *)threadPage handler:(HandlerWithBool)handler {
+
+    int threadId = threadPage.threadID;
+    NSString *token = threadPage.securityToken;
+    NSString *url = [self.forumConfig replyWithThreadId:threadId forForumId:-1 replyPostId:-1];
+
+    if ([NSUserDefaults standardUserDefaults].isSignatureEnabled) {
+        message = [message stringByAppendingString:[self buildSignature]];
+    }
+
+    NSData * contentData = [self buildContent:message];
 
     NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
 
@@ -306,7 +301,7 @@
         [formData appendPartWithFormData:[token dataForUTF8] name:@"verify"];
         [formData appendPartWithFormData:[@"RE:" dataForUTF8] name:@"atc_title"];
         [formData appendPartWithFormData:[@"0" dataForUTF8] name:@"atc_iconid"];
-        [formData appendPartWithFormData:[contentData copy] name:@"atc_content"];
+        [formData appendPartWithFormData:contentData name:@"atc_content"];
         [formData appendPartWithFormData:[@"1" dataForUTF8] name:@"atc_autourl"];
         [formData appendPartWithFormData:[@"1" dataForUTF8] name:@"atc_usesign"];
         [formData appendPartWithFormData:[@"1" dataForUTF8] name:@"atc_convert"];
