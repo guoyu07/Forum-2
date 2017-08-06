@@ -249,6 +249,23 @@
         message = [message stringByAppendingString:[self buildSignature]];
     }
 
+    NSMutableData * contentData = [[NSMutableData alloc] init];
+    NSRange range;
+    for (int i = 0; i < message.length; i += range.length) {
+        range = [message rangeOfComposedCharacterSequenceAtIndex:i];
+        NSString *s = [message substringWithRange:range];
+        if (s.length == 1) {
+            unichar c = [s characterAtIndex:0];
+            if (c >=0x4E00 && c <=0x9FFF){
+                NSLog(@">>>>> cn [%@] %lu", s, (unsigned long)s.length);
+                [contentData appendData:[s dataForGBK]];
+            } else {
+                NSLog(@">>>>> en [%@] %lu", s, (unsigned long)s.length);
+                [contentData appendData:[s dataForUTF8]];
+            }
+        }
+    }
+
     NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
 
     self.browser.requestSerializer.stringEncoding = kCFStringEncodingGB_18030_2000;
@@ -259,7 +276,7 @@
         [formData appendPartWithFormData:[token dataForUTF8] name:@"verify"];
         [formData appendPartWithFormData:[@"RE:" dataForUTF8] name:@"atc_title"];
         [formData appendPartWithFormData:[@"0" dataForUTF8] name:@"atc_iconid"];
-        [formData appendPartWithFormData:[message dataForGBK] name:@"atc_content"];
+        [formData appendPartWithFormData:[contentData copy] name:@"atc_content"];
         [formData appendPartWithFormData:[@"1" dataForUTF8] name:@"atc_autourl"];
         [formData appendPartWithFormData:[@"1" dataForUTF8] name:@"atc_usesign"];
         [formData appendPartWithFormData:[@"1" dataForUTF8] name:@"atc_convert"];

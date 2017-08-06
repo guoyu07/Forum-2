@@ -9,14 +9,23 @@
 #import "ForumApiHelper.h"
 #import "NSUserDefaults+Extensions.h"
 
-@interface ApiTestViewController ()
+#import "CharUtils.h"
+#import "CharUnicodeBlock.h"
+
+
+
+
+@interface ApiTestViewController () {
+    NSArray *blockStarts;
+    NSArray *blocks;
+}
 
 @end
 
 @implementation ApiTestViewController
 
 - (NSString *)currentForumHost {
-    NSString * urlStr = [[NSUserDefaults standardUserDefaults] currentForumURL];
+    NSString *urlStr = [[NSUserDefaults standardUserDefaults] currentForumURL];
     NSURL *url = [NSURL URLWithString:urlStr];
     return url.host;
 }
@@ -24,13 +33,31 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
 
-    id<ForumBrowserDelegate> forumApi = [ForumApiHelper forumApi];
+//    id<ForumBrowserDelegate> forumApi = [ForumApiHelper forumApi];
+//
+//    [forumApi listNewThreadWithPage:1 handler:^(BOOL isSuccess, id message) {
+//
+//
+//    }];
 
-    [forumApi listNewThreadWithPage:1 handler:^(BOOL isSuccess, id message) {
 
+    NSString *message = @"你好,，";
+    NSRange range;
+    for (int i = 0; i < message.length; i += range.length) {
+        range = [message rangeOfComposedCharacterSequenceAtIndex:i];
+        NSString *s = [message substringWithRange:range];
 
-    }];
+        unichar c = [s characterAtIndex:0];
+        UnicodeBlock block = [CharUnicodeBlock unicodeBlockOf:c];
+
+        NSLog(@">>>>>  %ld %@", (long)block, [CharUtils isChinese:c] ? @"CJK" : @"O÷ther");
+
+    }
+
 }
+
+
+
 
 
 @end

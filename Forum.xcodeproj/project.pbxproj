@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2F34C50DE4CFA57C8F4036DE /* CharUnicodeBlock.m in Sources */ = {isa = PBXBuildFile; fileRef = 2F34C2EF08CDE92A8266D169 /* CharUnicodeBlock.m */; };
 		2F34C77038A45486C1F899BA /* CHHForumHtmlParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 2F34C933EAF9358009F4612F /* CHHForumHtmlParser.m */; };
 		2F34C79B539AC259648765D1 /* CHHForumApi.m in Sources */ = {isa = PBXBuildFile; fileRef = 2F34C076378D371E57F0863F /* CHHForumApi.m */; };
 		2F34C81F010BA4C4C0199B85 /* ForumLoginWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2F34C9F7371B8DDC9EEA62AB /* ForumLoginWebViewController.m */; };
@@ -121,6 +122,7 @@
 		3A92CDDA1F35379500E41573 /* UIProgressView+AFNetworking.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A92CDCF1F35379500E41573 /* UIProgressView+AFNetworking.m */; };
 		3A92CDDB1F35379500E41573 /* UIRefreshControl+AFNetworking.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A92CDD11F35379500E41573 /* UIRefreshControl+AFNetworking.m */; };
 		3A92CDDC1F35379500E41573 /* UIWebView+AFNetworking.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A92CDD31F35379500E41573 /* UIWebView+AFNetworking.m */; };
+		3A92CE061F37527800E41573 /* CharUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A92CE051F37527400E41573 /* CharUtils.m */; };
 		3ACFFD2C1CF9D6BF000312DC /* HPURLCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 3ACFFD291CF9D6BF000312DC /* HPURLCache.m */; };
 		3ACFFD2D1CF9D6BF000312DC /* SDImageCache+URLCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 3ACFFD2B1CF9D6BF000312DC /* SDImageCache+URLCache.m */; };
 		3ACFFD301CF9DD3C000312DC /* HPURLProtocol.m in Sources */ = {isa = PBXBuildFile; fileRef = 3ACFFD2F1CF9DD3C000312DC /* HPURLProtocol.m */; };
@@ -153,7 +155,9 @@
 /* Begin PBXFileReference section */
 		2F34C076378D371E57F0863F /* CHHForumApi.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CHHForumApi.m; sourceTree = "<group>"; };
 		2F34C14160BC257F07318CEF /* ForumApiHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ForumApiHelper.m; sourceTree = "<group>"; };
+		2F34C2EF08CDE92A8266D169 /* CharUnicodeBlock.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CharUnicodeBlock.m; sourceTree = "<group>"; };
 		2F34C36FABA87760B3B5B1B3 /* CHHForumConfig.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CHHForumConfig.m; sourceTree = "<group>"; };
+		2F34C73D8B42951BAF2813CA /* CharUnicodeBlock.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CharUnicodeBlock.h; sourceTree = "<group>"; };
 		2F34C8DBF1BAF7284E27B0F6 /* CHHForumHtmlParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CHHForumHtmlParser.h; sourceTree = "<group>"; };
 		2F34C933EAF9358009F4612F /* CHHForumHtmlParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CHHForumHtmlParser.m; sourceTree = "<group>"; };
 		2F34C9AF3EEEE19C34102D22 /* BaseForumApi.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BaseForumApi.m; sourceTree = "<group>"; };
@@ -370,6 +374,8 @@
 		3A92CDD11F35379500E41573 /* UIRefreshControl+AFNetworking.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIRefreshControl+AFNetworking.m"; sourceTree = "<group>"; };
 		3A92CDD21F35379500E41573 /* UIWebView+AFNetworking.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIWebView+AFNetworking.h"; sourceTree = "<group>"; };
 		3A92CDD31F35379500E41573 /* UIWebView+AFNetworking.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIWebView+AFNetworking.m"; sourceTree = "<group>"; };
+		3A92CE041F37527400E41573 /* CharUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CharUtils.h; sourceTree = "<group>"; };
+		3A92CE051F37527400E41573 /* CharUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CharUtils.m; sourceTree = "<group>"; };
 		3ACFFD281CF9D6BF000312DC /* HPURLCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HPURLCache.h; sourceTree = "<group>"; };
 		3ACFFD291CF9D6BF000312DC /* HPURLCache.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HPURLCache.m; sourceTree = "<group>"; };
 		3ACFFD2A1CF9D6BF000312DC /* SDImageCache+URLCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "SDImageCache+URLCache.h"; sourceTree = "<group>"; };
@@ -772,6 +778,17 @@
 			path = "UIKit+AFNetworking";
 			sourceTree = "<group>";
 		};
+		3A92CE031F37522D00E41573 /* Utils */ = {
+			isa = PBXGroup;
+			children = (
+				3A92CE041F37527400E41573 /* CharUtils.h */,
+				3A92CE051F37527400E41573 /* CharUtils.m */,
+				2F34C2EF08CDE92A8266D169 /* CharUnicodeBlock.m */,
+				2F34C73D8B42951BAF2813CA /* CharUnicodeBlock.h */,
+			);
+			name = Utils;
+			sourceTree = "<group>";
+		};
 		3ACFFD271CF9D6B1000312DC /* NetWork */ = {
 			isa = PBXGroup;
 			children = (
@@ -797,6 +814,7 @@
 		4D339D821C31454A0022A6A4 = {
 			isa = PBXGroup;
 			children = (
+				3A92CE031F37522D00E41573 /* Utils */,
 				3A92CDBF1F35379500E41573 /* UIKit+AFNetworking */,
 				3A92CDAB1F35378500E41573 /* AFNetworking */,
 				3A92CDAA1F2E119100E41573 /* Forum.entitlements */,
@@ -1116,6 +1134,7 @@
 				3ACFFD341CFA641F000312DC /* NYTExamplePhoto.m in Sources */,
 				3A2C3F7F1DDFC0CD00576151 /* UIStoryboard+Forum.m in Sources */,
 				4DF737201DDECC8D00BF1896 /* ViewThreadPage.m in Sources */,
+				3A92CE061F37527800E41573 /* CharUtils.m in Sources */,
 				3A92CDA51F2C826B00E41573 /* CrskyLoginViewController.m in Sources */,
 				3A2C3F4D1DDFBF5900576151 /* ForumSimpleThreadTableViewCell.m in Sources */,
 				3A2C3F7A1DDFC0CD00576151 /* NSString+Extensions.m in Sources */,
@@ -1205,6 +1224,7 @@
 				2F34C81F010BA4C4C0199B85 /* ForumLoginWebViewController.m in Sources */,
 				3A92CDBD1F35378500E41573 /* AFURLResponseSerialization.m in Sources */,
 				2F34CDC68B8E6EA4AB5D764B /* PageNumber.m in Sources */,
+				2F34C50DE4CFA57C8F4036DE /* CharUnicodeBlock.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
