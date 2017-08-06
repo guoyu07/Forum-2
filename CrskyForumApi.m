@@ -225,6 +225,14 @@
             // 非法字符忽略
         }
     }
+
+    if (eng.length != 0){
+        [contentData appendData:[eng dataForUTF8]];
+    }
+
+    if (chn.length != 0){
+        [contentData appendData:[chn dataForGBK]];
+    }
     return [contentData copy];
 }
 
