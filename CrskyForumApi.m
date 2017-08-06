@@ -14,6 +14,7 @@
 #import "NSUserDefaults+Setting.h"
 #import "ForumCoreDataManager.h"
 #import "NSString+Extensions.h"
+#import "CharUtils.h"
 
 @implementation CrskyForumApi
 
@@ -250,20 +251,49 @@
     }
 
     NSMutableData * contentData = [[NSMutableData alloc] init];
+    NSMutableString * eng = [NSMutableString string];
+    NSMutableString * chn = [NSMutableString string];
+
+    BOOL isEng = YES;
+
     NSRange range;
     for (int i = 0; i < message.length; i += range.length) {
-        range = [message rangeOfComposedCharacterSequenceAtIndex:i];
-        NSString *s = [message substringWithRange:range];
-        if (s.length == 1) {
-            unichar c = [s characterAtIndex:0];
-            if (c >=0x4E00 && c <=0x9FFF){
-                NSLog(@">>>>> cn [%@] %lu", s, (unsigned long)s.length);
-                [contentData appendData:[s dataForGBK]];
+        range = [message rangeOfComposedCharacterSequenceAtIndex:(NSUInteger) i];
+
+        unichar c = [message characterAtIndex:range.location];
+        if (range.length == 1){
+
+            NSString *s = [message substringWithRange:range];
+            if ([CharUtils isChinese:c]){
+                if (isEng && eng.length != 0){
+                    [contentData appendData:[eng dataForUTF8]];
+                    eng = [NSMutableString string];
+                }
+                [chn appendString:s];
+                isEng = NO;
+
             } else {
-                NSLog(@">>>>> en [%@] %lu", s, (unsigned long)s.length);
-                [contentData appendData:[s dataForUTF8]];
+                if (!isEng && chn.length != 0){
+                    [contentData appendData:[chn dataForGBK]];
+                    chn = [NSMutableString string];
+                }
+                [eng appendString:s];
+                isEng = YES;
             }
+        } else {
+
         }
+//        NSString *s = [message substringWithRange:range];
+//        if (s.length == 1) {
+//            unichar c = [s characterAtIndex:0];
+//            if ([CharUtils isChinese:c]){
+//                NSLog(@">>>>> cn [%@] %lu", s, (unsigned long)s.length);
+//                [contentData appendData:[s dataForGBK]];
+//            } else {
+//                NSLog(@">>>>> en [%@] %lu", s, (unsigned long)s.length);
+//                [contentData appendData:[s dataForUTF8]];
+//            }
+//        }
     }
 
     NSMutableDictionary *parameters = [NSMutableDictionary dictionary];

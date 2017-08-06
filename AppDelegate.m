@@ -26,7 +26,7 @@
 #import "SupportForums.h"
 #import <UserNotifications/UserNotifications.h>
 
-static BOOL API_DEBUG = YES;
+static BOOL API_DEBUG = NO;
 static int DB_VERSION = 8;
 
 static NSString *bundleIdentifier;
