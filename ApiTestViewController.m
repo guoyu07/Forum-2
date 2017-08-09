@@ -11,6 +11,7 @@
 
 #import "CharUtils.h"
 #import "CharUnicodeBlock.h"
+#import "NSString+Extensions.h"
 
 
 
@@ -40,6 +41,7 @@
 //
 //    }];
 
+    NSData *data = [@"%%%%%%9999" dataForGBK];
 
     NSString *message = @"你好,，";
     NSRange range;

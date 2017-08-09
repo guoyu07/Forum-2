@@ -108,26 +108,11 @@
 - (NSData *)dataForGBK {
     NSString * encodeStr = [[self encodeWithGBKEncoding] stringByReplacingOccurrencesOfString:@"%" withString:@""];
 
-    return [self stringFromHexString:encodeStr];
+    return [self stringFromHexStringNew:encodeStr];
 }
 
 - (NSData *)dataForUTF8 {
     return [self dataUsingEncoding:NSUTF8StringEncoding];
-}
-
-
-- (NSData *)stringFromHexString:(NSString *)hexString {
-    char *myBuffer = (char *)malloc((int)[hexString length] / 2 + 1);
-    bzero(myBuffer, [hexString length] / 2 + 1);
-    for (int i = 0; i < [hexString length] - 1; i += 2) {
-        unsigned int anInt;
-        NSString * hexCharStr = [hexString substringWithRange:NSMakeRange(i, 2)];
-        NSScanner * scanner = [[NSScanner alloc] initWithString:hexCharStr];
-        [scanner scanHexInt:&anInt];
-        myBuffer[i / 2] = (char)anInt;
-    }
-    NSData* data = [NSData dataWithBytes:myBuffer length:[hexString length] / 2 + 1];
-    return data;
 }
 
 - (NSData *)stringFromHexStringNew:(NSString *)hexString {
