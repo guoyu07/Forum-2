@@ -258,7 +258,7 @@
         [formData appendPartWithFormData:[@"0" dataForUTF8] name:@"atc_money"];
         [formData appendPartWithFormData:[@"money" dataForUTF8] name:@"atc_credittype"];
         [formData appendPartWithFormData:[@"0" dataForUTF8] name:@"atc_rvrc"];
-        [formData appendPartWithFormData:[@"RE:" dataForUTF8] name:@"atc_title"];
+        [formData appendPartWithFormData:[self buildContent:threadPage.quickReplyTitle] name:@"atc_title"];
         [formData appendPartWithFormData:[@"1" dataForUTF8] name:@"atc_autourl"];
         [formData appendPartWithFormData:contentData name:@"atc_content"];
         [formData appendPartWithFormData:[@"2" dataForUTF8] name:@"step"];

@@ -127,6 +127,10 @@
     NSString * token = [self token:html];
     showThreadPage.securityToken = token;
 
+    // 10. quick reply title
+    NSString * quickReplyTitle = [html stringWithRegular:@"(?<=<input type=\"text\" class=\"input\" name=\"atc_title\" value=\")\\S+(?=\" size=\"65\" />)"];
+    showThreadPage.quickReplyTitle = quickReplyTitle;
+
     return showThreadPage;
 }
 

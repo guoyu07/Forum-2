@@ -25,4 +25,7 @@
 @property(nonatomic, strong) NSString *ajaxLastPost;                // 9. ajaxLastPost
 
 
+#pragma for PhpWind
+@property (nonatomic, strong) NSString *quickReplyTitle;            // 10. quick reply title
+
 @end
