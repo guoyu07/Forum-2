@@ -586,7 +586,30 @@
 }
 
 - (void)unFavoriteThreadWithId:(NSString *)threadPostId handler:(HandlerWithBool)handler {
+    NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
+    [parameters setValue:@"winds" forKey:@"skinco"];
 
+    [self.browser GETWithURLString:@"http://bbs.crsky.com/u.php?action=favor" parameters:parameters charset:GBK requestCallback:^(BOOL isSuccess, NSString *html) {
+        if (isSuccess) {
+            NSString *token = [self.forumParser parseSecurityToken:html];
+
+            [self.browser POSTWithURLString:[self.forumConfig unFavorThreadWithId:threadPostId] parameters:nil constructingBodyWithBlock:^(id <AFMultipartFormData> formData) {
+                [formData appendPartWithFormData:[token dataForUTF8] name:@"verify"];
+
+                [formData appendPartWithFormData:[threadPostId dataForUTF8] name:@"selid[]"];
+                [formData appendPartWithFormData:[@"0" dataForUTF8] name:@"type"];
+                [formData appendPartWithFormData:[@"clear" dataForUTF8] name:@"job"];
+            }   charset:GBK requestCallback:^(BOOL success, NSString *result) {
+                if (success) {
+                    handler(YES, @"");
+                } else {
+                    handler(NO, result);
+                }
+            }];
+        } else {
+            handler(NO, nil);
+        }
+    }];
 }
 
 - (void)listPrivateMessageWithType:(int)type andPage:(int)page handler:(HandlerWithBool)handler {

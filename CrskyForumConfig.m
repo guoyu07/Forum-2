@@ -87,7 +87,7 @@
 }
 
 - (NSString *)unFavorThreadWithId:(NSString *)threadId {
-    return nil;
+    return @"http://bbs.crsky.com/u.php?action=favor&";
 }
 
 - (NSString *)listFavorThreads:(int)userId withPage:(int)page {
