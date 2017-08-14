@@ -6,6 +6,8 @@
 //
 
 #import "ViewThreadPage.h"
+#import "ViewMessagePage.h"
+#import "Message.h"
 
 @implementation ViewThreadPage
 

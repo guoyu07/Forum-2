@@ -312,8 +312,8 @@
 
 }
 
-- (void)replyPrivateMessageWithId:(int)pmId andMessage:(NSString *)message handler:(HandlerWithBool)handler {
 
+- (void)replyPrivateMessage:(Message *)privateMessage andReplyContent:(NSString *)content handler:(HandlerWithBool)handler {
 }
 
 - (void)favoriteForumWithId:(NSString *)forumId handler:(HandlerWithBool)handler {
