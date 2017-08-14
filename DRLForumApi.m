@@ -1299,7 +1299,7 @@ typedef void (^CallBack)(NSString *token, NSString *hash, NSString *time);
     }];
 }
 
-- (void)listSearchResultWithSearchId:(NSString *)searchid andPage:(int)page handler:(HandlerWithBool)handler {
+- (void)listSearchResultWithSearchId:(NSString *)searchid keyWord:(NSString *)keyWord andPage:(int)page handler:(HandlerWithBool)handler {
     NSString *searchedUrl = [self.forumConfig searchWithSearchId:searchid withPage:page];
 
     NSMutableDictionary *parameters = [NSMutableDictionary dictionary];

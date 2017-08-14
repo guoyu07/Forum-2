@@ -43,8 +43,8 @@
         return;
     }
 
-    int toLoadPage = self.pageNumber == nil ? 1: self.pageNumber.currentPageNumber + 1;
-    [self.forumApi listSearchResultWithSearchId:_searchid andPage:toLoadPage handler:^(BOOL isSuccess, ViewSearchForumPage *message) {
+    int toLoadPage = currentSearchForumPage.pageNumber.currentPageNumber + 1;
+    [self.forumApi listSearchResultWithSearchId:_searchid keyWord:searchText andPage:toLoadPage handler:^(BOOL isSuccess, ViewSearchForumPage *message) {
         [self.tableView.mj_footer endRefreshing];
 
         if (isSuccess) {

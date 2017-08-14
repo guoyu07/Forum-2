@@ -21,21 +21,6 @@
 @implementation CrskyForumApi
 
 // private
-- (NSString *)loadCookie {
-    return [[NSUserDefaults standardUserDefaults] loadCookie];
-}
-
-// private
-- (void)saveUserName:(NSString *)name {
-    [[NSUserDefaults standardUserDefaults] saveUserName:name];
-}
-
-//private
-- (void)saveCookie {
-    [[NSUserDefaults standardUserDefaults] saveCookie];
-}
-
-// private
 - (NSString *)buildSignature {
     NSString *phoneName = [DeviceName deviceNameDetail];
     NSString *signature = [NSString stringWithFormat:@"\n\n发自 %@ 使用 霏凡客户端", phoneName];
@@ -811,8 +796,29 @@
     }];
 }
 
-- (void)listSearchResultWithSearchId:(NSString *)searchid andPage:(int)page handler:(HandlerWithBool)handler {
+- (void)listSearchResultWithSearchId:(NSString *)searchid keyWord:(NSString *)keyWord andPage:(int)page handler:(HandlerWithBool)handler {
 
+    NSMutableDictionary *defparameters = [NSMutableDictionary dictionary];
+    [defparameters setValue:@"winds" forKey:@"skinco"];
+    [defparameters setValue:keyWord forKey:@"keyword"];
+
+
+    NSString *searchedUrl = [self.forumConfig searchWithSearchId:searchid withPage:page];
+    [self.browser GETWithURLString:searchedUrl parameters:defparameters charset:GBK requestCallback:^(BOOL isSuccess, NSString *html) {
+        if (isSuccess) {
+
+            ViewSearchForumPage *viewSearchForumPage = [self.forumParser parseSearchPageFromHtml:html];
+
+            if (viewSearchForumPage != nil && viewSearchForumPage.dataList != nil && viewSearchForumPage.dataList.count > 0) {
+                handler(YES, viewSearchForumPage);
+            } else {
+                handler(NO, @"未知错误");
+            }
+
+        } else {
+            handler(NO, html);
+        }
+    }];
 }
 
 - (void)showProfileWithUserId:(NSString *)userId handler:(HandlerWithBool)handler {
@@ -830,7 +836,7 @@
 }
 
 - (void)reportThreadPost:(int)postId andMessage:(NSString *)message handler:(HandlerWithBool)handler {
-
+    handler(YES,@"");
 }
 
 - (id <ForumConfigDelegate>)currentConfigDelegate {
