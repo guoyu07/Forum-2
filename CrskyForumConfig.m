@@ -79,11 +79,13 @@
 }
 
 - (NSString *)favThreadWithIdPre:(NSString *)threadId {
-    return nil;
+    return [NSString stringWithFormat:@"http://bbs.crsky.com/read.php?tid=%@", threadId];
 }
 
 - (NSString *)favThreadWithId:(NSString *)threadId {
-    return nil;
+    NSDate *date = [NSDate date];
+    NSInteger timeStamp = (NSInteger) [date timeIntervalSince1970];
+    return [NSString stringWithFormat:@"http://bbs.crsky.com/pw_ajax.php?action=favor&type=0&nowtime=%ul&tid=%@", timeStamp, threadId];
 }
 
 - (NSString *)unFavorThreadWithId:(NSString *)threadId {

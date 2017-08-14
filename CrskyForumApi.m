@@ -583,6 +583,25 @@
 
 - (void)favoriteThreadWithId:(NSString *)threadPostId handler:(HandlerWithBool)handler {
 
+    NSMutableDictionary *defparameters = [NSMutableDictionary dictionary];
+    [defparameters setValue:@"winds" forKey:@"skinco"];
+
+    NSString *preUrl = [self.forumConfig favThreadWithIdPre:threadPostId];
+    [self.browser GETWithURLString:preUrl parameters:defparameters charset:GBK requestCallback:^(BOOL isSuccess, NSString *html) {
+        if (!isSuccess) {
+            handler(NO, html);
+        } else {
+            NSString *token = [self.forumParser parseSecurityToken:html];
+
+            NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
+            [parameters setValue:token forKey:@"verify"];
+            NSString *fav = [self.forumConfig favThreadWithId:threadPostId];
+            [self.browser GETWithURLString:fav parameters:parameters charset:GBK requestCallback:^(BOOL success, NSString *result) {
+                handler(success, result);
+            }];
+        }
+    }];
+
 }
 
 - (void)unFavoriteThreadWithId:(NSString *)threadPostId handler:(HandlerWithBool)handler {
