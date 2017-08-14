@@ -79,7 +79,8 @@
         [SVProgressHUD showWithStatus:@"正在发送" maskType:SVProgressHUDMaskTypeBlack];
 
         if (isReply) {
-            [self.forumApi replyPrivateMessageWithId:[_privateMessage.pmID intValue] andMessage:self.privateMessageContent.text handler:^(BOOL isSuccess, id message) {
+
+            [self.forumApi replyPrivateMessage:_privateMessage andReplyContent:self.privateMessageContent.text handler:^(BOOL isSuccess, id message){
                 [SVProgressHUD dismiss];
 
                 if (isSuccess) {

@@ -1011,11 +1011,12 @@ typedef void (^CallBack)(NSString *token, NSString *hash, NSString *time);
     }];
 }
 
-- (void)replyPrivateMessageWithId:(int)pmId andMessage:(NSString *)message handler:(HandlerWithBool)handler {
+- (void)replyPrivateMessage:(Message *)privateMessage andReplyContent:(NSString *)content handler:(HandlerWithBool)handler {
     NSMutableDictionary *defparameters = [NSMutableDictionary dictionary];
     [defparameters setValue:@"2" forKey:@"styleid"];
     [defparameters setValue:@"1" forKey:@"langid"];
 
+    int pmId = [privateMessage.pmID intValue];
     [self.browser GETWithURLString:[self.forumConfig privateShowWithMessageId:pmId withType:0] parameters:defparameters charset:UTF_8 requestCallback:^(BOOL isSuccess, NSString *html) {
         if (isSuccess) {
             NSString *token = [self.forumParser parseSecurityToken:html];
@@ -1027,7 +1028,7 @@ typedef void (^CallBack)(NSString *token, NSString *hash, NSString *time);
 
             NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
 
-            NSString *realMessage = [[quote stringByAppendingString:@"\n"] stringByAppendingString:message];
+            NSString *realMessage = [[quote stringByAppendingString:@"\n"] stringByAppendingString:content];
 
             [parameters setValue:realMessage forKey:@"message"];
             [parameters setValue:@"0" forKey:@"wysiwyg"];

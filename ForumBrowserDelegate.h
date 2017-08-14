@@ -13,6 +13,8 @@
 #import "Forum.h"
 
 @class ViewThreadPage;
+@class ViewMessagePage;
+@class Message;
 
 typedef void (^HandlerWithBool)(BOOL isSuccess, id message);
 
@@ -64,7 +66,7 @@ typedef void (^HandlerWithBool)(BOOL isSuccess, id message);
 - (void)sendPrivateMessageToUserName:(NSString *)name andTitle:(NSString *)title andMessage:(NSString *)message handler:(HandlerWithBool)handler;
 
 // 回复站内短信
-- (void)replyPrivateMessageWithId:(int)pmId andMessage:(NSString *)message handler:(HandlerWithBool)handler;
+- (void)replyPrivateMessage:(Message *)privateMessage andReplyContent:(NSString *)content handler:(HandlerWithBool)handler;
 
 // 收藏这个论坛
 - (void)favoriteForumWithId:(NSString *)forumId handler:(HandlerWithBool)handler;
