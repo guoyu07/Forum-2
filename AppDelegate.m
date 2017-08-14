@@ -103,17 +103,11 @@ static NSString *bundleIdentifier;
                 [[NSUserDefaults standardUserDefaults] clearCurrentForumURL];
                 self.window.rootViewController = [[UIStoryboard mainStoryboard] finControllerById:@"ShowSupportForums"];
             } else{
-                [[UIStoryboard mainStoryboard] changeRootViewControllerTo:@"LoginForum"];
 
-                if ([bundleId isEqualToString:@"com.andforce.et8"]){
+                id<ForumBrowserDelegate> api = [ForumApiHelper forumApi];
+                NSString * cId = api.currentConfigDelegate.loginControllerId;
+                [[UIStoryboard mainStoryboard] changeRootViewControllerTo:cId];
 
-                } else if ([bundleId isEqualToString:@"com.andforce.DRL"]){
-
-                } else if ([bundleId isEqualToString:@"com.andforce.Crsky"]){
-
-                } else if([bundleId isEqualToString:@"com.andforce.CHH"]){
-
-                }
             }
         }
 
