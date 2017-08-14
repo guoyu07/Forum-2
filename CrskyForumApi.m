@@ -15,6 +15,8 @@
 #import "ForumCoreDataManager.h"ƒ
 #import "NSString+Extensions.h"
 #import "CharUtils.h"
+#import "IGHTMLDocument.h"
+#import "IGHTMLDocument+QueryNode.h"
 
 @implementation CrskyForumApi
 
@@ -482,6 +484,43 @@
 }
 
 - (void)replyPrivateMessage:(Message *)privateMessage andReplyContent:(NSString *)content handler:(HandlerWithBool)handler {
+    NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
+    [parameters setValue:@"winds" forKey:@"skinco"];
+
+    [self.browser GETWithURLString:[self.forumConfig privateReplyWithMessageIdPre:[privateMessage.pmID intValue]] parameters:parameters charset:GBK requestCallback:^(BOOL isSuccess, NSString *html) {
+        if (isSuccess) {
+            NSString *token = [self.forumParser parseSecurityToken:html];
+
+            IGHTMLDocument *document = [[IGHTMLDocument alloc] initWithHTMLString:html error:nil];
+            IGXMLNode * node = [document queryNodeWithXPath:@"//*[@id=\"atc_content\"]"];
+            NSString *repContent = node.text;
+
+            [self.browser POSTWithURLString:self.forumConfig.privateReplyWithMessage parameters:nil constructingBodyWithBlock:^(id <AFMultipartFormData> formData) {
+                [formData appendPartWithFormData:[@"write" dataForUTF8] name:@"action"];
+                [formData appendPartWithFormData:[@"2" dataForUTF8] name:@"step"];
+                [formData appendPartWithFormData:[token dataForUTF8] name:@"verify"];
+                [formData appendPartWithFormData:[self buildContent:privateMessage.pmAuthor] name:@"pwuser"];
+
+                NSString *repTitle = [NSString stringWithFormat:@"Re:%@", privateMessage.pmTitle];
+                [formData appendPartWithFormData:[self buildContent:repTitle] name:@"msg_title"];
+                [formData appendPartWithFormData:[@"" dataForUTF8] name:@"font"];
+                [formData appendPartWithFormData:[@"" dataForUTF8] name:@"size"];
+                [formData appendPartWithFormData:[@"" dataForUTF8] name:@"color"];
+
+                NSString *buildRepContent = [NSString stringWithFormat:@"%@\n%@", repContent, content];
+                [formData appendPartWithFormData:[self buildContent:buildRepContent] name:@"atc_content"];
+                [formData appendPartWithFormData:[@"Y" dataForUTF8] name:@"ifsave"];
+            }                       charset:GBK requestCallback:^(BOOL success, NSString *result) {
+                if (success) {
+                    handler(YES, @"");
+                } else {
+                    handler(NO, result);
+                }
+            }];
+        } else {
+            handler(NO, nil);
+        }
+    }];
 }
 
 - (void)favoriteForumWithId:(NSString *)forumId handler:(HandlerWithBool)handler {

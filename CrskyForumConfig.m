@@ -169,7 +169,7 @@
 }
 
 - (NSString *)privateReplyWithMessageIdPre:(int)messageId {
-    return nil;
+    return [NSString stringWithFormat:@"http://bbs.crsky.com/message.php?action=write&remid=%d", messageId];
 }
 
 - (NSString *)privateReplyWithMessage {
