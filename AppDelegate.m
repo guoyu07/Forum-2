@@ -97,11 +97,23 @@ static NSString *bundleIdentifier;
         // 判断是否登录
         if (![self isUserHasLogin]) {
 
-            if ([[self bundleIdentifier] isEqualToString:@"com.andforce.forum"]){
+            NSString *bundleId = [self bundleIdentifier];
+
+            if ([bundleId isEqualToString:@"com.andforce.forum"]){
                 [[NSUserDefaults standardUserDefaults] clearCurrentForumURL];
                 self.window.rootViewController = [[UIStoryboard mainStoryboard] finControllerById:@"ShowSupportForums"];
             } else{
                 [[UIStoryboard mainStoryboard] changeRootViewControllerTo:@"LoginForum"];
+
+                if ([bundleId isEqualToString:@"com.andforce.et8"]){
+
+                } else if ([bundleId isEqualToString:@"com.andforce.DRL"]){
+
+                } else if ([bundleId isEqualToString:@"com.andforce.Crsky"]){
+
+                } else if([bundleId isEqualToString:@"com.andforce.CHH"]){
+
+                }
             }
         }
 
