@@ -12,7 +12,7 @@
 #import "DeviceName.h"
 #import "NSUserDefaults+Extensions.h"
 #import "NSUserDefaults+Setting.h"
-#import "ForumCoreDataManager.h"
+#import "ForumCoreDataManager.h"ƒ
 #import "NSString+Extensions.h"
 #import "CharUtils.h"
 
@@ -449,7 +449,36 @@
 }
 
 - (void)sendPrivateMessageToUserName:(NSString *)name andTitle:(NSString *)title andMessage:(NSString *)message handler:(HandlerWithBool)handler {
+    NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
+    [parameters setValue:@"winds" forKey:@"skinco"];
 
+    [self.browser GETWithURLString:self.forumConfig.privateNewPre parameters:parameters charset:GBK requestCallback:^(BOOL isSuccess, NSString *html) {
+        if (isSuccess) {
+            NSString *token = [self.forumParser parseSecurityToken:html];
+
+            [self.browser POSTWithURLString:self.forumConfig.privateReplyWithMessage parameters:nil constructingBodyWithBlock:^(id <AFMultipartFormData> formData) {
+                [formData appendPartWithFormData:[@"write" dataForUTF8]  name:@"action"];
+                [formData appendPartWithFormData:[@"2" dataForUTF8] name:@"step"];
+                [formData appendPartWithFormData:[token dataForUTF8] name:@"verify"];
+                LoginUser *user = [self getLoginUser];
+                [formData appendPartWithFormData:[self buildContent:user.userName] name:@"pwuser"];
+                [formData appendPartWithFormData:[self buildContent:title] name:@"msg_title"];
+                [formData appendPartWithFormData:[@"" dataForUTF8] name:@"font"];
+                [formData appendPartWithFormData:[@"" dataForUTF8] name:@"size"];
+                [formData appendPartWithFormData:[@"" dataForUTF8] name:@"color"];
+                [formData appendPartWithFormData:[self buildContent:message] name:@"atc_content"];
+                [formData appendPartWithFormData:[@"Y" dataForUTF8] name:@"ifsave"];
+            } charset:GBK requestCallback:^(BOOL success, NSString *result) {
+                if (success) {
+                    handler(YES, @"");
+                } else {
+                    handler(NO, result);
+                }
+            }];
+        } else {
+            handler(NO, nil);
+        }
+    }];
 }
 
 - (void)replyPrivateMessageWithId:(int)pmId andMessage:(NSString *)message handler:(HandlerWithBool)handler {

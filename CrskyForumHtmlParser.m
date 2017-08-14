@@ -319,7 +319,7 @@
 }
 
 - (NSString *)parseSecurityToken:(NSString *)html {
-    return nil;
+    return [self token:html];
 }
 
 - (NSString *)parsePostHash:(NSString *)html {

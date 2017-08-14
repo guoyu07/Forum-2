@@ -173,11 +173,11 @@
 }
 
 - (NSString *)privateReplyWithMessage {
-    return nil;
+    return @"http://bbs.crsky.com/message.php";
 }
 
 - (NSString *)privateNewPre {
-    return nil;
+    return @"http://bbs.crsky.com/message.php?action=write";
 }
 
 - (NSString *)favoriteForums {

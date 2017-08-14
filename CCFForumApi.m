@@ -1008,8 +1008,6 @@ typedef void (^CallBack)(NSString *token, NSString *hash, NSString *time);
         } else {
             handler(NO, nil);
         }
-
-
     }];
 }
 
