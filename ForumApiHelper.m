@@ -34,6 +34,12 @@
     } else if ([bundleId isEqualToString:@"com.andforce.DRL"]){
         DRLForumApi * _drlForumBrowser = [[DRLForumApi alloc] initWithConfig:[[DRLForumConfig alloc] init] parser:[[DRLForumHtmlParser alloc] init]];
         return _drlForumBrowser;
+    } else if ([bundleId isEqualToString:@"com.andforce.Crsky"]){
+        CrskyForumApi *api = [[CrskyForumApi alloc] initWithConfig:[[CrskyForumConfig alloc] init] parser:[[CrskyForumHtmlParser alloc] init]];
+        return api;
+    } else if([bundleId isEqualToString:@"com.andforce.CHH"]){
+        CHHForumApi * api = [[CHHForumApi alloc] initWithConfig:[[CHHForumConfig alloc] init] parser:[[CHHForumHtmlParser alloc] init]];
+        return api;
     } else{
         if ([host isEqualToString:@"bbs.et8.net"]) {
             CCFForumApi * _ccfForumBrowser = [[CCFForumApi alloc] initWithConfig:[[CCFForumConfig alloc] init] parser:[[CCFForumHtmlParser alloc] init]];
