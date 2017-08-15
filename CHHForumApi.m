@@ -201,7 +201,10 @@
     handler(YES,categorys);
 }
 
-- (void)createNewThreadWithSubject:(NSString *)subject category:(NSString *)category andMessage:(NSString *)message withImages:(NSArray *)images inPage:(ViewForumPage *)page handler:(HandlerWithBool)handler {
+
+- (void)createNewThreadWithCategory:(NSString *)category categoryIndex:(int)index withTitle:(NSString *)title
+                         andMessage:(NSString *)message withImages:(NSArray *)images inPage:(ViewForumPage *)page handler:(HandlerWithBool)handler {
+
 
 }
 

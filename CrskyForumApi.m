@@ -137,8 +137,8 @@
     }];
 }
 
-- (void)createNewThreadWithSubject:(NSString *)subject category:(NSString *)category andMessage:(NSString *)message
-                        withImages:(NSArray *)images inPage:(ViewForumPage *)page handler:(HandlerWithBool)handler {
+- (void)createNewThreadWithCategory:(NSString *)category categoryIndex:(int)index withTitle:(NSString *)title
+                         andMessage:(NSString *)message withImages:(NSArray *)images inPage:(ViewForumPage *)page handler:(HandlerWithBool)handler {
     NSString *token = page.token;
     NSString *url = [self.forumConfig newThreadWithForumId:nil];
 
@@ -154,9 +154,11 @@
         [formData appendPartWithFormData:[@"" dataForUTF8] name:@"magicname"];
         [formData appendPartWithFormData:[@"" dataForUTF8] name:@"magicid"];
         [formData appendPartWithFormData:[token dataForUTF8] name:@"verify"];
-        [formData appendPartWithFormData:[category dataForUTF8] name:@"p_type"];
 
-        [formData appendPartWithFormData:[self buildContent:subject] name:@"atc_title"];
+        NSString *indexStr = [NSString stringWithFormat:@"%d", index];
+        [formData appendPartWithFormData:[indexStr dataForUTF8] name:@"p_type"];
+
+        [formData appendPartWithFormData:[self buildContent:title] name:@"atc_title"];
         [formData appendPartWithFormData:[@"2" dataForUTF8] name:@"atc_iconid"];
 
         [formData appendPartWithFormData:[self buildContent:message] name:@"atc_content"];
@@ -208,6 +210,7 @@
             handler(NO, html);
         }
     }];
+
 }
 
 -(NSData *)buildContent:(NSString *)message{

@@ -189,10 +189,12 @@ typedef void (^CallBack)(NSString *token, NSString *hash, NSString *time);
     handler(YES,categorys);
 }
 
-- (void)createNewThreadWithSubject:(NSString *)subject category:(NSString *)category andMessage:(NSString *)message withImages:(NSArray *)images inPage:(ViewForumPage *)page handler:(HandlerWithBool)handler {
+
+- (void)createNewThreadWithCategory:(NSString *)category categoryIndex:(int)index withTitle:(NSString *)title
+                         andMessage:(NSString *)message withImages:(NSArray *)images inPage:(ViewForumPage *)page handler:(HandlerWithBool)handler {
+    NSString *subject = [category stringByAppendingString:title];
     [self createNewThreadWithForumId:page.forumId withSubject:subject andMessage:message withImages:images handler:handler];
 }
-
 
 // private 正式开始发送
 - (void)doPostThread:(int)fId withSubject:(NSString *)subject andMessage:(NSString *)message withToken:(NSString *)token withHash:(NSString *)hash postTime:(NSString *)time handler:(HandlerWithBool)handler {

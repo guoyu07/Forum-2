@@ -29,6 +29,8 @@
     ViewForumPage *currentForumPage;
 
     NSArray *categorys;
+
+    int categoryIndex;
 }
 
 @end
@@ -43,6 +45,8 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+
+    categoryIndex = 0;
 
     _forumApi = [ForumApiHelper forumApi];
 
@@ -150,15 +154,9 @@
 
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info {
 
-    //    UIImage *image=info[@"UIImagePickerControllerOriginalImage"];
-
-    //    UIImage *image=info[@"UIImagePickerControllerEditedImage"];
-
     UIImage *select = [info valueForKey:UIImagePickerControllerOriginalImage];
 
     NSURL *selectUrl = [info valueForKey:UIImagePickerControllerReferenceURL];
-
-    //NSData *date = UIImageJPEGRepresentation(select, 1.0);
 
     [self fileSizeAtPath:selectUrl];
 
@@ -227,7 +225,7 @@
 
     NSString *threadTitle = [category stringByAppendingString:title];
 
-    [_forumApi createNewThreadWithSubject:threadTitle andMessage:message withImages:[uploadData copy] inPage:currentForumPage handler:^(BOOL isSuccess, id message) {
+    [_forumApi createNewThreadWithCategory:category categoryIndex:categoryIndex + 1 withTitle:title andMessage:message withImages:[uploadData copy] inPage:currentForumPage handler:^(BOOL isSuccess, id message) {
         [self dismissViewControllerAnimated:YES completion:^{
 
         }];
@@ -238,7 +236,6 @@
             [SVProgressHUD showErrorWithStatus:@"发帖失败" maskType:SVProgressHUDMaskTypeBlack];
         }
     }];
-
 }
 
 - (IBAction)back:(id)sender {
@@ -274,9 +271,10 @@
 
     ActionSheetStringPicker *picker = [[ActionSheetStringPicker alloc] initWithTitle:@"选择分类"
                                                                                 rows:categorys
-                                                                    initialSelection:0 doneBlock:^(ActionSheetStringPicker *picker, NSInteger selectedIndex, id selectedValue) {
+                                                                    initialSelection:categoryIndex doneBlock:^(ActionSheetStringPicker *picker, NSInteger selectedIndex, id selectedValue) {
 
                 self.category.titleLabel.text = categorys[(NSUInteger) selectedIndex];
+                categoryIndex = selectedIndex;
 
 
     }  cancelBlock:^(ActionSheetStringPicker *picker) {

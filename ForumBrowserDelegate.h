@@ -51,7 +51,7 @@ typedef void (^HandlerWithBool)(BOOL isSuccess, id message);
 
 // 发表一个新的帖子
 @required
-- (void)createNewThreadWithSubject:(NSString *)subject category:(NSString *)category andMessage:(NSString *)message withImages:(NSArray *)images inPage:(ViewForumPage *) page handler:(HandlerWithBool)handler;
+- (void)createNewThreadWithCategory:(NSString *)category categoryIndex:(int)index withTitle:(NSString *)title andMessage:(NSString *)message withImages:(NSArray *)images inPage:(ViewForumPage *) page handler:(HandlerWithBool)handler;
 
 // 快速回复
 - (void)quickReplyPostWithMessage:(NSString *)message toPostId:(NSString *)postId thread:(ViewThreadPage *)threadPage handler:(HandlerWithBool)handler;
