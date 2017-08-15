@@ -73,7 +73,8 @@
 - (NSString *)showThreadWithP:(NSString *)p;
 
 // 复制
-- (NSString *)copyThreadUrl:(NSString *)postId withPostCout:(int)postCount;
+@required
+- (NSString *)copyThreadUrl:(NSString *) threadId withPostId:(NSString *)postId withPostCout:(int)postCount;
 
 // 头像
 - (NSString *)avatar:(NSString *)avatar;

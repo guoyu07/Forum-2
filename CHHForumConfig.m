@@ -113,13 +113,14 @@
     return [NSString stringWithFormat:@"https://www.chiphell.com/thread-%@-%d-1.html", threadId, page];
 }
 
-- (NSString *)copyThreadUrl:(NSString *)postId withPostCout:(int)postCount {
-    return nil;
-}
-
 - (NSString *)showThreadWithP:(NSString *)p {
     return nil;
 }
+
+- (NSString *)copyThreadUrl:(NSString *)threadId withPostId:(NSString *)postId withPostCout:(int)postCount {
+    return nil;
+}
+
 
 - (NSString *)avatar:(NSString *)avatar {
     return avatar;

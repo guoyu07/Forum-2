@@ -120,9 +120,14 @@
     return nil;
 }
 
-- (NSString *)copyThreadUrl:(NSString *)postId withPostCout:(int)postCount {
-    return nil;
+- (NSString *)copyThreadUrl:(NSString *)threadId withPostId:(NSString *)postId withPostCout:(int)postCount {
+    NSString *fixpostId = postId;
+    if ([fixpostId isEqualToString:@"0"]){
+        fixpostId = @"tpc";
+    }
+    return [NSString stringWithFormat:@"http://bbs.crsky.com/read.php?tid=%@#%@",threadId, fixpostId];
 }
+
 
 - (NSString *)avatar:(NSString *)avatar {
     return avatar;

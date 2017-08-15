@@ -119,13 +119,14 @@
     return [NSString stringWithFormat:@"%@showthread.php?t=%@&page=%d",_forumURL.absoluteString, threadId, page];
 }
 
-- (NSString *)copyThreadUrl:(NSString *)postId withPostCout:(int)postCount {
-    return [NSString stringWithFormat:@"%@showpost.php?p=%@&postcount=%d",_forumURL.absoluteString, postId, postCount];
-}
-
 - (NSString *)showThreadWithP:(NSString *)p {
     return [NSString stringWithFormat:@"%@showthread.php?p=%@",_forumURL.absoluteString, p];
 }
+
+- (NSString *)copyThreadUrl:(NSString *)threadId withPostId:(NSString *)postId withPostCout:(int)postCount {
+    return [NSString stringWithFormat:@"%@showpost.php?p=%@&postcount=%d",_forumURL.absoluteString, postId, postCount];
+}
+
 
 - (NSString *)avatar:(NSString *)avatar {
     return [NSString stringWithFormat:@"%@customavatars%@",_forumURL.absoluteString, avatar];
