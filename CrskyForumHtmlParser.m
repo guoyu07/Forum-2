@@ -200,7 +200,7 @@
                 continue;
             } else if ([tag isEqualToString:@"img"]){
                 // 置顶公告
-                title = [categoryTitleNode childAt:1].text.trim;
+                title = [categoryTitleNode.text.trim stringByReplacingOccurrencesOfString:@"\t" withString:@""];
             } else if ([tag isEqualToString:@"a"]){
                 // 正常的主题
                 NSString *c = [categoryTitleNode childAt:0].text.trim;
