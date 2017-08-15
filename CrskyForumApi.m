@@ -327,10 +327,12 @@
     self.browser.requestSerializer.stringEncoding = kCFStringEncodingGB_18030_2000;
     [self.browser POSTWithURLString:url parameters:parameters constructingBodyWithBlock:^(id <AFMultipartFormData> formData) {
 
+        NSString * reTitle = [@"Re:" stringByAppendingString:threadPage.threadTitle];
+
         [formData appendPartWithFormData:[@"" dataForUTF8] name:@"magicname"];
         [formData appendPartWithFormData:[@"" dataForUTF8] name:@"magicid"];
         [formData appendPartWithFormData:[token dataForUTF8] name:@"verify"];
-        [formData appendPartWithFormData:[@"RE:" dataForUTF8] name:@"atc_title"];
+        [formData appendPartWithFormData:[self buildContent:reTitle] name:@"atc_title"];
         [formData appendPartWithFormData:[@"0" dataForUTF8] name:@"atc_iconid"];
         [formData appendPartWithFormData:contentData name:@"atc_content"];
         [formData appendPartWithFormData:[@"1" dataForUTF8] name:@"atc_autourl"];
