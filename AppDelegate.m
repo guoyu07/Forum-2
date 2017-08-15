@@ -9,16 +9,12 @@
 #import "ForumLoginViewController.h"
 
 #import "ForumCoreDataManager.h"
-#import "ForumEntry+CoreDataClass.h"
 #import "NSUserDefaults+Extensions.h"
 #import "ApiTestViewController.h"
 #import "NSUserDefaults+Setting.h"
 #import <AVOSCloud.h>
-//#import <AVOSCloudIM.h>
-#import "ForumApiHelper.h"
 #import "UIStoryboard+Forum.h"
 #import "HPURLProtocol.h"
-#import "AFNetworking.h"
 #import "AFNetworkActivityIndicatorManager.h"
 #import "ForumTabBarController.h"
 #import "ForumTableViewController.h"
@@ -220,12 +216,6 @@ static NSString *bundleIdentifier;
             return YES;
         }
     }
-//    for (Forums *forums in supportForums.forums) {
-//        NSURL *url = [NSURL URLWithString:forums.url];
-//        if ([forumApi isHaveLogin:url.host]){
-//            return YES;
-//        }
-//    }
     return NO;
 }
 
@@ -360,7 +350,6 @@ static NSString *bundleIdentifier;
 
     return _persistentStoreCoordinator;
 }
-
 
 - (NSManagedObjectContext *)managedObjectContext {
     // Returns the managed object context for the application (which is already bound to the persistent store coordinator for the application.)

@@ -246,23 +246,21 @@
     ForumUserProfileTableViewController *controller = selectSegue.destinationViewController;
     Thread *thread = nil;
 
-    if (childForms.count == 0) {
-        if (indexPath.section == 0) {
-            thread = self.threadTopList[(NSUInteger) indexPath.row];
-        } else {
-            thread = self.dataList[(NSUInteger) indexPath.row];
-        }
+    NSInteger section = indexPath.section;
+    
+    if (section == 0) {
+        // 子论坛列表
+    } else if (section == 1) {
+        thread = self.threadTopList[(NSUInteger) indexPath.row];
     } else {
-        if (indexPath.section == 1) {
-            thread = self.threadTopList[(NSUInteger) indexPath.row];
-        } else {
-            thread = self.dataList[(NSUInteger) indexPath.row];
-        }
+        thread = self.dataList[(NSUInteger) indexPath.row];
     }
-    TransBundle * bundle = [[TransBundle alloc] init];
-    [bundle putIntValue:[thread.threadAuthorID intValue] forKey:@"UserId"];
-    [self transBundle:bundle forController:controller];
-
+    
+    if (thread) {
+        TransBundle * bundle = [[TransBundle alloc] init];
+        [bundle putIntValue:[thread.threadAuthorID intValue] forKey:@"UserId"];
+        [self transBundle:bundle forController:controller];
+    }
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
