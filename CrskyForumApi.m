@@ -515,22 +515,39 @@
     NSUbiquitousKeyValueStore * store = [NSUbiquitousKeyValueStore defaultStore];
 
     NSString * data = [store stringForKey:key];
-    NSArray * favForumIds = [data componentsSeparatedByString:@","];
-    NSLog(@"favoriteForumsWithId \t%@", favForumIds);
-    if (![favForumIds containsObject:forumId]){
-        NSMutableArray * array = [favForumIds mutableCopy];
+
+    if (data){
+        NSArray * favForumIds = [data componentsSeparatedByString:@","];
+        NSLog(@"favoriteForumsWithId \t%@", favForumIds);
+        if (![favForumIds containsObject:forumId]){
+            NSMutableArray * array = [favForumIds mutableCopy];
+            [array addObject:forumId];
+
+            // 存到云端
+            NSString * newForums = [array componentsJoinedByString:@","];
+            [store setString:newForums forKey:key];
+            [store synchronize];
+
+            // 存到本地
+            NSMutableArray * ids = [NSMutableArray array];
+            for (NSString *fid in favForumIds){
+                [ids addObject:@([fid intValue])];
+            }
+            [[NSUserDefaults standardUserDefaults] saveFavFormIds:ids];
+        }
+    } else {
+        NSMutableArray * array = [NSMutableArray array];
         [array addObject:forumId];
 
         // 存到云端
         NSString * newForums = [array componentsJoinedByString:@","];
         [store setString:newForums forKey:key];
         [store synchronize];
-        
+
         // 存到本地
         NSMutableArray * ids = [NSMutableArray array];
-        for (NSString *fid in favForumIds){
-            [ids addObject:@([fid intValue])];
-        }
+
+        [ids addObject:@([forumId intValue])];
         [[NSUserDefaults standardUserDefaults] saveFavFormIds:ids];
     }
 
