@@ -206,8 +206,13 @@
                 NSString *c = [categoryTitleNode childAt:0].text.trim;
                 NSString *t = [categoryTitleNode childAt:1].text.trim;
                 title = [c stringByAppendingString:t];
+            } else if([tag isEqualToString:@"span"]){
+                NSString *card = [categoryTitleNode childAt:0].text.trim;
+                NSString *c = [categoryTitleNode childAt:1].text.trim;
+                NSString *t = [categoryTitleNode childAt:2].text.trim;
+                title = [NSString stringWithFormat:@"%@%@%@", card, c, t];
             } else {
-                NSLog(@"p_title >>>>>>>>>>>>>>>>>>>>>>");
+                title = @"[Error-请联系开发者反馈BUG]";
             }
 
             thread.threadTitle = title;
