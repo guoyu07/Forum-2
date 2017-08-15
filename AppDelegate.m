@@ -9,16 +9,12 @@
 #import "ForumLoginViewController.h"
 
 #import "ForumCoreDataManager.h"
-#import "ForumEntry+CoreDataClass.h"
 #import "NSUserDefaults+Extensions.h"
 #import "ApiTestViewController.h"
 #import "NSUserDefaults+Setting.h"
 #import <AVOSCloud.h>
-//#import <AVOSCloudIM.h>
-#import "ForumApiHelper.h"
 #import "UIStoryboard+Forum.h"
 #import "HPURLProtocol.h"
-#import "AFNetworking.h"
 #import "AFNetworkActivityIndicatorManager.h"
 #import "ForumTabBarController.h"
 #import "ForumTableViewController.h"
@@ -50,7 +46,7 @@ static NSString *bundleIdentifier;
     [HPURLProtocol registerURLProtocolIfNeed];
 
     // 这地方要换成你自己的ID，别用我这个，否则签名不对你也无法收到推送
-    [AVOSCloud setApplicationId:@"x67DOcrRJjpYs5Qb6H13PrMY-gzGzoHsz" clientKey:@"LGvFICq1HK7z01ybiNQcDQNu"];
+    [AVOSCloud setApplicationId:@"B6mSTRMdobQQaYQmPCGdnlgW-gzGzoHsz" clientKey:@"FpkGpLzxCTCY5cRXEIPBA4aX"];
 
     application.applicationIconBadgeNumber = 0;
 
