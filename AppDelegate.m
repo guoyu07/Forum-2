@@ -216,12 +216,6 @@ static NSString *bundleIdentifier;
             return YES;
         }
     }
-//    for (Forums *forums in supportForums.forums) {
-//        NSURL *url = [NSURL URLWithString:forums.url];
-//        if ([forumApi isHaveLogin:url.host]){
-//            return YES;
-//        }
-//    }
     return NO;
 }
 
@@ -356,7 +350,6 @@ static NSString *bundleIdentifier;
 
     return _persistentStoreCoordinator;
 }
-
 
 - (NSManagedObjectContext *)managedObjectContext {
     // Returns the managed object context for the application (which is already bound to the persistent store coordinator for the application.)
