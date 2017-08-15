@@ -193,6 +193,13 @@
     NSString *title = self.subject.text;
     NSString *message = self.message.text;
 
+    NSString *category = self.category.titleLabel.text;
+
+    if ([category isEqualToString:@"[请选分类]"]){
+        [SVProgressHUD showErrorWithStatus:@"请选择分类" maskType:SVProgressHUDMaskTypeBlack];
+        return;
+    }
+
     if (title.length < 1) {
         [SVProgressHUD showErrorWithStatus:@"标题太短" maskType:SVProgressHUDMaskTypeBlack];
         return;
@@ -205,7 +212,9 @@
         [uploadData addObject:data];
     }
 
-    [_forumApi createNewThreadWithSubject:title andMessage:message withImages:[uploadData copy] inPage:currentForumPage handler:^(BOOL isSuccess, id message) {
+    NSString *threadTitle = [category stringByAppendingString:title];
+
+    [_forumApi createNewThreadWithSubject:threadTitle andMessage:message withImages:[uploadData copy] inPage:currentForumPage handler:^(BOOL isSuccess, id message) {
         [self dismissViewControllerAnimated:YES completion:^{
 
         }];
@@ -251,8 +260,13 @@
     [[UIApplication sharedApplication] sendAction:@selector(resignFirstResponder) to:nil from:nil forEvent:nil];
 
     NSArray *categorys = @[@"【分享】", @"【推荐】", @"【求助】", @"【注意】", @"【ＣＸ】", @"【高兴】", @"【难过】", @"【转帖】", @"【原创】", @"【讨论】"];
-    ActionSheetStringPicker *picker = [[ActionSheetStringPicker alloc] initWithTitle:@"选择分类" rows:categorys initialSelection:0 doneBlock:^(ActionSheetStringPicker *picker, NSInteger selectedIndex, id selectedValue) {
-        self.subject.text = [NSString stringWithFormat:@"%@%@", categorys[(NSUInteger) selectedIndex],self.subject.text];
+    ActionSheetStringPicker *picker = [[ActionSheetStringPicker alloc] initWithTitle:@"选择分类"
+                                                                                rows:categorys
+                                                                    initialSelection:0 doneBlock:^(ActionSheetStringPicker *picker, NSInteger selectedIndex, id selectedValue) {
+
+                self.category.titleLabel.text = categorys[(NSUInteger) selectedIndex];
+
+//        self.subject.text = [NSString stringWithFormat:@"%@%@", categorys[(NSUInteger) selectedIndex],self.subject.text];
 
     }                                                                    cancelBlock:^(ActionSheetStringPicker *picker) {
 
