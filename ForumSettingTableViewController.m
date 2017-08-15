@@ -32,7 +32,7 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 
     if (indexPath.section == 1 && indexPath.row == 0) {
-        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"https://github.com/andforce/CCF-2.0"]];
+        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"https://github.com/andforce/Forum"]];
         [tableView deselectRowAtIndexPath:indexPath animated:NO];
     }
 

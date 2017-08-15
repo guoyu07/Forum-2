@@ -1,4 +1,4 @@
-# CCF iOS 论坛客户端
+# 论坛客户端
 
 [![Crates.io](https://img.shields.io/badge/AppStore-v2.0.0-red.svg)](https://itunes.apple.com/cn/app/ccf-jing-pin-lun-tan-ke-hu-duan/id1099534950)
 ![](https://img.shields.io/badge/Language-Objective--C-green.svg)
