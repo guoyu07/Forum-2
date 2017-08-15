@@ -129,6 +129,7 @@
 		3ACFFD341CFA641F000312DC /* NYTExamplePhoto.m in Sources */ = {isa = PBXBuildFile; fileRef = 3ACFFD331CFA641F000312DC /* NYTExamplePhoto.m */; };
 		3AE854B71DF2B0B3000F62E9 /* defaultAvatar.gif in Resources */ = {isa = PBXBuildFile; fileRef = 3AE854B61DF2B0B3000F62E9 /* defaultAvatar.gif */; };
 		4D0D87251DE40C7900DA9034 /* ForumNavigationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4D0D87241DE40C7900DA9034 /* ForumNavigationViewController.m */; };
+		4D4CCC791F42CA5A009A4D58 /* CloudKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D4CCC781F42CA5A009A4D58 /* CloudKit.framework */; };
 		4DEB34C31C47BBE400063CBB /* AssetsLibrary.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DEB34C21C47BBE400063CBB /* AssetsLibrary.framework */; };
 		4DF737061DDECC8500BF1896 /* ViewSearchForumPage.m in Sources */ = {isa = PBXBuildFile; fileRef = 4DF737041DDECC8500BF1896 /* ViewSearchForumPage.m */; };
 		4DF737191DDECC8D00BF1896 /* Post.m in Sources */ = {isa = PBXBuildFile; fileRef = 4DF737081DDECC8D00BF1896 /* Post.m */; };
@@ -388,6 +389,7 @@
 		4D0D87231DE40C7900DA9034 /* ForumNavigationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ForumNavigationViewController.h; sourceTree = "<group>"; };
 		4D0D87241DE40C7900DA9034 /* ForumNavigationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ForumNavigationViewController.m; sourceTree = "<group>"; };
 		4D339D8B1C31454A0022A6A4 /* Forum.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Forum.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		4D4CCC781F42CA5A009A4D58 /* CloudKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CloudKit.framework; path = System/Library/Frameworks/CloudKit.framework; sourceTree = SDKROOT; };
 		4DEB34C21C47BBE400063CBB /* AssetsLibrary.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AssetsLibrary.framework; path = System/Library/Frameworks/AssetsLibrary.framework; sourceTree = SDKROOT; };
 		4DF736FA1DDECC5000BF1896 /* ForumBrowserDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ForumBrowserDelegate.h; sourceTree = "<group>"; };
 		4DF736FB1DDECC5000BF1896 /* ForumParserDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ForumParserDelegate.h; sourceTree = "<group>"; };
@@ -439,6 +441,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4D4CCC791F42CA5A009A4D58 /* CloudKit.framework in Frameworks */,
 				4DEB34C31C47BBE400063CBB /* AssetsLibrary.framework in Frameworks */,
 				757C88B17FCB5AFBB7C0CA0B /* libPods-Forum.a in Frameworks */,
 			);
@@ -950,6 +953,7 @@
 		CC5E7A99B69535660B7F40C0 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				4D4CCC781F42CA5A009A4D58 /* CloudKit.framework */,
 				4DEB34C21C47BBE400063CBB /* AssetsLibrary.framework */,
 				EA91F0D805959E8525B7BE0D /* libPods-Forum.a */,
 			);
@@ -994,7 +998,7 @@
 						ProvisioningStyle = Automatic;
 						SystemCapabilities = {
 							com.apple.Push = {
-								enabled = 0;
+								enabled = 1;
 							};
 							com.apple.iCloud = {
 								enabled = 1;
