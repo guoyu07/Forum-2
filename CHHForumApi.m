@@ -196,6 +196,12 @@
     }];
 }
 
+- (void)listThreadCategory:(NSString *)fid handler:(HandlerWithBool)handler {
+    NSArray *categorys = @[@"【分享】", @"【推荐】", @"【求助】", @"【注意】", @"【ＣＸ】", @"【高兴】", @"【难过】", @"【转帖】", @"【原创】", @"【讨论】"];
+    handler(YES,categorys);
+}
+
+
 - (void)createNewThreadWithSubject:(NSString *)subject andMessage:(NSString *)message withImages:(NSArray *)images inPage:(ViewForumPage *)page handler:(HandlerWithBool)handler {
 }
 

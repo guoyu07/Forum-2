@@ -17,6 +17,7 @@
 #import "CharUtils.h"
 #import "IGHTMLDocument.h"
 #import "IGHTMLDocument+QueryNode.h"
+#import "IGXMLNode+Children.h"
 
 @implementation CrskyForumApi
 
@@ -104,8 +105,40 @@
     }];
 }
 
-- (void)createNewThreadWithSubject:(NSString *)subject andMessage:(NSString *)message withImages:(NSArray *)images inPage:(ViewForumPage *)page handler:(HandlerWithBool)handler {
+- (void)listThreadCategory:(NSString *)fid handler:(HandlerWithBool)handler {
 
+    NSMutableDictionary *defparameters = [NSMutableDictionary dictionary];
+    [defparameters setValue:@"winds" forKey:@"skinco"];
+
+    NSString * url = [NSString stringWithFormat:@"http://bbs.crsky.com/post.php?fid=%@", fid];
+    [self.browser GETWithURLString:url parameters:defparameters charset:GBK requestCallback:^(BOOL isSuccess, NSString *html) {
+
+        if (isSuccess) {
+            IGHTMLDocument *document = [[IGHTMLDocument alloc] initWithHTMLString:html error:nil];
+
+            IGXMLNode * node = [document queryNodeWithClassName:@"fr gray"];
+            IGXMLNodeSet * cats = [node childAt:0].children;
+
+            NSMutableArray * array = [NSMutableArray array];
+
+            for (IGXMLNode * c in cats){
+                NSString * value = [c attribute:@"value"];
+                if (![value isEqualToString:@""]){
+                    [array addObject:c.text.trim];
+                }
+
+            }
+
+            handler(isSuccess, array);
+        } else {
+            handler(NO, html);
+        }
+
+    }];
+}
+
+- (void)createNewThreadWithSubject:(NSString *)subject category:(NSString *)category andMessage:(NSString *)message
+                        withImages:(NSArray *)images inPage:(ViewForumPage *)page handler:(HandlerWithBool)handler {
     NSString *token = page.token;
     NSString *url = [self.forumConfig newThreadWithForumId:nil];
 
@@ -121,7 +154,7 @@
         [formData appendPartWithFormData:[@"" dataForUTF8] name:@"magicname"];
         [formData appendPartWithFormData:[@"" dataForUTF8] name:@"magicid"];
         [formData appendPartWithFormData:[token dataForUTF8] name:@"verify"];
-        [formData appendPartWithFormData:[@"2" dataForUTF8] name:@"p_type"];
+        [formData appendPartWithFormData:[category dataForUTF8] name:@"p_type"];
 
         [formData appendPartWithFormData:[self buildContent:subject] name:@"atc_title"];
         [formData appendPartWithFormData:[@"2" dataForUTF8] name:@"atc_iconid"];

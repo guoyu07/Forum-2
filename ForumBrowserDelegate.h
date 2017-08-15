@@ -45,8 +45,13 @@ typedef void (^HandlerWithBool)(BOOL isSuccess, id message);
 // 获取所有的论坛列表
 - (void)listAllForums:(HandlerWithBool)handler;
 
+// 发表新帖子时候，支持的主题分类
+@required
+- (void)listThreadCategory:(NSString *)fid handler:(HandlerWithBool)handler;
+
 // 发表一个新的帖子
-- (void)createNewThreadWithSubject:(NSString *)subject andMessage:(NSString *)message withImages:(NSArray *)images inPage:(ViewForumPage *) page handler:(HandlerWithBool)handler;
+@required
+- (void)createNewThreadWithSubject:(NSString *)subject category:(NSString *)category andMessage:(NSString *)message withImages:(NSArray *)images inPage:(ViewForumPage *) page handler:(HandlerWithBool)handler;
 
 // 快速回复
 - (void)quickReplyPostWithMessage:(NSString *)message toPostId:(NSString *)postId thread:(ViewThreadPage *)threadPage handler:(HandlerWithBool)handler;
