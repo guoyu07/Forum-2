@@ -88,6 +88,10 @@
         return @"https://bbs.et8.net/bbs/";
     } else if ([bundleId isEqualToString:@"com.andforce.DRL"]){
         return @"https://dream4ever.org/";
+    } else if([bundleId isEqualToString:@"com.andforce.Crsky"]){
+        return @"http://bbs.crsky.com/";
+    } else if ([bundleId isEqualToString:@"com.andforce.CHH"]){
+        return @"https://chiphell.com/";
     } else{
         return [self valueForKey:@"currentForumURL"];
     }
