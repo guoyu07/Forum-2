@@ -176,6 +176,17 @@ typedef void (^CallBack)(NSString *token, NSString *hash, NSString *time);
     }];
 }
 
+- (void)listThreadCategory:(NSString *)fid handler:(HandlerWithBool)handler {
+    NSArray *categorys = @[@"【分享】", @"【推荐】", @"【求助】", @"【注意】", @"【ＣＸ】", @"【高兴】", @"【难过】", @"【转帖】", @"【原创】", @"【讨论】"];
+    handler(YES,categorys);
+}
+
+- (void)createNewThreadWithSubject:(NSString *)subject category:(NSString *)category andMessage:(NSString *)message
+                        withImages:(NSArray *)images inPage:(ViewForumPage *)page handler:(HandlerWithBool)handler {
+
+}
+
+
 // private 正式开始发送
 - (void)doPostThread:(int)fId withSubject:(NSString *)subject andMessage:(NSString *)message withToken:(NSString *)token withHash:(NSString *)hash postTime:(NSString *)time handler:(HandlerWithBool)handler {
     NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
