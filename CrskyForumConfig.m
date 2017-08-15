@@ -19,7 +19,7 @@
 }
 
 - (UIColor *)themeColor {
-    return [[UIColor alloc] initWithRed:101.f/255.f green:96.f/255.f blue:65.f/255.f alpha:1];;
+    return [[UIColor alloc] initWithRed:56.f/255.f green:133.f/255.f blue:233.f/255.f alpha:1];;
 }
 
 - (NSURL *)forumURL {
