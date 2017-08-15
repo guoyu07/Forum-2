@@ -214,7 +214,8 @@
 
     ViewForumPage * viewForumPage = [[ViewForumPage alloc] init];
     viewForumPage.forumId = forumId;
-    [_forumApi createNewThreadWithSubject:title andMessage:message withImages:[uploadData copy] inPage:viewForumPage handler:^(BOOL isSuccess, id message) {
+
+    [_forumApi createNewThreadWithCategory:title categoryIndex:0 withTitle:title andMessage:message withImages:[uploadData copy] inPage:viewForumPage handler:^(BOOL isSuccess, id message) {
         [self dismissViewControllerAnimated:YES completion:^{
 
         }];
@@ -225,7 +226,6 @@
             [SVProgressHUD showErrorWithStatus:@"发帖失败" maskType:SVProgressHUDMaskTypeBlack];
         }
     }];
-
 }
 
 - (IBAction)back:(id)sender {
