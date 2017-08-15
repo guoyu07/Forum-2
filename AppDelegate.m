@@ -63,15 +63,10 @@ static NSString *bundleIdentifier;
         return YES;
     }
 
-
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
     NSString *documentsDirectory = paths[0];//Documents目录
 
-
     NSLog(@"文件路径: %@", documentsDirectory);
-
-//    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent animated:NO];
-
 
     // 设置默认数值
     NSUserDefaults *setting = [NSUserDefaults standardUserDefaults];
@@ -80,35 +75,11 @@ static NSString *bundleIdentifier;
     [dictonary setValue:@1 forKey:kTOP_THREAD];
     [setting registerDefaults:dictonary];
 
-//    if ([[self bundleIdentifier] isEqualToString:@"com.andforce.forum"]){
-//        NSString * url = [self forumBaseUrl];
-//        if (url == nil) {
-//            self.window.rootViewController = [[UIStoryboard mainStoryboard] finControllerById:@"ShowSupportForums"];
-//            return YES;
-//        }
-//    }
-    
-
     if (YES){
-        // 判断是否登录
-        if (![self isUserHasLogin]) {
-
-            NSString *bundleId = [self bundleIdentifier];
-
-            if ([bundleId isEqualToString:@"com.andforce.forum"]){
-                [[NSUserDefaults standardUserDefaults] clearCurrentForumURL];
-                self.window.rootViewController = [[UIStoryboard mainStoryboard] finControllerById:@"ShowSupportForums"];
-            } else{
-
-                id<ForumBrowserDelegate> api = [ForumApiHelper forumApi];
-                NSString * cId = api.currentConfigDelegate.loginControllerId;
-                [[UIStoryboard mainStoryboard] changeRootViewControllerTo:cId];
-
-            }
-        }
 
         NSUserDefaults *data = [NSUserDefaults standardUserDefaults];
 
+        BOOL isClearDB = NO;
         if ([data dbVersion] != DB_VERSION) {
 
             ForumCoreDataManager *formManager = [[ForumCoreDataManager alloc] initWithEntryType:EntryTypeForm];
@@ -121,14 +92,23 @@ static NSString *bundleIdentifier;
 
             [data setDBVersion:DB_VERSION];
 
-            id<ForumBrowserDelegate> forumApi = [ForumApiHelper forumApi];
-            [forumApi logout];
+            isClearDB = YES;
+        }
 
-            if ([[self bundleIdentifier] isEqualToString:@"com.andforce.forum"]){
+        // 判断是否登录
+        if (![self isUserHasLogin] || isClearDB) {
+
+            NSString *bundleId = [self bundleIdentifier];
+
+            if ([bundleId isEqualToString:@"com.andforce.forum"]){
                 [[NSUserDefaults standardUserDefaults] clearCurrentForumURL];
                 self.window.rootViewController = [[UIStoryboard mainStoryboard] finControllerById:@"ShowSupportForums"];
             } else{
-                [[UIStoryboard mainStoryboard] changeRootViewControllerTo:@"LoginForum"];
+
+                id<ForumBrowserDelegate> api = [ForumApiHelper forumApi];
+                NSString * cId = api.currentConfigDelegate.loginControllerId;
+                [[UIStoryboard mainStoryboard] changeRootViewControllerTo:cId];
+
             }
         }
     }
