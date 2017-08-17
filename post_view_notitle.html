@@ -133,25 +133,11 @@
         }
 
         .page .gotoFloor {
-
             background-color: Gainsboro;
-
         }
 
         .list {
             list-style: none outside none;
-        }
-
-        /*发帖的时间 用户名 楼层等*/
-        .info {
-            /*background-color: red;*/
-            margin-left: 15px !important;
-            margin-right: 15px !important;
-            padding-top: 0px !important;
-            padding-bottom: 0px !important;
-
-            position: relative;
-            height: 35px;
         }
 
         /*帖子的内容*/
@@ -209,6 +195,16 @@
             overflow: auto
         }
 
+        /* >>>>>>>>>> 发帖者的头像，名字，发帖时间，楼层*/
+        .info {
+            margin-left: 15px !important;
+            margin-right: 15px !important;
+            padding-top: 0px !important;
+            padding-bottom: 0px !important;
+            position: relative;
+            height: 35px;
+        }
+
         .avatar {
             position: absolute;
             top: 0;
@@ -219,7 +215,6 @@
             width: 35px !important;
             height: 35px !important;
             -webkit-border-radius: 17.5px;
-
             border: 0 !important;
             outline: 0 !important;
             margin: 0 !important;
@@ -244,16 +239,18 @@
         .author {
             font-size: 14px;
             color: #7f7f7f;
-            position: absolute;
-            left: 42px;
-            bottom: 0;
+            position: relative;
+            vertical-align: middle;
+            line-height: 35px;
+            left: 30px;
         }
+
+        /* 发帖者的头像，名字，发帖时间，楼层 <<<<<<<<<< */
 
         .blocked {
             text-align: center;
             color: #929292;
         }
-
     </style>
 </head>
 <body>
