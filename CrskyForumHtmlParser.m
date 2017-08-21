@@ -202,16 +202,17 @@
             } else if ([tag isEqualToString:@"img"]){
                 // 置顶公告
                 title = [categoryTitleNode.text.trim stringByReplacingOccurrencesOfString:@"\t" withString:@""];
-            } else if ([tag isEqualToString:@"a"]){
-                // 正常的主题
-                NSString *c = [categoryTitleNode childAt:0].text.trim;
-                NSString *t = [categoryTitleNode childAt:1].text.trim;
-                title = [c stringByAppendingString:t];
-            } else if([tag isEqualToString:@"span"]){
-                NSString *card = [categoryTitleNode childAt:0].text.trim;
-                NSString *c = [categoryTitleNode childAt:1].text.trim;
-                NSString *t = [categoryTitleNode childAt:2].text.trim;
-                title = [NSString stringWithFormat:@"%@%@%@", card, c, t];
+            } else if([tag isEqualToString:@"span"] || [tag isEqualToString:@"a"]){
+                // 使用了沉淀卡之之类的 和 // 正常的主题
+                NSMutableString * mtitle = [NSMutableString string];
+                for (IGXMLNode * node in categoryTitleNode.children) {
+                    NSString *text = node.text.trim;
+                    [mtitle appendString:text];
+                    if ([node.tag isEqualToString:@"h3"]){
+                        break;
+                    }
+                }
+                title = [mtitle copy];
             } else {
                 title = @"[Error-请联系开发者反馈BUG]";
             }
