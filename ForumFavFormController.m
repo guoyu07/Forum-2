@@ -153,14 +153,20 @@
 
     [self.forumApi unFavouriteForumWithId:[NSString stringWithFormat:@"%d", parent.forumId] handler:^(BOOL isSuccess, id message) {
 
+        if (isSuccess){
+            [self.dataList removeObjectAtIndex:(NSUInteger) cell.indexPath.row];
+            [self.tableView deleteRowsAtIndexPaths:@[cell.indexPath] withRowAnimation:UITableViewRowAnimationLeft];
+            [self performSelector:@selector(reloadData) withObject:nil afterDelay:0.2f];
+        }
     }];
 
-    [self.dataList removeObjectAtIndex:(NSUInteger) cell.indexPath.row];
-    [self.tableView deleteRowsAtIndexPaths:@[cell.indexPath] withRowAnimation:UITableViewRowAnimationLeft];
 
     return YES;
 }
 
+-(void)reloadData{
+    [self.tableView reloadData];
+};
 
 - (IBAction)showLeftDrawer:(id)sender {
     ForumTabBarController *controller = (ForumTabBarController *) self.tabBarController;
