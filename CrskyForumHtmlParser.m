@@ -84,7 +84,7 @@
 // private
 - (NSString *)postMessages:(NSString *)html {
     IGHTMLDocument *document = [[IGHTMLDocument alloc] initWithHTMLString:html error:nil];
-    IGXMLNodeSet *postMessages = [document queryWithXPath:@"//*[@id='posts']/div[*]/div/div/div/table/tr[1]/td[2]"];
+    IGXMLNodeSet *postMessages = [document queryWithClassName:@"t5 t2"];
     NSMutableString *messages = [NSMutableString string];
 
     for (IGXMLNode *node in postMessages) {
