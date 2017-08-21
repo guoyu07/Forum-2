@@ -11,6 +11,7 @@
 #import "IGHTMLDocument+QueryNode.h"
 #import "IGXMLNode+Children.h"
 #import "NSString+Extensions.h"
+#import "IGXMLNode+QueryNode.h"
 
 @implementation CrskyForumHtmlParser
 
@@ -677,55 +678,58 @@
 - (NSArray<Forum *> *)parserForums:(NSString *)html forumHost:(NSString *)host {
     IGHTMLDocument *document = [[IGHTMLDocument alloc] initWithHTMLString:html error:nil];
 
-    NSString *xPath = @"/html/body/table[2]/tr/td";
+    IGXMLNode *topNode = [document queryNodeWithClassName:@"contentwrap z"];
 
-    IGXMLNode *contents = [document queryNodeWithXPath:xPath];
-    
-    int size = contents.childrenCount;
+    NSMutableArray<Forum *> *forms = [NSMutableArray array];
 
     int replaceId = 10000;
-    Forum * current;
-    
-    NSMutableArray<Forum *> *forms = [NSMutableArray array];
-    for (int i = 0; i < size; i++) {
-        IGXMLNode * child = [contents childAt:i];
+    for (IGXMLNode *forumP in topNode.children) {
+        Forum *parent = [[Forum alloc] init];
+        NSString * name = [[[[[forumP childAt:0] childAt:0] childAt:0] childAt:2] childAt:0].text;
+        parent.forumName = name;
+        parent.forumId = replaceId ++;
+        parent.forumHost = host;
+        parent.parentForumId = -1;
 
-        NSLog(@"parserForums-> %@", child.html);
-        if ([child.html hasPrefix:@"<li>"]){
-            Forum *parent = [[Forum alloc] init];
-            NSString * name = [child.text trim];
-            parent.forumName = name;
-            parent.forumId = replaceId ++;
-            parent.forumHost = host;
-            parent.parentForumId = -1;
+        [forms addObject:parent];
 
-            current = parent;
-            [forms addObject:parent];
+        // 正式论坛
 
-        } else if([child.html hasPrefix:@"<ul>"]){
+        for (IGXMLNode * forumNode in [[forumP childAt:0] childAt:2].children) {
 
-            [self ul2Forum:child parent:current host:host parentId:current.forumId];
+            if ([[forumNode attribute:@"class"] isEqualToString:@"tr3 f_one"]){
+                Forum *forum = [[Forum alloc] init];
+                IGXMLNode * tileNode = [[[forumNode childAt:1] childAt:0] firstChild];
+
+                NSString * forumName = tileNode.text.trim;
+                forum.forumName = forumName;
+                forum.forumId = [[tileNode.html stringWithRegular:@"(?<=fn_)\\d+"] intValue];
+                forum.forumHost = host;
+                forum.parentForumId = parent.forumId;
+
+                [forms addObject:forum];
+                // 子论坛
+                int count = [forumNode childAt:1].childrenCount;
+                NSString * childHtml = [[forumNode childAt:1] childAt:count -1].html;
+                IGHTMLDocument * childForumDoc = [[IGHTMLDocument alloc] initWithHTMLString:childHtml error:nil];
+                IGXMLNodeSet * childForumSet = [childForumDoc queryWithXPath:@"/html/body/div/span/a[position()>0]"];
+                int  c = childForumSet.count;
+                for (IGXMLNode * chileForumNode in childForumSet) {
+                    Forum *childForum = [[Forum alloc] init];
+
+                    NSString * childForumName = chileForumNode.text.trim;
+                    childForum.forumName = childForumName;
+                    childForum.forumId = [[tileNode.html stringWithRegular:@"(?<=fid=)\\d+"] intValue];
+                    childForum.forumHost = host;
+                    childForum.parentForumId = forum.forumId;
+
+                    [forms addObject:childForum];
+                }
+            }
         }
-
     }
 
-    NSMutableArray<Forum *> *needInsert = [NSMutableArray array];
-
-    for (Forum *forum in forms) {
-        [needInsert addObjectsFromArray:[self flatForm:forum]];
-    }
-
-    NSMutableArray<Forum *> *result = [NSMutableArray array];
-    for (Forum *forum in needInsert) {
-        if (forum.parentForumId == -1 && forum.childForums == nil){
-            continue;
-        } else {
-            [result addObject:forum];
-        }
-        NSLog(@"parserForums -----------------> \t%@", forum.forumName);
-    }
-
-    return [result copy];
+    return [forms copy];
 }
 
 - (NSArray *)flatForm:(Forum *)form {

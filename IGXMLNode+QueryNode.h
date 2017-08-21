@@ -12,4 +12,6 @@
 
 - (IGXMLNode *)queryNodeWithClassName:(NSString *)name;
 
+- (IGXMLNodeSet *)queryWithClassName:(NSString *)name;
+
 @end

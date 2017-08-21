@@ -27,7 +27,7 @@
 }
 
 - (NSString *)archive {
-    return @"http://bbs.crsky.com/simple/";
+    return @"http://bbs.crsky.com/index.php?skinco=wind";
 }
 
 - (NSString *)cookieUserIdKey {

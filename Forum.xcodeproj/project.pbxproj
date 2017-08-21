@@ -129,6 +129,7 @@
 		3ACFFD341CFA641F000312DC /* NYTExamplePhoto.m in Sources */ = {isa = PBXBuildFile; fileRef = 3ACFFD331CFA641F000312DC /* NYTExamplePhoto.m */; };
 		3AE854B71DF2B0B3000F62E9 /* defaultAvatar.gif in Resources */ = {isa = PBXBuildFile; fileRef = 3AE854B61DF2B0B3000F62E9 /* defaultAvatar.gif */; };
 		4D0D87251DE40C7900DA9034 /* ForumNavigationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4D0D87241DE40C7900DA9034 /* ForumNavigationViewController.m */; };
+		4DB47C321F4AC73B00A79AC5 /* IGXMLNode+QueryNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 4DB47C311F4AC73B00A79AC5 /* IGXMLNode+QueryNode.m */; };
 		4DEB34C31C47BBE400063CBB /* AssetsLibrary.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DEB34C21C47BBE400063CBB /* AssetsLibrary.framework */; };
 		4DF737061DDECC8500BF1896 /* ViewSearchForumPage.m in Sources */ = {isa = PBXBuildFile; fileRef = 4DF737041DDECC8500BF1896 /* ViewSearchForumPage.m */; };
 		4DF737191DDECC8D00BF1896 /* Post.m in Sources */ = {isa = PBXBuildFile; fileRef = 4DF737081DDECC8D00BF1896 /* Post.m */; };
@@ -388,6 +389,8 @@
 		4D0D87231DE40C7900DA9034 /* ForumNavigationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ForumNavigationViewController.h; sourceTree = "<group>"; };
 		4D0D87241DE40C7900DA9034 /* ForumNavigationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ForumNavigationViewController.m; sourceTree = "<group>"; };
 		4D339D8B1C31454A0022A6A4 /* Forum.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Forum.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		4DB47C301F4AC73B00A79AC5 /* IGXMLNode+QueryNode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "IGXMLNode+QueryNode.h"; sourceTree = "<group>"; };
+		4DB47C311F4AC73B00A79AC5 /* IGXMLNode+QueryNode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "IGXMLNode+QueryNode.m"; sourceTree = "<group>"; };
 		4DEB34C21C47BBE400063CBB /* AssetsLibrary.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AssetsLibrary.framework; path = System/Library/Frameworks/AssetsLibrary.framework; sourceTree = SDKROOT; };
 		4DF736FA1DDECC5000BF1896 /* ForumBrowserDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ForumBrowserDelegate.h; sourceTree = "<group>"; };
 		4DF736FB1DDECC5000BF1896 /* ForumParserDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ForumParserDelegate.h; sourceTree = "<group>"; };
@@ -656,6 +659,8 @@
 		3A2C40101DE0029D00576151 /* Extension */ = {
 			isa = PBXGroup;
 			children = (
+				4DB47C301F4AC73B00A79AC5 /* IGXMLNode+QueryNode.h */,
+				4DB47C311F4AC73B00A79AC5 /* IGXMLNode+QueryNode.m */,
 				3A2C3F811DDFDF9200576151 /* AFHTTPSessionManager+SimpleAction.h */,
 				3A2C3F821DDFDF9200576151 /* AFHTTPSessionManager+SimpleAction.m */,
 				3A2C3F831DDFDF9200576151 /* IGHTMLDocument+QueryNode.h */,
@@ -1170,6 +1175,7 @@
 				4D0D87251DE40C7900DA9034 /* ForumNavigationViewController.m in Sources */,
 				3A92CDDA1F35379500E41573 /* UIProgressView+AFNetworking.m in Sources */,
 				3A2C3F511DDFBF5900576151 /* SelectPhotoCollectionViewCell.m in Sources */,
+				4DB47C321F4AC73B00A79AC5 /* IGXMLNode+QueryNode.m in Sources */,
 				3A288A5A1DFC544B002EBBC2 /* SupportForumTableViewController.m in Sources */,
 				4DFB34CF1DF82D5E00BD8DD5 /* ForumEntry+CoreDataClass.m in Sources */,
 				3A2C3FD51DDFE0C900576151 /* ForumMyProfileTableViewController.m in Sources */,

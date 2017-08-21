@@ -34,27 +34,12 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
 
-//    id<ForumBrowserDelegate> forumApi = [ForumApiHelper forumApi];
-//
-//    [forumApi listNewThreadWithPage:1 handler:^(BOOL isSuccess, id message) {
-//
-//
-//    }];
+    id<ForumBrowserDelegate> forumApi = [ForumApiHelper forumApi];
 
-    NSData *data = [@"%%%%%%9999" dataForGBK];
+    [forumApi listAllForums:^(BOOL isSuccess, id message) {
 
-    NSString *message = @"你好,，";
-    NSRange range;
-    for (int i = 0; i < message.length; i += range.length) {
-        range = [message rangeOfComposedCharacterSequenceAtIndex:i];
-        NSString *s = [message substringWithRange:range];
+    }];
 
-        unichar c = [s characterAtIndex:0];
-        UnicodeBlock block = [CharUnicodeBlock unicodeBlockOf:c];
-
-        NSLog(@">>>>>  %ld %@", (long)block, [CharUtils isChinese:c] ? @"CJK" : @"O÷ther");
-
-    }
 
 }
 
