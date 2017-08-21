@@ -233,7 +233,7 @@
 
             //6 总回帖页数
             int totalPage = 1;
-            BOOL isMoreThanOnePage = [categoryTitleNode.html containsString:@"class=\"tpage\""];
+            BOOL isMoreThanOnePage = [categoryTitleNode.html containsString:@"multipage.gif"];
             if (isMoreThanOnePage){
                 IGXMLNode * totalPageNode = categoryTitleNode.children[(NSUInteger) (categoryTitleNode.childrenCount -1)];
                 IGXMLNode * pageNode = totalPageNode.children[(NSUInteger) (totalPageNode.childrenCount -1)];
