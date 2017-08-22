@@ -211,6 +211,7 @@
 - (void)quickReplyPostWithMessage:(NSString *)message toPostId:(NSString *)postId thread:(ViewThreadPage *)threadPage handler:(HandlerWithBool)handler {
 
 }
+
 - (void)seniorReplyPostWithMessage:(NSString *)message withImages:(NSArray *)images toPostId:(NSString *)postId thread:(ViewThreadPage *)threadPage handler:(HandlerWithBool)handler {
     NSString *msg = message;
 
@@ -425,7 +426,7 @@
 }
 
 - (void)listMyAllThreadsWithPage:(int)page handler:(HandlerWithBool)handler {
-    [self.browser GETWithURLString:nil parameters:nil charset:UTF_8 requestCallback:^(BOOL isSuccess, NSString *html) {
+    [self.browser GETWithURLString:@"https://www.chiphell.com/forum.php?mod=guide&view=my" parameters:nil charset:UTF_8 requestCallback:^(BOOL isSuccess, NSString *html) {
         if (isSuccess) {
             ViewForumPage *sarchPage = [self.forumParser parseSearchPageFromHtml:html];
             handler(isSuccess, sarchPage);

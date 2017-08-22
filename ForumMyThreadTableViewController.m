@@ -36,6 +36,10 @@
             [self.dataList addObjectsFromArray:message.dataList];
             [self.tableView reloadData];
 
+            if (currentForumPage.pageNumber.currentPageNumber >= currentForumPage.pageNumber.totalPageNumber) {
+                [self.tableView.mj_footer endRefreshingWithNoMoreData];
+            }
+
         }
 
     }];
