@@ -34,10 +34,25 @@
     return self;
 }
 
-- (void)listAllForums:(HandlerWithBool)handler {
-    NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
+- (void)GET:(NSString *)url parameters:(NSDictionary *)parameters requestCallback:(RequestCallback)callback{
+    NSMutableDictionary *defparameters = [NSMutableDictionary dictionary];
+    [defparameters setValue:@"2" forKey:@"styleid"];
+    [defparameters setValue:@"1" forKey:@"langid"];
 
-    [self.browser GETWithURLString:self.forumConfig.archive parameters:parameters charset:GBK requestCallback:^(BOOL isSuccess, NSString *html) {
+    if (parameters){
+        [defparameters addEntriesFromDictionary:parameters];
+    }
+
+    [self.browser GETWithURLString:url parameters:defparameters charset:GBK requestCallback:callback];
+}
+
+- (void)GET:(NSString *)url requestCallback:(RequestCallback)callback{
+    [self GET:url parameters:nil requestCallback:callback];
+}
+
+- (void)listAllForums:(HandlerWithBool)handler {
+    NSString * url = self.forumConfig.archive;
+    [self GET:url requestCallback:^(BOOL isSuccess, NSString *html) {
         if (isSuccess) {
             NSString * host = self.forumConfig.forumURL.host;
             NSArray<Forum *> *parserForums = [self.forumParser parserForums:html forumHost:host];
@@ -53,30 +68,21 @@
 }
 
 - (void)fetchUserId:(HandlerWithBool)handler {
-    NSMutableDictionary *defparameters = [NSMutableDictionary dictionary];
-    [defparameters setValue:@"winds" forKey:@"skinco"];
-
     NSString * url = self.forumConfig.forumURL.absoluteString;
-    [self.browser GETWithURLString:url parameters:defparameters charset:GBK requestCallback:^(BOOL isSuccess, NSString *html) {
-
+    [self GET:url requestCallback:^(BOOL isSuccess, NSString *html) {
         if (isSuccess) {
             NSString *uid = [html stringWithRegular:@"(?<=UID: )\\d+"];
             handler(isSuccess, uid);
         } else {
             handler(NO, html);
         }
-
     }];
 }
 
 - (void)listThreadCategory:(NSString *)fid handler:(HandlerWithBool)handler {
 
-    NSMutableDictionary *defparameters = [NSMutableDictionary dictionary];
-    [defparameters setValue:@"winds" forKey:@"skinco"];
-
     NSString * url = [NSString stringWithFormat:@"http://bbs.crsky.com/post.php?fid=%@", fid];
-    [self.browser GETWithURLString:url parameters:defparameters charset:GBK requestCallback:^(BOOL isSuccess, NSString *html) {
-
+    [self GET:url requestCallback:^(BOOL isSuccess, NSString *html) {
         if (isSuccess) {
             IGHTMLDocument *document = [[IGHTMLDocument alloc] initWithHTMLString:html error:nil];
 
@@ -97,7 +103,6 @@
         } else {
             handler(NO, html);
         }
-
     }];
 }
 
@@ -415,11 +420,9 @@
 }
 
 - (void)showPrivateMessageContentWithId:(int)pmId withType:(int)type handler:(HandlerWithBool)handler {
-    NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
-    [parameters setValue:@"winds" forKey:@"skinco"];
 
     NSString * url = [self.forumConfig privateShowWithMessageId:pmId withType:type];
-    [self.browser GETWithURLString:url parameters:parameters charset:GBK requestCallback:^(BOOL isSuccess, NSString *html) {
+    [self GET:url requestCallback:^(BOOL isSuccess, NSString *html) {
         if (isSuccess) {
             ViewMessagePage *content = [self.forumParser parsePrivateMessageContent:html avatarBase:self.forumConfig.avatarBase noavatar:self.forumConfig.avatarNo];
             if (![content.pmUserInfo.userID isEqualToString:@"-1"]){
@@ -438,10 +441,8 @@
 }
 
 - (void)sendPrivateMessageToUserName:(NSString *)name andTitle:(NSString *)title andMessage:(NSString *)message handler:(HandlerWithBool)handler {
-    NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
-    [parameters setValue:@"winds" forKey:@"skinco"];
-
-    [self.browser GETWithURLString:self.forumConfig.privateNewPre parameters:parameters charset:GBK requestCallback:^(BOOL isSuccess, NSString *html) {
+    NSString *url =self.forumConfig.privateNewPre;
+    [self GET:url requestCallback:^(BOOL isSuccess, NSString *html) {
         if (isSuccess) {
             NSString *token = [self.forumParser parseSecurityToken:html];
 
@@ -471,10 +472,9 @@
 }
 
 - (void)replyPrivateMessage:(Message *)privateMessage andReplyContent:(NSString *)content handler:(HandlerWithBool)handler {
-    NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
-    [parameters setValue:@"winds" forKey:@"skinco"];
+    NSString *url = [self.forumConfig privateReplyWithMessageIdPre:[privateMessage.pmID intValue]];
 
-    [self.browser GETWithURLString:[self.forumConfig privateReplyWithMessageIdPre:[privateMessage.pmID intValue]] parameters:parameters charset:GBK requestCallback:^(BOOL isSuccess, NSString *html) {
+    [self GET:url requestCallback:^(BOOL isSuccess, NSString *html) {
         if (isSuccess) {
             NSString *token = [self.forumParser parseSecurityToken:html];
 
@@ -587,11 +587,8 @@
 
 - (void)favoriteThreadWithId:(NSString *)threadPostId handler:(HandlerWithBool)handler {
 
-    NSMutableDictionary *defparameters = [NSMutableDictionary dictionary];
-    [defparameters setValue:@"winds" forKey:@"skinco"];
-
     NSString *preUrl = [self.forumConfig favThreadWithIdPre:threadPostId];
-    [self.browser GETWithURLString:preUrl parameters:defparameters charset:GBK requestCallback:^(BOOL isSuccess, NSString *html) {
+    [self GET:preUrl requestCallback:^(BOOL isSuccess, NSString *html) {
         if (!isSuccess) {
             handler(NO, html);
         } else {
@@ -609,10 +606,9 @@
 }
 
 - (void)unFavoriteThreadWithId:(NSString *)threadPostId handler:(HandlerWithBool)handler {
-    NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
-    [parameters setValue:@"winds" forKey:@"skinco"];
 
-    [self.browser GETWithURLString:@"http://bbs.crsky.com/u.php?action=favor" parameters:parameters charset:GBK requestCallback:^(BOOL isSuccess, NSString *html) {
+    NSString *url = @"http://bbs.crsky.com/u.php?action=favor";
+    [self GET:url requestCallback:^(BOOL isSuccess, NSString *html) {
         if (isSuccess) {
             NSString *token = [self.forumParser parseSecurityToken:html];
 
@@ -636,10 +632,8 @@
 }
 
 - (void)listPrivateMessageWithType:(int)type andPage:(int)page handler:(HandlerWithBool)handler {
-    NSMutableDictionary *defparameters = [NSMutableDictionary dictionary];
-    [defparameters setValue:@"winds" forKey:@"skinco"];
-
-    [self.browser GETWithURLString:[self.forumConfig privateWithType:type withPage:page] parameters:defparameters charset:GBK requestCallback:^(BOOL isSuccess, NSString *html) {
+    NSString *url = [self.forumConfig privateWithType:type withPage:page];
+    [self GET:url requestCallback:^(BOOL isSuccess, NSString *html) {
         if (isSuccess) {
             ViewForumPage *viewForumPage = [self.forumParser parsePrivateMessageFromHtml:html forType:type];
             handler(YES, viewForumPage);
@@ -671,10 +665,7 @@
 
 - (void)listFavoriteThreads:(int)userId withPage:(int)page handler:(HandlerWithBool)handler {
     NSString *url = [self.forumConfig listFavorThreads:userId withPage:page];
-    NSMutableDictionary *defparameters = [NSMutableDictionary dictionary];
-    [defparameters setValue:@"winds" forKey:@"skinco"];
-
-    [self.browser GETWithURLString:url parameters:defparameters charset:GBK requestCallback:^(BOOL isSuccess, NSString *html) {
+    [self GET:url requestCallback:^(BOOL isSuccess, NSString *html) {
         if (isSuccess) {
             ViewForumPage *viewForumPage = [self.forumParser parseFavorThreadListFromHtml:html];
             handler(isSuccess, viewForumPage);
@@ -693,14 +684,11 @@
     NSInteger searchId = [userDefault integerForKey:[self.forumConfig.forumURL.host stringByAppendingString:@"-search_id"]];
     NSInteger lastTimeStamp = [userDefault integerForKey:[self.forumConfig.forumURL.host stringByAppendingString:@"-search_time"]];
 
-    // 参数
-    NSMutableDictionary *defparameters = [NSMutableDictionary dictionary];
-    [defparameters setValue:@"winds" forKey:@"skinco"];
-
     long spaceTime = timeStamp - lastTimeStamp;
     if (searchId == 0 || spaceTime > 60 * 10) {
 
-        [self.browser GETWithURLString:[self.forumConfig searchNewThread:page] parameters:defparameters charset:GBK requestCallback:^(BOOL isSuccess, NSString *html) {
+        NSString *url = [self.forumConfig searchNewThread:page];
+        [self GET:url requestCallback:^(BOOL isSuccess, NSString *html) {
             if (isSuccess) {
                 NSUInteger newThreadPostSearchId = (NSUInteger) [[self.forumParser parseListMyThreadSearchId:html] integerValue];
                 [userDefault setInteger:timeStamp forKey:[self.forumConfig.forumURL.host stringByAppendingString:@"-search_time"]];
@@ -717,7 +705,7 @@
         NSString *searchIdStr = [NSString stringWithFormat:@"%ld", (long) searchId];
         NSString *url = [self.forumConfig searchWithSearchId:searchIdStr withPage:page];
 
-        [self.browser GETWithURLString:url parameters:defparameters charset:GBK requestCallback:^(BOOL isSuccess, NSString *html) {
+        [self GET:url requestCallback:^(BOOL isSuccess, NSString *html) {
             if (isSuccess) {
                 ViewForumPage *sarchPage = [self.forumParser parseSearchPageFromHtml:html];
                 handler(isSuccess, sarchPage);
@@ -731,10 +719,8 @@
 - (void)listMyAllThreadsWithPage:(int)page handler:(HandlerWithBool)handler {
     LoginUser *user = [[[LocalForumApi alloc] init] getLoginUser];
     NSString *url = [self.forumConfig listUserThreads:user.userID withPage:page];
-    NSMutableDictionary *defparameters = [NSMutableDictionary dictionary];
-    [defparameters setValue:@"winds" forKey:@"skinco"];
 
-    [self.browser GETWithURLString:url parameters:defparameters charset:GBK requestCallback:^(BOOL isSuccess, NSString *html) {
+    [self GET:url requestCallback:^(BOOL isSuccess, NSString *html) {
         if (isSuccess) {
             ViewForumPage *viewForumPage = [self.forumParser parseListMyAllThreadsFromHtml:html];
             handler(isSuccess, viewForumPage);
@@ -748,10 +734,8 @@
     NSString * uid = [NSString stringWithFormat:@"%d", userId];
 
     NSString *url = [self.forumConfig listUserThreads:uid withPage:page];
-    NSMutableDictionary *defparameters = [NSMutableDictionary dictionary];
-    [defparameters setValue:@"winds" forKey:@"skinco"];
 
-    [self.browser GETWithURLString:url parameters:defparameters charset:GBK requestCallback:^(BOOL isSuccess, NSString *html) {
+    [self GET:url requestCallback:^(BOOL isSuccess, NSString *html) {
         if (isSuccess) {
             ViewForumPage *viewForumPage = [self.forumParser parseListMyAllThreadsFromHtml:html];
             handler(isSuccess, viewForumPage);
@@ -762,32 +746,22 @@
 }
 
 - (void)showThreadWithId:(int)threadId andPage:(int)page handler:(HandlerWithBool)handler {
-    NSMutableDictionary *defparameters = [NSMutableDictionary dictionary];
-    [defparameters setValue:@"winds" forKey:@"skinco"];
-
     NSString * url = [self.forumConfig showThreadWithThreadId:[NSString stringWithFormat:@"%d", threadId] withPage:page];
-    [self.browser GETWithURLString:url parameters:defparameters charset:GBK requestCallback:^(BOOL isSuccess, NSString *html) {
-
+    [self GET:url requestCallback:^(BOOL isSuccess, NSString *html) {
         if (isSuccess) {
             ViewThreadPage *detail = [self.forumParser parseShowThreadWithHtml:html];
             handler(isSuccess, detail);
         } else {
             handler(NO, html);
         }
-
     }];
 }
 
-- (void)showThreadWithP:(NSString *)p handler:(HandlerWithBool)handler {
-
-}
-
 - (void)forumDisplayWithId:(int)forumId andPage:(int)page handler:(HandlerWithBool)handler {
-    NSMutableDictionary *defparameters = [NSMutableDictionary dictionary];
-    [defparameters setValue:@"winds" forKey:@"skinco"];
 
-    NSString*url = [self.forumConfig forumDisplayWithId:[NSString stringWithFormat:@"%d", forumId] withPage:page];
-    [self.browser GETWithURLString:url parameters:defparameters charset:GBK requestCallback:^(BOOL isSuccess, NSString *html) {
+    NSString *url = [self.forumConfig forumDisplayWithId:[NSString stringWithFormat:@"%d", forumId] withPage:page];
+
+    [self GET:url requestCallback:^(BOOL isSuccess, NSString *html) {
         if (isSuccess) {
             ViewForumPage *viewForumPage = [self.forumParser parseThreadListFromHtml:html withThread:forumId andContainsTop:YES];
             handler(isSuccess, viewForumPage);
@@ -802,10 +776,10 @@
         handler(YES, self.forumConfig.avatarNo);
         return;
     }
-    NSMutableDictionary *defparameters = [NSMutableDictionary dictionary];
-    [defparameters setValue:@"winds" forKey:@"skinco"];
 
-    [self.browser GETWithURLString:[self.forumConfig memberWithUserId:userId] parameters:defparameters charset:GBK requestCallback:^(BOOL isSuccess, NSString *html) {
+    NSString *url = [self.forumConfig memberWithUserId:userId];
+
+    [self GET:url requestCallback:^(BOOL isSuccess, NSString *html) {
         NSString *avatar = [self.forumParser parseUserAvatar:html userId:userId];
         if (!avatar){
             avatar = self.forumConfig.avatarNo;
@@ -818,12 +792,10 @@
 - (void)listSearchResultWithSearchId:(NSString *)searchid keyWord:(NSString *)keyWord andPage:(int)page handler:(HandlerWithBool)handler {
 
     NSMutableDictionary *defparameters = [NSMutableDictionary dictionary];
-    [defparameters setValue:@"winds" forKey:@"skinco"];
     [defparameters setValue:keyWord forKey:@"keyword"];
-
-
     NSString *searchedUrl = [self.forumConfig searchWithSearchId:searchid withPage:page];
-    [self.browser GETWithURLString:searchedUrl parameters:defparameters charset:GBK requestCallback:^(BOOL isSuccess, NSString *html) {
+
+    [self GET:searchedUrl parameters:defparameters requestCallback:^(BOOL isSuccess, NSString *html) {
         if (isSuccess) {
 
             ViewSearchForumPage *viewSearchForumPage = [self.forumParser parseSearchPageFromHtml:html];
@@ -841,10 +813,8 @@
 }
 
 - (void)showProfileWithUserId:(NSString *)userId handler:(HandlerWithBool)handler {
-    NSMutableDictionary *defparameters = [NSMutableDictionary dictionary];
-    [defparameters setValue:@"winds" forKey:@"skinco"];
-
-    [self.browser GETWithURLString:[self.forumConfig memberWithUserId:userId] parameters:defparameters charset:GBK requestCallback:^(BOOL isSuccess, NSString *html) {
+    NSString *url = [self.forumConfig memberWithUserId:userId];
+    [self GET:url requestCallback:^(BOOL isSuccess, NSString *html) {
         if (isSuccess) {
             UserProfile *profile = [self.forumParser parserProfile:html userId:userId];
             handler(YES, profile);
