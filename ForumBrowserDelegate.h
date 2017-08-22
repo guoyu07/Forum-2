@@ -11,6 +11,9 @@
 #import "ViewSearchForumPage.h"
 #import "ForumConfigDelegate.h"
 #import "Forum.h"
+#import "vBulletinDelegate.h"
+#import "DiscuzDelegate.h"
+#import "PhpWindDelegate.h"
 
 @class ViewThreadPage;
 @class ViewMessagePage;
@@ -19,16 +22,7 @@
 typedef void (^HandlerWithBool)(BOOL isSuccess, id message);
 
 
-@protocol ForumBrowserDelegate <NSObject>
-
-
-// 登录论坛
-@optional
-- (void)loginWithName:(NSString *)name andPassWord:(NSString *)passWord withCode:(NSString*) code question:(NSString *) q answer:(NSString *) a handler:(HandlerWithBool)handler;
-
-// 刷新验证码
-@optional
-- (void)refreshVCodeToUIImageView:(UIImageView *)vCodeImageView;
+@protocol ForumBrowserDelegate <vBulletinDelegate, DiscuzDelegate, PhpWindDelegate>
 
 @optional
 - (void)fetchUserId:(HandlerWithBool)handler;

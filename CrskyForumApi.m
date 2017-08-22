@@ -18,8 +18,21 @@
 #import "IGHTMLDocument.h"
 #import "IGHTMLDocument+QueryNode.h"
 #import "IGXMLNode+Children.h"
+#import "CrskyForumConfig.h"
+#import "CrskyForumHtmlParser.h"
+#import "LocalForumApi.h"
 
 @implementation CrskyForumApi
+
+
+- (instancetype)init {
+    self = [super init];
+    if (self){
+        self.forumConfig = [[CrskyForumConfig alloc] init];
+        self.forumParser = [[CrskyForumHtmlParser alloc]init];
+    }
+    return self;
+}
 
 // private
 - (NSString *)buildSignature {
@@ -443,7 +456,7 @@
                 [formData appendPartWithFormData:[@"write" dataForUTF8]  name:@"action"];
                 [formData appendPartWithFormData:[@"2" dataForUTF8] name:@"step"];
                 [formData appendPartWithFormData:[token dataForUTF8] name:@"verify"];
-                LoginUser *user = [self getLoginUser];
+                LoginUser *user = [[[LocalForumApi alloc] init] getLoginUser];
                 [formData appendPartWithFormData:[self buildContent:user.userName] name:@"pwuser"];
                 [formData appendPartWithFormData:[self buildContent:title] name:@"msg_title"];
                 [formData appendPartWithFormData:[@"" dataForUTF8] name:@"font"];
@@ -723,7 +736,7 @@
 }
 
 - (void)listMyAllThreadsWithPage:(int)page handler:(HandlerWithBool)handler {
-    LoginUser *user = [self getLoginUser];
+    LoginUser *user = [[[LocalForumApi alloc] init] getLoginUser];
     NSString *url = [self.forumConfig listUserThreads:user.userID withPage:page];
     NSMutableDictionary *defparameters = [NSMutableDictionary dictionary];
     [defparameters setValue:@"winds" forKey:@"skinco"];

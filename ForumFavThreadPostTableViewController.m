@@ -11,10 +11,10 @@
 #import "ForumWebViewController.h"
 #import "ForumUserProfileTableViewController.h"
 #import "BaseForumApi.h"
+#import "LocalForumApi.h"
 
 @interface ForumFavThreadPostTableViewController () <MGSwipeTableCellDelegate, ThreadListCellDelegate> {
     UIStoryboardSegue *selectSegue;
-    BaseForumApi * _baseForumApi;
 }
 
 @end
@@ -25,13 +25,13 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    _baseForumApi = [[BaseForumApi alloc] init];
     self.tableView.rowHeight = UITableViewAutomaticDimension;
     self.tableView.estimatedRowHeight = 97.0;
 }
 
 - (void)onPullRefresh {
-    LoginUser *user = _baseForumApi.getLoginUser;
+    LocalForumApi *forumApi = [[LocalForumApi alloc] init];
+    LoginUser *user = forumApi.getLoginUser;
     int userId = [user.userID intValue];
     [self.forumApi listFavoriteThreads:userId withPage:1 handler:^(BOOL isSuccess, ViewForumPage *resultPage) {
 
@@ -50,7 +50,8 @@
 
 - (void)onLoadMore {
     int toLoadPage = currentForumPage == nil ? 1: currentForumPage.pageNumber.currentPageNumber + 1;
-    LoginUser *user = _baseForumApi.getLoginUser;
+    LocalForumApi *forumApi = [[LocalForumApi alloc] init];
+    LoginUser *user = forumApi.getLoginUser;
     int userId = [user.userID intValue];
     [self.forumApi listFavoriteThreads:userId withPage:toLoadPage handler:^(BOOL isSuccess, ViewForumPage *resultPage) {
 

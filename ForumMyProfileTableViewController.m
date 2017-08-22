@@ -14,6 +14,7 @@
 #import "AppDelegate.h"
 #import "ForumTabBarController.h"
 #import "BaseForumApi.h"
+#import "LocalForumApi.h"
 
 
 @interface ForumMyProfileTableViewController () {
@@ -96,7 +97,7 @@
 - (void)onPullRefresh {
     BaseForumApi *forumApi = [[BaseForumApi alloc] init];
 
-    NSString *currentUserId = [forumApi getLoginUser].userID;
+    NSString *currentUserId = [[[LocalForumApi alloc] init] getLoginUser].userID;
 
     [self.forumApi showProfileWithUserId:currentUserId handler:^(BOOL isSuccess, UserProfile *message) {
         userProfile = message;
@@ -183,7 +184,7 @@
 
     if (indexPath.section == 3 && indexPath.row == 1) {
 
-        BaseForumApi *forumApi = [[BaseForumApi alloc] init];
+        LocalForumApi *forumApi = [[LocalForumApi alloc] init];
         [forumApi logout];
 
         NSString * id = self.forumApi.currentConfigDelegate.loginControllerId;

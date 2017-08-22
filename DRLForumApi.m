@@ -12,6 +12,9 @@
 #import "UIImageView+AFNetworking.h"
 #import "DeviceName.h"
 #import "ForumParserDelegate.h"
+#import "DRLForumHtmlParser.h"
+#import "DRLForumConfig.h"
+#import "LocalForumApi.h"
 
 #define kSecurityToken @"securitytoken"
 
@@ -29,6 +32,15 @@ typedef void (^CallBack)(NSString *token, NSString *hash, NSString *time);
     HandlerWithBool _handlerWithBool;
     NSString *_message;
     NSString *_subject;
+}
+
+- (instancetype)init {
+    self = [super init];
+    if (self){
+        self.forumConfig = [[DRLForumConfig alloc] init];
+        self.forumParser = [[DRLForumHtmlParser alloc]init];
+    }
+    return self;
 }
 
 
@@ -171,7 +183,7 @@ typedef void (^CallBack)(NSString *token, NSString *hash, NSString *time);
 
     [parameters setValue:time forKey:@"poststarttime"];
 
-    LoginUser *user = [self getLoginUser];
+    LoginUser *user = [[[LocalForumApi alloc] init] getLoginUser];
     [parameters setValue:user.userID forKey:@"loggedinuser"];
     [parameters setValue:@"发表主题" forKey:@"sbutton"];
     [parameters setValue:@"1" forKey:@"parseurl"];
@@ -506,7 +518,7 @@ typedef void (^CallBack)(NSString *token, NSString *hash, NSString *time);
     [parameters setValue:@"1" forKey:@"specifiedpost"];
     [parameters setValue:@"1" forKey:@"parseurl"];
 
-    LoginUser *user = [self getLoginUser];
+    LoginUser *user = [[[LocalForumApi alloc] init] getLoginUser];
     [parameters setValue:user.userID forKey:@"loggedinuser"];
     [parameters setValue:@"sbutton" forKey:@"快速回复帖子"];
 
@@ -1109,7 +1121,7 @@ typedef void (^CallBack)(NSString *token, NSString *hash, NSString *time);
 }
 
 - (void)listMyAllThreadsWithPage:(int)page handler:(HandlerWithBool)handler {
-    LoginUser *user = [self getLoginUser];
+    LoginUser *user = [[[LocalForumApi alloc] init] getLoginUser];
     if (user == nil || user.userID == nil) {
         handler(NO, @"未登录");
         return;

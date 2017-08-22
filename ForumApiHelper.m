@@ -10,16 +10,8 @@
 #import "CCFForumApi.h"
 #import "DRLForumApi.h"
 #import "AppDelegate.h"
-#import "CCFForumConfig.h"
-#import "DRLForumConfig.h"
-#import "CCFForumHtmlParser.h"
-#import "DRLForumHtmlParser.h"
 #import "CHHForumApi.h"
-#import "CHHForumConfig.h"
-#import "CHHForumHtmlParser.h"
 #import "CrskyForumApi.h"
-#import "CrskyForumConfig.h"
-#import "CrskyForumHtmlParser.h"
 
 @implementation ForumApiHelper
 + (id <ForumBrowserDelegate>)forumApi {
@@ -28,33 +20,26 @@
 
     NSString * host = appDelegate.forumHost;
 
-    if ([bundleId isEqualToString:@"com.andforce.et8"]){
-        CCFForumApi * _ccfForumBrowser = [[CCFForumApi alloc] initWithConfig:[[CCFForumConfig alloc] init] parser:[[CCFForumHtmlParser alloc] init]];
-        return _ccfForumBrowser;
-    } else if ([bundleId isEqualToString:@"com.andforce.DRL"]){
-        DRLForumApi * _drlForumBrowser = [[DRLForumApi alloc] initWithConfig:[[DRLForumConfig alloc] init] parser:[[DRLForumHtmlParser alloc] init]];
-        return _drlForumBrowser;
-    } else if ([bundleId isEqualToString:@"com.andforce.Crsky"]){
-        CrskyForumApi *api = [[CrskyForumApi alloc] initWithConfig:[[CrskyForumConfig alloc] init] parser:[[CrskyForumHtmlParser alloc] init]];
-        return api;
-    } else if([bundleId isEqualToString:@"com.andforce.CHH"]){
-        CHHForumApi * api = [[CHHForumApi alloc] initWithConfig:[[CHHForumConfig alloc] init] parser:[[CHHForumHtmlParser alloc] init]];
-        return api;
-    } else{
-        if ([host isEqualToString:@"bbs.et8.net"]) {
-            CCFForumApi * _ccfForumBrowser = [[CCFForumApi alloc] initWithConfig:[[CCFForumConfig alloc] init] parser:[[CCFForumHtmlParser alloc] init]];
-            return _ccfForumBrowser;
-        } else if ([host isEqualToString:@"dream4ever.org"]){
-            DRLForumApi * _drlForumBrowser = [[DRLForumApi alloc] initWithConfig:[[DRLForumConfig alloc] init] parser:[[DRLForumHtmlParser alloc] init]];
+    if ([bundleId isEqualToString:@"com.andforce.et8"] || [host isEqualToString:@"bbs.et8.net"]){
 
-            return _drlForumBrowser;
-        } else if ([host isEqualToString:@"www.chiphell.com"] || [host isEqualToString:@"chiphell.com"]){
-            CHHForumApi * api = [[CHHForumApi alloc] initWithConfig:[[CHHForumConfig alloc] init] parser:[[CHHForumHtmlParser alloc] init]];
-            return api;
-        } else if ([host isEqualToString:@"bbs.crsky.com"]){
-            CrskyForumApi *api = [[CrskyForumApi alloc] initWithConfig:[[CrskyForumConfig alloc] init] parser:[[CrskyForumHtmlParser alloc] init]];
-            return api;
-        }
+        CCFForumApi * ccfForumApi = [[CCFForumApi alloc] init];
+        return ccfForumApi;
+
+    } else if ([bundleId isEqualToString:@"com.andforce.DRL"] || [host isEqualToString:@"dream4ever.org"]){
+
+        DRLForumApi * drlForumApi = [[DRLForumApi alloc] init];
+        return drlForumApi;
+
+    } else if ([bundleId isEqualToString:@"com.andforce.Crsky"] || [host isEqualToString:@"bbs.crsky.com"]){
+
+        CrskyForumApi *crskyForumApi = [[CrskyForumApi alloc] init];
+        return crskyForumApi;
+
+    } else if([bundleId isEqualToString:@"com.andforce.CHH"] || [host isEqualToString:@"www.chiphell.com"] || [host isEqualToString:@"chiphell.com"]){
+
+        CHHForumApi * chhForumApi = [[CHHForumApi alloc] init];
+        return chhForumApi;
+
     }
     return nil;
 }

@@ -17,6 +17,7 @@
 #import "AppDelegate.h"
 #import "ForumNavigationViewController.h"
 #import "BaseForumApi.h"
+#import "LocalForumApi.h"
 
 
 @interface SupportForumTableViewController ()<CAAnimationDelegate>
@@ -108,8 +109,7 @@
 
 - (BOOL)isUserHasLogin:(NSString*)host {
     // 判断是否登录
-    BaseForumApi *forumApi = [[BaseForumApi alloc] init];
-    return [forumApi isHaveLogin:host];
+    return [[[LocalForumApi alloc] init] isHaveLogin:host];
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {

@@ -13,20 +13,10 @@
 
 @interface BaseForumApi : NSObject
 
--(id)initWithConfig:(id <ForumConfigDelegate>)configDelegate parser:(id<ForumParserDelegate>) parserDelegate;
+@property (nonatomic, strong) id <ForumConfigDelegate> forumConfig;
 
--(id <ForumConfigDelegate>)forumConfig;
--(id <ForumParserDelegate>)forumParser;
+@property (nonatomic, strong) id <ForumParserDelegate> forumParser;
 
--(AFHTTPSessionManager *)browser;
-
-// 获取当前登录的账户信息
-- (LoginUser *)getLoginUser;
-
-// 获取当前登录的账户信息
-- (BOOL)isHaveLogin:(NSString *) host;
-
-// 退出论坛
-- (void)logout;
+@property (nonatomic, strong) AFHTTPSessionManager *browser;
 
 @end

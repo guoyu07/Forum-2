@@ -26,6 +26,7 @@
 #import "Forums.h"
 #import "AppDelegate.h"
 #import "BaseForumApi.h"
+#import "LocalForumApi.h"
 
 @interface DrawerView () <UITableViewDelegate, UITableViewDataSource> {
 
@@ -58,7 +59,7 @@
 
 - (void)showUserAvatar {
 
-    BaseForumApi *forumApi = [[BaseForumApi alloc] init];
+    LocalForumApi *forumApi = [[LocalForumApi alloc] init];
     LoginUser *loginUser = [forumApi getLoginUser];
 
     [self showAvatar:_avatarUIImageView userId:loginUser.userID];
@@ -228,7 +229,7 @@
 
     [[NSUserDefaults standardUserDefaults] saveCurrentForumURL:forums.url];
 
-    BaseForumApi *forumApi = [[BaseForumApi alloc] init];
+    LocalForumApi *forumApi = [[LocalForumApi alloc] init];
 
     [self closeLeftDrawer:^{
         [self showUserAvatar];
@@ -454,7 +455,7 @@
     NSDictionary *dictionary = [NSJSONSerialization JSONObjectWithData:data options:(NSJSONReadingOptions) kNilOptions error:nil];
 
     SupportForums *supportForums = [SupportForums modelObjectWithDictionary:dictionary];
-    BaseForumApi *forumApi = [[BaseForumApi alloc] init];
+    LocalForumApi *forumApi = [[LocalForumApi alloc] init];
     for (Forums *forums in supportForums.forums) {
         NSURL *url = [NSURL URLWithString:forums.url];
         if ([forumApi isHaveLogin:url.host]) {

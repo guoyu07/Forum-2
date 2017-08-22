@@ -13,10 +13,21 @@
 #import "NSUserDefaults+Setting.h"
 
 #import "IGHTMLDocument+QueryNode.h"
+#import "CHHForumConfig.h"
+#import "CHHForumHtmlParser.h"
 
 
 @implementation CHHForumApi {
 
+}
+
+- (instancetype)init {
+    self = [super init];
+    if (self){
+        self.forumConfig = [[CHHForumConfig alloc] init];
+        self.forumParser = [[CHHForumHtmlParser alloc]init];
+    }
+    return self;
 }
 
 - (void)loginWithName:(NSString *)name andPassWord:(NSString *)passWord withCode:(NSString *)code question:(NSString *)q answer:(NSString *)a handler:(HandlerWithBool)handler {
