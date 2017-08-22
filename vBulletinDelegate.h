@@ -18,4 +18,6 @@ typedef void (^HandlerWithBool)(BOOL isSuccess, id message);
 @optional
 - (void)refreshVCodeToUIImageView:(UIImageView *)vCodeImageView;
 
+- (void)showThreadWithP:(NSString *)p handler:(HandlerWithBool)handler;
+
 @end

@@ -43,6 +43,22 @@ typedef void (^CallBack)(NSString *token, NSString *hash, NSString *time);
     return self;
 }
 
+- (void)GET:(NSString *)url parameters:(NSDictionary *)parameters requestCallback:(RequestCallback)callback{
+    NSMutableDictionary *defparameters = [NSMutableDictionary dictionary];
+    [defparameters setValue:@"2" forKey:@"styleid"];
+    [defparameters setValue:@"1" forKey:@"langid"];
+
+    if (parameters){
+        [defparameters addEntriesFromDictionary:parameters];
+    }
+
+    [self.browser GETWithURLString:url parameters:defparameters charset:UTF_8 requestCallback:callback];
+}
+
+- (void)GET:(NSString *)url requestCallback:(RequestCallback)callback{
+    [self GET:url parameters:nil requestCallback:callback];
+}
+
 //------
 // private
 - (NSString *)loadCookie {
@@ -126,11 +142,7 @@ typedef void (^CallBack)(NSString *token, NSString *hash, NSString *time);
 
 - (void)listAllForums:(HandlerWithBool)handler {
 
-    NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
-    [parameters setValue:@"2" forKey:@"styleid"];
-    [parameters setValue:@"1" forKey:@"langid"];
-
-    [self.browser GETWithURLString:self.forumConfig.archive parameters:parameters charset:UTF_8 requestCallback:^(BOOL isSuccess, NSString *html) {
+    [self GET:self.forumConfig.archive requestCallback:^(BOOL isSuccess, NSString *html) {
         if (isSuccess) {
             NSArray<Forum *> *parserForums = [self.forumParser parserForums:html forumHost:self.forumConfig.forumURL.host];
             if (parserForums != nil && parserForums.count > 0) {
@@ -193,11 +205,9 @@ typedef void (^CallBack)(NSString *token, NSString *hash, NSString *time);
 // private 进入图片管理页面，准备上传图片
 - (void)uploadImagePrepair:(int)forumId startPostTime:(NSString *)time postHash:(NSString *)hash :(HandlerWithBool)callback {
 
-    NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
-    [parameters setValue:@"2" forKey:@"styleid"];
-    [parameters setValue:@"1" forKey:@"langid"];
+    NSString *url = [self.forumConfig newattachmentForForum:forumId time:time postHash:hash];
 
-    [self.browser GETWithURLString:[self.forumConfig newattachmentForForum:forumId time:time postHash:hash] parameters:parameters charset:UTF_8 requestCallback:^(BOOL isSuccess, NSString *html) {
+    [self GET:url requestCallback:^(BOOL isSuccess, NSString *html) {
         callback(isSuccess, html);
     }];
 }
@@ -206,11 +216,7 @@ typedef void (^CallBack)(NSString *token, NSString *hash, NSString *time);
 - (void)uploadImagePrepairFormSeniorReply:(int)threadId startPostTime:(NSString *)time postHash:(NSString *)hash :(HandlerWithBool)callback {
     NSString *url = [self.forumConfig newattachmentForThread:threadId time:time postHash:hash];
 
-    NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
-    [parameters setValue:@"2" forKey:@"styleid"];
-    [parameters setValue:@"1" forKey:@"langid"];
-
-    [self.browser GETWithURLString:url parameters:parameters charset:UTF_8 requestCallback:^(BOOL isSuccess, NSString *html) {
+    [self GET:url requestCallback:^(BOOL isSuccess, NSString *html) {
         callback(isSuccess, html);
     }];
 }
@@ -236,12 +242,8 @@ typedef void (^CallBack)(NSString *token, NSString *hash, NSString *time);
 
     [request setValue:token forHTTPHeaderField:@"securitytoken"];
 
-
-
     // post body
     NSMutableData *body = [NSMutableData data];
-
-
 
     // add params (all params are strings)
     NSMutableDictionary *parameters = [[NSMutableDictionary alloc] init];
@@ -309,12 +311,8 @@ typedef void (^CallBack)(NSString *token, NSString *hash, NSString *time);
 //private  获取发新帖子的Posttime hash 和token
 - (void)createNewThreadPrepair:(int)forumId :(CallBack)callback {
 
-    NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
-    [parameters setValue:@"2" forKey:@"styleid"];
-    [parameters setValue:@"1" forKey:@"langid"];
-
-    [self.browser GETWithURLString:[self.forumConfig newThreadWithForumId:[NSString stringWithFormat:@"%d", forumId]] parameters:parameters charset:UTF_8 requestCallback:^(BOOL isSuccess, NSString *html) {
-
+    NSString *url = [self.forumConfig newThreadWithForumId:[NSString stringWithFormat:@"%d", forumId]];
+    [self GET:url requestCallback:^(BOOL isSuccess, NSString *html) {
         if (isSuccess) {
             NSString *token = [self.forumParser parseSecurityToken:html];
             NSString *postTime = [[token componentsSeparatedByString:@"-"] firstObject];
@@ -324,7 +322,6 @@ typedef void (^CallBack)(NSString *token, NSString *hash, NSString *time);
         } else {
             callback(nil, nil, nil);
         }
-
     }];
 }
 
@@ -894,11 +891,8 @@ typedef void (^CallBack)(NSString *token, NSString *hash, NSString *time);
     [parameters setValue:@"1" forKey:@"childforums"];
     [parameters setValue:@"1" forKey:@"saveprefs"];
 
-    NSMutableDictionary *defparameters = [NSMutableDictionary dictionary];
-    [defparameters setValue:@"2" forKey:@"styleid"];
-    [defparameters setValue:@"1" forKey:@"langid"];
-
-    [self.browser GETWithURLString:self.forumConfig.search parameters:defparameters charset:UTF_8 requestCallback:^(BOOL isSuccess, NSString *html) {
+    NSString *searchUrl = self.forumConfig.search;
+    [self GET:searchUrl requestCallback:^(BOOL isSuccess, NSString *html) {
         if (isSuccess) {
             NSString *token = [self.forumParser parseSecurityToken:html];
             if (token != nil) {
@@ -933,15 +927,12 @@ typedef void (^CallBack)(NSString *token, NSString *hash, NSString *time);
             handler(NO, html);
         }
     }];
-
 }
 
 - (void)showPrivateMessageContentWithId:(int)pmId withType:(int)type handler:(HandlerWithBool)handler {
-    NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
-    [parameters setValue:@"2" forKey:@"styleid"];
-    [parameters setValue:@"1" forKey:@"langid"];
 
-    [self.browser GETWithURLString:[self.forumConfig privateShowWithMessageId:pmId withType:0] parameters:parameters charset:UTF_8 requestCallback:^(BOOL isSuccess, NSString *html) {
+    NSString *url = [self.forumConfig privateShowWithMessageId:pmId withType:0];
+    [self GET:url requestCallback:^(BOOL isSuccess, NSString *html) {
         if (isSuccess) {
             ViewMessagePage *content = [self.forumParser parsePrivateMessageContent:html avatarBase:self.forumConfig.avatarBase noavatar:self.forumConfig.avatarNo];
             handler(YES, content);
@@ -952,11 +943,9 @@ typedef void (^CallBack)(NSString *token, NSString *hash, NSString *time);
 }
 
 - (void)sendPrivateMessageToUserName:(NSString *)name andTitle:(NSString *)title andMessage:(NSString *)message handler:(HandlerWithBool)handler {
-    NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
-    [parameters setValue:@"2" forKey:@"styleid"];
-    [parameters setValue:@"1" forKey:@"langid"];
 
-    [self.browser GETWithURLString:self.forumConfig.privateNewPre parameters:parameters charset:UTF_8 requestCallback:^(BOOL isSuccess, NSString *html) {
+    NSString *url = self.forumConfig.privateNewPre;
+    [self GET:url requestCallback:^(BOOL isSuccess, NSString *html) {
         if (isSuccess) {
             NSString *token = [self.forumParser parseSecurityToken:html];
 
@@ -994,12 +983,10 @@ typedef void (^CallBack)(NSString *token, NSString *hash, NSString *time);
 }
 
 - (void)replyPrivateMessage:(Message *)privateMessage andReplyContent:(NSString *)content handler:(HandlerWithBool)handler {
-    NSMutableDictionary *defparameters = [NSMutableDictionary dictionary];
-    [defparameters setValue:@"2" forKey:@"styleid"];
-    [defparameters setValue:@"1" forKey:@"langid"];
 
     int pmId = [privateMessage.pmID intValue];
-    [self.browser GETWithURLString:[self.forumConfig privateShowWithMessageId:pmId withType:0] parameters:defparameters charset:UTF_8 requestCallback:^(BOOL isSuccess, NSString *html) {
+    NSString *url = [self.forumConfig privateShowWithMessageId:pmId withType:0];
+    [self GET:url requestCallback:^(BOOL isSuccess, NSString *html) {
         if (isSuccess) {
             NSString *token = [self.forumParser parseSecurityToken:html];
 
@@ -1042,12 +1029,7 @@ typedef void (^CallBack)(NSString *token, NSString *hash, NSString *time);
 
 - (void)favoriteForumWithId:(NSString *)forumId handler:(HandlerWithBool)handler {
     NSString *preUrl = [self.forumConfig favForumWithId:forumId];
-
-    NSMutableDictionary *defparameters = [NSMutableDictionary dictionary];
-    [defparameters setValue:@"2" forKey:@"styleid"];
-    [defparameters setValue:@"1" forKey:@"langid"];
-
-    [self.browser GETWithURLString:preUrl parameters:defparameters charset:UTF_8 requestCallback:^(BOOL isSuccess, NSString *html) {
+    [self GET:preUrl requestCallback:^(BOOL isSuccess, NSString *html) {
         if (!isSuccess) {
             handler(NO, html);
         } else {
@@ -1076,22 +1058,16 @@ typedef void (^CallBack)(NSString *token, NSString *hash, NSString *time);
 
 - (void)unFavouriteForumWithId:(NSString *)forumId handler:(HandlerWithBool)handler {
     NSString *url = [self.forumConfig unfavForumWithId:forumId];
-    NSMutableDictionary *defparameters = [NSMutableDictionary dictionary];
-    [defparameters setValue:@"2" forKey:@"styleid"];
-    [defparameters setValue:@"1" forKey:@"langid"];
 
-    [self.browser GETWithURLString:url parameters:defparameters charset:UTF_8 requestCallback:^(BOOL isSuccess, NSString *html) {
+    [self GET:url requestCallback:^(BOOL isSuccess, NSString *html) {
         handler(isSuccess, html);
     }];
 }
 
 - (void)favoriteThreadWithId:(NSString *)threadPostId handler:(HandlerWithBool)handler {
     NSString *preUrl = [self.forumConfig favThreadWithIdPre:threadPostId];
-    NSMutableDictionary *defparameters = [NSMutableDictionary dictionary];
-    [defparameters setValue:@"2" forKey:@"styleid"];
-    [defparameters setValue:@"1" forKey:@"langid"];
 
-    [self.browser GETWithURLString:preUrl parameters:defparameters charset:UTF_8 requestCallback:^(BOOL isSuccess, NSString *html) {
+    [self GET:preUrl requestCallback:^(BOOL isSuccess, NSString *html) {
         if (!isSuccess) {
             handler(NO, html);
         } else {
@@ -1118,21 +1094,16 @@ typedef void (^CallBack)(NSString *token, NSString *hash, NSString *time);
 
 - (void)unFavoriteThreadWithId:(NSString *)threadPostId handler:(HandlerWithBool)handler {
     NSString *url = [self.forumConfig unFavorThreadWithId:threadPostId];
-    NSMutableDictionary *defparameters = [NSMutableDictionary dictionary];
-    [defparameters setValue:@"2" forKey:@"styleid"];
-    [defparameters setValue:@"1" forKey:@"langid"];
 
-    [self.browser GETWithURLString:url parameters:defparameters charset:UTF_8 requestCallback:^(BOOL isSuccess, NSString *html) {
+    [self GET:url requestCallback:^(BOOL isSuccess, NSString *html) {
         handler(isSuccess, html);
     }];
 }
 
 - (void)listPrivateMessageWithType:(int)type andPage:(int)page handler:(HandlerWithBool)handler {
-    NSMutableDictionary *defparameters = [NSMutableDictionary dictionary];
-    [defparameters setValue:@"2" forKey:@"styleid"];
-    [defparameters setValue:@"1" forKey:@"langid"];
 
-    [self.browser GETWithURLString:[self.forumConfig privateWithType:type withPage:page] parameters:defparameters charset:UTF_8 requestCallback:^(BOOL isSuccess, NSString *html) {
+    NSString * url = [self.forumConfig privateWithType:type withPage:page];
+    [self GET:url requestCallback:^(BOOL isSuccess, NSString *html) {
         if (isSuccess) {
             ViewForumPage *viewForumPage = [self.forumParser parsePrivateMessageFromHtml:html forType:type];
             handler(YES, viewForumPage);
@@ -1143,11 +1114,9 @@ typedef void (^CallBack)(NSString *token, NSString *hash, NSString *time);
 }
 
 - (void)listFavoriteForums:(HandlerWithBool)handler {
-    NSMutableDictionary *defparameters = [NSMutableDictionary dictionary];
-    [defparameters setValue:@"2" forKey:@"styleid"];
-    [defparameters setValue:@"1" forKey:@"langid"];
 
-    [self.browser GETWithURLString:self.forumConfig.favoriteForums parameters:defparameters charset:UTF_8 requestCallback:^(BOOL isSuccess, NSString *html) {
+    NSString *url = self.forumConfig.favoriteForums;
+    [self GET:url requestCallback:^(BOOL isSuccess, NSString *html) {
         if (isSuccess) {
             NSMutableArray<Forum *> *favForms = [self.forumParser parseFavForumFromHtml:html];
             handler(YES, favForms);
@@ -1159,11 +1128,8 @@ typedef void (^CallBack)(NSString *token, NSString *hash, NSString *time);
 
 - (void)listFavoriteThreads:(int)userId withPage:(int)page handler:(HandlerWithBool)handler {
     NSString *url = [self.forumConfig listFavorThreads:userId withPage:page];
-    NSMutableDictionary *defparameters = [NSMutableDictionary dictionary];
-    [defparameters setValue:@"2" forKey:@"styleid"];
-    [defparameters setValue:@"1" forKey:@"langid"];
 
-    [self.browser GETWithURLString:url parameters:defparameters charset:UTF_8 requestCallback:^(BOOL isSuccess, NSString *html) {
+    [self GET:url requestCallback:^(BOOL isSuccess, NSString *html) {
         if (isSuccess) {
             ViewForumPage *viewForumPage = [self.forumParser parseFavorThreadListFromHtml:html];
             handler(isSuccess, viewForumPage);
@@ -1184,13 +1150,9 @@ typedef void (^CallBack)(NSString *token, NSString *hash, NSString *time);
 
     long spaceTime = timeStamp - lastTimeStamp;
 
-    NSMutableDictionary *defparameters = [NSMutableDictionary dictionary];
-    [defparameters setValue:@"2" forKey:@"styleid"];
-    [defparameters setValue:@"1" forKey:@"langid"];
-
     if (page == 1 && (searchId == 0 || spaceTime > 60 * 10)) {
 
-        [self.browser GETWithURLString:[self.forumConfig searchNewThread:page] parameters:defparameters charset:UTF_8 requestCallback:^(BOOL isSuccess, NSString *html) {
+        [self GET:[self.forumConfig searchNewThread:page] requestCallback:^(BOOL isSuccess, NSString *html) {
             if (isSuccess) {
                 NSUInteger newThreadPostSearchId = (NSUInteger) [[self.forumParser parseListMyThreadSearchId:html] integerValue];
                 [userDefault setInteger:timeStamp forKey:[self.forumConfig.forumURL.host stringByAppendingString:@"-search_time"]];
@@ -1207,7 +1169,7 @@ typedef void (^CallBack)(NSString *token, NSString *hash, NSString *time);
         NSString *searchIdStr = [NSString stringWithFormat:@"%ld", (long) searchId];
         NSString *url = [self.forumConfig searchWithSearchId:searchIdStr withPage:page];
 
-        [self.browser GETWithURLString:url parameters:defparameters charset:UTF_8 requestCallback:^(BOOL isSuccess, NSString *html) {
+        [self GET:url requestCallback:^(BOOL isSuccess, NSString *html) {
             if (isSuccess) {
                 ViewForumPage *sarchPage = [self.forumParser parseSearchPageFromHtml:html];
                 handler(isSuccess, sarchPage);
@@ -1226,16 +1188,12 @@ typedef void (^CallBack)(NSString *token, NSString *hash, NSString *time);
         return;
     }
 
-    NSMutableDictionary *defparameters = [NSMutableDictionary dictionary];
-    [defparameters setValue:@"2" forKey:@"styleid"];
-    [defparameters setValue:@"1" forKey:@"langid"];
-
     if (listMyThreadSearchId == nil) {
 
         NSString *encodeName = [user.userName stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
 
-        [self.browser GETWithURLString:[self.forumConfig searchMyThreadWithUserName:encodeName] parameters:defparameters charset:UTF_8 requestCallback:^(BOOL isSuccess, NSString *html) {
-
+        NSString *url = [self.forumConfig searchMyThreadWithUserName:encodeName];
+        [self GET:url requestCallback:^(BOOL isSuccess, NSString *html) {
             if (listMyThreadSearchId == nil) {
                 listMyThreadSearchId = [self.forumParser parseListMyThreadSearchId:html];
             }
@@ -1250,7 +1208,7 @@ typedef void (^CallBack)(NSString *token, NSString *hash, NSString *time);
     } else {
         NSString *url = [self.forumConfig searchWithSearchId:listMyThreadSearchId withPage:page];
 
-        [self.browser GETWithURLString:url parameters:defparameters charset:UTF_8 requestCallback:^(BOOL isSuccess, NSString *html) {
+        [self GET:url requestCallback:^(BOOL isSuccess, NSString *html) {
             if (isSuccess) {
                 ViewForumPage *sarchPage = [self.forumParser parseSearchPageFromHtml:html];
                 handler(isSuccess, sarchPage);
@@ -1263,15 +1221,10 @@ typedef void (^CallBack)(NSString *token, NSString *hash, NSString *time);
 
 - (void)listAllUserThreads:(int)userId withPage:(int)page handler:(HandlerWithBool)handler {
 
-    NSMutableDictionary *defparameters = [NSMutableDictionary dictionary];
-    [defparameters setValue:@"2" forKey:@"styleid"];
-    [defparameters setValue:@"1" forKey:@"langid"];
-
-    NSString *baseUrl = [self.forumConfig searchThreadWithUserId:[NSString stringWithFormat:@"%d", userId]];
 
     if (listUserThreadRedirectUrlDictionary == nil || listUserThreadRedirectUrlDictionary[@(userId)] == nil) {
-
-        [self.browser GETWithURLString:baseUrl parameters:defparameters charset:UTF_8 requestCallback:^(BOOL isSuccess, NSString *html) {
+        NSString *baseUrl = [self.forumConfig searchThreadWithUserId:[NSString stringWithFormat:@"%d", userId]];
+        [self GET:baseUrl requestCallback:^(BOOL isSuccess, NSString *html) {
             if (listUserThreadRedirectUrlDictionary == nil) {
                 listUserThreadRedirectUrlDictionary = [NSMutableDictionary dictionary];
             }
@@ -1287,12 +1240,12 @@ typedef void (^CallBack)(NSString *token, NSString *hash, NSString *time);
                 handler(NO, html);
             }
         }];
+
     } else {
         NSString *searchId = listUserThreadRedirectUrlDictionary[@(userId)];
-
         NSString *url = [self.forumConfig searchWithSearchId:searchId withPage:page];
 
-        [self.browser GETWithURLString:url parameters:defparameters charset:UTF_8 requestCallback:^(BOOL isSuccess, NSString *html) {
+        [self GET:url requestCallback:^(BOOL isSuccess, NSString *html) {
             if (isSuccess) {
                 ViewForumPage *sarchPage = [self.forumParser parseSearchPageFromHtml:html];
                 handler(isSuccess, sarchPage);
@@ -1304,12 +1257,9 @@ typedef void (^CallBack)(NSString *token, NSString *hash, NSString *time);
 }
 
 - (void)showThreadWithId:(int)threadId andPage:(int)page handler:(HandlerWithBool)handler {
-    NSMutableDictionary *defparameters = [NSMutableDictionary dictionary];
-    [defparameters setValue:@"2" forKey:@"styleid"];
-    [defparameters setValue:@"1" forKey:@"langid"];
 
-    [self.browser GETWithURLString:[self.forumConfig showThreadWithThreadId:[NSString stringWithFormat:@"%d", threadId] withPage:page] parameters:defparameters charset:UTF_8 requestCallback:^(BOOL isSuccess, NSString *html) {
-
+    NSString *url = [self.forumConfig showThreadWithThreadId:[NSString stringWithFormat:@"%d", threadId] withPage:page];
+    [self GET:url requestCallback:^(BOOL isSuccess, NSString *html) {
         if (isSuccess) {
             NSString *error = [self checkError:html];
             if (error != nil) {
@@ -1321,18 +1271,13 @@ typedef void (^CallBack)(NSString *token, NSString *hash, NSString *time);
         } else {
             handler(NO, html);
         }
-
     }];
 }
 
 - (void)showThreadWithP:(NSString *)p handler:(HandlerWithBool)handler {
     NSString *url = [self.forumConfig showThreadWithP:p];
-    NSMutableDictionary *defParameters = [NSMutableDictionary dictionary];
-    [defParameters setValue:@"2" forKey:@"styleid"];
-    [defParameters setValue:@"1" forKey:@"langid"];
 
-    [self.browser GETWithURLString:url parameters:defParameters charset:UTF_8 requestCallback:^(BOOL isSuccess, NSString *html) {
-
+    [self GET:url requestCallback:^(BOOL isSuccess, NSString *html) {
         if (isSuccess) {
             NSString *error = [self checkError:html];
             if (error != nil) {
@@ -1348,11 +1293,9 @@ typedef void (^CallBack)(NSString *token, NSString *hash, NSString *time);
 }
 
 - (void)forumDisplayWithId:(int)forumId andPage:(int)page handler:(HandlerWithBool)handler {
-    NSMutableDictionary *defparameters = [NSMutableDictionary dictionary];
-    [defparameters setValue:@"2" forKey:@"styleid"];
-    [defparameters setValue:@"1" forKey:@"langid"];
 
-    [self.browser GETWithURLString:[self.forumConfig forumDisplayWithId:[NSString stringWithFormat:@"%d", forumId] withPage:page] parameters:defparameters charset:UTF_8 requestCallback:^(BOOL isSuccess, NSString *html) {
+    NSString *url = [self.forumConfig forumDisplayWithId:[NSString stringWithFormat:@"%d", forumId] withPage:page];
+    [self GET:url requestCallback:^(BOOL isSuccess, NSString *html) {
         if (isSuccess) {
             ViewForumPage *viewForumPage = [self.forumParser parseThreadListFromHtml:html withThread:forumId andContainsTop:YES];
             handler(isSuccess, viewForumPage);
@@ -1363,11 +1306,8 @@ typedef void (^CallBack)(NSString *token, NSString *hash, NSString *time);
 }
 
 - (void)getAvatarWithUserId:(NSString *)userId handler:(HandlerWithBool)handler {
-    NSMutableDictionary *defparameters = [NSMutableDictionary dictionary];
-    [defparameters setValue:@"2" forKey:@"styleid"];
-    [defparameters setValue:@"1" forKey:@"langid"];
-
-    [self.browser GETWithURLString:[self.forumConfig memberWithUserId:userId] parameters:defparameters charset:UTF_8 requestCallback:^(BOOL isSuccess, NSString *html) {
+    NSString *url = [self.forumConfig memberWithUserId:userId];
+    [self GET:url requestCallback:^(BOOL isSuccess, NSString *html) {
         NSString *avatar = [self.forumParser parseUserAvatar:html userId:userId];
         if (avatar) {
             avatar = [self.forumConfig.avatarBase stringByAppendingString:avatar];
@@ -1382,11 +1322,7 @@ typedef void (^CallBack)(NSString *token, NSString *hash, NSString *time);
 - (void)listSearchResultWithSearchId:(NSString *)searchid keyWord:(NSString *)keyWord andPage:(int)page handler:(HandlerWithBool)handler {
     NSString *searchedUrl = [self.forumConfig searchWithSearchId:searchid withPage:page];
 
-    NSMutableDictionary *defparameters = [NSMutableDictionary dictionary];
-    [defparameters setValue:@"2" forKey:@"styleid"];
-    [defparameters setValue:@"1" forKey:@"langid"];
-
-    [self.browser GETWithURLString:searchedUrl parameters:defparameters charset:UTF_8 requestCallback:^(BOOL isSuccess, NSString *html) {
+    [self GET:searchedUrl requestCallback:^(BOOL isSuccess, NSString *html) {
         if (isSuccess) {
 
             NSString *error = [self checkError:html];
@@ -1409,11 +1345,9 @@ typedef void (^CallBack)(NSString *token, NSString *hash, NSString *time);
 }
 
 - (void)showProfileWithUserId:(NSString *)userId handler:(HandlerWithBool)handler {
-    NSMutableDictionary *defparameters = [NSMutableDictionary dictionary];
-    [defparameters setValue:@"2" forKey:@"styleid"];
-    [defparameters setValue:@"1" forKey:@"langid"];
 
-    [self.browser GETWithURLString:[self.forumConfig memberWithUserId:userId] parameters:defparameters charset:UTF_8 requestCallback:^(BOOL isSuccess, NSString *html) {
+    NSString *url = [self.forumConfig memberWithUserId:userId];
+    [self GET:url requestCallback:^(BOOL isSuccess, NSString *html) {
         if (isSuccess) {
             UserProfile *profile = [self.forumParser parserProfile:html userId:userId];
             handler(YES, profile);
@@ -1424,11 +1358,8 @@ typedef void (^CallBack)(NSString *token, NSString *hash, NSString *time);
 }
 
 - (void)reportThreadPost:(int)postId andMessage:(NSString *)message handler:(HandlerWithBool)handler {
-    NSMutableDictionary *defparameters = [NSMutableDictionary dictionary];
-    [defparameters setValue:@"2" forKey:@"styleid"];
-    [defparameters setValue:@"1" forKey:@"langid"];
-
-    [self.browser GETWithURLString:[self.forumConfig reportWithPostId:postId] parameters:defparameters charset:UTF_8 requestCallback:^(BOOL isSuccess, NSString *html) {
+    NSString *url = [self.forumConfig reportWithPostId:postId];
+    [self GET:url requestCallback:^(BOOL isSuccess, NSString *html) {
         if (isSuccess) {
 
             NSMutableDictionary *parameters = [NSMutableDictionary dictionary];

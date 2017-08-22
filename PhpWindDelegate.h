@@ -6,4 +6,8 @@
 #import <Foundation/Foundation.h>
 
 @protocol PhpWindDelegate <NSObject>
+
+@optional
+- (void)fetchUserId:(HandlerWithBool)handler;
+
 @end

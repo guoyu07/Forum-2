@@ -24,9 +24,6 @@ typedef void (^HandlerWithBool)(BOOL isSuccess, id message);
 
 @protocol ForumBrowserDelegate <vBulletinDelegate, DiscuzDelegate, PhpWindDelegate>
 
-@optional
-- (void)fetchUserId:(HandlerWithBool)handler;
-
 // 获取所有的论坛列表
 - (void)listAllForums:(HandlerWithBool)handler;
 
@@ -90,8 +87,6 @@ typedef void (^HandlerWithBool)(BOOL isSuccess, id message);
 
 // 显示主题帖子和所有回帖
 - (void)showThreadWithId:(int)threadId andPage:(int)page handler:(HandlerWithBool)handler;
-
-- (void)showThreadWithP:(NSString *)p handler:(HandlerWithBool)handler;
 
 - (void)forumDisplayWithId:(int)forumId andPage:(int)page handler:(HandlerWithBool)handler;
 
