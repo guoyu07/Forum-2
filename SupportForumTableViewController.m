@@ -126,9 +126,9 @@
         
     } else{
 
-        id<ForumBrowserDelegate> api = [ForumApiHelper forumApi];
+        id<ForumConfigDelegate> forumConfig = [ForumApiHelper forumConfig];
         
-        NSString * cId = api.currentConfigDelegate.loginControllerId;
+        NSString * cId = forumConfig.loginControllerId;
         [[UIStoryboard mainStoryboard] changeRootViewControllerTo:cId withAnim:UIViewAnimationOptionTransitionFlipFromTop];
     }
 

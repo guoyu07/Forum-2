@@ -9,7 +9,6 @@
 #import <UIImageView+WebCache.h>
 #import "ForumCoreDataManager.h"
 #import "UserEntry+CoreDataProperties.h"
-#import "ForumLoginViewController.h"
 #import "UIStoryboard+Forum.h"
 #import "AppDelegate.h"
 #import "ForumTabBarController.h"
@@ -95,7 +94,6 @@
 
 
 - (void)onPullRefresh {
-    BaseForumApi *forumApi = [[BaseForumApi alloc] init];
 
     NSString *currentUserId = [[[LocalForumApi alloc] init] getLoginUser].userID;
 
@@ -153,9 +151,9 @@
         }];
     } else {
 
-        id<ForumBrowserDelegate> browserDelegate = [ForumApiHelper forumApi];
+        id<ForumConfigDelegate> forumConfig = [ForumApiHelper forumConfig];
 
-        if ([avatarInArray isEqualToString:[browserDelegate currentConfigDelegate].avatarNo]) {
+        if ([avatarInArray isEqualToString:forumConfig.avatarNo]) {
             [avatarImageView setImage:defaultAvatarImage];
         } else {
 
@@ -187,7 +185,9 @@
         LocalForumApi *forumApi = [[LocalForumApi alloc] init];
         [forumApi logout];
 
-        NSString * id = self.forumApi.currentConfigDelegate.loginControllerId;
+
+        id<ForumConfigDelegate> forumConfig = [ForumApiHelper forumConfig];
+        NSString * id = forumConfig.loginControllerId;
         [[UIStoryboard mainStoryboard] changeRootViewControllerTo:id];
 
     }

@@ -48,7 +48,7 @@
 
     _forumApi = [ForumApiHelper forumApi];
 
-    id<ForumConfigDelegate> forumConfig = [_forumApi currentConfigDelegate];
+    id<ForumConfigDelegate> forumConfig = [ForumApiHelper forumConfig];
 
     self.rootView.backgroundColor = forumConfig.themeColor;
     
@@ -57,7 +57,7 @@
 
     [_forumApi refreshVCodeToUIImageView:_doorImageView];
 
-    self.title = [[_forumApi currentConfigDelegate].forumURL.host uppercaseString];
+    self.title = [forumConfig.forumURL.host uppercaseString];
 
 }
 

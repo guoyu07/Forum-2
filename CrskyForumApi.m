@@ -865,9 +865,4 @@
     handler(YES,@"");
 }
 
-- (id <ForumConfigDelegate>)currentConfigDelegate {
-    return self.forumConfig;
-}
-
-
 @end

@@ -19,4 +19,7 @@
 // 退出论坛
 - (void)logout;
 
+// 退出论坛
+- (NSString *)loginControllerId;
+
 @end

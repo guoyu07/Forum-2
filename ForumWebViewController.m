@@ -56,9 +56,9 @@
 
         NSString *lis = @"";
 
-        for (Post *post in posts) {
+        id<ForumConfigDelegate> forumConfig = [ForumApiHelper forumConfig];
 
-            id<ForumConfigDelegate> forumConfig = [self.forumApi currentConfigDelegate];
+        for (Post *post in posts) {
 
             NSString *avatar = [forumConfig avatar:post.postUserInfo.userAvatar];
             NSString *louceng = [post.postLouCeng stringWithRegular:@"\\d+"];
@@ -102,10 +102,8 @@
 
         NSString *lis = @"";
 
+        id<ForumConfigDelegate> forumConfig = [ForumApiHelper forumConfig];
         for (Post *post in posts) {
-
-            id<ForumConfigDelegate> forumConfig = [self.forumApi currentConfigDelegate];
-
             NSString *avatar = [forumConfig avatar:post.postUserInfo.userAvatar];
             NSString *louceng = [post.postLouCeng stringWithRegular:@"\\d+"];
             NSString *postInfo = [NSString stringWithFormat:POST_MESSAGE, post.postID, post.postID, post.postUserInfo.userName,
@@ -234,7 +232,7 @@
 
         AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
 
-        id<ForumConfigDelegate> forumConfig = [self.forumApi currentConfigDelegate];
+        id<ForumConfigDelegate> forumConfig = [ForumApiHelper forumConfig];
 
         for (Post *post in posts) {
 
@@ -298,7 +296,7 @@
 
                 //AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
 
-                id<ForumConfigDelegate> forumConfig = [self.forumApi currentConfigDelegate];
+                id<ForumConfigDelegate> forumConfig = [ForumApiHelper forumConfig];
 
                 NSURL *nsurl = [NSURL URLWithString:[forumConfig showThreadWithThreadId:[NSString stringWithFormat:@"%d", threadId] withPage:page]];
                 [[UIApplication sharedApplication] openURL:nsurl];
@@ -328,7 +326,7 @@
         NSString *lis = @"";
 
         AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-        id<ForumConfigDelegate> forumConfig = [self.forumApi currentConfigDelegate];
+        id<ForumConfigDelegate> forumConfig = [ForumApiHelper forumConfig];
 
         for (Post *post in posts) {
             NSString *avatar = [forumConfig avatar:post.postUserInfo.userAvatar];
@@ -396,8 +394,7 @@
 
                 NSMutableArray *posts = threadPage.postList;
 
-                //AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-                id<ForumConfigDelegate> forumConfig = [self.forumApi currentConfigDelegate];
+                id<ForumConfigDelegate> forumConfig = [ForumApiHelper forumConfig];
 
                 for (NSInteger i = currentShowThreadPage.postList.count; i < posts.count; i++) {
                     Post *post = posts[i];
@@ -442,8 +439,7 @@
 
         NSString *lis = @"";
 
-        //AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-        id<ForumConfigDelegate> forumConfig = [self.forumApi currentConfigDelegate];
+        id<ForumConfigDelegate> forumConfig = [ForumApiHelper forumConfig];
 
         for (Post *post in posts) {
 
@@ -617,8 +613,7 @@
 
             } else if (buttonIndex == 2) {
 
-                //AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-                id<ForumConfigDelegate> forumConfig = [self.forumApi currentConfigDelegate];
+                id<ForumConfigDelegate> forumConfig = [ForumApiHelper forumConfig];
 
                 NSString *postUrl = [forumConfig copyThreadUrl:[NSString stringWithFormat:@"%d", threadID] withPostId:[NSString stringWithFormat:@"%d", postId] withPostCout:louCeng];
                 UIPasteboard *pasteboard = [UIPasteboard generalPasteboard];
@@ -765,13 +760,12 @@
 
 - (IBAction)showMoreAction:(UIBarButtonItem *)sender {
 
+    id<ForumConfigDelegate> forumConfig = [ForumApiHelper forumConfig];
+
     itemActionSheet = [LCActionSheet sheetWithTitle:nil buttonTitles:@[@"复制帖子链接", @"在浏览器中查看", @"举报此帖"] redButtonIndex:4 clicked:^(NSInteger buttonIndex) {
         if (buttonIndex == 0) {
             // 复制贴链接
             UIPasteboard *pasteboard = [UIPasteboard generalPasteboard];
-
-            //AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-            id<ForumConfigDelegate> forumConfig = [self.forumApi currentConfigDelegate];
 
             pasteboard.string = [forumConfig showThreadWithThreadId:[NSString stringWithFormat:@"%d", threadID] withPage:0];
 
@@ -779,8 +773,6 @@
 
         } else if (buttonIndex == 1) {
             // 在浏览器种查看
-            //AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-            id<ForumConfigDelegate> forumConfig = [self.forumApi currentConfigDelegate];
             NSURL *url = [NSURL URLWithString:[forumConfig showThreadWithThreadId:[NSString stringWithFormat:@"%d", threadID] withPage:1]];
             [[UIApplication sharedApplication] openURL:url];
         } else if (buttonIndex == 2) {

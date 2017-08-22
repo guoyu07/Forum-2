@@ -19,9 +19,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
 
-    id<ForumBrowserDelegate> forumApi = [ForumApiHelper forumApi];
-    id<ForumConfigDelegate> forumConfig = [forumApi currentConfigDelegate];
-
+    id<ForumConfigDelegate> forumConfig = [ForumApiHelper forumConfig];
     self.navigationBar.barTintColor = forumConfig.themeColor;
 }
 

@@ -455,10 +455,6 @@
 
 }
 
-- (id <ForumConfigDelegate>)currentConfigDelegate {
-    return self.forumConfig;
-}
-
 //------
 
 // private

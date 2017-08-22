@@ -10,6 +10,7 @@
 #import "ForumConfigDelegate.h"
 #import "ForumApiHelper.h"
 #import "BaseForumApi.h"
+#import "AppDelegate.h"
 
 
 @implementation LocalForumApi {
@@ -25,17 +26,42 @@
     return self;
 }
 - (LoginUser *)getLoginUser {
+
+    AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+    NSString *bundleId = [appDelegate bundleIdentifier];
+    NSString * host = appDelegate.forumHost;
+    if ([bundleId isEqualToString:@"com.andforce.Crsky"] || [host isEqualToString:@"bbs.crsky.com"]){
+        return [self getLoginUserCrsky];
+    } else {
+        NSArray<NSHTTPCookie *> *cookies = [[NSHTTPCookieStorage sharedHTTPCookieStorage] cookies];
+
+        LoginUser *user = [[LoginUser alloc] init];
+        user.userName = [[NSUserDefaults standardUserDefaults] userName];
+
+        for (int i = 0; i < cookies.count; i++) {
+            NSHTTPCookie *cookie = cookies[(NSUInteger) i];
+
+            if ([cookie.name isEqualToString:forumConfig.cookieUserIdKey]) {
+                user.userID = [cookie.value componentsSeparatedByString:@"%"][0];
+            } else if ([cookie.name isEqualToString:forumConfig.cookieExpTimeKey]) {
+                user.expireTime = cookie.expiresDate;
+            }
+        }
+        return user;
+    }
+}
+
+- (LoginUser *)getLoginUserCrsky {
     NSArray<NSHTTPCookie *> *cookies = [[NSHTTPCookieStorage sharedHTTPCookieStorage] cookies];
 
     LoginUser *user = [[LoginUser alloc] init];
     user.userName = [[NSUserDefaults standardUserDefaults] userName];
+    user.userID = [[NSUserDefaults standardUserDefaults] userId];
 
     for (int i = 0; i < cookies.count; i++) {
         NSHTTPCookie *cookie = cookies[(NSUInteger) i];
 
-        if ([cookie.name isEqualToString:forumConfig.cookieUserIdKey]) {
-            user.userID = [cookie.value componentsSeparatedByString:@"%"][0];
-        } else if ([cookie.name isEqualToString:forumConfig.cookieExpTimeKey]) {
+        if ([cookie.name isEqualToString:forumConfig.cookieExpTimeKey]) {
             user.expireTime = cookie.expiresDate;
         }
     }
@@ -66,5 +92,10 @@
         }
     }
 }
+
+- (NSString *)loginControllerId {
+    return forumConfig.loginControllerId;
+}
+
 
 @end

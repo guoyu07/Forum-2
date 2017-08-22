@@ -1345,9 +1345,4 @@ typedef void (^CallBack)(NSString *token, NSString *hash, NSString *time);
     }];
 }
 
-- (id <ForumConfigDelegate>)currentConfigDelegate {
-    return self.forumConfig;
-}
-
-
 @end

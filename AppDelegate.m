@@ -107,8 +107,8 @@ static NSString *bundleIdentifier;
                 self.window.rootViewController = [[UIStoryboard mainStoryboard] finControllerById:@"ShowSupportForums"];
             } else{
 
-                id<ForumBrowserDelegate> api = [ForumApiHelper forumApi];
-                NSString * cId = api.currentConfigDelegate.loginControllerId;
+                id<ForumConfigDelegate> api = [ForumApiHelper forumConfig];
+                NSString * cId = api.loginControllerId;
                 [[UIStoryboard mainStoryboard] changeRootViewControllerTo:cId];
 
             }

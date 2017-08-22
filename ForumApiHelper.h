@@ -18,4 +18,6 @@
 
 + (id <ForumBrowserDelegate>)forumApi;
 
++ (id <ForumConfigDelegate>)forumConfig;
+
 @end

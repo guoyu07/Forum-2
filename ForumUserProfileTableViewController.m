@@ -152,8 +152,7 @@
             }
         }];
     } else {
-        id<ForumBrowserDelegate> browserDelegate = [ForumApiHelper forumApi];
-        id<ForumConfigDelegate> forumConfig = [browserDelegate currentConfigDelegate];
+        id<ForumConfigDelegate> forumConfig = [ForumApiHelper forumConfig];
 
         if ([avatarInArray isEqualToString:forumConfig.avatarNo]) {
             [avatarImageView setImage:defaultAvatarImage];

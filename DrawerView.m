@@ -32,8 +32,6 @@
 
     UIButton *_drawerMaskView;
 
-    id <ForumBrowserDelegate> _forumApi;
-
     UIView *_rightEageView;
 
     UIImage *defaultAvatar;
@@ -77,9 +75,11 @@
     }
     NSString *avatarInArray = [avatarCache valueForKey:userId];
 
+    id<ForumBrowserDelegate> forumApi = [ForumApiHelper forumApi];
+
     if (avatarInArray == nil) {
 
-        [_forumApi getAvatarWithUserId:userId handler:^(BOOL isSuccess, NSString *avatar) {
+        [forumApi getAvatarWithUserId:userId handler:^(BOOL isSuccess, NSString *avatar) {
 
             if (isSuccess) {
                 AppDelegate *appDelegate = (AppDelegate *) [[UIApplication sharedApplication] delegate];
@@ -107,8 +107,9 @@
         }];
     } else {
 
+        id<ForumConfigDelegate> forumConfig = [ForumApiHelper forumConfig];
 
-        if ([avatarInArray isEqualToString:[_forumApi currentConfigDelegate].avatarNo]) {
+        if ([avatarInArray isEqualToString:forumConfig.avatarNo]) {
             [avatarImageView setImage:defaultAvatarImage];
         } else {
 
@@ -136,7 +137,6 @@
 - (id)init {
     if (self = [super init]) {
 
-        _forumApi = [ForumApiHelper forumApi];
         [self setDrawerType:DrawerViewTypeLeft];
 
         [self initLeftDrawerView];
@@ -258,9 +258,6 @@
 
 - (id)initWithDrawerType:(DrawerViewType)drawerType andXib:(NSString *)name {
     if (self = [super init]) {
-//        _forumBrowser = [ForumBrowserFactory browserWithForumConfig:[ForumConfig configWithForumHost:[self currentForumHost]]];
-
-        _forumApi = [ForumApiHelper forumApi];
 
         // 和 xib 绑定
         [[NSBundle mainBundle] loadNibNamed:name owner:self options:nil];
@@ -313,10 +310,6 @@
 - (id)initWithDrawerType:(DrawerViewType)drawerType {
 
     if (self = [super init]) {
-
-//        _forumBrowser = [ForumBrowserFactory browserWithForumConfig:[ForumConfig configWithForumHost:[self currentForumHost]]];
-        _forumApi = [ForumApiHelper forumApi];
-
 
         [self setDrawerType:drawerType];
 
