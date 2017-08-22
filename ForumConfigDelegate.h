@@ -118,4 +118,7 @@
 
 @optional
 - (NSString *) listUserThreads:(NSString *) userId withPage:(int) page;
+
+@required
+- (NSString *) signature;
 @end

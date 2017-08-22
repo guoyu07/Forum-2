@@ -25,8 +25,6 @@ typedef void (^CallBack)(NSString *token, NSString *hash, NSString *time);
 
     NSMutableDictionary *listUserThreadRedirectUrlDictionary;
 
-    NSString *todayNewThreadPostSearchId;
-
     // senior post
     NSArray *toUploadImages;
     HandlerWithBool _handlerWithBool;
@@ -74,14 +72,6 @@ typedef void (^CallBack)(NSString *token, NSString *hash, NSString *time);
 - (void)saveCookie {
     [[NSUserDefaults standardUserDefaults] saveCookie];
 }
-
-// private
-- (NSString *)buildSignature {
-    NSString *phoneName = [DeviceName deviceNameDetail];
-    NSString *signature = [NSString stringWithFormat:@"\n\n发自 %@ 使用 CCF客户端", phoneName];
-    return signature;
-}
-
 //------
 
 - (void)loginWithName:(NSString *)name andPassWord:(NSString *)passWord withCode:(NSString *)code question:(NSString *)q answer:(NSString *)a handler:(HandlerWithBool)handler {
@@ -358,7 +348,7 @@ typedef void (^CallBack)(NSString *token, NSString *hash, NSString *time);
 
 - (void)createNewThreadWithForumId:(int)fId withSubject:(NSString *)subject andMessage:(NSString *)message withImages:(NSArray *)images handler:(HandlerWithBool)handler {
     if ([NSUserDefaults standardUserDefaults].isSignatureEnabled) {
-        message = [message stringByAppendingString:[self buildSignature]];
+        message = [message stringByAppendingString:[self.forumConfig signature]];
 
     }
 
@@ -470,7 +460,7 @@ typedef void (^CallBack)(NSString *token, NSString *hash, NSString *time);
     NSString *url = [self.forumConfig replyWithThreadId:threadId forForumId:-1 replyPostId:-1];
 
     if ([NSUserDefaults standardUserDefaults].isSignatureEnabled) {
-        message = [message stringByAppendingString:[self buildSignature]];
+        message = [message stringByAppendingString:[self.forumConfig signature]];
     }
 
     NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
@@ -518,7 +508,7 @@ typedef void (^CallBack)(NSString *token, NSString *hash, NSString *time);
     NSString *url = [self.forumConfig replyWithThreadId:threadId forForumId:-1 replyPostId:-1];
 
     if ([NSUserDefaults standardUserDefaults].isSignatureEnabled) {
-        message = [message stringByAppendingString:[self buildSignature]];
+        message = [message stringByAppendingString:[self.forumConfig signature]];
     }
 
     NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
@@ -657,7 +647,7 @@ typedef void (^CallBack)(NSString *token, NSString *hash, NSString *time);
     NSString *url = [self.forumConfig replyWithThreadId:threadId forForumId:-1 replyPostId:-1];
 
     if ([NSUserDefaults standardUserDefaults].isSignatureEnabled) {
-        message = [message stringByAppendingString:[self buildSignature]];
+        message = [message stringByAppendingString:[self.forumConfig signature]];
     }
 
 

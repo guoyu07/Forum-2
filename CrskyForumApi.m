@@ -34,13 +34,6 @@
     return self;
 }
 
-// private
-- (NSString *)buildSignature {
-    NSString *phoneName = [DeviceName deviceNameDetail];
-    NSString *signature = [NSString stringWithFormat:@"\n\n发自 %@ 使用 霏凡客户端", phoneName];
-    return signature;
-}
-
 - (void)listAllForums:(HandlerWithBool)handler {
     NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
 
@@ -114,7 +107,7 @@
     NSString *url = [self.forumConfig newThreadWithForumId:nil];
 
     if ([NSUserDefaults standardUserDefaults].isSignatureEnabled) {
-        message = [message stringByAppendingString:[self buildSignature]];
+        message = [message stringByAppendingString:[self.forumConfig signature]];
     }
 
     NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
@@ -237,7 +230,7 @@
     NSString *url = [self.forumConfig replyWithThreadId:threadId forForumId:-1 replyPostId:-1];
 
     if ([NSUserDefaults standardUserDefaults].isSignatureEnabled) {
-        message = [message stringByAppendingString:[self buildSignature]];
+        message = [message stringByAppendingString:[self.forumConfig signature]];
     }
 
     NSData * contentData = [self buildContent:message];
@@ -288,7 +281,7 @@
     NSString *url = [self.forumConfig replyWithThreadId:threadId forForumId:-1 replyPostId:-1];
 
     if ([NSUserDefaults standardUserDefaults].isSignatureEnabled) {
-        message = [message stringByAppendingString:[self buildSignature]];
+        message = [message stringByAppendingString:[self.forumConfig signature]];
     }
 
     NSData * contentData = [self buildContent:message];

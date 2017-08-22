@@ -4,6 +4,7 @@
 //
 
 #import "CHHForumConfig.h"
+#import "DeviceName.h"
 
 
 @implementation CHHForumConfig {
@@ -188,6 +189,12 @@
 
 - (NSString *)loginControllerId {
     return @"LoginForumWebView";
+}
+
+- (NSString *)signature {
+    NSString *phoneName = [DeviceName deviceNameDetail];
+    NSString *signature = [NSString stringWithFormat:@"\n\n发自 %@ 使用 CHH客户端", phoneName];
+    return signature;
 }
 
 

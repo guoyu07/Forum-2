@@ -7,6 +7,7 @@
 //
 
 #import "CCFForumConfig.h"
+#import "DeviceName.h"
 
 @implementation CCFForumConfig {
     NSURL *_forumURL;
@@ -191,6 +192,12 @@
 
 - (NSString *)loginControllerId {
     return @"LoginForum";
+}
+
+- (NSString *)signature {
+    NSString *phoneName = [DeviceName deviceNameDetail];
+    NSString *signature = [NSString stringWithFormat:@"\n\n发自 %@ 使用 CCF客户端", phoneName];
+    return signature;
 }
 
 

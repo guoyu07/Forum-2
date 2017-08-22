@@ -7,6 +7,7 @@
 //
 
 #import "CrskyForumConfig.h"
+#import "DeviceName.h"
 
 @implementation CrskyForumConfig{
     NSURL *_forumURL;
@@ -206,4 +207,11 @@
 - (NSString *)listUserThreads:(NSString *)userId withPage:(int)page {
     return [NSString stringWithFormat:@"http://bbs.crsky.com/u.php?action=topic&uid=%@&page=%d" ,userId, page];
 }
+
+- (NSString *)signature {
+    NSString *phoneName = [DeviceName deviceNameDetail];
+    NSString *signature = [NSString stringWithFormat:@"\n\n发自 %@ 使用 霏凡客户端", phoneName];
+    return signature;
+}
+
 @end

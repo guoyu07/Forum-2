@@ -117,7 +117,7 @@
     NSString *msg = message;
 
     if ([NSUserDefaults standardUserDefaults].isSignatureEnabled) {
-        msg = [message stringByAppendingString:[self buildSignature]];
+        msg = [message stringByAppendingString:[self.forumConfig signature]];
     }
 
     int replyPostId = [postId intValue];
@@ -465,13 +465,6 @@
 //private
 - (void)saveCookie {
     [[NSUserDefaults standardUserDefaults] saveCookie];
-}
-
-// private
-- (NSString *)buildSignature {
-    NSString *phoneName = [DeviceName deviceNameDetail];
-    NSString *signature = [NSString stringWithFormat:@"\n\n发自 %@ 使用 CHH客户端", phoneName];
-    return signature;
 }
 
 //------
