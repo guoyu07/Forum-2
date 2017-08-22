@@ -34,7 +34,7 @@
 
 // private
 - (NSString *)parseAjaxLastPost:(NSString *)html {
-    NSString *searchText = [html stringWithRegular:@"var ajax_last_post = \\d+;" andChild:@"\\d+"];
+    NSString *searchText = [html stringWithRegular:@"(?<=var ajax_last_post = )\\d+(?=;)"];
     return searchText;
 }
 
@@ -215,7 +215,7 @@
     IGHTMLDocument *document = [[IGHTMLDocument alloc] initWithHTMLString:fuxkHttp error:nil];
 
 
-    NSString *forumId = [fuxkHttp stringWithRegular:@"newthread.php\\?do=newthread&amp;f=\\d+" andChild:@"\\d+"];
+    NSString *forumId = [fuxkHttp stringWithRegular:@"(?<=newthread.php\\?do=newthread&amp;f=)\\d+"];
 
     ViewThreadPage *showThreadPage = [[ViewThreadPage alloc] init];
     showThreadPage.originalHtml = [self postMessages:fuxkHttp];
@@ -242,11 +242,8 @@
 
     showThreadPage.threadTitle = fixedTitle;
 
-    NSString *threadIdPattern = @"<input type=\"hidden\" name=\"searchthreadid\" value=\"\\d+\" />";
-    NSString *threadID = [html stringWithRegular:threadIdPattern andChild:@"\\d+"];
+    NSString *threadID = [html stringWithRegular:@"(?<=<input type=\"hidden\" name=\"searchthreadid\" value=\")\\d+"];
     showThreadPage.threadID = [threadID intValue];
-
-    IGXMLNodeSet *threadInfoSet = [document queryWithXPath:@"/html/body/div[4]/div/div/table[1]/tr/td[2]/div/table/tr"];
 
     PageNumber *pageNumber = [self parserPageNumber:html];
     showThreadPage.pageNumber = pageNumber;
@@ -521,14 +518,13 @@
 }
 
 - (NSString *)parsePostHash:(NSString *)html {
-    NSString *hash = [html stringWithRegular:@"<input type=\"hidden\" name=\"posthash\" value=\"\\w{32}\" />" andChild:@"\\w{32}"];
+    NSString *hash = [html stringWithRegular:@"(?<=<input type=\"hidden\" name=\"posthash\" value=\")\\w{32}(?= />)"];
 
     return hash;
 }
 
 - (NSString *)parserPostStartTime:(NSString *)html {
-    NSString *reg = @"poststarttime=\\d+";
-    NSString *result = [html stringWithRegular:reg andChild:@"\\d+"];
+    NSString *result = [html stringWithRegular:@"(?<=poststarttime=)\\d+"];
     return result;
 }
 
@@ -568,7 +564,7 @@
             NSLog(@"--------------------- %ld title: %@", (long) [postForNode children].count, [[postForNode text] trim]);
 
             NSString *postIdNode = [postForNode html];
-            NSString *postId = [postIdNode stringWithRegular:@"id=\"thread_title_\\d+\"" andChild:@"\\d+"];
+            NSString *postId = [postIdNode stringWithRegular:@"(?<=id=\"thread_title_)\\d+(?=\")"];
 
 
             NSString *titleAndCategory = [self parseTitle:[postForNode html]];
@@ -577,7 +573,7 @@
 
             //NSString *postTitle = [[[postForNode text] trim] componentsSeparatedByString:@"\n"].firstObject;
             NSString *postAuthor = [[node childAt:3] text];
-            NSString *postAuthorId = [[node.children[3] html] stringWithRegular:@"=\\d+" andChild:@"\\d+"];
+            NSString *postAuthorId = [[node.children[3] html] stringWithRegular:@"(?<==)\\d+"];
             NSString *postTime = [node.children[4] text];
 
             NSString *postBelongForm = [node.children[8] text];
@@ -618,7 +614,7 @@
 
     //<a href="forumdisplay.php?f=158">『手机◇移动数码』</a>
     for (IGXMLNode *node in favFormNodeSet) {
-        NSString *idsStr = [node.html stringWithRegular:@"f=\\d+" andChild:@"\\d+"];
+        NSString *idsStr = [node.html stringWithRegular:@"(?<=f=)\\d+"];
         [ids addObject:@(idsStr.intValue)];
     }
 
@@ -848,9 +844,7 @@
     profile.profileRank = [self queryText:document withXPath:rankXPath];
 
     // 注册日期
-    NSString *signDatePattern = @"<li><span class=\"shade\">注册日期:</span> \\d{4}-\\d{2}-\\d{2}</li>";
-
-    profile.profileRegisterDate = [html stringWithRegular:signDatePattern andChild:@"\\d{4}-\\d{2}-\\d{2}"];
+    profile.profileRegisterDate = [html stringWithRegular:@"(?<=<li><span class=\"shade\">注册日期:</span> )\\d{4}-\\d{2}-\\d{2}(?=</li>)"];
 
     // 最近活动时间
     NSString *lastLoginDayXPath = @"//*[@id='collapseobj_stats']/div/fieldset[2]/ul/li[1]/text()";
@@ -867,7 +861,7 @@
 
 
     // 帖子总数
-    NSString *postCount = [html stringWithRegular:@"<li><span class=\"shade\">帖子总数:</span> ([0-9][,]?)+</li>" andChild:@"([0-9][,]?)+"];
+    NSString *postCount = [html stringWithRegular:@"(?<=<li><span class=\"shade\">帖子总数:</span> )([0-9][,]?)+(?=</li>)"];
     profile.profileTotalPostCount = postCount;
 
     profile.profileUserId = userId;
@@ -880,7 +874,7 @@
     Forum *parent = [[Forum alloc] init];
     NSString *name = [[node childAt:0] text];
     NSString *url = [[node childAt:0] html];
-    int forumId = [[url stringWithRegular:@"f-\\d+" andChild:@"\\d+"] intValue];
+    int forumId = [[url stringWithRegular:@"(?<=f-)\\d+"] intValue];
     int fixForumId = forumId == 0 ? replaceId : forumId;
     parent.forumId = fixForumId;
     parent.parentForumId = parentFormId;
@@ -933,11 +927,11 @@
         [needInsert addObjectsFromArray:[self flatForm:forum]];
     }
 
-    for (Forum *form in needInsert) {
-        NSLog(@">>>>>>>>>>>>>>>>>>>>>>> %@     forumId: %d     parentForumId:%d\n\n\n", form.forumName, form.forumId, form.parentForumId);
+    if (/* DISABLES CODE */ (NO)) {
+        for (Forum *form in needInsert) {
+            NSLog(@">>>>>>>>>>>>>>>>>>>>>>> %@     forumId: %d     parentForumId:%d\n\n\n", form.forumName, form.forumId, form.parentForumId);
+        }
     }
-
-
     return [needInsert copy];
 }
 
