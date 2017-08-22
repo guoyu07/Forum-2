@@ -30,60 +30,23 @@
     return self;
 }
 
-- (void)loginWithName:(NSString *)name andPassWord:(NSString *)passWord withCode:(NSString *)code question:(NSString *)q answer:(NSString *)a handler:(HandlerWithBool)handler {
+- (void)GET:(NSString *)url parameters:(NSDictionary *)parameters requestCallback:(RequestCallback)callback{
+    NSMutableDictionary *defparameters = [NSMutableDictionary dictionary];
 
-    [self.browser GETWithURLString:self.forumConfig.login parameters:nil charset:UTF_8 requestCallback:^(BOOL isSuccess, NSString *html) {
-        if (isSuccess){
+    if (parameters){
+        [defparameters addEntriesFromDictionary:parameters];
+    }
 
-            NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
-            [parameters setValue:name forKey:@"vb_login_username"];
-            [parameters setValue:@"" forKey:@"vb_login_password"];
-            [parameters setValue:@"1" forKey:@"cookieuser"];
-            [parameters setValue:@"" forKey:@"vcode"];
-            [parameters setValue:@"" forKey:@"s"];
-            [parameters setValue:@"guest" forKey:@"securitytoken"];
-            [parameters setValue:@"login" forKey:@"do"];
-
-            NSString *md5pwd = [passWord md5HexDigest];
-            [parameters setValue:md5pwd forKey:@"vb_login_md5password"];
-            [parameters setValue:md5pwd forKey:@"vb_login_md5password_utf"];
-
-            [self.browser POSTWithURLString:self.forumConfig.login parameters:parameters charset:UTF_8 requestCallback:^(BOOL success, NSString *resultHtml) {
-                if (success) {
-
-                    NSString *userName = [resultHtml stringWithRegular:@"<p><strong>.*</strong></p>" andChild:@"，.*。"];
-                    userName = [userName substringWithRange:NSMakeRange(1, [userName length] - 2)];
-
-                    if (userName != nil) {
-                        // 保存Cookie
-                        [self saveCookie];
-                        // 保存用户名
-                        [self saveUserName:userName];
-                        handler(YES, @"登录成功");
-                    } else {
-                        handler(NO, [self.forumParser parseLoginErrorMessage:resultHtml]);
-                    }
-
-                } else {
-                    handler(NO, [self.forumParser parseLoginErrorMessage:resultHtml]);
-                }
-            }];
-
-        } else{
-
-        }
-    }];
-
-
-
+    [self.browser GETWithURLString:url parameters:defparameters charset:UTF_8 requestCallback:callback];
 }
 
--(long long)getRandomNumber:(long long)from to:(long long)to{
-    return (long)(from + (arc4random() % (to - from + 1)));
+- (void)GET:(NSString *)url requestCallback:(RequestCallback)callback{
+    [self GET:url parameters:nil requestCallback:callback];
 }
 
 - (void)listAllForums:(HandlerWithBool)handler {
-    [self.browser GETWithURLString:self.forumConfig.archive parameters:nil charset:UTF_8 requestCallback:^(BOOL isSuccess, NSString *html) {
+    NSString *url = self.forumConfig.archive;
+    [self GET:url requestCallback:^(BOOL isSuccess, NSString *html) {
         if (isSuccess) {
             NSArray<Forum *> *parserForums = [self.forumParser parserForums:html forumHost:self.forumConfig.forumURL.host];
             if (parserForums != nil && parserForums.count > 0) {
@@ -126,9 +89,9 @@
     int forumId = threadPage.forumId;
 
     if (replyPostId == -1){     // 表示回复的某一个楼层
-        NSString *preReplyUrl = [NSString stringWithFormat:@"https://www.chiphell.com/forum.php?mod=post&action=reply&fid=%d&tid=%d&reppost=%d&extra=page%3D1&page=1&infloat=yes&handlekey=reply&inajax=1&ajaxtarget=fwin_content_reply", forumId, threadId, replyPostId];
+        NSString *preReplyUrl = [NSString stringWithFormat:@"https://www.chiphell.com/forum.php?mod=post&action=reply&fid=%d&tid=%d&reppost=%d&extra=page%%3D1&page=1&infloat=yes&handlekey=reply&inajax=1&ajaxtarget=fwin_content_reply", forumId, threadId, replyPostId];
 
-        [self.browser GETWithURLString:preReplyUrl parameters:nil charset:UTF_8 requestCallback:^(BOOL isSuccess, NSString *html) {
+        [self GET:preReplyUrl requestCallback:^(BOOL isSuccess, NSString *html) {
             if (isSuccess) {
                 NSString *formHash = nil;
                 NSString *noticeAuthor = nil;
@@ -227,7 +190,9 @@
 }
 
 - (void)unFavouriteForumWithId:(NSString *)forumId handler:(HandlerWithBool)handler {
-    [self.browser GETWithURLString:@"https://www.chiphell.com/home.php?mod=space&do=favorite&view=me" parameters:nil charset:UTF_8 requestCallback:^(BOOL isSuccess, NSString *html) {
+    NSString *rurl = @"https://www.chiphell.com/home.php?mod=space&do=favorite&view=me";
+
+    [self GET:rurl requestCallback:^(BOOL isSuccess, NSString *html) {
         if (isSuccess) {
             NSString *token = [self.forumParser parseSecurityToken:html];
 
@@ -252,7 +217,8 @@
 
 - (void)unFavoriteThreadWithId:(NSString *)threadPostId handler:(HandlerWithBool)handler {
 
-    [self.browser GETWithURLString:@"https://www.chiphell.com/home.php?mod=space&do=favorite&view=me" parameters:nil charset:UTF_8 requestCallback:^(BOOL isSuccess, NSString *html) {
+    NSString *rurl = @"https://www.chiphell.com/home.php?mod=space&do=favorite&view=me";
+    [self GET:rurl requestCallback:^(BOOL isSuccess, NSString *html) {
         if (isSuccess) {
             NSString *token = [self.forumParser parseSecurityToken:html];
 
@@ -269,12 +235,12 @@
             handler(NO, nil);
         }
     }];
-
 }
 
 - (void)listPrivateMessageWithType:(int)type andPage:(int)page handler:(HandlerWithBool)handler {
 
-    [self.browser GETWithURLString:[self.forumConfig privateWithType:type withPage:page] parameters:nil charset:UTF_8 requestCallback:^(BOOL isSuccess, NSString *html) {
+    NSString *url = [self.forumConfig privateWithType:type withPage:page];
+    [self GET:url requestCallback:^(BOOL isSuccess, NSString *html) {
         if (isSuccess) {
             ViewForumPage *viewForumPage = [self.forumParser parsePrivateMessageFromHtml:html forType:type];
             handler(YES, viewForumPage);
@@ -325,7 +291,8 @@
 - (void)listFavoriteForums:(int ) page handler:(HandlerWithBool)handler {
     NSString * baseUrl = self.forumConfig.favoriteForums;
     NSString * favForumsURL = [NSString stringWithFormat:@"%@&page=%d",baseUrl,page];
-    [self.browser GETWithURLString:favForumsURL parameters:nil charset:UTF_8 requestCallback:^(BOOL isSuccess, NSString *html) {
+
+    [self GET:favForumsURL requestCallback:^(BOOL isSuccess, NSString *html) {
         handler(isSuccess, html);
     }];
 }
@@ -333,7 +300,7 @@
 - (void)listFavoriteThreads:(int)userId withPage:(int)page handler:(HandlerWithBool)handler {
     NSString *url = [self.forumConfig listFavorThreads:userId withPage:page];
 
-    [self.browser GETWithURLString:url parameters:nil charset:UTF_8 requestCallback:^(BOOL isSuccess, NSString *html) {
+    [self GET:url requestCallback:^(BOOL isSuccess, NSString *html) {
         if (isSuccess) {
             ViewForumPage *viewForumPage = [self.forumParser parseFavorThreadListFromHtml:html];
             handler(isSuccess, viewForumPage);
@@ -345,7 +312,8 @@
 
 - (void)listNewThreadWithPage:(int)page handler:(HandlerWithBool)handler {
 
-    [self.browser GETWithURLString:[self.forumConfig searchNewThread:page] parameters:nil charset:UTF_8 requestCallback:^(BOOL isSuccess, NSString *html) {
+    NSString *url = [self.forumConfig searchNewThread:page];
+    [self GET:url requestCallback:^(BOOL isSuccess, NSString *html) {
         if (isSuccess) {
             ViewSearchForumPage *searchForumPage = [self.forumParser parseSearchPageFromHtml:html];
             handler(isSuccess, searchForumPage);
@@ -356,7 +324,8 @@
 }
 
 - (void)listMyAllThreadsWithPage:(int)page handler:(HandlerWithBool)handler {
-    [self.browser GETWithURLString:@"https://www.chiphell.com/forum.php?mod=guide&view=my" parameters:nil charset:UTF_8 requestCallback:^(BOOL isSuccess, NSString *html) {
+    NSString *url = @"https://www.chiphell.com/forum.php?mod=guide&view=my";
+    [self GET:url requestCallback:^(BOOL isSuccess, NSString *html) {
         if (isSuccess) {
             ViewForumPage *sarchPage = [self.forumParser parseSearchPageFromHtml:html];
             handler(isSuccess, sarchPage);
@@ -372,10 +341,7 @@
 
     NSString * url = [baseUrl stringByAppendingFormat:@"%d", page];
 
-    NSMutableDictionary *defparameters = [NSMutableDictionary dictionary];
-
-    [self.browser GETWithURLString:url parameters:defparameters charset:UTF_8 requestCallback:^(BOOL isSuccess, NSString *html) {
-
+    [self GET:url requestCallback:^(BOOL isSuccess, NSString *html) {
         if (isSuccess) {
             ViewForumPage *sarchPage = [self.forumParser parseSearchPageFromHtml:html];
             handler(isSuccess, sarchPage);
@@ -390,20 +356,14 @@
     //https://www.chiphell.com/thread-1732141-2-1.html
 
     NSString *url = [self.forumConfig showThreadWithThreadId:[NSString stringWithFormat:@"%d", threadId] withPage:page];
-    [self.browser GETWithURLString:url parameters:nil charset:UTF_8 requestCallback:^(BOOL isSuccess, NSString *html) {
 
+    [self GET:url requestCallback:^(BOOL isSuccess, NSString *html) {
         if (isSuccess) {
-            NSString *error = nil;//[self checkError:html];
-            if (error != nil) {
-                handler(NO, error);
-            } else {
-                ViewThreadPage *detail = [self.forumParser parseShowThreadWithHtml:html];
-                handler(isSuccess, detail);
-            }
+            ViewThreadPage *detail = [self.forumParser parseShowThreadWithHtml:html];
+            handler(isSuccess, detail);
         } else {
             handler(NO, html);
         }
-
     }];
 }
 
@@ -412,8 +372,8 @@
 }
 
 - (void)forumDisplayWithId:(int)forumId andPage:(int)page handler:(HandlerWithBool)handler {
-
-    [self.browser GETWithURLString:[self.forumConfig forumDisplayWithId:[NSString stringWithFormat:@"%d", forumId] withPage:page] parameters:nil charset:UTF_8 requestCallback:^(BOOL isSuccess, NSString *html) {
+    NSString *url = [self.forumConfig forumDisplayWithId:[NSString stringWithFormat:@"%d", forumId] withPage:page];
+    [self GET:url requestCallback:^(BOOL isSuccess, NSString *html) {
         if (isSuccess) {
             ViewForumPage *viewForumPage = [self.forumParser parseThreadListFromHtml:html withThread:forumId andContainsTop:YES];
             handler(isSuccess, viewForumPage);
@@ -425,7 +385,9 @@
 
 - (void)getAvatarWithUserId:(NSString *)userId handler:(HandlerWithBool)handler {
 
-    [self.browser GETWithURLString:[self.forumConfig memberWithUserId:userId] parameters:nil charset:UTF_8 requestCallback:^(BOOL isSuccess, NSString *html) {
+    NSString *url = [self.forumConfig memberWithUserId:userId];
+
+    [self GET:url requestCallback:^(BOOL isSuccess, NSString *html) {
         NSString *avatar = [self.forumParser parseUserAvatar:html userId:userId];
         if (avatar) {
             avatar = [self.forumConfig.avatarBase stringByAppendingString:avatar];
@@ -434,14 +396,14 @@
         }
         handler(isSuccess, avatar);
     }];
-
 }
 
 - (void)listSearchResultWithSearchId:(NSString *)searchid keyWord:(NSString *)keyWord andPage:(int)page handler:(HandlerWithBool)handler {
 }
 
 - (void)showProfileWithUserId:(NSString *)userId handler:(HandlerWithBool)handler {
-    [self.browser GETWithURLString:[self.forumConfig memberWithUserId:userId] parameters:nil charset:UTF_8 requestCallback:^(BOOL isSuccess, NSString *html) {
+    NSString *url = [self.forumConfig memberWithUserId:userId];
+    [self GET:url requestCallback:^(BOOL isSuccess, NSString *html) {
         if (isSuccess) {
             UserProfile *profile = [self.forumParser parserProfile:html userId:userId];
             handler(YES, profile);

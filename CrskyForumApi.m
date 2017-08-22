@@ -9,7 +9,6 @@
 #import "CrskyForumApi.h"
 #import "ForumParserDelegate.h"
 #import "AFHTTPSessionManager+SimpleAction.h"
-#import "DeviceName.h"
 #import "NSUserDefaults+Extensions.h"
 #import "NSUserDefaults+Setting.h"
 #import "ForumCoreDataManager.h"ƒ
