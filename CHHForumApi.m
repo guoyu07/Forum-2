@@ -71,50 +71,6 @@
     return (long)(from + (arc4random() % (to - from + 1)));
 }
 
-
-- (LoginUser *)getLoginUser {
-    NSArray<NSHTTPCookie *> *cookies = [[NSHTTPCookieStorage sharedHTTPCookieStorage] cookies];
-
-    LoginUser *user = [[LoginUser alloc] init];
-    user.userName = [[NSUserDefaults standardUserDefaults] userName];
-
-    for (int i = 0; i < cookies.count; i++) {
-        NSHTTPCookie *cookie = cookies[(NSUInteger) i];
-
-        if ([cookie.name isEqualToString:self.forumConfig.cookieUserIdKey]) {
-            user.userID = [cookie.value componentsSeparatedByString:@"%"][0];
-        } else if ([cookie.name isEqualToString:self.forumConfig.cookieExpTimeKey]) {
-            user.expireTime = cookie.expiresDate;
-        }
-    }
-    return user;
-}
-
-- (BOOL)isHaveLogin:(NSString *)host {
-    NSArray<NSHTTPCookie *> *cookies = [[NSHTTPCookieStorage sharedHTTPCookieStorage] cookies];
-
-    NSDate *date = [NSDate date];
-    for (NSHTTPCookie * cookie in cookies) {
-        if ([cookie.domain containsString:host] && [cookie.expiresDate compare:date] != NSOrderedAscending){
-            return YES;
-        }
-    }
-    return NO;
-}
-
-- (void)logout {
-    [[NSUserDefaults standardUserDefaults] clearCookie];
-
-    NSURL *url = self.forumConfig.forumURL;
-    if (url) {
-        NSArray *cookies = [[NSHTTPCookieStorage sharedHTTPCookieStorage] cookiesForURL:url];
-        for (int i = 0; i < [cookies count]; i++) {
-            NSHTTPCookie *cookie = (NSHTTPCookie *) cookies[(NSUInteger) i];
-            [[NSHTTPCookieStorage sharedHTTPCookieStorage] deleteCookie:cookie];
-        }
-    }
-}
-
 - (void)listAllForums:(HandlerWithBool)handler {
     [self.browser GETWithURLString:self.forumConfig.archive parameters:nil charset:UTF_8 requestCallback:^(BOOL isSuccess, NSString *html) {
         if (isSuccess) {

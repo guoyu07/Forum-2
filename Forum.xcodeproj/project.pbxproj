@@ -129,8 +129,8 @@
 		3ACFFD341CFA641F000312DC /* NYTExamplePhoto.m in Sources */ = {isa = PBXBuildFile; fileRef = 3ACFFD331CFA641F000312DC /* NYTExamplePhoto.m */; };
 		3AE854B71DF2B0B3000F62E9 /* defaultAvatar.gif in Resources */ = {isa = PBXBuildFile; fileRef = 3AE854B61DF2B0B3000F62E9 /* defaultAvatar.gif */; };
 		4D0D87251DE40C7900DA9034 /* ForumNavigationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4D0D87241DE40C7900DA9034 /* ForumNavigationViewController.m */; };
-		4DB47C321F4AC73B00A79AC5 /* IGXMLNode+QueryNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 4DB47C311F4AC73B00A79AC5 /* IGXMLNode+QueryNode.m */; };
 		4D4CCC791F42CA5A009A4D58 /* CloudKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D4CCC781F42CA5A009A4D58 /* CloudKit.framework */; };
+		4DB47C321F4AC73B00A79AC5 /* IGXMLNode+QueryNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 4DB47C311F4AC73B00A79AC5 /* IGXMLNode+QueryNode.m */; };
 		4DEB34C31C47BBE400063CBB /* AssetsLibrary.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DEB34C21C47BBE400063CBB /* AssetsLibrary.framework */; };
 		4DF737061DDECC8500BF1896 /* ViewSearchForumPage.m in Sources */ = {isa = PBXBuildFile; fileRef = 4DF737041DDECC8500BF1896 /* ViewSearchForumPage.m */; };
 		4DF737191DDECC8D00BF1896 /* Post.m in Sources */ = {isa = PBXBuildFile; fileRef = 4DF737081DDECC8D00BF1896 /* Post.m */; };
@@ -157,11 +157,13 @@
 /* Begin PBXFileReference section */
 		2F34C076378D371E57F0863F /* CHHForumApi.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CHHForumApi.m; sourceTree = "<group>"; };
 		2F34C14160BC257F07318CEF /* ForumApiHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ForumApiHelper.m; sourceTree = "<group>"; };
+		2F34C2A567EB792DCF9E85BD /* vBulletinDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = vBulletinDelegate.h; sourceTree = "<group>"; };
 		2F34C2EF08CDE92A8266D169 /* CharUnicodeBlock.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CharUnicodeBlock.m; sourceTree = "<group>"; };
 		2F34C36FABA87760B3B5B1B3 /* CHHForumConfig.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CHHForumConfig.m; sourceTree = "<group>"; };
 		2F34C73D8B42951BAF2813CA /* CharUnicodeBlock.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CharUnicodeBlock.h; sourceTree = "<group>"; };
 		2F34C8DBF1BAF7284E27B0F6 /* CHHForumHtmlParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CHHForumHtmlParser.h; sourceTree = "<group>"; };
 		2F34C933EAF9358009F4612F /* CHHForumHtmlParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CHHForumHtmlParser.m; sourceTree = "<group>"; };
+		2F34C95254DD621AB9345D1B /* DiscuzDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DiscuzDelegate.h; sourceTree = "<group>"; };
 		2F34C9AF3EEEE19C34102D22 /* BaseForumApi.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BaseForumApi.m; sourceTree = "<group>"; };
 		2F34C9C1792EF57FF901D717 /* CHHForumApi.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CHHForumApi.h; sourceTree = "<group>"; };
 		2F34C9F7371B8DDC9EEA62AB /* ForumLoginWebViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ForumLoginWebViewController.m; sourceTree = "<group>"; };
@@ -171,6 +173,7 @@
 		2F34CAE13DEE2EFC6579F89E /* CHHForumConfig.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CHHForumConfig.h; sourceTree = "<group>"; };
 		2F34CAFE1A4BB2690531ABD9 /* PageNumber.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PageNumber.h; sourceTree = "<group>"; };
 		2F34CEDC13FE605A95AACC4B /* ForumLoginWebViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ForumLoginWebViewController.h; sourceTree = "<group>"; };
+		2F34CEDE561AF2B8E93A940E /* PhpWindDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PhpWindDelegate.h; sourceTree = "<group>"; };
 		2F34CEEEF0AB70454650352A /* ForumConfigDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ForumConfigDelegate.h; sourceTree = "<group>"; };
 		2F34CF08A261B408C3A92081 /* ForumApiHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ForumApiHelper.h; sourceTree = "<group>"; };
 		2F34CF920692D4F8881DB9A1 /* BaseForumApi.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BaseForumApi.h; sourceTree = "<group>"; };
@@ -390,9 +393,9 @@
 		4D0D87231DE40C7900DA9034 /* ForumNavigationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ForumNavigationViewController.h; sourceTree = "<group>"; };
 		4D0D87241DE40C7900DA9034 /* ForumNavigationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ForumNavigationViewController.m; sourceTree = "<group>"; };
 		4D339D8B1C31454A0022A6A4 /* Forum.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Forum.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		4D4CCC781F42CA5A009A4D58 /* CloudKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CloudKit.framework; path = System/Library/Frameworks/CloudKit.framework; sourceTree = SDKROOT; };
 		4DB47C301F4AC73B00A79AC5 /* IGXMLNode+QueryNode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "IGXMLNode+QueryNode.h"; sourceTree = "<group>"; };
 		4DB47C311F4AC73B00A79AC5 /* IGXMLNode+QueryNode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "IGXMLNode+QueryNode.m"; sourceTree = "<group>"; };
-		4D4CCC781F42CA5A009A4D58 /* CloudKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CloudKit.framework; path = System/Library/Frameworks/CloudKit.framework; sourceTree = SDKROOT; };
 		4DEB34C21C47BBE400063CBB /* AssetsLibrary.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AssetsLibrary.framework; path = System/Library/Frameworks/AssetsLibrary.framework; sourceTree = SDKROOT; };
 		4DF736FA1DDECC5000BF1896 /* ForumBrowserDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ForumBrowserDelegate.h; sourceTree = "<group>"; };
 		4DF736FB1DDECC5000BF1896 /* ForumParserDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ForumParserDelegate.h; sourceTree = "<group>"; };
@@ -874,6 +877,9 @@
 				2F34CEEEF0AB70454650352A /* ForumConfigDelegate.h */,
 				2F34CF08A261B408C3A92081 /* ForumApiHelper.h */,
 				2F34C14160BC257F07318CEF /* ForumApiHelper.m */,
+				2F34C95254DD621AB9345D1B /* DiscuzDelegate.h */,
+				2F34CEDE561AF2B8E93A940E /* PhpWindDelegate.h */,
+				2F34C2A567EB792DCF9E85BD /* vBulletinDelegate.h */,
 			);
 			name = Engine;
 			sourceTree = "<group>";

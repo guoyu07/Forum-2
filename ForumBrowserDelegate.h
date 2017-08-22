@@ -33,15 +33,6 @@ typedef void (^HandlerWithBool)(BOOL isSuccess, id message);
 @optional
 - (void)fetchUserId:(HandlerWithBool)handler;
 
-// 获取当前登录的账户信息
-- (LoginUser *)getLoginUser;
-
-// 获取当前登录的账户信息
-- (BOOL)isHaveLogin:(NSString *) host;
-
-// 退出论坛
-- (void)logout;
-
 // 获取所有的论坛列表
 - (void)listAllForums:(HandlerWithBool)handler;
 

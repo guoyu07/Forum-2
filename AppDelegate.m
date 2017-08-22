@@ -20,6 +20,7 @@
 #import "ForumTableViewController.h"
 #import "Forums.h"
 #import "SupportForums.h"
+#import "BaseForumApi.h"
 #import <UserNotifications/UserNotifications.h>
 
 static BOOL API_DEBUG = NO;
@@ -207,7 +208,7 @@ static NSString *bundleIdentifier;
     int size = (int) supportForums.forums.count;
 
     // 判断是否登录
-    id<ForumBrowserDelegate> forumApi = [ForumApiHelper forumApi];
+    BaseForumApi *forumApi = [[BaseForumApi alloc] init];
 
     for (int i = 0; i < size; ++i) {
         Forums * forums = supportForums.forums[(NSUInteger) i];

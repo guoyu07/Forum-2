@@ -25,6 +25,7 @@
 #import "SupportForums.h"
 #import "Forums.h"
 #import "AppDelegate.h"
+#import "BaseForumApi.h"
 
 @interface DrawerView () <UITableViewDelegate, UITableViewDataSource> {
 
@@ -57,7 +58,7 @@
 
 - (void)showUserAvatar {
 
-    id <ForumBrowserDelegate> forumApi = [ForumApiHelper forumApi];
+    BaseForumApi *forumApi = [[BaseForumApi alloc] init];
     LoginUser *loginUser = [forumApi getLoginUser];
 
     [self showAvatar:_avatarUIImageView userId:loginUser.userID];
@@ -227,11 +228,11 @@
 
     [[NSUserDefaults standardUserDefaults] saveCurrentForumURL:forums.url];
 
-    _forumApi = [ForumApiHelper forumApi];
+    BaseForumApi *forumApi = [[BaseForumApi alloc] init];
 
     [self closeLeftDrawer:^{
         [self showUserAvatar];
-        if ([_forumApi isHaveLogin:url.host]) {
+        if ([forumApi isHaveLogin:url.host]) {
             ForumTabBarController *rootViewController = (ForumTabBarController *) [[UIStoryboard mainStoryboard] finControllerById:@"ForumTabBarControllerId"];
             rootViewController.selectedIndex = 2;
             UIStoryboard *stortboard = [UIStoryboard mainStoryboard];
@@ -453,9 +454,10 @@
     NSDictionary *dictionary = [NSJSONSerialization JSONObjectWithData:data options:(NSJSONReadingOptions) kNilOptions error:nil];
 
     SupportForums *supportForums = [SupportForums modelObjectWithDictionary:dictionary];
+    BaseForumApi *forumApi = [[BaseForumApi alloc] init];
     for (Forums *forums in supportForums.forums) {
         NSURL *url = [NSURL URLWithString:forums.url];
-        if ([_forumApi isHaveLogin:url.host]) {
+        if ([forumApi isHaveLogin:url.host]) {
             [_haveLoginForums addObject:forums];
         }
     }

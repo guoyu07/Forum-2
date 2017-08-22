@@ -13,6 +13,7 @@
 #import "UIStoryboard+Forum.h"
 #import "AppDelegate.h"
 #import "ForumTabBarController.h"
+#import "BaseForumApi.h"
 
 
 @interface ForumMyProfileTableViewController () {
@@ -93,9 +94,9 @@
 
 
 - (void)onPullRefresh {
-    id<ForumBrowserDelegate> api = self.forumApi;
+    BaseForumApi *forumApi = [[BaseForumApi alloc] init];
 
-    NSString *currentUserId = [api getLoginUser].userID;
+    NSString *currentUserId = [forumApi getLoginUser].userID;
 
     [self.forumApi showProfileWithUserId:currentUserId handler:^(BOOL isSuccess, UserProfile *message) {
         userProfile = message;
@@ -182,7 +183,8 @@
 
     if (indexPath.section == 3 && indexPath.row == 1) {
 
-        [self.forumApi logout];
+        BaseForumApi *forumApi = [[BaseForumApi alloc] init];
+        [forumApi logout];
 
         NSString * id = self.forumApi.currentConfigDelegate.loginControllerId;
         [[UIStoryboard mainStoryboard] changeRootViewControllerTo:id];

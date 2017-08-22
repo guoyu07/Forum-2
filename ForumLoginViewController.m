@@ -13,6 +13,7 @@
 #import "ForumCoreDataManager.h"
 #import "ForumEntry+CoreDataClass.h"
 #import "NSUserDefaults+Extensions.h"
+#import "BaseForumApi.h"
 
 @interface ForumLoginViewController () <UITextFieldDelegate> {
 
@@ -190,7 +191,9 @@
 }
 
 - (IBAction)cancelLogin:(id)sender {
-    [_forumApi logout];
+    BaseForumApi * baseForumApi = [[BaseForumApi alloc] init];
+    [baseForumApi logout];
+
     [[NSUserDefaults standardUserDefaults] clearCurrentForumURL];
     [[UIStoryboard mainStoryboard] changeRootViewControllerTo:@"ShowSupportForums" withAnim:UIViewAnimationOptionTransitionFlipFromTop];
     //[self dismissViewControllerAnimated:YES completion:nil];
