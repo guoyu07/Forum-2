@@ -9,12 +9,10 @@
 #import "DeviceName.h"
 #import "NSString+Extensions.h"
 #import "AFHTTPSessionManager+SimpleAction.h"
-#import "UIButton+AFNetworking.h"
 #import "ForumParserDelegate.h"
 #import "NSUserDefaults+Setting.h"
 
 #import "IGHTMLDocument+QueryNode.h"
-#import "IGXMLNode+Children.h"
 
 
 @implementation CHHForumApi {
@@ -70,73 +68,9 @@
 }
 
 -(long long)getRandomNumber:(long long)from to:(long long)to{
-    
     return (long)(from + (arc4random() % (to - from + 1)));
-    //return srandom((unsigned int) time(NULL));//srand(unsigned(time(NULL)));
 }
 
-- (void)refreshVCodeToUIImageView:(UIImageView *)vCodeImageView {
-    [self.browser GETWithURLString:self.forumConfig.login parameters:nil charset:UTF_8 requestCallback:^(BOOL isSuccess, NSString *html) {
-        if (isSuccess){
-            NSString * seccodeFull = [html stringWithRegular:@"<span id=\"seccode_\\w+\"></span>" andChild:@"seccode_\\w+"];
-            NSString * seccode = [seccodeFull componentsSeparatedByString:@"_"][1];
-            NSLog(@"seccode is : %@", seccode);
-
-            NSString * msicT = @"http://www.chiphell.com/misc.php?mod=seccode&action=update&idhash=%@&0.%lld&modid=member::logging";
-            long long random = [self getRandomNumber:100000000000000L to:999999999999999L];
-            NSString * msic = [NSString stringWithFormat:msicT, seccode, random];
-            NSLog(@"seccode is : %@", msic);
-            
-            //NSArray<NSHTTPCookie *> *cookies = [[NSHTTPCookieStorage sharedHTTPCookieStorage] cookies];
-
-            [self saveCookie];
-            
-            
-            NSMutableDictionary *p = [NSMutableDictionary dictionary];
-            [p setValue:[self loadCookie] forKey:@"cookie"];
-            
-            [self.browser GETWithURLString:msic parameters:p charset:UTF_8 requestCallback:^(BOOL success, NSString *codeHtml) {
-                if (success){
-                    
-                    [self saveCookie];
-                    
-                    NSLog(@"codehtml is : %@", codeHtml);
-
-                    NSString * picT = [codeHtml stringWithRegular:@"misc\\.php\\?mod=seccode&update=\\d+&idhash=\\w+"];
-
-                    NSLog(@"picT is : %@", picT);
-                    
-                    NSString *url = [@"http://www.chiphell.com/" stringByAppendingString:picT];//self.forumConfig.loginvCode;
-                    
-                    AFImageDownloader *downloader = [[vCodeImageView class] sharedImageDownloader];
-                    id <AFImageRequestCache> imageCache = downloader.imageCache;
-                    [imageCache removeImageWithIdentifier:url];
-                    
-                    NSURL *URL = [NSURL URLWithString:url];
-                    
-                    //NSURLRequest *request = [NSURLRequest requestWithURL:URL];
-                    
-                    
-                    
-                    NSMutableURLRequest *msrequest = [NSMutableURLRequest requestWithURL:URL];
-                    [msrequest setValue: [self loadCookie] forHTTPHeaderField: @"Cookie"];
-                    
-                    
-                    UIImageView *view = vCodeImageView;
-                    
-                    [vCodeImageView setImageWithURLRequest:msrequest placeholderImage:nil success:^(NSURLRequest *_Nonnull urlRequest, NSHTTPURLResponse *_Nullable response, UIImage *_Nonnull image) {
-                        [view setImage:image];
-                    }                              failure:^(NSURLRequest *_Nonnull urlRequest, NSHTTPURLResponse *_Nullable response, NSError *_Nonnull error) {
-                        NSLog(@"refreshDoor failed");
-                    }];
-                    
-                }
-            }];
-        }
-    }];
-
-    
-}
 
 - (LoginUser *)getLoginUser {
     NSArray<NSHTTPCookie *> *cookies = [[NSHTTPCookieStorage sharedHTTPCookieStorage] cookies];
@@ -264,11 +198,6 @@
                 [parameters setValue:@"" forKey:@"subject"];
                 [parameters setValue:msg forKey:@"message"];
 
-//                long time = (long) [[NSDate date] timeIntervalSince1970];
-//                [parameters setValue:[NSString stringWithFormat:@"%li", time] forKey:@"posttime"];
-//                [parameters setValue:@"" forKey:@"wysiwyg"];
-//                [parameters setValue:@"0" forKey:@"save"];
-
                 [self.browser POSTWithURLString:url parameters:parameters charset:UTF_8 requestCallback:^(BOOL repsuccess, NSString *repHtml) {
                     ViewThreadPage *thread = [self.forumParser parseShowThreadWithHtml:html];
                     if (thread.postList.count > 0) {
@@ -331,7 +260,23 @@
 }
 
 - (void)unFavouriteForumWithId:(NSString *)forumId handler:(HandlerWithBool)handler {
+    [self.browser GETWithURLString:@"https://www.chiphell.com/home.php?mod=space&do=favorite&view=me" parameters:nil charset:UTF_8 requestCallback:^(BOOL isSuccess, NSString *html) {
+        if (isSuccess) {
+            NSString *token = [self.forumParser parseSecurityToken:html];
 
+            NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
+            [parameters setValue:token forKey:@"formhash"];
+            [parameters setValue:@"true" forKey:@"delfavorite"];
+            [parameters setValue:@"" forKey:@"favorite[]"];
+
+            NSString *url = [self.forumConfig unFavorThreadWithId:nil];
+            [self.browser POSTWithURLString:url parameters:parameters charset:UTF_8 requestCallback:^(BOOL success, NSString *string) {
+                handler(success, string);
+            }];
+        } else {
+            handler(NO, nil);
+        }
+    }];
 }
 
 - (void)favoriteThreadWithId:(NSString *)threadPostId handler:(HandlerWithBool)handler {
@@ -339,6 +284,24 @@
 }
 
 - (void)unFavoriteThreadWithId:(NSString *)threadPostId handler:(HandlerWithBool)handler {
+
+    [self.browser GETWithURLString:@"https://www.chiphell.com/home.php?mod=space&do=favorite&view=me" parameters:nil charset:UTF_8 requestCallback:^(BOOL isSuccess, NSString *html) {
+        if (isSuccess) {
+            NSString *token = [self.forumParser parseSecurityToken:html];
+
+            NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
+            [parameters setValue:token forKey:@"formhash"];
+            [parameters setValue:@"true" forKey:@"delfavorite"];
+            [parameters setValue:@"" forKey:@"favorite[]"];
+
+            NSString *url = [self.forumConfig unFavorThreadWithId:threadPostId];
+            [self.browser POSTWithURLString:url parameters:parameters charset:UTF_8 requestCallback:^(BOOL success, NSString *string) {
+                handler(success, string);
+            }];
+        } else {
+            handler(NO, nil);
+        }
+    }];
 
 }
 
@@ -530,10 +493,6 @@
 }
 
 //------
-// private
-- (NSString *)loadCookie {
-    return [[NSUserDefaults standardUserDefaults] loadCookie];
-}
 
 // private
 - (void)saveUserName:(NSString *)name {

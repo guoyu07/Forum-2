@@ -80,7 +80,7 @@
 }
 
 - (NSString *)unFavorThreadWithId:(NSString *)threadId {
-    return nil;
+    return @"https://www.chiphell.com/home.php?mod=spacecp&ac=favorite&op=delete&type=all&checkall=1";
 }
 
 - (NSString *)listFavorThreads:(int)userId withPage:(int)page {
