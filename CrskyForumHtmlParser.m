@@ -14,6 +14,9 @@
 #import "IGXMLNode+QueryNode.h"
 
 @implementation CrskyForumHtmlParser
+- (NSString *)parseErrorMessage:(NSString *)html {
+    return nil;
+}
 
 
 // private

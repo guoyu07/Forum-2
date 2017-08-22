@@ -259,6 +259,10 @@
     return page;
 }
 
+- (NSString *)parseErrorMessage:(NSString *)html {
+    return nil;
+}
+
 - (NSString *)parseSecurityToken:(NSString *)html {
     //<input type="hidden" name="formhash" value="fc436b99" />
     NSString *forumHashHtml = [html stringWithRegular:@"<input type=\"hidden\" name=\"formhash\" value=\"\\w+\" />" andChild:@"value=\"\\w+\""];

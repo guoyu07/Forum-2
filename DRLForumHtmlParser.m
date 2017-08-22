@@ -546,6 +546,10 @@
     return page;
 }
 
+- (NSString *)parseErrorMessage:(NSString *)html {
+    return nil;
+}
+
 - (NSString *)parseSecurityToken:(NSString *)html {
     NSString *searchText = html;
     

@@ -131,7 +131,8 @@ typedef void (^CallBack)(NSString *token, NSString *hash, NSString *time);
 
 - (void)listAllForums:(HandlerWithBool)handler {
 
-    [self GET:self.forumConfig.archive requestCallback:^(BOOL isSuccess, NSString *html) {
+    NSString *url = self.forumConfig.archive;
+    [self GET:url requestCallback:^(BOOL isSuccess, NSString *html) {
         if (isSuccess) {
             NSArray<Forum *> *parserForums = [self.forumParser parserForums:html forumHost:self.forumConfig.forumURL.host];
             if (parserForums != nil && parserForums.count > 0) {

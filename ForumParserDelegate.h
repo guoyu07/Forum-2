@@ -23,7 +23,6 @@
 @protocol ForumParserDelegate <NSObject>
 
 @required
-
 // 页面相关
 - (ViewThreadPage *)parseShowThreadWithHtml:(NSString *)html;
 
@@ -58,6 +57,9 @@
 - (NSString *)parseUserAvatar:(NSString *)html userId:(NSString *)userId;
 
 - (NSString *)parseListMyThreadSearchId:(NSString *)html;
+
+@required
+- (NSString *)parseErrorMessage:(NSString *)html;
 
 // vBulletin
 - (NSString *)parseSecurityToken:(NSString *)html;
