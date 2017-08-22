@@ -91,10 +91,9 @@ typedef void (^CallBack)(NSString *token, NSString *hash, NSString *time);
     [self.browser POSTWithURLString:self.forumConfig.login parameters:parameters charset:UTF_8 requestCallback:^(BOOL isSuccess, NSString *html) {
         if (isSuccess) {
 
-            NSString *userName = [html stringWithRegular:@"<p><strong>.*</strong></p>" andChild:@"，.*。"];
-            userName = [userName substringWithRange:NSMakeRange(1, [userName length] - 2)];
+            NSString *userName = [html stringWithRegular:@"(?<=<p><strong>感谢您登录，).*(?=。</strong></p>)"];
 
-            if (userName != nil) {
+            if (userName) {
                 // 保存Cookie
                 [self saveCookie];
                 // 保存用户名
