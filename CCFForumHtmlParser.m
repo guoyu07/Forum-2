@@ -666,7 +666,7 @@
 
     NSMutableArray<Message *> *messagesList = [NSMutableArray array];
 
-    IGXMLNodeSet *messages = [document queryWithXPath:@"//*[@id='pmform']/table[2]/tbody[*]/tr"];
+    IGXMLNodeSet *messages = [document queryWithXPath:@"//*[@id='pmform']/table[*]/tbody[*]/tr"];
     for (IGXMLNode *node in messages) {
         long childCount = (long) [[node children] count];
         if (childCount == 4) {
