@@ -24,4 +24,6 @@
 
 - (NSArray<Forums *> *) supportForums;
 
+- (NSString *)currentForumBaseUrl;
+
 @end

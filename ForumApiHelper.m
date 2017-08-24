@@ -16,6 +16,7 @@
 #import "DRLForumConfig.h"
 #import "CrskyForumConfig.h"
 #import "CHHForumConfig.h"
+#import "LocalForumApi.h"
 
 typedef id (^Runnable)(NSString *bundle, NSString *host);
 
@@ -24,8 +25,8 @@ typedef id (^Runnable)(NSString *bundle, NSString *host);
 + (id <ForumConfigDelegate>)forumConfig {
     AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
     NSString *bundleId = [appDelegate bundleIdentifier];
-
-    NSString * host = appDelegate.forumHost;
+    LocalForumApi * localeForumApi = [[LocalForumApi alloc] init];
+    NSString * host = localeForumApi.currentForumHost;
 
     if ([bundleId isEqualToString:@"com.andforce.et8"] || [host isEqualToString:@"bbs.et8.net"]){
 
@@ -55,7 +56,8 @@ typedef id (^Runnable)(NSString *bundle, NSString *host);
     AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
     NSString *bundleId = [appDelegate bundleIdentifier];
 
-    NSString * host = appDelegate.forumHost;
+    LocalForumApi * localeForumApi = [[LocalForumApi alloc] init];
+    NSString * host = localeForumApi.currentForumHost;
 
     if ([bundleId isEqualToString:@"com.andforce.et8"] || [host isEqualToString:@"bbs.et8.net"]){
 

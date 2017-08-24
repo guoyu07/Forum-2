@@ -90,14 +90,14 @@
                     return [NSPredicate predicateWithFormat:@"forumHost = %@", self.currentForumHost];;
                 }];
 
-                AppDelegate *appDelegate = (AppDelegate *) [[UIApplication sharedApplication] delegate];
+                LocalForumApi * localeForumApi = [[LocalForumApi alloc] init];
 
                 [formManager insertData:needInsert operation:^(NSManagedObject *target, id src) {
                     ForumEntry *newsInfo = (ForumEntry *) target;
                     newsInfo.forumId = [src valueForKey:@"forumId"];
                     newsInfo.forumName = [src valueForKey:@"forumName"];
                     newsInfo.parentForumId = [src valueForKey:@"parentForumId"];
-                    newsInfo.forumHost = appDelegate.forumHost;
+                    newsInfo.forumHost = localeForumApi.currentForumHost;
 
                 }];
 

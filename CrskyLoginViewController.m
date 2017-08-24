@@ -17,6 +17,7 @@
 #import "IGHTMLDocument+QueryNode.h"
 #import "AppDelegate.h"
 #import "UIStoryboard+Forum.h"
+#import "LocalForumApi.h"
 
 @interface CrskyLoginViewController ()<UIWebViewDelegate>{
 
@@ -116,14 +117,14 @@
                             return [NSPredicate predicateWithFormat:@"forumHost = %@", self.currentForumHost];;
                         }];
 
-                        AppDelegate *appDelegate = (AppDelegate *) [[UIApplication sharedApplication] delegate];
 
                         [formManager insertData:needInsert operation:^(NSManagedObject *target, id src) {
                             ForumEntry *newsInfo = (ForumEntry *) target;
                             newsInfo.forumId = [src valueForKey:@"forumId"];
                             newsInfo.forumName = [src valueForKey:@"forumName"];
                             newsInfo.parentForumId = [src valueForKey:@"parentForumId"];
-                            newsInfo.forumHost = appDelegate.forumHost;
+                            LocalForumApi * localeForumApi = [[LocalForumApi alloc] init];
+                            newsInfo.forumHost = localeForumApi.currentForumHost;
 
                         }];
 

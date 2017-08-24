@@ -290,15 +290,15 @@ static NSString *bundleIdentifier;
     return [[[NSFileManager defaultManager] URLsForDirectory:NSDocumentDirectory inDomains:NSUserDomainMask] lastObject];
 }
 
-- (NSString *)forumBaseUrl {
-    NSString *urlstr = [NSUserDefaults standardUserDefaults].currentForumURL;
-
-    return urlstr;
-}
-
-- (NSString *)forumHost {
-    return [NSURL URLWithString:[self forumBaseUrl]].host;
-}
+//- (NSString *)forumBaseUrl {
+//    NSString *urlstr = [NSUserDefaults standardUserDefaults].currentForumURL;
+//
+//    return urlstr;
+//}
+//
+//- (NSString *)forumHost {
+//    return [NSURL URLWithString:[self forumBaseUrl]].host;
+//}
 
 
 - (NSManagedObjectModel *)managedObjectModel {

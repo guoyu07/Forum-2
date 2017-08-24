@@ -9,6 +9,7 @@
 #import <UIImageView+WebCache.h>
 #import "AppDelegate.h"
 #import "NSUserDefaults+Extensions.h"
+#import "LocalForumApi.h"
 
 @implementation BaseFourmTableViewCell {
     UIImage *defaultAvatarImage;
@@ -93,13 +94,13 @@
         [_forumApi getAvatarWithUserId:userId handler:^(BOOL isSuccess, NSString *avatar) {
 
             if (isSuccess) {
-                AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+                LocalForumApi * localeForumApi = [[LocalForumApi alloc] init];
                 // 存入数据库
                 [coreDateManager insertOneData:^(id src) {
                     UserEntry *user = (UserEntry *) src;
                     user.userID = userId;
                     user.userAvatar = avatar;
-                    user.forumHost = appDelegate.forumHost;
+                    user.forumHost = localeForumApi.currentForumHost;
                 }];
                 // 添加到Cache中
                 [avatarCache setValue:avatar forKey:userId];

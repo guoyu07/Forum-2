@@ -20,12 +20,18 @@
 
 
 - (LoginUser *)getLoginUserCrsky {
-    id <ForumConfigDelegate> forumConfig = [ForumApiHelper forumConfig];
 
     NSArray<NSHTTPCookie *> *cookies = [[NSHTTPCookieStorage sharedHTTPCookieStorage] cookies];
+    if (cookies.count == 0){
+        return nil;
+    }
 
+    id <ForumConfigDelegate> forumConfig = [ForumApiHelper forumConfig];
     LoginUser *user = [[LoginUser alloc] init];
     user.userName = [[NSUserDefaults standardUserDefaults] userName:@"bbs.crsky.com"];
+    if (user.userName == nil || [user.userName isEqualToString:@""]){
+        return nil;
+    }
     user.userID = [[NSUserDefaults standardUserDefaults] userId];
 
     for (int i = 0; i < cookies.count; i++) {
@@ -39,6 +45,10 @@
 }
 
 - (LoginUser *)getLoginUser:(NSString *)host {
+    NSArray<NSHTTPCookie *> *cookies = [[NSHTTPCookieStorage sharedHTTPCookieStorage] cookies];
+    if (cookies.count == 0){
+        return nil;
+    }
     id <ForumConfigDelegate> forumConfig = [ForumApiHelper forumConfig];
     AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
     NSString *bundleId = [appDelegate bundleIdentifier];
@@ -46,10 +56,11 @@
     if ([bundleId isEqualToString:@"com.andforce.Crsky"] || [host isEqualToString:@"bbs.crsky.com"]){
         return [self getLoginUserCrsky];
     } else {
-        NSArray<NSHTTPCookie *> *cookies = [[NSHTTPCookieStorage sharedHTTPCookieStorage] cookies];
-
         LoginUser *user = [[LoginUser alloc] init];
         user.userName = [[NSUserDefaults standardUserDefaults] userName:host];
+        if (user.userName == nil || [user.userName isEqualToString:@""]){
+            return nil;
+        }
 
         for (int i = 0; i < cookies.count; i++) {
             NSHTTPCookie *cookie = cookies[(NSUInteger) i];
@@ -67,6 +78,10 @@
 - (BOOL)isHaveLogin:(NSString *)host {
 
     LoginUser *user = [self getLoginUser:host];
+    if (user == nil){
+        return NO;
+    }
+
     if (user.userName == nil || user.userID == nil || user.expireTime == nil){
         return NO;
     }
@@ -104,6 +119,11 @@
 
     SupportForums *supportForums = [SupportForums modelObjectWithDictionary:dictionary];
     return supportForums.forums;
+}
+
+- (NSString *)currentForumBaseUrl {
+    NSString *urlstr = [NSUserDefaults standardUserDefaults].currentForumURL;
+    return urlstr;
 }
 
 

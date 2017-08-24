@@ -55,9 +55,9 @@
 
     coreDateManager = [[ForumCoreDataManager alloc] initWithEntryType:EntryTypeUser];
     if (cacheUsers == nil) {
-        AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+        LocalForumApi *localForumApi = [[LocalForumApi alloc] init];
         cacheUsers = [[coreDateManager selectData:^NSPredicate * {
-            return [NSPredicate predicateWithFormat:@"forumHost = %@ AND userID > %d", [NSURL URLWithString:appDelegate.forumBaseUrl].host, 0];
+            return [NSPredicate predicateWithFormat:@"forumHost = %@ AND userID > %d", localForumApi.currentForumHost, 0];
         }] copy];
     }
 
@@ -127,13 +127,13 @@
         [self.forumApi getAvatarWithUserId:userId handler:^(BOOL isSuccess, NSString *avatar) {
 
             if (isSuccess) {
-                AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+                LocalForumApi * localeForumApi = [[LocalForumApi alloc] init];
                 // 存入数据库
                 [coreDateManager insertOneData:^(id src) {
                     UserEntry *user = (UserEntry *) src;
                     user.userID = userId;
                     user.userAvatar = avatar;
-                    user.forumHost = appDelegate.forumHost;
+                    user.forumHost = localeForumApi.currentForumHost;
                 }];
                 // 添加到Cache中
                 [avatarCache setValue:avatar forKey:userId];
