@@ -9,24 +9,17 @@
 #import "NSUserDefaults+Extensions.h"
 #import "ForumConfigDelegate.h"
 #import "ForumApiHelper.h"
-#import "BaseForumApi.h"
 #import "AppDelegate.h"
 
 
 @implementation LocalForumApi {
-    id <ForumConfigDelegate> forumConfig;
+    //id <ForumConfigDelegate> forumConfig;
 }
 
-- (instancetype)init {
-    self = [super init];
-    if (self){
-        BaseForumApi * api = (BaseForumApi *)[ForumApiHelper forumApi];
-        forumConfig = api.forumConfig;
-    }
-    return self;
-}
 
 - (LoginUser *)getLoginUserCrsky {
+    id <ForumConfigDelegate> forumConfig = [ForumApiHelper forumConfig];
+
     NSArray<NSHTTPCookie *> *cookies = [[NSHTTPCookieStorage sharedHTTPCookieStorage] cookies];
 
     LoginUser *user = [[LoginUser alloc] init];
@@ -44,6 +37,7 @@
 }
 
 - (LoginUser *)getLoginUser:(NSString *)host {
+    id <ForumConfigDelegate> forumConfig = [ForumApiHelper forumConfig];
     AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
     NSString *bundleId = [appDelegate bundleIdentifier];
 
@@ -81,6 +75,8 @@
 }
 
 - (void)logout {
+    id <ForumConfigDelegate> forumConfig = [ForumApiHelper forumConfig];
+
     [[NSUserDefaults standardUserDefaults] clearCookie];
 
     NSURL *url = forumConfig.forumURL;

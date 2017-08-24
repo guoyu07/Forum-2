@@ -13,9 +13,9 @@
 
 @interface BaseForumApi : NSObject
 
-@property (nonatomic, strong) id <ForumConfigDelegate> forumConfig;
-
-@property (nonatomic, strong) id <ForumParserDelegate> forumParser;
+//@property (nonatomic, strong) id <ForumConfigDelegate> forumConfig;
+//
+//@property (nonatomic, strong) id <ForumParserDelegate> forumParser;
 
 @property (nonatomic, strong) AFHTTPSessionManager *browser;
 

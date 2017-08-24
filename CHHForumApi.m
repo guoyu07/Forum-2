@@ -19,13 +19,15 @@
 
 @implementation CHHForumApi {
 
+    id <ForumConfigDelegate> forumConfig;
+    id <ForumParserDelegate> forumParser;
 }
 
 - (instancetype)init {
     self = [super init];
     if (self){
-        self.forumConfig = [[CHHForumConfig alloc] init];
-        self.forumParser = [[CHHForumHtmlParser alloc]init];
+        forumConfig = [[CHHForumConfig alloc] init];
+        forumParser = [[CHHForumHtmlParser alloc]init];
     }
     return self;
 }
@@ -45,10 +47,10 @@
 }
 
 - (void)listAllForums:(HandlerWithBool)handler {
-    NSString *url = self.forumConfig.archive;
+    NSString *url = forumConfig.archive;
     [self GET:url requestCallback:^(BOOL isSuccess, NSString *html) {
         if (isSuccess) {
-            NSArray<Forum *> *parserForums = [self.forumParser parserForums:html forumHost:self.forumConfig.forumURL.host];
+            NSArray<Forum *> *parserForums = [forumParser parserForums:html forumHost:forumConfig.forumURL.host];
             if (parserForums != nil && parserForums.count > 0) {
                 handler(YES, parserForums);
             } else {
@@ -80,7 +82,7 @@
     NSString *msg = message;
 
     if ([NSUserDefaults standardUserDefaults].isSignatureEnabled) {
-        msg = [message stringByAppendingString:[self.forumConfig signature]];
+        msg = [message stringByAppendingString:[forumConfig signature]];
     }
 
     int replyPostId = [postId intValue];
@@ -114,7 +116,7 @@
                 }
 
                 // 开始回复
-                NSString *url = [self.forumConfig replyWithThreadId:threadId forForumId:forumId replyPostId:replyPostId];
+                NSString *url = [forumConfig replyWithThreadId:threadId forForumId:forumId replyPostId:replyPostId];
 
                 NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
                 [parameters setValue:token forKey:@"formhash"];
@@ -129,7 +131,7 @@
                 [parameters setValue:msg forKey:@"message"];
 
                 [self.browser POSTWithURLString:url parameters:parameters charset:UTF_8 requestCallback:^(BOOL repsuccess, NSString *repHtml) {
-                    ViewThreadPage *thread = [self.forumParser parseShowThreadWithHtml:html];
+                    ViewThreadPage *thread = [forumParser parseShowThreadWithHtml:html];
                     if (thread.postList.count > 0) {
                         handler(YES, thread);
                     } else {
@@ -143,7 +145,7 @@
         }];
 
     } else {
-        NSString *url = [self.forumConfig replyWithThreadId:threadId forForumId:forumId replyPostId:replyPostId];
+        NSString *url = [forumConfig replyWithThreadId:threadId forForumId:forumId replyPostId:replyPostId];
 
         NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
         [parameters setValue:msg forKey:@"message"];
@@ -160,7 +162,7 @@
         [parameters setValue:@"0" forKey:@"save"];
 
         [self.browser POSTWithURLString:url parameters:parameters charset:UTF_8 requestCallback:^(BOOL isSuccess, NSString *html) {
-            ViewThreadPage *thread = [self.forumParser parseShowThreadWithHtml:html];
+            ViewThreadPage *thread = [forumParser parseShowThreadWithHtml:html];
             if (thread.postList.count > 0) {
                 handler(YES, thread);
             } else {
@@ -194,14 +196,14 @@
 
     [self GET:rurl requestCallback:^(BOOL isSuccess, NSString *html) {
         if (isSuccess) {
-            NSString *token = [self.forumParser parseSecurityToken:html];
+            NSString *token = [forumParser parseSecurityToken:html];
 
             NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
             [parameters setValue:token forKey:@"formhash"];
             [parameters setValue:@"true" forKey:@"delfavorite"];
             [parameters setValue:@"" forKey:@"favorite[]"];
 
-            NSString *url = [self.forumConfig unFavorThreadWithId:nil];
+            NSString *url = [forumConfig unFavorThreadWithId:nil];
             [self.browser POSTWithURLString:url parameters:parameters charset:UTF_8 requestCallback:^(BOOL success, NSString *string) {
                 handler(success, string);
             }];
@@ -220,14 +222,14 @@
     NSString *rurl = @"https://www.chiphell.com/home.php?mod=space&do=favorite&view=me";
     [self GET:rurl requestCallback:^(BOOL isSuccess, NSString *html) {
         if (isSuccess) {
-            NSString *token = [self.forumParser parseSecurityToken:html];
+            NSString *token = [forumParser parseSecurityToken:html];
 
             NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
             [parameters setValue:token forKey:@"formhash"];
             [parameters setValue:@"true" forKey:@"delfavorite"];
             [parameters setValue:@"" forKey:@"favorite[]"];
 
-            NSString *url = [self.forumConfig unFavorThreadWithId:threadPostId];
+            NSString *url = [forumConfig unFavorThreadWithId:threadPostId];
             [self.browser POSTWithURLString:url parameters:parameters charset:UTF_8 requestCallback:^(BOOL success, NSString *string) {
                 handler(success, string);
             }];
@@ -239,10 +241,10 @@
 
 - (void)listPrivateMessageWithType:(int)type andPage:(int)page handler:(HandlerWithBool)handler {
 
-    NSString *url = [self.forumConfig privateWithType:type withPage:page];
+    NSString *url = [forumConfig privateWithType:type withPage:page];
     [self GET:url requestCallback:^(BOOL isSuccess, NSString *html) {
         if (isSuccess) {
-            ViewForumPage *viewForumPage = [self.forumParser parsePrivateMessageFromHtml:html forType:type];
+            ViewForumPage *viewForumPage = [forumParser parsePrivateMessageFromHtml:html forType:type];
             handler(YES, viewForumPage);
         } else {
             handler(NO, html);
@@ -256,15 +258,15 @@
     __block int page = 1;
     [self listFavoriteForums:page handler:^(BOOL isSuccess, id m) {
         if (isSuccess){
-            NSMutableArray<Forum *> *favForms = [self.forumParser parseFavForumFromHtml:m];
+            NSMutableArray<Forum *> *favForms = [forumParser parseFavForumFromHtml:m];
             [result addObjectsFromArray:favForms];
-            PageNumber * pageNumber = [self.forumParser parserPageNumber:m];
+            PageNumber * pageNumber = [forumParser parserPageNumber:m];
 
             if (pageNumber.totalPageNumber > page){
                 for (int i = page + 1; i <= pageNumber.totalPageNumber; i++) {
                     [self listFavoriteForums:i handler:^(BOOL success, id html) {
                         if (success){
-                            NSMutableArray<Forum *> *forums = [self.forumParser parseFavForumFromHtml:html];
+                            NSMutableArray<Forum *> *forums = [forumParser parseFavForumFromHtml:html];
                             [result addObjectsFromArray:forums];
                             page = i;
                             if (page >= pageNumber.totalPageNumber){
@@ -289,7 +291,7 @@
 
 // private
 - (void)listFavoriteForums:(int ) page handler:(HandlerWithBool)handler {
-    NSString * baseUrl = self.forumConfig.favoriteForums;
+    NSString * baseUrl = forumConfig.favoriteForums;
     NSString * favForumsURL = [NSString stringWithFormat:@"%@&page=%d",baseUrl,page];
 
     [self GET:favForumsURL requestCallback:^(BOOL isSuccess, NSString *html) {
@@ -298,11 +300,11 @@
 }
 
 - (void)listFavoriteThreads:(int)userId withPage:(int)page handler:(HandlerWithBool)handler {
-    NSString *url = [self.forumConfig listFavorThreads:userId withPage:page];
+    NSString *url = [forumConfig listFavorThreads:userId withPage:page];
 
     [self GET:url requestCallback:^(BOOL isSuccess, NSString *html) {
         if (isSuccess) {
-            ViewForumPage *viewForumPage = [self.forumParser parseFavorThreadListFromHtml:html];
+            ViewForumPage *viewForumPage = [forumParser parseFavorThreadListFromHtml:html];
             handler(isSuccess, viewForumPage);
         } else {
             handler(NO, html);
@@ -312,10 +314,10 @@
 
 - (void)listNewThreadWithPage:(int)page handler:(HandlerWithBool)handler {
 
-    NSString *url = [self.forumConfig searchNewThread:page];
+    NSString *url = [forumConfig searchNewThread:page];
     [self GET:url requestCallback:^(BOOL isSuccess, NSString *html) {
         if (isSuccess) {
-            ViewSearchForumPage *searchForumPage = [self.forumParser parseSearchPageFromHtml:html];
+            ViewSearchForumPage *searchForumPage = [forumParser parseSearchPageFromHtml:html];
             handler(isSuccess, searchForumPage);
         } else {
             handler(NO, html);
@@ -327,7 +329,7 @@
     NSString *url = @"https://www.chiphell.com/forum.php?mod=guide&view=my";
     [self GET:url requestCallback:^(BOOL isSuccess, NSString *html) {
         if (isSuccess) {
-            ViewForumPage *sarchPage = [self.forumParser parseSearchPageFromHtml:html];
+            ViewForumPage *sarchPage = [forumParser parseSearchPageFromHtml:html];
             handler(isSuccess, sarchPage);
         } else {
             handler(NO, html);
@@ -337,13 +339,13 @@
 
 - (void)listAllUserThreads:(int)userId withPage:(int)page handler:(HandlerWithBool)handler {
 
-    NSString *baseUrl = [self.forumConfig searchThreadWithUserId:[NSString stringWithFormat:@"%d", userId]];
+    NSString *baseUrl = [forumConfig searchThreadWithUserId:[NSString stringWithFormat:@"%d", userId]];
 
     NSString * url = [baseUrl stringByAppendingFormat:@"%d", page];
 
     [self GET:url requestCallback:^(BOOL isSuccess, NSString *html) {
         if (isSuccess) {
-            ViewForumPage *sarchPage = [self.forumParser parseSearchPageFromHtml:html];
+            ViewForumPage *sarchPage = [forumParser parseSearchPageFromHtml:html];
             handler(isSuccess, sarchPage);
         } else {
             handler(NO, html);
@@ -355,11 +357,11 @@
 
     //https://www.chiphell.com/thread-1732141-2-1.html
 
-    NSString *url = [self.forumConfig showThreadWithThreadId:[NSString stringWithFormat:@"%d", threadId] withPage:page];
+    NSString *url = [forumConfig showThreadWithThreadId:[NSString stringWithFormat:@"%d", threadId] withPage:page];
 
     [self GET:url requestCallback:^(BOOL isSuccess, NSString *html) {
         if (isSuccess) {
-            ViewThreadPage *detail = [self.forumParser parseShowThreadWithHtml:html];
+            ViewThreadPage *detail = [forumParser parseShowThreadWithHtml:html];
             handler(isSuccess, detail);
         } else {
             handler(NO, html);
@@ -372,10 +374,10 @@
 }
 
 - (void)forumDisplayWithId:(int)forumId andPage:(int)page handler:(HandlerWithBool)handler {
-    NSString *url = [self.forumConfig forumDisplayWithId:[NSString stringWithFormat:@"%d", forumId] withPage:page];
+    NSString *url = [forumConfig forumDisplayWithId:[NSString stringWithFormat:@"%d", forumId] withPage:page];
     [self GET:url requestCallback:^(BOOL isSuccess, NSString *html) {
         if (isSuccess) {
-            ViewForumPage *viewForumPage = [self.forumParser parseThreadListFromHtml:html withThread:forumId andContainsTop:YES];
+            ViewForumPage *viewForumPage = [forumParser parseThreadListFromHtml:html withThread:forumId andContainsTop:YES];
             handler(isSuccess, viewForumPage);
         } else {
             handler(NO, html);
@@ -385,14 +387,14 @@
 
 - (void)getAvatarWithUserId:(NSString *)userId handler:(HandlerWithBool)handler {
 
-    NSString *url = [self.forumConfig memberWithUserId:userId];
+    NSString *url = [forumConfig memberWithUserId:userId];
 
     [self GET:url requestCallback:^(BOOL isSuccess, NSString *html) {
-        NSString *avatar = [self.forumParser parseUserAvatar:html userId:userId];
+        NSString *avatar = [forumParser parseUserAvatar:html userId:userId];
         if (avatar) {
-            avatar = [self.forumConfig.avatarBase stringByAppendingString:avatar];
+            avatar = [forumConfig.avatarBase stringByAppendingString:avatar];
         } else {
-            avatar = self.forumConfig.avatarNo;
+            avatar = forumConfig.avatarNo;
         }
         handler(isSuccess, avatar);
     }];
@@ -402,10 +404,10 @@
 }
 
 - (void)showProfileWithUserId:(NSString *)userId handler:(HandlerWithBool)handler {
-    NSString *url = [self.forumConfig memberWithUserId:userId];
+    NSString *url = [forumConfig memberWithUserId:userId];
     [self GET:url requestCallback:^(BOOL isSuccess, NSString *html) {
         if (isSuccess) {
-            UserProfile *profile = [self.forumParser parserProfile:html userId:userId];
+            UserProfile *profile = [forumParser parserProfile:html userId:userId];
             handler(YES, profile);
         } else {
             handler(NO, @"未知错误");
@@ -421,7 +423,7 @@
 
 // private
 - (void)saveUserName:(NSString *)name {
-    [[NSUserDefaults standardUserDefaults] saveUserName:name forHost:self.forumConfig.forumURL.host];
+    [[NSUserDefaults standardUserDefaults] saveUserName:name forHost:forumConfig.forumURL.host];
 }
 
 //private
