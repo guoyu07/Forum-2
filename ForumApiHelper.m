@@ -23,10 +23,9 @@ typedef id (^Runnable)(NSString *bundle, NSString *host);
 @implementation ForumApiHelper
 
 + (id <ForumConfigDelegate>)forumConfig {
-    AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-    NSString *bundleId = [appDelegate bundleIdentifier];
-    LocalForumApi * localeForumApi = [[LocalForumApi alloc] init];
-    NSString * host = localeForumApi.currentForumHost;
+    LocalForumApi *localForumApi = [[LocalForumApi alloc] init];
+    NSString *bundleId = [localForumApi bundleIdentifier];
+    NSString * host = localForumApi.currentForumHost;
 
     if ([bundleId isEqualToString:@"com.andforce.et8"] || [host isEqualToString:@"bbs.et8.net"]){
 
@@ -53,11 +52,10 @@ typedef id (^Runnable)(NSString *bundle, NSString *host);
 }
 
 + (id <ForumBrowserDelegate>)forumApi {
-    AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-    NSString *bundleId = [appDelegate bundleIdentifier];
 
-    LocalForumApi * localeForumApi = [[LocalForumApi alloc] init];
-    NSString * host = localeForumApi.currentForumHost;
+    LocalForumApi *localForumApi = [[LocalForumApi alloc] init];
+    NSString *bundleId = [localForumApi bundleIdentifier];
+    NSString * host = localForumApi.currentForumHost;
 
     if ([bundleId isEqualToString:@"com.andforce.et8"] || [host isEqualToString:@"bbs.et8.net"]){
 

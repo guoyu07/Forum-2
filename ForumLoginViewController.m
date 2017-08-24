@@ -195,8 +195,8 @@
     LocalForumApi *forumApi = [[LocalForumApi alloc] init];
     [forumApi logout];
 
-    AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-    NSString *bundleId = [appDelegate bundleIdentifier];
+    LocalForumApi *localForumApi = [[LocalForumApi alloc] init];
+    NSString *bundleId = [localForumApi bundleIdentifier];
     if ([bundleId isEqualToString:@"com.andforce.forum"]){
         [[NSUserDefaults standardUserDefaults] clearCurrentForumURL];
         [[UIStoryboard mainStoryboard] changeRootViewControllerTo:@"ShowSupportForums" withAnim:UIViewAnimationOptionTransitionFlipFromTop];

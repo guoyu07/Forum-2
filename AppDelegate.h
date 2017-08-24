@@ -20,11 +20,5 @@
 
 - (NSURL *)applicationDocumentsDirectory;
 
-//- (NSString *)forumBaseUrl;
-//
-//- (NSString *)forumHost;
-
-- (NSString *) bundleIdentifier;
-
 @end
 

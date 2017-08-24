@@ -26,4 +26,6 @@
 
 - (NSString *)currentForumBaseUrl;
 
+- (NSString *) bundleIdentifier;
+
 @end

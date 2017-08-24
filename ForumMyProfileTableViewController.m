@@ -82,8 +82,8 @@
 }
 
 - (BOOL)isNeedHideLeftMenu {
-    AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-    NSString *bundleId = [appDelegate bundleIdentifier];
+    LocalForumApi *localForumApi = [[LocalForumApi alloc] init];
+    NSString *bundleId = [localForumApi bundleIdentifier];
     return ![bundleId isEqualToString:@"com.andforce.forum"];
 
 }

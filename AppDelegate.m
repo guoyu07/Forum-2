@@ -19,15 +19,11 @@
 #import "ForumTabBarController.h"
 #import "ForumTableViewController.h"
 #import "Forums.h"
-#import "SupportForums.h"
-#import "BaseForumApi.h"
 #import "LocalForumApi.h"
 #import <UserNotifications/UserNotifications.h>
 
 static BOOL API_DEBUG = NO;
 static int DB_VERSION = 8;
-
-static NSString *bundleIdentifier;
 
 @interface AppDelegate ()<UNUserNotificationCenterDelegate> {
 }
@@ -98,7 +94,8 @@ static NSString *bundleIdentifier;
         // 判断是否登录
         if (![self isUserHasLogin] || isClearDB) {
 
-            NSString *bundleId = [self bundleIdentifier];
+            LocalForumApi *localForumApi = [[LocalForumApi alloc] init];
+            NSString *bundleId = [localForumApi bundleIdentifier];
 
             if ([bundleId isEqualToString:@"com.andforce.forum"]){
                 [[NSUserDefaults standardUserDefaults] clearCurrentForumURL];
@@ -180,15 +177,6 @@ static NSString *bundleIdentifier;
         [[UIApplication sharedApplication] registerForRemoteNotificationTypes:types];
     }
 #pragma clang diagnostic pop
-}
-
-- (NSString *) bundleIdentifier{
-    if (bundleIdentifier == nil) {
-        NSString *bundleId = [[NSBundle mainBundle] bundleIdentifier];
-        bundleIdentifier = bundleId;
-    }
-    
-    return bundleIdentifier;
 }
 
 - (BOOL)isUserHasLogin {
@@ -289,17 +277,6 @@ static NSString *bundleIdentifier;
     // The directory the application uses to store the Core Data store file. This code uses a directory named "com.andforce.Forum" in the application's documents directory.
     return [[[NSFileManager defaultManager] URLsForDirectory:NSDocumentDirectory inDomains:NSUserDomainMask] lastObject];
 }
-
-//- (NSString *)forumBaseUrl {
-//    NSString *urlstr = [NSUserDefaults standardUserDefaults].currentForumURL;
-//
-//    return urlstr;
-//}
-//
-//- (NSString *)forumHost {
-//    return [NSURL URLWithString:[self forumBaseUrl]].host;
-//}
-
 
 - (NSManagedObjectModel *)managedObjectModel {
     // The managed object model for the application. It is a fatal error for the application not to be able to find and load its model.

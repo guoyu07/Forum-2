@@ -50,8 +50,8 @@
         return nil;
     }
     id <ForumConfigDelegate> forumConfig = [ForumApiHelper forumConfig];
-    AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-    NSString *bundleId = [appDelegate bundleIdentifier];
+    LocalForumApi *localForumApi = [[LocalForumApi alloc] init];
+    NSString *bundleId = [localForumApi bundleIdentifier];
 
     if ([bundleId isEqualToString:@"com.andforce.Crsky"] || [host isEqualToString:@"bbs.crsky.com"]){
         return [self getLoginUserCrsky];
@@ -124,6 +124,11 @@
 - (NSString *)currentForumBaseUrl {
     NSString *urlstr = [NSUserDefaults standardUserDefaults].currentForumURL;
     return urlstr;
+}
+
+- (NSString *)bundleIdentifier {
+    NSString *bundleId = [[NSBundle mainBundle] bundleIdentifier];
+    return bundleId;
 }
 
 
