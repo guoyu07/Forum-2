@@ -142,15 +142,8 @@
 }
 
 - (IBAction)cancel:(id)sender {
-    AppDelegate *app = (AppDelegate *)[UIApplication sharedApplication].delegate;
     
-    if ([app.window.rootViewController isMemberOfClass:[ForumNavigationViewController class]]) {
-        [self exitApplication];
-    } else{
-        [self dismissViewControllerAnimated:YES completion:^{
-            
-        }];
-    }
+    [self exitApplication];
 
 }
 
@@ -172,8 +165,6 @@
     //重复旋转的次数，如果你想要无数次，那么设置成MAXFLOAT
     rotationAnimation.repeatCount = 0;
     [window.layer addAnimation:rotationAnimation forKey:@"rotationAnimation"];
-
-
 }
 
 -(void)animationDidStop:(CAAnimation *)anim finished:(BOOL)flag{

@@ -195,9 +195,34 @@
     LocalForumApi *forumApi = [[LocalForumApi alloc] init];
     [forumApi logout];
 
-    [[NSUserDefaults standardUserDefaults] clearCurrentForumURL];
-    [[UIStoryboard mainStoryboard] changeRootViewControllerTo:@"ShowSupportForums" withAnim:UIViewAnimationOptionTransitionFlipFromTop];
-    //[self dismissViewControllerAnimated:YES completion:nil];
+    AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+    NSString *bundleId = [appDelegate bundleIdentifier];
+    if ([bundleId isEqualToString:@"com.andforce.forum"]){
+        [[NSUserDefaults standardUserDefaults] clearCurrentForumURL];
+        [[UIStoryboard mainStoryboard] changeRootViewControllerTo:@"ShowSupportForums" withAnim:UIViewAnimationOptionTransitionFlipFromTop];
+    } else {
+        [self exitApplication];
+    }
+}
+
+- (void)exitApplication {
+    AppDelegate *app = (AppDelegate *)[UIApplication sharedApplication].delegate;
+    UIWindow *window = app.window;
+
+    CABasicAnimation* rotationAnimation = [CABasicAnimation animationWithKeyPath:@"transform.rotation.x"];
+    rotationAnimation.delegate = self;
+
+    rotationAnimation.fillMode=kCAFillModeForwards;
+
+    rotationAnimation.removedOnCompletion = NO;
+    //旋转角度
+    rotationAnimation.toValue = @((float) (M_PI / 2));
+    //每次旋转的时间（单位秒）
+    rotationAnimation.duration = 0.5;
+    rotationAnimation.cumulative = YES;
+    //重复旋转的次数，如果你想要无数次，那么设置成MAXFLOAT
+    rotationAnimation.repeatCount = 0;
+    [window.layer addAnimation:rotationAnimation forKey:@"rotationAnimation"];
 }
 
 - (UIStatusBarStyle)preferredStatusBarStyle {
