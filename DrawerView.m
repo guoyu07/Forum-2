@@ -58,11 +58,12 @@
 - (void)showUserAvatar {
 
     LocalForumApi *forumApi = [[LocalForumApi alloc] init];
-    LoginUser *loginUser = [forumApi getLoginUser];
+    id<ForumConfigDelegate> config = [ForumApiHelper forumConfig];
+    LoginUser *loginUser = [forumApi getLoginUser:config.forumURL.host];
 
     [self showAvatar:_avatarUIImageView userId:loginUser.userID];
 
-    self.userName.text = [[NSUserDefaults standardUserDefaults] userName];
+    self.userName.text = [[NSUserDefaults standardUserDefaults] userName:config.forumURL.host];
 
 }
 
@@ -249,11 +250,6 @@
     NSString *urlStr = [[NSUserDefaults standardUserDefaults] currentForumURL];
     NSURL *url = [NSURL URLWithString:urlStr];
     return url.host;
-}
-
-
-- (void)getAvatar:(LoginUser *)loginUser {
-
 }
 
 - (id)initWithDrawerType:(DrawerViewType)drawerType andXib:(NSString *)name {

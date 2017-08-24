@@ -11,15 +11,12 @@
 @interface LocalForumApi : NSObject
 
 // 获取当前登录的账户信息
-- (LoginUser *)getLoginUser;
+- (LoginUser *)getLoginUser:(NSString *)host;
 
 // 获取当前登录的账户信息
 - (BOOL)isHaveLogin:(NSString *) host;
 
 // 退出论坛
 - (void)logout;
-
-// 退出论坛
-- (NSString *)loginControllerId;
 
 @end

@@ -25,18 +25,35 @@
     }
     return self;
 }
-- (LoginUser *)getLoginUser {
 
+- (LoginUser *)getLoginUserCrsky {
+    NSArray<NSHTTPCookie *> *cookies = [[NSHTTPCookieStorage sharedHTTPCookieStorage] cookies];
+
+    LoginUser *user = [[LoginUser alloc] init];
+    user.userName = [[NSUserDefaults standardUserDefaults] userName:@"bbs.crsky.com"];
+    user.userID = [[NSUserDefaults standardUserDefaults] userId];
+
+    for (int i = 0; i < cookies.count; i++) {
+        NSHTTPCookie *cookie = cookies[(NSUInteger) i];
+
+        if ([cookie.name isEqualToString:forumConfig.cookieExpTimeKey]) {
+            user.expireTime = cookie.expiresDate;
+        }
+    }
+    return user;
+}
+
+- (LoginUser *)getLoginUser:(NSString *)host {
     AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
     NSString *bundleId = [appDelegate bundleIdentifier];
-    NSString * host = appDelegate.forumHost;
+
     if ([bundleId isEqualToString:@"com.andforce.Crsky"] || [host isEqualToString:@"bbs.crsky.com"]){
         return [self getLoginUserCrsky];
     } else {
         NSArray<NSHTTPCookie *> *cookies = [[NSHTTPCookieStorage sharedHTTPCookieStorage] cookies];
 
         LoginUser *user = [[LoginUser alloc] init];
-        user.userName = [[NSUserDefaults standardUserDefaults] userName];
+        user.userName = [[NSUserDefaults standardUserDefaults] userName:host];
 
         for (int i = 0; i < cookies.count; i++) {
             NSHTTPCookie *cookie = cookies[(NSUInteger) i];
@@ -51,33 +68,16 @@
     }
 }
 
-- (LoginUser *)getLoginUserCrsky {
-    NSArray<NSHTTPCookie *> *cookies = [[NSHTTPCookieStorage sharedHTTPCookieStorage] cookies];
-
-    LoginUser *user = [[LoginUser alloc] init];
-    user.userName = [[NSUserDefaults standardUserDefaults] userName];
-    user.userID = [[NSUserDefaults standardUserDefaults] userId];
-
-    for (int i = 0; i < cookies.count; i++) {
-        NSHTTPCookie *cookie = cookies[(NSUInteger) i];
-
-        if ([cookie.name isEqualToString:forumConfig.cookieExpTimeKey]) {
-            user.expireTime = cookie.expiresDate;
-        }
-    }
-    return user;
-}
-
 - (BOOL)isHaveLogin:(NSString *)host {
-    NSArray<NSHTTPCookie *> *cookies = [[NSHTTPCookieStorage sharedHTTPCookieStorage] cookies];
 
-    NSDate *date = [NSDate date];
-    for (NSHTTPCookie * cookie in cookies) {
-        if ([cookie.domain containsString:host] && [cookie.expiresDate compare:date] != NSOrderedAscending){
-            return YES;
-        }
+    LoginUser *user = [self getLoginUser:host];
+    if (user.userName == nil || user.userID == nil || user.expireTime == nil){
+        return NO;
     }
-    return NO;
+    if ([user.userName isEqualToString:@""] || [user.userID isEqualToString:@""] || [user.expireTime compare:[NSDate date]] == NSOrderedAscending){
+        return NO;
+    }
+    return YES;
 }
 
 - (void)logout {
@@ -92,10 +92,5 @@
         }
     }
 }
-
-- (NSString *)loginControllerId {
-    return forumConfig.loginControllerId;
-}
-
 
 @end

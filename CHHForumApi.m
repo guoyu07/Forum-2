@@ -421,7 +421,7 @@
 
 // private
 - (void)saveUserName:(NSString *)name {
-    [[NSUserDefaults standardUserDefaults] saveUserName:name];
+    [[NSUserDefaults standardUserDefaults] saveUserName:name forHost:self.forumConfig.forumURL.host];
 }
 
 //private

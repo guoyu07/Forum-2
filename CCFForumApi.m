@@ -65,7 +65,7 @@ typedef void (^CallBack)(NSString *token, NSString *hash, NSString *time);
 
 // private
 - (void)saveUserName:(NSString *)name {
-    [[NSUserDefaults standardUserDefaults] saveUserName:name];
+    [[NSUserDefaults standardUserDefaults] saveUserName:name forHost:self.forumConfig.forumURL.host];
 }
 
 //private
@@ -175,7 +175,7 @@ typedef void (^CallBack)(NSString *token, NSString *hash, NSString *time);
     [parameters setValue:time forKey:@"poststarttime"];
 
     LocalForumApi *forumApi = [[LocalForumApi alloc] init];
-    LoginUser *user = [forumApi getLoginUser];
+    LoginUser *user = [forumApi getLoginUser:self.forumConfig.forumURL.host];
     [parameters setValue:user.userID forKey:@"loggedinuser"];
     [parameters setValue:@"发表主题" forKey:@"sbutton"];
     [parameters setValue:@"1" forKey:@"parseurl"];
@@ -480,7 +480,7 @@ typedef void (^CallBack)(NSString *token, NSString *hash, NSString *time);
     [parameters setValue:@"1" forKey:@"parseurl"];
 
     LocalForumApi *forumApi = [[LocalForumApi alloc] init];
-    LoginUser *user = [forumApi getLoginUser];
+    LoginUser *user = [forumApi getLoginUser:self.forumConfig.forumURL.host];
     [parameters setValue:user.userID forKey:@"loggedinuser"];
     [parameters setValue:@"sbutton" forKey:@"快速回复帖子"];
 
@@ -528,7 +528,7 @@ typedef void (^CallBack)(NSString *token, NSString *hash, NSString *time);
     [parameters setValue:@"1" forKey:@"parseurl"];
 
     LocalForumApi *forumApi = [[LocalForumApi alloc] init];
-    LoginUser *user = [forumApi getLoginUser];
+    LoginUser *user = [forumApi getLoginUser:self.forumConfig.forumURL.host];
     [parameters setValue:user.userID forKey:@"loggedinuser"];
     [parameters setValue:@"sbutton" forKey:@"快速回复帖子"];
 
@@ -576,7 +576,7 @@ typedef void (^CallBack)(NSString *token, NSString *hash, NSString *time);
     [presparameters setValue:@"1" forKey:@"parseurl"];
 
     LocalForumApi *forumApi = [[LocalForumApi alloc] init];
-    LoginUser *user = [forumApi getLoginUser];
+    LoginUser *user = [forumApi getLoginUser:self.forumConfig.forumURL.host];
     [presparameters setValue:user.userID forKey:@"loggedinuser"];
     [presparameters setValue:@"进入高级模式" forKey:@"preview"];
 
@@ -665,7 +665,7 @@ typedef void (^CallBack)(NSString *token, NSString *hash, NSString *time);
     [parameters setValue:poststarttime forKey:@"poststarttime"];
 
     LocalForumApi *forumApi = [[LocalForumApi alloc] init];
-    LoginUser *user = [forumApi getLoginUser];
+    LoginUser *user = [forumApi getLoginUser:self.forumConfig.forumURL.host];
     [parameters setValue:user.userID forKey:@"loggedinuser"];
     [parameters setValue:@"" forKey:@"multiquoteempty"];
     [parameters setValue:@"提交回复" forKey:@"sbutton"];
@@ -1172,7 +1172,7 @@ typedef void (^CallBack)(NSString *token, NSString *hash, NSString *time);
 
 - (void)listMyAllThreadsWithPage:(int)page handler:(HandlerWithBool)handler {
     LocalForumApi *forumApi = [[LocalForumApi alloc] init];
-    LoginUser *user = [forumApi getLoginUser];
+    LoginUser *user = [forumApi getLoginUser:self.forumConfig.forumURL.host];
     if (user == nil || user.userID == nil) {
         handler(NO, @"未登录");
         return;

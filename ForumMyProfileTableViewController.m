@@ -95,7 +95,8 @@
 
 - (void)onPullRefresh {
 
-    NSString *currentUserId = [[[LocalForumApi alloc] init] getLoginUser].userID;
+    id<ForumConfigDelegate> config = [ForumApiHelper forumConfig];
+    NSString *currentUserId = [[[LocalForumApi alloc] init] getLoginUser:config.forumURL.host].userID;
 
     [self.forumApi showProfileWithUserId:currentUserId handler:^(BOOL isSuccess, UserProfile *message) {
         userProfile = message;

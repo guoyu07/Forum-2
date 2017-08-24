@@ -50,7 +50,8 @@
 
 // private
 - (void)saveUserName:(NSString *)name {
-    [[NSUserDefaults standardUserDefaults] saveUserName:name];
+    id<ForumConfigDelegate> config = [ForumApiHelper forumConfig];
+    [[NSUserDefaults standardUserDefaults] saveUserName:name forHost:config.forumURL.host];
 }
 
 - (NSString*) getResponseHTML:(UIWebView *)webView {

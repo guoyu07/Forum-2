@@ -59,16 +59,26 @@
     [self setObject:@(version) forKey:kDB_VERSION];
 }
 
-
-- (void)saveUserName:(NSString *)name {
-    NSString *key = [[self currentForumHost] stringByAppendingString:@"-UserName"];
+- (void)saveUserName:(NSString *)name forHost:(NSString *)host {
+    NSString *key = [host stringByAppendingString:@"-UserName"];
     [self setValue:name forKey:key];
 }
 
-- (NSString *)userName{
-    NSString *key = [[self currentForumHost] stringByAppendingString:@"-UserName"];
+- (NSString *)userName:(NSString *)host {
+    NSString *key = [host stringByAppendingString:@"-UserName"];
     return [self valueForKey:key];
 }
+
+//
+//- (void)saveUserName:(NSString *)name {
+//    NSString *key = [[self currentForumHost] stringByAppendingString:@"-UserName"];
+//    [self setValue:name forKey:key];
+//}
+//
+//- (NSString *)userName{
+//    NSString *key = [[self currentForumHost] stringByAppendingString:@"-UserName"];
+//    return [self valueForKey:key];
+//}
 
 - (void)saveUserId:(NSString *)uid {
     NSString *key = [[self currentForumHost] stringByAppendingString:@"-UserId"];
