@@ -10,6 +10,8 @@
 #import "ForumConfigDelegate.h"
 #import "ForumApiHelper.h"
 #import "AppDelegate.h"
+#import "Forums.h"
+#import "SupportForums.h"
 
 
 @implementation LocalForumApi {
@@ -88,5 +90,21 @@
         }
     }
 }
+
+- (NSString *)currentForumHost {
+    NSString * urlStr = [[NSUserDefaults standardUserDefaults] currentForumURL];
+    NSURL *url = [NSURL URLWithString:urlStr];
+    return url.host;
+}
+
+- (NSArray<Forums *> *)supportForums {
+    NSData *data = [NSData dataWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"supportForums" ofType:@"json"]];
+
+    NSDictionary *dictionary = [NSJSONSerialization JSONObjectWithData:data options:(NSJSONReadingOptions) kNilOptions error:nil];
+
+    SupportForums *supportForums = [SupportForums modelObjectWithDictionary:dictionary];
+    return supportForums.forums;
+}
+
 
 @end

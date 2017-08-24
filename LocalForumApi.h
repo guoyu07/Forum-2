@@ -6,6 +6,7 @@
 #import <Foundation/Foundation.h>
 
 @class LoginUser;
+@class Forums;
 
 
 @interface LocalForumApi : NSObject
@@ -18,5 +19,9 @@
 
 // 退出论坛
 - (void)logout;
+
+- (NSString *)currentForumHost;
+
+- (NSArray<Forums *> *) supportForums;
 
 @end

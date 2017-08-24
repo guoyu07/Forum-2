@@ -38,8 +38,6 @@ static NSString *bundleIdentifier;
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
 
-
-
     NSURLCache *cache = [[NSURLCache alloc] initWithMemoryCapacity:10 * 1024 * 1024 diskCapacity:50 * 1024 * 1024 diskPath:nil];
     [NSURLCache setSharedURLCache:cache];
 
@@ -193,26 +191,14 @@ static NSString *bundleIdentifier;
     return bundleIdentifier;
 }
 
-- (NSString *)currentForumHost {
-    NSString * urlStr = [[NSUserDefaults standardUserDefaults] currentForumURL];
-    NSURL *url = [NSURL URLWithString:urlStr];
-    return url.host;
-}
-
 - (BOOL)isUserHasLogin {
-
-    NSData *data = [NSData dataWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"supportForums" ofType:@"json"]];
-
-    NSDictionary *dictionary = [NSJSONSerialization JSONObjectWithData:data options:(NSJSONReadingOptions) kNilOptions error:nil];
-
-    SupportForums *supportForums = [SupportForums modelObjectWithDictionary:dictionary];
-    int size = (int) supportForums.forums.count;
 
     // 判断是否登录
     LocalForumApi *forumApi = [[LocalForumApi alloc] init];
-
+    NSArray * fs = [forumApi supportForums];
+    int size = (int) fs.count;
     for (int i = 0; i < size; ++i) {
-        Forums * forums = supportForums.forums[(NSUInteger) i];
+        Forums * forums = fs[(NSUInteger) i];
         NSURL *url = [NSURL URLWithString:forums.url];
         if ([forumApi isHaveLogin:url.host]){
             return YES;
