@@ -7,6 +7,7 @@
 //
 
 #import "ForumThreadListCell.h"
+#import "LocalForumApi.h"
 
 @implementation ForumThreadListCell {
 
@@ -26,9 +27,8 @@
     self = [super initWithCoder:coder];
     if (self) {
 
-        //_forumBrowser = [ForumBrowserFactory browserWithForumConfig:[ForumConfig configWithForumHost:self.currentForumHost]];
-        
-        _forumApi = [ForumApiHelper forumApi];
+        LocalForumApi *localForumApi = [[LocalForumApi alloc] init];
+        _forumApi = [ForumApiHelper forumApi:localForumApi.currentForumHost];
         _coreDateManager = [[ForumCoreDataManager alloc] initWithEntryType:EntryTypeUser];
 
         [self.avatarImage setContentScaleFactor:[[UIScreen mainScreen] scale]];

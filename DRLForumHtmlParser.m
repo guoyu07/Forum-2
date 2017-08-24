@@ -14,6 +14,7 @@
 
 #import "IGHTMLDocument+QueryNode.h"
 #import "AppDelegate.h"
+#import "LocalForumApi.h"
 
 @implementation DRLForumHtmlParser {
 
@@ -679,9 +680,9 @@
 
     // 通过ids 过滤出Form
     ForumCoreDataManager *manager = [[ForumCoreDataManager alloc] initWithEntryType:EntryTypeForm];
-    AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+    LocalForumApi *localForumApi = [[LocalForumApi alloc] init];
     NSArray *result = [manager selectData:^NSPredicate * {
-        NSString * host = [NSURL URLWithString:appDelegate.forumBaseUrl].host;
+        NSString * host = localForumApi.currentForumHost;
         return [NSPredicate predicateWithFormat:@"forumHost = %@ AND forumId IN %@", host ,ids];
     }];
 

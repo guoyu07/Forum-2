@@ -13,6 +13,7 @@
 #import "ForumWebViewController.h"
 #import "UIStoryboard+Forum.h"
 #import "AppDelegate.h"
+#import "LocalForumApi.h"
 
 @interface ForumShowPrivateMessageViewController () <UIWebViewDelegate, UIScrollViewDelegate, TransBundleDelegate> {
 
@@ -66,8 +67,8 @@
 
             NSString *html = [NSString stringWithFormat:THREAD_PAGE, content.pmTitle, postInfo];
 
-            AppDelegate *appDelegate = (AppDelegate *) [[UIApplication sharedApplication] delegate];
-            [self.webView loadHTMLString:html baseURL:[NSURL URLWithString:appDelegate.forumBaseUrl]];
+            LocalForumApi * localeForumApi = [[LocalForumApi alloc] init];
+            [self.webView loadHTMLString:html baseURL:[NSURL URLWithString:localeForumApi.currentForumBaseUrl]];
 
             [self.webView.scrollView.mj_header endRefreshing];
         }];

@@ -9,34 +9,60 @@
 #import "NSUserDefaults+Extensions.h"
 #import "ForumConfigDelegate.h"
 #import "ForumApiHelper.h"
-#import "BaseForumApi.h"
 #import "AppDelegate.h"
+#import "Forums.h"
+#import "SupportForums.h"
 
 
 @implementation LocalForumApi {
-    id <ForumConfigDelegate> forumConfig;
+    //id <ForumConfigDelegate> forumConfig;
 }
 
-- (instancetype)init {
-    self = [super init];
-    if (self){
-        BaseForumApi * api = (BaseForumApi *)[ForumApiHelper forumApi];
-        forumConfig = api.forumConfig;
+
+- (LoginUser *)getLoginUserCrsky {
+
+    NSArray<NSHTTPCookie *> *cookies = [[NSHTTPCookieStorage sharedHTTPCookieStorage] cookies];
+    if (cookies.count == 0){
+        return nil;
     }
-    return self;
-}
-- (LoginUser *)getLoginUser {
 
-    AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-    NSString *bundleId = [appDelegate bundleIdentifier];
-    NSString * host = appDelegate.forumHost;
+    id<ForumConfigDelegate> forumConfig = [ForumApiHelper forumConfig:@"bbs.crsky.com"];
+
+    LoginUser *user = [[LoginUser alloc] init];
+    user.userName = [[NSUserDefaults standardUserDefaults] userName:@"bbs.crsky.com"];
+    if (user.userName == nil || [user.userName isEqualToString:@""]){
+        return nil;
+    }
+    user.userID = [[NSUserDefaults standardUserDefaults] userId:@"bbs.crsky.com"];
+
+    for (int i = 0; i < cookies.count; i++) {
+        NSHTTPCookie *cookie = cookies[(NSUInteger) i];
+
+        if ([cookie.name isEqualToString:forumConfig.cookieExpTimeKey]) {
+            user.expireTime = cookie.expiresDate;
+        }
+    }
+    return user;
+}
+
+- (LoginUser *)getLoginUser:(NSString *)host {
+    NSArray<NSHTTPCookie *> *cookies = [[NSHTTPCookieStorage sharedHTTPCookieStorage] cookies];
+    if (cookies.count == 0){
+        return nil;
+    }
+    LocalForumApi *localForumApi = [[LocalForumApi alloc] init];
+    id<ForumConfigDelegate> forumConfig = [ForumApiHelper forumConfig:host];
+
+    NSString *bundleId = [localForumApi bundleIdentifier];
+
     if ([bundleId isEqualToString:@"com.andforce.Crsky"] || [host isEqualToString:@"bbs.crsky.com"]){
         return [self getLoginUserCrsky];
     } else {
-        NSArray<NSHTTPCookie *> *cookies = [[NSHTTPCookieStorage sharedHTTPCookieStorage] cookies];
-
         LoginUser *user = [[LoginUser alloc] init];
-        user.userName = [[NSUserDefaults standardUserDefaults] userName];
+        user.userName = [[NSUserDefaults standardUserDefaults] userName:host];
+        if (user.userName == nil || [user.userName isEqualToString:@""]){
+            return nil;
+        }
 
         for (int i = 0; i < cookies.count; i++) {
             NSHTTPCookie *cookie = cookies[(NSUInteger) i];
@@ -51,36 +77,27 @@
     }
 }
 
-- (LoginUser *)getLoginUserCrsky {
-    NSArray<NSHTTPCookie *> *cookies = [[NSHTTPCookieStorage sharedHTTPCookieStorage] cookies];
-
-    LoginUser *user = [[LoginUser alloc] init];
-    user.userName = [[NSUserDefaults standardUserDefaults] userName];
-    user.userID = [[NSUserDefaults standardUserDefaults] userId];
-
-    for (int i = 0; i < cookies.count; i++) {
-        NSHTTPCookie *cookie = cookies[(NSUInteger) i];
-
-        if ([cookie.name isEqualToString:forumConfig.cookieExpTimeKey]) {
-            user.expireTime = cookie.expiresDate;
-        }
-    }
-    return user;
-}
-
 - (BOOL)isHaveLogin:(NSString *)host {
-    NSArray<NSHTTPCookie *> *cookies = [[NSHTTPCookieStorage sharedHTTPCookieStorage] cookies];
 
-    NSDate *date = [NSDate date];
-    for (NSHTTPCookie * cookie in cookies) {
-        if ([cookie.domain containsString:host] && [cookie.expiresDate compare:date] != NSOrderedAscending){
-            return YES;
-        }
+    LoginUser *user = [self getLoginUser:host];
+    if (user == nil){
+        return NO;
     }
-    return NO;
+
+    if (user.userName == nil || user.userID == nil || user.expireTime == nil){
+        return NO;
+    }
+    if ([user.userName isEqualToString:@""] || [user.userID isEqualToString:@""] || [user.expireTime compare:[NSDate date]] == NSOrderedAscending){
+        return NO;
+    }
+    return YES;
 }
 
 - (void)logout {
+
+    LocalForumApi *localForumApi = [[LocalForumApi alloc] init];
+    id<ForumConfigDelegate> forumConfig = [ForumApiHelper forumConfig:localForumApi.currentForumHost];
+    
     [[NSUserDefaults standardUserDefaults] clearCookie];
 
     NSURL *url = forumConfig.forumURL;
@@ -93,8 +110,44 @@
     }
 }
 
-- (NSString *)loginControllerId {
-    return forumConfig.loginControllerId;
+- (NSString *)currentForumHost {
+    NSString * urlStr = [[NSUserDefaults standardUserDefaults] currentForumURL];
+    NSURL *url = [NSURL URLWithString:urlStr];
+    return url.host;
+}
+
+- (NSArray<Forums *> *)supportForums {
+    NSData *data = [NSData dataWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"supportForums" ofType:@"json"]];
+
+    NSDictionary *dictionary = [NSJSONSerialization JSONObjectWithData:data options:(NSJSONReadingOptions) kNilOptions error:nil];
+
+    SupportForums *supportForums = [SupportForums modelObjectWithDictionary:dictionary];
+    return supportForums.forums;
+}
+
+- (NSArray<Forums *> *)loginedSupportForums {
+
+    NSArray * support = [self supportForums];
+
+    NSMutableArray *result = [NSMutableArray array];
+
+    for (Forums *forums in support) {
+        NSURL *url = [NSURL URLWithString:forums.url];
+        if ([self isHaveLogin:url.host]) {
+            [result addObject:forums];
+        }
+    }
+    return [result copy];
+}
+
+- (NSString *)currentForumBaseUrl {
+    NSString *urlstr = [NSUserDefaults standardUserDefaults].currentForumURL;
+    return urlstr;
+}
+
+- (NSString *)bundleIdentifier {
+    NSString *bundleId = [[NSBundle mainBundle] bundleIdentifier];
+    return bundleId;
 }
 
 

@@ -20,6 +20,7 @@
 #import "NSString+Extensions.h"
 #import "ForumUserProfileTableViewController.h"
 #import "AppDelegate.h"
+#import "LocalForumApi.h"
 
 @interface ForumWebViewController () <UIWebViewDelegate, UIScrollViewDelegate, TransBundleDelegate, CAAnimationDelegate> {
 
@@ -56,7 +57,8 @@
 
         NSString *lis = @"";
 
-        id<ForumConfigDelegate> forumConfig = [ForumApiHelper forumConfig];
+        LocalForumApi *localForumApi = [[LocalForumApi alloc] init];
+        id<ForumConfigDelegate> forumConfig = [ForumApiHelper forumConfig:localForumApi.currentForumHost];
 
         for (Post *post in posts) {
 
@@ -81,9 +83,9 @@
 
         NSString *cacheHtml = pageDic[@(currentShowThreadPage.pageNumber.currentPageNumber)];
 
-        AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+        LocalForumApi * localeForumApi = [[LocalForumApi alloc] init];
         if (![cacheHtml isEqualToString:threadPage.originalHtml]) {
-            [self.webView loadHTMLString:html baseURL:[NSURL URLWithString:appDelegate.forumBaseUrl]];
+            [self.webView loadHTMLString:html baseURL:[NSURL URLWithString:localeForumApi.currentForumBaseUrl]];
             pageDic[@(currentShowThreadPage.pageNumber.currentPageNumber)] = html;
         }
 
@@ -102,7 +104,8 @@
 
         NSString *lis = @"";
 
-        id<ForumConfigDelegate> forumConfig = [ForumApiHelper forumConfig];
+        LocalForumApi *localForumApi = [[LocalForumApi alloc] init];
+        id<ForumConfigDelegate> forumConfig = [ForumApiHelper forumConfig:localForumApi.currentForumHost];
         for (Post *post in posts) {
             NSString *avatar = [forumConfig avatar:post.postUserInfo.userAvatar];
             NSString *louceng = [post.postLouCeng stringWithRegular:@"\\d+"];
@@ -125,8 +128,8 @@
 
         NSString *cacheHtml = pageDic[@(currentShowThreadPage.pageNumber.currentPageNumber)];
         if (![cacheHtml isEqualToString:threadPage.originalHtml]) {
-            AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-            [self.webView loadHTMLString:html baseURL:[NSURL URLWithString:appDelegate.forumBaseUrl]];
+            LocalForumApi * localeForumApi = [[LocalForumApi alloc] init];
+            [self.webView loadHTMLString:html baseURL:[NSURL URLWithString:localeForumApi.currentForumBaseUrl]];
             pageDic[@(currentShowThreadPage.pageNumber.currentPageNumber)] = html;
         }
 
@@ -230,9 +233,8 @@
 
         NSString *lis = @"";
 
-        AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-
-        id<ForumConfigDelegate> forumConfig = [ForumApiHelper forumConfig];
+        LocalForumApi *localForumApi = [[LocalForumApi alloc] init];
+        id<ForumConfigDelegate> forumConfig = [ForumApiHelper forumConfig:localForumApi.currentForumHost];
 
         for (Post *post in posts) {
 
@@ -249,7 +251,8 @@
         // 缓存当前页面
         pageDic[@(currentShowThreadPage.pageNumber.currentPageNumber)] = threadPage.originalHtml;
 
-        [self.webView loadHTMLString:html baseURL:[NSURL URLWithString:appDelegate.forumBaseUrl]];
+        LocalForumApi * localeForumApi = [[LocalForumApi alloc] init];
+        [self.webView loadHTMLString:html baseURL:[NSURL URLWithString:localeForumApi.currentForumBaseUrl]];
 
         [self.webView.scrollView.mj_header endRefreshing];
 
@@ -296,7 +299,8 @@
 
                 //AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
 
-                id<ForumConfigDelegate> forumConfig = [ForumApiHelper forumConfig];
+                LocalForumApi *localForumApi = [[LocalForumApi alloc] init];
+                id<ForumConfigDelegate> forumConfig = [ForumApiHelper forumConfig:localForumApi.currentForumHost];
 
                 NSURL *nsurl = [NSURL URLWithString:[forumConfig showThreadWithThreadId:[NSString stringWithFormat:@"%d", threadId] withPage:page]];
                 [[UIApplication sharedApplication] openURL:nsurl];
@@ -325,8 +329,8 @@
 
         NSString *lis = @"";
 
-        AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-        id<ForumConfigDelegate> forumConfig = [ForumApiHelper forumConfig];
+        LocalForumApi *localForumApi = [[LocalForumApi alloc] init];
+        id<ForumConfigDelegate> forumConfig = [ForumApiHelper forumConfig:localForumApi.currentForumHost];
 
         for (Post *post in posts) {
             NSString *avatar = [forumConfig avatar:post.postUserInfo.userAvatar];
@@ -346,7 +350,8 @@
 
         pageDic[@(currentShowThreadPage.pageNumber.currentPageNumber)] = threadPage.originalHtml;
 
-        [self.webView loadHTMLString:html baseURL:[NSURL URLWithString:appDelegate.forumBaseUrl]];
+        LocalForumApi * localeForumApi = [[LocalForumApi alloc] init];
+        [self.webView loadHTMLString:html baseURL:[NSURL URLWithString:localeForumApi.currentForumBaseUrl]];
 
         [self.webView.scrollView.mj_header endRefreshing];
 
@@ -394,7 +399,8 @@
 
                 NSMutableArray *posts = threadPage.postList;
 
-                id<ForumConfigDelegate> forumConfig = [ForumApiHelper forumConfig];
+                LocalForumApi *localForumApi = [[LocalForumApi alloc] init];
+                id<ForumConfigDelegate> forumConfig = [ForumApiHelper forumConfig:localForumApi.currentForumHost];
 
                 for (NSInteger i = currentShowThreadPage.postList.count; i < posts.count; i++) {
                     Post *post = posts[i];
@@ -439,7 +445,8 @@
 
         NSString *lis = @"";
 
-        id<ForumConfigDelegate> forumConfig = [ForumApiHelper forumConfig];
+        LocalForumApi *localForumApi = [[LocalForumApi alloc] init];
+        id<ForumConfigDelegate> forumConfig = [ForumApiHelper forumConfig:localForumApi.currentForumHost];
 
         for (Post *post in posts) {
 
@@ -462,8 +469,8 @@
         }
 
         if (![cacheHtml isEqualToString:threadPage.originalHtml]) {
-            AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-            [self.webView loadHTMLString:html baseURL:[NSURL URLWithString:appDelegate.forumBaseUrl]];
+            LocalForumApi * localeForumApi = [[LocalForumApi alloc] init];
+            [self.webView loadHTMLString:html baseURL:[NSURL URLWithString:localeForumApi.currentForumBaseUrl]];
             pageDic[@(page)] = html;
         }
 
@@ -613,7 +620,8 @@
 
             } else if (buttonIndex == 2) {
 
-                id<ForumConfigDelegate> forumConfig = [ForumApiHelper forumConfig];
+                LocalForumApi *localForumApi = [[LocalForumApi alloc] init];
+                id<ForumConfigDelegate> forumConfig = [ForumApiHelper forumConfig:localForumApi.currentForumHost];
 
                 NSString *postUrl = [forumConfig copyThreadUrl:[NSString stringWithFormat:@"%d", threadID] withPostId:[NSString stringWithFormat:@"%d", postId] withPostCout:louCeng];
                 UIPasteboard *pasteboard = [UIPasteboard generalPasteboard];
@@ -760,7 +768,8 @@
 
 - (IBAction)showMoreAction:(UIBarButtonItem *)sender {
 
-    id<ForumConfigDelegate> forumConfig = [ForumApiHelper forumConfig];
+    LocalForumApi *localForumApi = [[LocalForumApi alloc] init];
+    id<ForumConfigDelegate> forumConfig = [ForumApiHelper forumConfig:localForumApi.currentForumHost];
 
     itemActionSheet = [LCActionSheet sheetWithTitle:nil buttonTitles:@[@"复制帖子链接", @"在浏览器中查看", @"举报此帖"] redButtonIndex:4 clicked:^(NSInteger buttonIndex) {
         if (buttonIndex == 0) {

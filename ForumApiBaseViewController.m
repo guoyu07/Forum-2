@@ -7,6 +7,7 @@
 
 #import "ForumApiBaseViewController.h"
 #import "NSUserDefaults+Extensions.h"
+#import "LocalForumApi.h"
 
 @interface ForumApiBaseViewController ()
 
@@ -17,8 +18,8 @@
 #pragma mark initData
 
 - (void)initData {
-    //self.forumBrowser = [ForumBrowserFactory browserWithForumConfig:[ForumConfig configWithForumHost:self.currentForumHost]];
-    self.forumApi = [ForumApiHelper forumApi];
+    LocalForumApi *localForumApi = [[LocalForumApi alloc] init];
+    self.forumApi = [ForumApiHelper forumApi:localForumApi.currentForumHost];
 }
 
 #pragma mark override-init

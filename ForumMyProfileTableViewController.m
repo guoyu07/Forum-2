@@ -55,9 +55,9 @@
 
     coreDateManager = [[ForumCoreDataManager alloc] initWithEntryType:EntryTypeUser];
     if (cacheUsers == nil) {
-        AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+        LocalForumApi *localForumApi = [[LocalForumApi alloc] init];
         cacheUsers = [[coreDateManager selectData:^NSPredicate * {
-            return [NSPredicate predicateWithFormat:@"forumHost = %@ AND userID > %d", [NSURL URLWithString:appDelegate.forumBaseUrl].host, 0];
+            return [NSPredicate predicateWithFormat:@"forumHost = %@ AND userID > %d", localForumApi.currentForumHost, 0];
         }] copy];
     }
 
@@ -82,8 +82,8 @@
 }
 
 - (BOOL)isNeedHideLeftMenu {
-    AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-    NSString *bundleId = [appDelegate bundleIdentifier];
+    LocalForumApi *localForumApi = [[LocalForumApi alloc] init];
+    NSString *bundleId = [localForumApi bundleIdentifier];
     return ![bundleId isEqualToString:@"com.andforce.forum"];
 
 }
@@ -95,7 +95,9 @@
 
 - (void)onPullRefresh {
 
-    NSString *currentUserId = [[[LocalForumApi alloc] init] getLoginUser].userID;
+    LocalForumApi *localForumApi = [[LocalForumApi alloc] init];
+    id<ForumConfigDelegate> config = [ForumApiHelper forumConfig:localForumApi.currentForumHost];
+    NSString *currentUserId = [[[LocalForumApi alloc] init] getLoginUser:config.forumURL.host].userID;
 
     [self.forumApi showProfileWithUserId:currentUserId handler:^(BOOL isSuccess, UserProfile *message) {
         userProfile = message;
@@ -126,13 +128,13 @@
         [self.forumApi getAvatarWithUserId:userId handler:^(BOOL isSuccess, NSString *avatar) {
 
             if (isSuccess) {
-                AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+                LocalForumApi * localeForumApi = [[LocalForumApi alloc] init];
                 // 存入数据库
                 [coreDateManager insertOneData:^(id src) {
                     UserEntry *user = (UserEntry *) src;
                     user.userID = userId;
                     user.userAvatar = avatar;
-                    user.forumHost = appDelegate.forumHost;
+                    user.forumHost = localeForumApi.currentForumHost;
                 }];
                 // 添加到Cache中
                 [avatarCache setValue:avatar forKey:userId];
@@ -151,7 +153,8 @@
         }];
     } else {
 
-        id<ForumConfigDelegate> forumConfig = [ForumApiHelper forumConfig];
+        LocalForumApi *localForumApi = [[LocalForumApi alloc] init];
+        id<ForumConfigDelegate> forumConfig = [ForumApiHelper forumConfig:localForumApi.currentForumHost];
 
         if ([avatarInArray isEqualToString:forumConfig.avatarNo]) {
             [avatarImageView setImage:defaultAvatarImage];
@@ -185,8 +188,8 @@
         LocalForumApi *forumApi = [[LocalForumApi alloc] init];
         [forumApi logout];
 
-
-        id<ForumConfigDelegate> forumConfig = [ForumApiHelper forumConfig];
+        LocalForumApi *localForumApi = [[LocalForumApi alloc] init];
+        id<ForumConfigDelegate> forumConfig = [ForumApiHelper forumConfig:localForumApi.currentForumHost];
         NSString * id = forumConfig.loginControllerId;
         [[UIStoryboard mainStoryboard] changeRootViewControllerTo:id];
 

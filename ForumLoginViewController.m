@@ -46,9 +46,10 @@
 
     screenSize = [UIScreen mainScreen].bounds;
 
-    _forumApi = [ForumApiHelper forumApi];
+    LocalForumApi *localForumApi = [[LocalForumApi alloc] init];
+    _forumApi = [ForumApiHelper forumApi:localForumApi.currentForumHost];
 
-    id<ForumConfigDelegate> forumConfig = [ForumApiHelper forumConfig];
+    id<ForumConfigDelegate> forumConfig = [ForumApiHelper forumConfig:localForumApi.currentForumHost];
 
     self.rootView.backgroundColor = forumConfig.themeColor;
     
@@ -153,14 +154,14 @@
                         return [NSPredicate predicateWithFormat:@"forumHost = %@", self.currentForumHost];;
                     }];
 
-                    AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+                    LocalForumApi * localeForumApi = [[LocalForumApi alloc] init];
 
                     [formManager insertData:needInsert operation:^(NSManagedObject *target, id src) {
                         ForumEntry *newsInfo = (ForumEntry *) target;
                         newsInfo.forumId = [src valueForKey:@"forumId"];
                         newsInfo.forumName = [src valueForKey:@"forumName"];
                         newsInfo.parentForumId = [src valueForKey:@"parentForumId"];
-                        newsInfo.forumHost = appDelegate.forumHost;
+                        newsInfo.forumHost = localeForumApi.currentForumHost;
 
                     }];
 
@@ -195,8 +196,8 @@
     LocalForumApi *forumApi = [[LocalForumApi alloc] init];
     [forumApi logout];
 
-    AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-    NSString *bundleId = [appDelegate bundleIdentifier];
+    LocalForumApi *localForumApi = [[LocalForumApi alloc] init];
+    NSString *bundleId = [localForumApi bundleIdentifier];
     if ([bundleId isEqualToString:@"com.andforce.forum"]){
         [[NSUserDefaults standardUserDefaults] clearCurrentForumURL];
         [[UIStoryboard mainStoryboard] changeRootViewControllerTo:@"ShowSupportForums" withAnim:UIViewAnimationOptionTransitionFlipFromTop];
