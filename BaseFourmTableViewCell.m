@@ -9,6 +9,7 @@
 #import <UIImageView+WebCache.h>
 #import "AppDelegate.h"
 #import "NSUserDefaults+Extensions.h"
+#import "LocalForumApi.h"
 
 @implementation BaseFourmTableViewCell {
     UIImage *defaultAvatarImage;
@@ -45,8 +46,9 @@
     defaultAvatarImage = [UIImage imageNamed:@"defaultAvatar.gif"];
 
 //    _forumBrowser = [ForumBrowserFactory browserWithForumConfig:[ForumConfig configWithForumHost:self.currentForumHost]];
-    
-    _forumApi = [ForumApiHelper forumApi];
+
+    LocalForumApi *localForumApi = [[LocalForumApi alloc] init];
+    _forumApi = [ForumApiHelper forumApi:localForumApi.currentForumHost];
 
     avatarCache = [NSMutableDictionary dictionary];
 
@@ -93,13 +95,13 @@
         [_forumApi getAvatarWithUserId:userId handler:^(BOOL isSuccess, NSString *avatar) {
 
             if (isSuccess) {
-                AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+                LocalForumApi * localeForumApi = [[LocalForumApi alloc] init];
                 // 存入数据库
                 [coreDateManager insertOneData:^(id src) {
                     UserEntry *user = (UserEntry *) src;
                     user.userID = userId;
                     user.userAvatar = avatar;
-                    user.forumHost = appDelegate.forumHost;
+                    user.forumHost = localeForumApi.currentForumHost;
                 }];
                 // 添加到Cache中
                 [avatarCache setValue:avatar forKey:userId];
@@ -118,7 +120,8 @@
         }];
     } else {
 
-        id<ForumConfigDelegate> forumConfig = [ForumApiHelper forumConfig];
+        LocalForumApi *localForumApi = [[LocalForumApi alloc] init];
+        id<ForumConfigDelegate> forumConfig = [ForumApiHelper forumConfig:localForumApi.currentForumHost];
 
         if ([avatarInArray isEqualToString:forumConfig.avatarNo]) {
             [avatarImageView setImage:defaultAvatarImage];

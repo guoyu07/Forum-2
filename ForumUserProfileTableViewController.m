@@ -12,6 +12,7 @@
 #import <UIImageView+WebCache.h>
 #import "UIStoryboard+Forum.h"
 #import "AppDelegate.h"
+#import "LocalForumApi.h"
 
 @interface ForumUserProfileTableViewController () <TransBundleDelegate> {
 
@@ -36,21 +37,19 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
 
-    //NSDictionary *infoPlist = [[NSBundle mainBundle] infoDictionary];
-
-    AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
     defaultAvatarImage = [UIImage imageNamed:@"defaultAvatar.gif"];
 
-//    _forumBrowser = [ForumBrowserFactory browserWithForumConfig:[ForumConfig configWithForumHost:[NSURL URLWithString:appDelegate.forumBaseUrl].host]];
-    
-    _forumApi = [ForumApiHelper forumApi];
+    LocalForumApi *localForumApi = [[LocalForumApi alloc] init];
+    _forumApi = [ForumApiHelper forumApi:localForumApi.currentForumHost];
+
     coreDateManager = [[ForumCoreDataManager alloc] initWithEntryType:EntryTypeUser];
     avatarCache = [NSMutableDictionary dictionary];
 
     if (cacheUsers == nil) {
         cacheUsers = [[coreDateManager selectData:^NSPredicate * {
 
-            return [NSPredicate predicateWithFormat:@"forumHost = %@ AND userID > %d", [NSURL URLWithString:appDelegate.forumBaseUrl].host, 0];
+            LocalForumApi * localeForumApi = [[LocalForumApi alloc] init];
+            return [NSPredicate predicateWithFormat:@"forumHost = %@ AND userID > %d", localeForumApi.currentForumHost, 0];
         }] copy];
     }
 
@@ -133,13 +132,13 @@
     if (avatarInArray == nil) {
 
         [_forumApi getAvatarWithUserId:profileUserId handler:^(BOOL isSuccess, NSString *avatar) {
-            AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+            LocalForumApi * localeForumApi = [[LocalForumApi alloc] init];
             // 存入数据库
             [coreDateManager insertOneData:^(id src) {
                 UserEntry *user = (UserEntry *) src;
                 user.userID = profileUserId;
                 user.userAvatar = avatar;
-                user.forumHost = appDelegate.forumHost;
+                user.forumHost = localeForumApi.currentForumHost;
             }];
             // 添加到Cache中
             [avatarCache setValue:avatar forKey:profileUserId];
@@ -152,7 +151,9 @@
             }
         }];
     } else {
-        id<ForumConfigDelegate> forumConfig = [ForumApiHelper forumConfig];
+
+        LocalForumApi *localForumApi = [[LocalForumApi alloc] init];
+        id<ForumConfigDelegate> forumConfig = [ForumApiHelper forumConfig:localForumApi.currentForumHost];
 
         if ([avatarInArray isEqualToString:forumConfig.avatarNo]) {
             [avatarImageView setImage:defaultAvatarImage];

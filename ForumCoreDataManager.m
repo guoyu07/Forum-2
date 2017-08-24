@@ -8,6 +8,7 @@
 #import "ForumCoreDataManager.h"
 #import "ForumEntry+CoreDataClass.h"
 #import "AppDelegate.h"
+#import "LocalForumApi.h"
 
 @implementation ForumCoreDataManager
 
@@ -27,8 +28,8 @@
 - (NSArray<Forum *> *)selectFavForums:(NSArray *)ids {
 
     NSArray<ForumEntry *> *entrys = [self selectData:^NSPredicate * {
-        AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-        return [NSPredicate predicateWithFormat:@"forumHost = %@ AND forumId IN %@", [NSURL URLWithString:appDelegate.forumBaseUrl].host, ids];
+        LocalForumApi * localeForumApi = [[LocalForumApi alloc] init];
+        return [NSPredicate predicateWithFormat:@"forumHost = %@ AND forumId IN %@", localeForumApi.currentForumHost, ids];
     }];
 
     NSMutableArray<Forum *> *forms = [NSMutableArray arrayWithCapacity:entrys.count];
@@ -47,7 +48,8 @@
 
     AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
     NSArray<ForumEntry *> *entrys = [self selectData:^NSPredicate * {
-        return [NSPredicate predicateWithFormat:@"forumHost = %@ AND parentForumId = %d", [NSURL URLWithString:appDelegate.forumBaseUrl].host , -1];
+        LocalForumApi * localeForumApi = [[LocalForumApi alloc] init];
+        return [NSPredicate predicateWithFormat:@"forumHost = %@ AND parentForumId = %d", localeForumApi.currentForumHost, -1];
     }];
 
     NSMutableArray<Forum *> *forms = [NSMutableArray arrayWithCapacity:entrys.count];
@@ -72,8 +74,8 @@
 - (NSArray<Forum *> *)selectChildForumsById:(int)forumId {
 
     NSArray<ForumEntry *> *entrys = [self selectData:^NSPredicate * {
-        AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-        return [NSPredicate predicateWithFormat:@"forumHost = %@ AND parentForumId = %d", [NSURL URLWithString:appDelegate.forumBaseUrl].host, forumId];
+        LocalForumApi * localeForumApi = [[LocalForumApi alloc] init];
+        return [NSPredicate predicateWithFormat:@"forumHost = %@ AND parentForumId = %d", localeForumApi.currentForumHost, forumId];
     }];
 
     NSMutableArray<Forum *> *forms = [NSMutableArray arrayWithCapacity:entrys.count];

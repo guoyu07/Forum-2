@@ -7,6 +7,7 @@
 
 #import "NSUserDefaults+Extensions.h"
 #import "AppDelegate.h"
+#import "LocalForumApi.h"
 
 #define kDB_VERSION @"DB_VERSION"
 
@@ -59,31 +60,29 @@
     [self setObject:@(version) forKey:kDB_VERSION];
 }
 
-
-- (void)saveUserName:(NSString *)name {
-    NSString *key = [[self currentForumHost] stringByAppendingString:@"-UserName"];
+- (void)saveUserName:(NSString *)name forHost:(NSString *)host {
+    NSString *key = [host stringByAppendingString:@"-UserName"];
     [self setValue:name forKey:key];
 }
 
-- (NSString *)userName{
-    NSString *key = [[self currentForumHost] stringByAppendingString:@"-UserName"];
+- (NSString *)userName:(NSString *)host {
+    NSString *key = [host stringByAppendingString:@"-UserName"];
     return [self valueForKey:key];
 }
 
-- (void)saveUserId:(NSString *)uid {
-    NSString *key = [[self currentForumHost] stringByAppendingString:@"-UserId"];
+- (void)saveUserId:(NSString *)uid forHost:(NSString *)host {
+    NSString *key = [host stringByAppendingString:@"-UserId"];
     [self setValue:uid forKey:key];
 }
 
-- (NSString *)userId {
-    NSString *key = [[self currentForumHost] stringByAppendingString:@"-UserId"];
+- (NSString *)userId:(NSString *)host {
+    NSString *key = [host stringByAppendingString:@"-UserId"];
     return [self valueForKey:key];
 }
 
-
 - (NSString *)currentForumURL {
-    AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-    NSString *bundleId = [appDelegate bundleIdentifier];
+    LocalForumApi *localForumApi = [[LocalForumApi alloc] init];
+    NSString *bundleId = [localForumApi bundleIdentifier];
     if ([bundleId isEqualToString:@"com.andforce.et8"]){
         return @"https://bbs.et8.net/bbs/";
     } else if ([bundleId isEqualToString:@"com.andforce.DRL"]){

@@ -16,16 +16,67 @@
 #import "DRLForumConfig.h"
 #import "CrskyForumConfig.h"
 #import "CHHForumConfig.h"
+#import "LocalForumApi.h"
 
 typedef id (^Runnable)(NSString *bundle, NSString *host);
 
 @implementation ForumApiHelper
++ (id <ForumBrowserDelegate>)forumApi:(NSString *)host {
+    if ([host isEqualToString:@"bbs.et8.net"]){
+
+        CCFForumApi * ccfForumApi = [[CCFForumApi alloc] init];
+        return ccfForumApi;
+
+    } else if ([host isEqualToString:@"dream4ever.org"]){
+
+        DRLForumApi * drlForumApi = [[DRLForumApi alloc] init];
+        return drlForumApi;
+
+    } else if ([host isEqualToString:@"bbs.crsky.com"]){
+
+        CrskyForumApi *crskyForumApi = [[CrskyForumApi alloc] init];
+        return crskyForumApi;
+
+    } else if([host isEqualToString:@"chiphell.com"]){
+
+        CHHForumApi * chhForumApi = [[CHHForumApi alloc] init];
+        return chhForumApi;
+
+    }
+    return nil;
+}
+
++ (id <ForumConfigDelegate>)forumConfig:(NSString *)host {
+    if ([host isEqualToString:@"bbs.et8.net"]){
+
+        CCFForumConfig * ccfForumApi = [[CCFForumConfig alloc] init];
+        return ccfForumApi;
+
+    } else if ([host isEqualToString:@"dream4ever.org"]){
+
+        DRLForumConfig * drlForumApi = [[DRLForumConfig alloc] init];
+        return drlForumApi;
+
+    } else if ([host isEqualToString:@"bbs.crsky.com"]){
+
+        CrskyForumConfig *crskyForumApi = [[CrskyForumConfig alloc] init];
+        return crskyForumApi;
+
+    } else if([host isEqualToString:@"chiphell.com"]){
+
+        CHHForumConfig * chhForumApi = [[CHHForumConfig alloc] init];
+        return chhForumApi;
+
+    }
+
+    return nil;
+}
+
 
 + (id <ForumConfigDelegate>)forumConfig {
-    AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-    NSString *bundleId = [appDelegate bundleIdentifier];
-
-    NSString * host = appDelegate.forumHost;
+    LocalForumApi *localForumApi = [[LocalForumApi alloc] init];
+    NSString *bundleId = [localForumApi bundleIdentifier];
+    NSString * host = localForumApi.currentForumHost;
 
     if ([bundleId isEqualToString:@"com.andforce.et8"] || [host isEqualToString:@"bbs.et8.net"]){
 
@@ -52,10 +103,10 @@ typedef id (^Runnable)(NSString *bundle, NSString *host);
 }
 
 + (id <ForumBrowserDelegate>)forumApi {
-    AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-    NSString *bundleId = [appDelegate bundleIdentifier];
 
-    NSString * host = appDelegate.forumHost;
+    LocalForumApi *localForumApi = [[LocalForumApi alloc] init];
+    NSString *bundleId = [localForumApi bundleIdentifier];
+    NSString * host = localForumApi.currentForumHost;
 
     if ([bundleId isEqualToString:@"com.andforce.et8"] || [host isEqualToString:@"bbs.et8.net"]){
 

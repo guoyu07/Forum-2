@@ -9,6 +9,7 @@
 #import "ForumNavigationViewController.h"
 #import "ForumBrowserDelegate.h"
 #import "ForumApiHelper.h"
+#import "LocalForumApi.h"
 
 @interface ForumNavigationViewController ()
 
@@ -19,7 +20,8 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
 
-    id<ForumConfigDelegate> forumConfig = [ForumApiHelper forumConfig];
+    LocalForumApi *localForumApi = [[LocalForumApi alloc] init];
+    id<ForumConfigDelegate> forumConfig = [ForumApiHelper forumConfig:localForumApi.currentForumHost];
     self.navigationBar.barTintColor = forumConfig.themeColor;
 }
 

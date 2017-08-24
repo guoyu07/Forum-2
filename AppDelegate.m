@@ -19,15 +19,11 @@
 #import "ForumTabBarController.h"
 #import "ForumTableViewController.h"
 #import "Forums.h"
-#import "SupportForums.h"
-#import "BaseForumApi.h"
 #import "LocalForumApi.h"
 #import <UserNotifications/UserNotifications.h>
 
 static BOOL API_DEBUG = NO;
 static int DB_VERSION = 8;
-
-static NSString *bundleIdentifier;
 
 @interface AppDelegate ()<UNUserNotificationCenterDelegate> {
 }
@@ -37,8 +33,6 @@ static NSString *bundleIdentifier;
 
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-
-
 
     NSURLCache *cache = [[NSURLCache alloc] initWithMemoryCapacity:10 * 1024 * 1024 diskCapacity:50 * 1024 * 1024 diskPath:nil];
     [NSURLCache setSharedURLCache:cache];
@@ -100,14 +94,15 @@ static NSString *bundleIdentifier;
         // 判断是否登录
         if (![self isUserHasLogin] || isClearDB) {
 
-            NSString *bundleId = [self bundleIdentifier];
+            LocalForumApi *localForumApi = [[LocalForumApi alloc] init];
+            NSString *bundleId = [localForumApi bundleIdentifier];
 
             if ([bundleId isEqualToString:@"com.andforce.forum"]){
                 [[NSUserDefaults standardUserDefaults] clearCurrentForumURL];
                 self.window.rootViewController = [[UIStoryboard mainStoryboard] finControllerById:@"ShowSupportForums"];
             } else{
 
-                id<ForumConfigDelegate> api = [ForumApiHelper forumConfig];
+                id<ForumConfigDelegate> api = [ForumApiHelper forumConfig:localForumApi.currentForumHost];
                 NSString * cId = api.loginControllerId;
                 [[UIStoryboard mainStoryboard] changeRootViewControllerTo:cId];
 
@@ -184,35 +179,14 @@ static NSString *bundleIdentifier;
 #pragma clang diagnostic pop
 }
 
-- (NSString *) bundleIdentifier{
-    if (bundleIdentifier == nil) {
-        NSString *bundleId = [[NSBundle mainBundle] bundleIdentifier];
-        bundleIdentifier = bundleId;
-    }
-    
-    return bundleIdentifier;
-}
-
-- (NSString *)currentForumHost {
-    NSString * urlStr = [[NSUserDefaults standardUserDefaults] currentForumURL];
-    NSURL *url = [NSURL URLWithString:urlStr];
-    return url.host;
-}
-
 - (BOOL)isUserHasLogin {
-
-    NSData *data = [NSData dataWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"supportForums" ofType:@"json"]];
-
-    NSDictionary *dictionary = [NSJSONSerialization JSONObjectWithData:data options:(NSJSONReadingOptions) kNilOptions error:nil];
-
-    SupportForums *supportForums = [SupportForums modelObjectWithDictionary:dictionary];
-    int size = (int) supportForums.forums.count;
 
     // 判断是否登录
     LocalForumApi *forumApi = [[LocalForumApi alloc] init];
-
+    NSArray * fs = [forumApi supportForums];
+    int size = (int) fs.count;
     for (int i = 0; i < size; ++i) {
-        Forums * forums = supportForums.forums[(NSUInteger) i];
+        Forums * forums = fs[(NSUInteger) i];
         NSURL *url = [NSURL URLWithString:forums.url];
         if ([forumApi isHaveLogin:url.host]){
             return YES;
@@ -303,17 +277,6 @@ static NSString *bundleIdentifier;
     // The directory the application uses to store the Core Data store file. This code uses a directory named "com.andforce.Forum" in the application's documents directory.
     return [[[NSFileManager defaultManager] URLsForDirectory:NSDocumentDirectory inDomains:NSUserDomainMask] lastObject];
 }
-
-- (NSString *)forumBaseUrl {
-    NSString *urlstr = [NSUserDefaults standardUserDefaults].currentForumURL;
-
-    return urlstr;
-}
-
-- (NSString *)forumHost {
-    return [NSURL URLWithString:[self forumBaseUrl]].host;
-}
-
 
 - (NSManagedObjectModel *)managedObjectModel {
     // The managed object model for the application. It is a fatal error for the application not to be able to find and load its model.

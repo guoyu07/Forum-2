@@ -38,7 +38,7 @@
 
     ForumCoreDataManager *coreDateManager;
 
-    NSMutableArray *_haveLoginForums;
+    NSArray *_haveLoginForums;
 
 
     UIImage *defaultAvatarImage;
@@ -58,11 +58,12 @@
 - (void)showUserAvatar {
 
     LocalForumApi *forumApi = [[LocalForumApi alloc] init];
-    LoginUser *loginUser = [forumApi getLoginUser];
+    id<ForumConfigDelegate> config = [ForumApiHelper forumConfig:forumApi.currentForumHost];
+    LoginUser *loginUser = [forumApi getLoginUser:config.forumURL.host];
 
     [self showAvatar:_avatarUIImageView userId:loginUser.userID];
 
-    self.userName.text = [[NSUserDefaults standardUserDefaults] userName];
+    self.userName.text = [[NSUserDefaults standardUserDefaults] userName:config.forumURL.host];
 
 }
 
@@ -75,20 +76,21 @@
     }
     NSString *avatarInArray = [avatarCache valueForKey:userId];
 
-    id<ForumBrowserDelegate> forumApi = [ForumApiHelper forumApi];
+    LocalForumApi *localForumApi = [[LocalForumApi alloc] init];
+    id<ForumBrowserDelegate> forumApi = [ForumApiHelper forumApi:localForumApi.currentForumHost];
 
     if (avatarInArray == nil) {
 
         [forumApi getAvatarWithUserId:userId handler:^(BOOL isSuccess, NSString *avatar) {
 
             if (isSuccess) {
-                AppDelegate *appDelegate = (AppDelegate *) [[UIApplication sharedApplication] delegate];
+                LocalForumApi * localeForumApi = [[LocalForumApi alloc] init];
                 // 存入数据库
                 [coreDateManager insertOneData:^(id src) {
                     UserEntry *user = (UserEntry *) src;
                     user.userID = userId;
                     user.userAvatar = avatar;
-                    user.forumHost = appDelegate.forumHost;
+                    user.forumHost = localeForumApi.currentForumHost;
                 }];
                 // 添加到Cache中
                 [avatarCache setValue:avatar forKey:userId];
@@ -107,7 +109,7 @@
         }];
     } else {
 
-        id<ForumConfigDelegate> forumConfig = [ForumApiHelper forumConfig];
+        id<ForumConfigDelegate> forumConfig = [ForumApiHelper forumConfig:localForumApi.currentForumHost];
 
         if ([avatarInArray isEqualToString:forumConfig.avatarNo]) {
             [avatarImageView setImage:defaultAvatarImage];
@@ -158,9 +160,9 @@
 
         coreDateManager = [[ForumCoreDataManager alloc] initWithEntryType:EntryTypeUser];
         if (cacheUsers == nil) {
-            AppDelegate *appDelegate = (AppDelegate *) [[UIApplication sharedApplication] delegate];
+            LocalForumApi * localeForumApi = [[LocalForumApi alloc] init];
             cacheUsers = [[coreDateManager selectData:^NSPredicate * {
-                return [NSPredicate predicateWithFormat:@"forumHost = %@ AND userID > %d", [NSURL URLWithString:appDelegate.forumBaseUrl].host, 0];
+                return [NSPredicate predicateWithFormat:@"forumHost = %@ AND userID > %d", localeForumApi.currentForumHost, 0];
             }] copy];
         }
 
@@ -249,11 +251,6 @@
     NSString *urlStr = [[NSUserDefaults standardUserDefaults] currentForumURL];
     NSURL *url = [NSURL URLWithString:urlStr];
     return url.host;
-}
-
-
-- (void)getAvatar:(LoginUser *)loginUser {
-
 }
 
 - (id)initWithDrawerType:(DrawerViewType)drawerType andXib:(NSString *)name {
@@ -437,24 +434,13 @@
     [rootView bringSubviewToFront:self];
 
 
-    _haveLoginForums = [NSMutableArray array];
+    LocalForumApi *localForumApi = [[LocalForumApi alloc] init];
+    _haveLoginForums = localForumApi.loginedSupportForums;
 
     self.tableView.dataSource = self;
     self.tableView.delegate = self;
     self.tableView.scrollsToTop = NO;
 
-    NSData *data = [NSData dataWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"supportForums" ofType:@"json"]];
-
-    NSDictionary *dictionary = [NSJSONSerialization JSONObjectWithData:data options:(NSJSONReadingOptions) kNilOptions error:nil];
-
-    SupportForums *supportForums = [SupportForums modelObjectWithDictionary:dictionary];
-    LocalForumApi *forumApi = [[LocalForumApi alloc] init];
-    for (Forums *forums in supportForums.forums) {
-        NSURL *url = [NSURL URLWithString:forums.url];
-        if ([forumApi isHaveLogin:url.host]) {
-            [_haveLoginForums addObject:forums];
-        }
-    }
 
 }
 

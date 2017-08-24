@@ -50,7 +50,10 @@
 
 // private
 - (void)saveUserName:(NSString *)name {
-    [[NSUserDefaults standardUserDefaults] saveUserName:name];
+
+    LocalForumApi *localForumApi = [[LocalForumApi alloc] init];
+    id<ForumConfigDelegate> forumConfig = [ForumApiHelper forumConfig:localForumApi.currentForumHost];
+    [[NSUserDefaults standardUserDefaults] saveUserName:name forHost:forumConfig.forumURL.host];
 }
 
 - (NSString*) getResponseHTML:(UIWebView *)webView {
@@ -89,14 +92,14 @@
                     return [NSPredicate predicateWithFormat:@"forumHost = %@", self.currentForumHost];;
                 }];
 
-                AppDelegate *appDelegate = (AppDelegate *) [[UIApplication sharedApplication] delegate];
+                LocalForumApi * localeForumApi = [[LocalForumApi alloc] init];
 
                 [formManager insertData:needInsert operation:^(NSManagedObject *target, id src) {
                     ForumEntry *newsInfo = (ForumEntry *) target;
                     newsInfo.forumId = [src valueForKey:@"forumId"];
                     newsInfo.forumName = [src valueForKey:@"forumName"];
                     newsInfo.parentForumId = [src valueForKey:@"parentForumId"];
-                    newsInfo.forumHost = appDelegate.forumHost;
+                    newsInfo.forumHost = localeForumApi.currentForumHost;
 
                 }];
 
@@ -131,8 +134,8 @@
 
 - (IBAction)cancelLogin:(id)sender {
 
-    AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-    NSString *bundleId = [appDelegate bundleIdentifier];
+    LocalForumApi *localForumApi = [[LocalForumApi alloc] init];
+    NSString *bundleId = [localForumApi bundleIdentifier];
     if ([bundleId isEqualToString:@"com.andforce.forum"]){
         [[NSUserDefaults standardUserDefaults] clearCurrentForumURL];
         [[UIStoryboard mainStoryboard] changeRootViewControllerTo:@"ShowSupportForums" withAnim:UIViewAnimationOptionTransitionFlipFromTop];

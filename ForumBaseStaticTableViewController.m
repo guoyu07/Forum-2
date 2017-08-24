@@ -7,6 +7,7 @@
 
 #import "ForumBaseStaticTableViewController.h"
 #import "NSUserDefaults+Extensions.h"
+#import "LocalForumApi.h"
 
 @interface ForumBaseStaticTableViewController () {
     BOOL disablePullrefresh;
@@ -84,8 +85,8 @@
 #pragma mark initData
 
 - (void)initData {
-    //self.forumBrowser = [ForumBrowserFactory browserWithForumConfig:[ForumConfig configWithForumHost:self.currentForumHost]];
-    self.forumApi = [ForumApiHelper forumApi];
+    LocalForumApi *localForumApi = [[LocalForumApi alloc] init];
+    self.forumApi = [ForumApiHelper forumApi:localForumApi.currentForumHost];
     self.dataList = [[NSMutableArray alloc] init];
 }
 

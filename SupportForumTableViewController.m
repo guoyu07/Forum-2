@@ -12,11 +12,7 @@
 #import "NSUserDefaults+Extensions.h"
 #import "UIStoryboard+Forum.h"
 #import "SupportForums.h"
-#import "Forums.h"
-#import "ForumLoginViewController.h"
 #import "AppDelegate.h"
-#import "ForumNavigationViewController.h"
-#import "BaseForumApi.h"
 #import "LocalForumApi.h"
 
 
@@ -29,18 +25,13 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
 
-    self.forumApi = [ForumApiHelper forumApi];
-    
-    NSData *data = [NSData dataWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"supportForums" ofType:@"json"]];
-
-    NSDictionary *dictionary = [NSJSONSerialization JSONObjectWithData:data options:(NSJSONReadingOptions) kNilOptions error:nil];
-
-    SupportForums *supportForums = [SupportForums modelObjectWithDictionary:dictionary];
+    LocalForumApi *localForumApi = [[LocalForumApi alloc] init];
+    self.forumApi = [ForumApiHelper forumApi:localForumApi.currentForumHost];
 
 
     [self.dataList removeAllObjects];
 
-    [self.dataList addObjectsFromArray:supportForums.forums];
+    [self.dataList addObjectsFromArray:localForumApi.supportForums];
 
     [self.tableView reloadData];
 
@@ -126,7 +117,8 @@
         
     } else{
 
-        id<ForumConfigDelegate> forumConfig = [ForumApiHelper forumConfig];
+        LocalForumApi *localForumApi = [[LocalForumApi alloc] init];
+        id<ForumConfigDelegate> forumConfig = [ForumApiHelper forumConfig:localForumApi.currentForumHost];
         
         NSString * cId = forumConfig.loginControllerId;
         [[UIStoryboard mainStoryboard] changeRootViewControllerTo:cId withAnim:UIViewAnimationOptionTransitionFlipFromTop];

@@ -14,6 +14,7 @@
 
 #import "IGHTMLDocument+QueryNode.h"
 #import "AppDelegate.h"
+#import "LocalForumApi.h"
 
 @implementation CCFForumHtmlParser {
 
@@ -623,9 +624,9 @@
 
     // 通过ids 过滤出Form
     ForumCoreDataManager *manager = [[ForumCoreDataManager alloc] initWithEntryType:EntryTypeForm];
-    AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+    LocalForumApi * localeForumApi = [[LocalForumApi alloc] init];
     NSArray *result = [manager selectData:^NSPredicate * {
-        return [NSPredicate predicateWithFormat:@"forumHost = %@ AND forumId IN %@", [NSURL URLWithString:appDelegate.forumBaseUrl].host, ids];
+        return [NSPredicate predicateWithFormat:@"forumHost = %@ AND forumId IN %@", localeForumApi.currentForumHost, ids];
     }];
 
     NSMutableArray<Forum *> *forms = [NSMutableArray arrayWithCapacity:result.count];

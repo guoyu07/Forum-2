@@ -8,6 +8,7 @@
 #import "ForumApiBaseTableViewController.h"
 #import "NSUserDefaults+Extensions.h"
 #import "AppDelegate.h"
+#import "LocalForumApi.h"
 
 @interface ForumApiBaseTableViewController () {
     BOOL disablePullrefresh;
@@ -44,8 +45,8 @@
 }
 
 - (BOOL)isNeedHideLeftMenu {
-    AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-    NSString *bundleId = [appDelegate bundleIdentifier];
+    LocalForumApi *localForumApi = [[LocalForumApi alloc] init];
+    NSString *bundleId = [localForumApi bundleIdentifier];
     return ![bundleId isEqualToString:@"com.andforce.forum"];
 
 }
@@ -88,8 +89,9 @@
 #pragma mark initData
 
 - (void)initData {
-//    self.forumBrowser = [ForumBrowserFactory browserWithForumConfig:[ForumConfig configWithForumHost:self.currentForumHost]];
-    self.forumApi = [ForumApiHelper forumApi];
+
+    LocalForumApi *localForumApi = [[LocalForumApi alloc] init];
+    self.forumApi = [ForumApiHelper forumApi:localForumApi.currentForumHost];
     self.dataList = [[NSMutableArray alloc] init];
 }
 

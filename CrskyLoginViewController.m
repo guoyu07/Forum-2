@@ -17,6 +17,7 @@
 #import "IGHTMLDocument+QueryNode.h"
 #import "AppDelegate.h"
 #import "UIStoryboard+Forum.h"
+#import "LocalForumApi.h"
 
 @interface CrskyLoginViewController ()<UIWebViewDelegate>{
 
@@ -49,7 +50,9 @@
 
 // private
 - (void)saveUserName:(NSString *)name {
-    [[NSUserDefaults standardUserDefaults] saveUserName:name];
+    LocalForumApi *localForumApi = [[LocalForumApi alloc] init];
+    id<ForumConfigDelegate> config = [ForumApiHelper forumConfig:localForumApi.currentForumHost];
+    [[NSUserDefaults standardUserDefaults] saveUserName:name forHost:config.forumURL.host];
 }
 
 // private
@@ -104,7 +107,7 @@
 
             if (isSuccess){
 
-                [[NSUserDefaults standardUserDefaults] saveUserId:userId];
+                [[NSUserDefaults standardUserDefaults] saveUserId:userId forHost:@"bbs.crsky.com"];
 
                 [self.forumApi listAllForums:^(BOOL success, id msg) {
                     if (success) {
@@ -115,14 +118,14 @@
                             return [NSPredicate predicateWithFormat:@"forumHost = %@", self.currentForumHost];;
                         }];
 
-                        AppDelegate *appDelegate = (AppDelegate *) [[UIApplication sharedApplication] delegate];
 
                         [formManager insertData:needInsert operation:^(NSManagedObject *target, id src) {
                             ForumEntry *newsInfo = (ForumEntry *) target;
                             newsInfo.forumId = [src valueForKey:@"forumId"];
                             newsInfo.forumName = [src valueForKey:@"forumName"];
                             newsInfo.parentForumId = [src valueForKey:@"parentForumId"];
-                            newsInfo.forumHost = appDelegate.forumHost;
+                            LocalForumApi * localeForumApi = [[LocalForumApi alloc] init];
+                            newsInfo.forumHost = localeForumApi.currentForumHost;
 
                         }];
 
@@ -145,8 +148,8 @@
 }
 
 - (IBAction)cancelLogin:(id)sender {
-    AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-    NSString *bundleId = [appDelegate bundleIdentifier];
+    LocalForumApi *localForumApi = [[LocalForumApi alloc] init];
+    NSString *bundleId = [localForumApi bundleIdentifier];
     if ([bundleId isEqualToString:@"com.andforce.forum"]){
         [[NSUserDefaults standardUserDefaults] clearCurrentForumURL];
         [[UIStoryboard mainStoryboard] changeRootViewControllerTo:@"ShowSupportForums" withAnim:UIViewAnimationOptionTransitionFlipFromTop];
