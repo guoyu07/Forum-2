@@ -46,8 +46,9 @@
     defaultAvatarImage = [UIImage imageNamed:@"defaultAvatar.gif"];
 
 //    _forumBrowser = [ForumBrowserFactory browserWithForumConfig:[ForumConfig configWithForumHost:self.currentForumHost]];
-    
-    _forumApi = [ForumApiHelper forumApi];
+
+    LocalForumApi *localForumApi = [[LocalForumApi alloc] init];
+    _forumApi = [ForumApiHelper forumApi:localForumApi.currentForumHost];
 
     avatarCache = [NSMutableDictionary dictionary];
 
@@ -119,7 +120,8 @@
         }];
     } else {
 
-        id<ForumConfigDelegate> forumConfig = [ForumApiHelper forumConfig];
+        LocalForumApi *localForumApi = [[LocalForumApi alloc] init];
+        id<ForumConfigDelegate> forumConfig = [ForumApiHelper forumConfig:localForumApi.currentForumHost];
 
         if ([avatarInArray isEqualToString:forumConfig.avatarNo]) {
             [avatarImageView setImage:defaultAvatarImage];

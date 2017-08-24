@@ -58,7 +58,7 @@
 - (void)showUserAvatar {
 
     LocalForumApi *forumApi = [[LocalForumApi alloc] init];
-    id<ForumConfigDelegate> config = [ForumApiHelper forumConfig];
+    id<ForumConfigDelegate> config = [ForumApiHelper forumConfig:forumApi.currentForumHost];
     LoginUser *loginUser = [forumApi getLoginUser:config.forumURL.host];
 
     [self showAvatar:_avatarUIImageView userId:loginUser.userID];
@@ -76,7 +76,8 @@
     }
     NSString *avatarInArray = [avatarCache valueForKey:userId];
 
-    id<ForumBrowserDelegate> forumApi = [ForumApiHelper forumApi];
+    LocalForumApi *localForumApi = [[LocalForumApi alloc] init];
+    id<ForumBrowserDelegate> forumApi = [ForumApiHelper forumApi:localForumApi.currentForumHost];
 
     if (avatarInArray == nil) {
 
@@ -108,7 +109,7 @@
         }];
     } else {
 
-        id<ForumConfigDelegate> forumConfig = [ForumApiHelper forumConfig];
+        id<ForumConfigDelegate> forumConfig = [ForumApiHelper forumConfig:localForumApi.currentForumHost];
 
         if ([avatarInArray isEqualToString:forumConfig.avatarNo]) {
             [avatarImageView setImage:defaultAvatarImage];

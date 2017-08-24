@@ -15,6 +15,7 @@
 #import "TransBundle.h"
 #import "TransBundleDelegate.h"
 #import "UIImage+Tint.h"
+#import "LocalForumApi.h"
 
 @interface ForumCreateNewThreadViewController () <UIImagePickerControllerDelegate, UINavigationControllerDelegate,
         UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout,
@@ -48,7 +49,8 @@
 
     categoryIndex = 0;
 
-    _forumApi = [ForumApiHelper forumApi];
+    LocalForumApi *localForumApi = [[LocalForumApi alloc] init];
+    _forumApi = [ForumApiHelper forumApi:localForumApi.currentForumHost];
 
     _selectPhotos.delegate = self;
     _selectPhotos.dataSource = self;

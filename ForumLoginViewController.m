@@ -46,9 +46,10 @@
 
     screenSize = [UIScreen mainScreen].bounds;
 
-    _forumApi = [ForumApiHelper forumApi];
+    LocalForumApi *localForumApi = [[LocalForumApi alloc] init];
+    _forumApi = [ForumApiHelper forumApi:localForumApi.currentForumHost];
 
-    id<ForumConfigDelegate> forumConfig = [ForumApiHelper forumConfig];
+    id<ForumConfigDelegate> forumConfig = [ForumApiHelper forumConfig:localForumApi.currentForumHost];
 
     self.rootView.backgroundColor = forumConfig.themeColor;
     

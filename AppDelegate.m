@@ -102,7 +102,7 @@ static int DB_VERSION = 8;
                 self.window.rootViewController = [[UIStoryboard mainStoryboard] finControllerById:@"ShowSupportForums"];
             } else{
 
-                id<ForumConfigDelegate> api = [ForumApiHelper forumConfig];
+                id<ForumConfigDelegate> api = [ForumApiHelper forumConfig:localForumApi.currentForumHost];
                 NSString * cId = api.loginControllerId;
                 [[UIStoryboard mainStoryboard] changeRootViewControllerTo:cId];
 

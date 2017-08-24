@@ -57,7 +57,8 @@
 
         NSString *lis = @"";
 
-        id<ForumConfigDelegate> forumConfig = [ForumApiHelper forumConfig];
+        LocalForumApi *localForumApi = [[LocalForumApi alloc] init];
+        id<ForumConfigDelegate> forumConfig = [ForumApiHelper forumConfig:localForumApi.currentForumHost];
 
         for (Post *post in posts) {
 
@@ -103,7 +104,8 @@
 
         NSString *lis = @"";
 
-        id<ForumConfigDelegate> forumConfig = [ForumApiHelper forumConfig];
+        LocalForumApi *localForumApi = [[LocalForumApi alloc] init];
+        id<ForumConfigDelegate> forumConfig = [ForumApiHelper forumConfig:localForumApi.currentForumHost];
         for (Post *post in posts) {
             NSString *avatar = [forumConfig avatar:post.postUserInfo.userAvatar];
             NSString *louceng = [post.postLouCeng stringWithRegular:@"\\d+"];
@@ -231,7 +233,8 @@
 
         NSString *lis = @"";
 
-        id<ForumConfigDelegate> forumConfig = [ForumApiHelper forumConfig];
+        LocalForumApi *localForumApi = [[LocalForumApi alloc] init];
+        id<ForumConfigDelegate> forumConfig = [ForumApiHelper forumConfig:localForumApi.currentForumHost];
 
         for (Post *post in posts) {
 
@@ -296,7 +299,8 @@
 
                 //AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
 
-                id<ForumConfigDelegate> forumConfig = [ForumApiHelper forumConfig];
+                LocalForumApi *localForumApi = [[LocalForumApi alloc] init];
+                id<ForumConfigDelegate> forumConfig = [ForumApiHelper forumConfig:localForumApi.currentForumHost];
 
                 NSURL *nsurl = [NSURL URLWithString:[forumConfig showThreadWithThreadId:[NSString stringWithFormat:@"%d", threadId] withPage:page]];
                 [[UIApplication sharedApplication] openURL:nsurl];
@@ -325,7 +329,8 @@
 
         NSString *lis = @"";
 
-        id<ForumConfigDelegate> forumConfig = [ForumApiHelper forumConfig];
+        LocalForumApi *localForumApi = [[LocalForumApi alloc] init];
+        id<ForumConfigDelegate> forumConfig = [ForumApiHelper forumConfig:localForumApi.currentForumHost];
 
         for (Post *post in posts) {
             NSString *avatar = [forumConfig avatar:post.postUserInfo.userAvatar];
@@ -394,7 +399,8 @@
 
                 NSMutableArray *posts = threadPage.postList;
 
-                id<ForumConfigDelegate> forumConfig = [ForumApiHelper forumConfig];
+                LocalForumApi *localForumApi = [[LocalForumApi alloc] init];
+                id<ForumConfigDelegate> forumConfig = [ForumApiHelper forumConfig:localForumApi.currentForumHost];
 
                 for (NSInteger i = currentShowThreadPage.postList.count; i < posts.count; i++) {
                     Post *post = posts[i];
@@ -439,7 +445,8 @@
 
         NSString *lis = @"";
 
-        id<ForumConfigDelegate> forumConfig = [ForumApiHelper forumConfig];
+        LocalForumApi *localForumApi = [[LocalForumApi alloc] init];
+        id<ForumConfigDelegate> forumConfig = [ForumApiHelper forumConfig:localForumApi.currentForumHost];
 
         for (Post *post in posts) {
 
@@ -613,7 +620,8 @@
 
             } else if (buttonIndex == 2) {
 
-                id<ForumConfigDelegate> forumConfig = [ForumApiHelper forumConfig];
+                LocalForumApi *localForumApi = [[LocalForumApi alloc] init];
+                id<ForumConfigDelegate> forumConfig = [ForumApiHelper forumConfig:localForumApi.currentForumHost];
 
                 NSString *postUrl = [forumConfig copyThreadUrl:[NSString stringWithFormat:@"%d", threadID] withPostId:[NSString stringWithFormat:@"%d", postId] withPostCout:louCeng];
                 UIPasteboard *pasteboard = [UIPasteboard generalPasteboard];
@@ -760,7 +768,8 @@
 
 - (IBAction)showMoreAction:(UIBarButtonItem *)sender {
 
-    id<ForumConfigDelegate> forumConfig = [ForumApiHelper forumConfig];
+    LocalForumApi *localForumApi = [[LocalForumApi alloc] init];
+    id<ForumConfigDelegate> forumConfig = [ForumApiHelper forumConfig:localForumApi.currentForumHost];
 
     itemActionSheet = [LCActionSheet sheetWithTitle:nil buttonTitles:@[@"复制帖子链接", @"在浏览器中查看", @"举报此帖"] redButtonIndex:4 clicked:^(NSInteger buttonIndex) {
         if (buttonIndex == 0) {

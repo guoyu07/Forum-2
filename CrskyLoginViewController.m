@@ -50,7 +50,8 @@
 
 // private
 - (void)saveUserName:(NSString *)name {
-    id<ForumConfigDelegate> config = [ForumApiHelper forumConfig];
+    LocalForumApi *localForumApi = [[LocalForumApi alloc] init];
+    id<ForumConfigDelegate> config = [ForumApiHelper forumConfig:localForumApi.currentForumHost];
     [[NSUserDefaults standardUserDefaults] saveUserName:name forHost:config.forumURL.host];
 }
 

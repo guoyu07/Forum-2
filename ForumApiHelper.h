@@ -16,8 +16,8 @@
 
 @interface ForumApiHelper : NSObject
 
-+ (id <ForumBrowserDelegate>)forumApi;
++ (id <ForumBrowserDelegate>)forumApi:(NSString *)host;
 
-+ (id <ForumConfigDelegate>)forumConfig;
++ (id <ForumConfigDelegate>)forumConfig:(NSString *)host;
 
 @end

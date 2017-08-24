@@ -12,8 +12,7 @@
 #import "CharUtils.h"
 #import "CharUnicodeBlock.h"
 #import "NSString+Extensions.h"
-
-
+#import "LocalForumApi.h"
 
 
 @interface ApiTestViewController () {
@@ -34,7 +33,9 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
 
-    id<ForumBrowserDelegate> forumApi = [ForumApiHelper forumApi];
+
+    LocalForumApi *localForumApi = [[LocalForumApi alloc] init];
+    id<ForumBrowserDelegate> forumApi = [ForumApiHelper forumApi:localForumApi.currentForumHost];
 
     [forumApi listAllForums:^(BOOL isSuccess, id message) {
 

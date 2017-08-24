@@ -13,6 +13,7 @@
 #import "TransBundle.h"
 #import "TransBundleDelegate.h"
 #import "UIImage+Tint.h"
+#import "LocalForumApi.h"
 
 @interface ForumShortCutCreateNewThreadViewController () <UIImagePickerControllerDelegate, UINavigationControllerDelegate,
         UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout,
@@ -39,9 +40,8 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
 
-    //_forumBrowser = [ForumBrowserFactory browserWithForumConfig:[ForumConfig configWithForumHost:self.currentForumHost]];
-
-    _forumApi = [ForumApiHelper forumApi];
+    LocalForumApi *localForumApi = [[LocalForumApi alloc] init];
+    _forumApi = [ForumApiHelper forumApi:localForumApi.currentForumHost];
 
     _selectPhotos.delegate = self;
     _selectPhotos.dataSource = self;

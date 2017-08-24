@@ -26,7 +26,9 @@
         return nil;
     }
 
-    id <ForumConfigDelegate> forumConfig = [ForumApiHelper forumConfig];
+    LocalForumApi *localForumApi = [[LocalForumApi alloc] init];
+    id<ForumConfigDelegate> forumConfig = [ForumApiHelper forumConfig:@"bbs.crsky.com"];
+
     LoginUser *user = [[LoginUser alloc] init];
     user.userName = [[NSUserDefaults standardUserDefaults] userName:@"bbs.crsky.com"];
     if (user.userName == nil || [user.userName isEqualToString:@""]){
@@ -49,8 +51,9 @@
     if (cookies.count == 0){
         return nil;
     }
-    id <ForumConfigDelegate> forumConfig = [ForumApiHelper forumConfig];
     LocalForumApi *localForumApi = [[LocalForumApi alloc] init];
+    id<ForumConfigDelegate> forumConfig = [ForumApiHelper forumConfig:host];
+
     NSString *bundleId = [localForumApi bundleIdentifier];
 
     if ([bundleId isEqualToString:@"com.andforce.Crsky"] || [host isEqualToString:@"bbs.crsky.com"]){
@@ -92,8 +95,10 @@
 }
 
 - (void)logout {
-    id <ForumConfigDelegate> forumConfig = [ForumApiHelper forumConfig];
 
+    LocalForumApi *localForumApi = [[LocalForumApi alloc] init];
+    id<ForumConfigDelegate> forumConfig = [ForumApiHelper forumConfig:localForumApi.currentForumHost];
+    
     [[NSUserDefaults standardUserDefaults] clearCookie];
 
     NSURL *url = forumConfig.forumURL;
