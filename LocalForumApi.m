@@ -126,6 +126,21 @@
     return supportForums.forums;
 }
 
+- (NSArray<Forums *> *)loginedSupportForums {
+
+    NSArray * support = [self supportForums];
+
+    NSMutableArray *result = [NSMutableArray array];
+
+    for (Forums *forums in support) {
+        NSURL *url = [NSURL URLWithString:forums.url];
+        if ([self isHaveLogin:url.host]) {
+            [result addObject:forums];
+        }
+    }
+    return [result copy];
+}
+
 - (NSString *)currentForumBaseUrl {
     NSString *urlstr = [NSUserDefaults standardUserDefaults].currentForumURL;
     return urlstr;

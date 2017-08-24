@@ -24,6 +24,8 @@
 
 - (NSArray<Forums *> *) supportForums;
 
+- (NSArray<Forums *> *) loginedSupportForums;
+
 - (NSString *)currentForumBaseUrl;
 
 - (NSString *) bundleIdentifier;

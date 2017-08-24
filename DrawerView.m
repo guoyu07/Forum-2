@@ -38,7 +38,7 @@
 
     ForumCoreDataManager *coreDateManager;
 
-    NSMutableArray *_haveLoginForums;
+    NSArray *_haveLoginForums;
 
 
     UIImage *defaultAvatarImage;
@@ -434,24 +434,13 @@
     [rootView bringSubviewToFront:self];
 
 
-    _haveLoginForums = [NSMutableArray array];
+    LocalForumApi *localForumApi = [[LocalForumApi alloc] init];
+    _haveLoginForums = localForumApi.loginedSupportForums;
 
     self.tableView.dataSource = self;
     self.tableView.delegate = self;
     self.tableView.scrollsToTop = NO;
 
-    NSData *data = [NSData dataWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"supportForums" ofType:@"json"]];
-
-    NSDictionary *dictionary = [NSJSONSerialization JSONObjectWithData:data options:(NSJSONReadingOptions) kNilOptions error:nil];
-
-    SupportForums *supportForums = [SupportForums modelObjectWithDictionary:dictionary];
-    LocalForumApi *forumApi = [[LocalForumApi alloc] init];
-    for (Forums *forums in supportForums.forums) {
-        NSURL *url = [NSURL URLWithString:forums.url];
-        if ([forumApi isHaveLogin:url.host]) {
-            [_haveLoginForums addObject:forums];
-        }
-    }
 
 }
 

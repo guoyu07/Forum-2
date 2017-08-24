@@ -12,11 +12,7 @@
 #import "NSUserDefaults+Extensions.h"
 #import "UIStoryboard+Forum.h"
 #import "SupportForums.h"
-#import "Forums.h"
-#import "ForumLoginViewController.h"
 #import "AppDelegate.h"
-#import "ForumNavigationViewController.h"
-#import "BaseForumApi.h"
 #import "LocalForumApi.h"
 
 
@@ -31,17 +27,11 @@
 
     LocalForumApi *localForumApi = [[LocalForumApi alloc] init];
     self.forumApi = [ForumApiHelper forumApi:localForumApi.currentForumHost];
-    
-    NSData *data = [NSData dataWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"supportForums" ofType:@"json"]];
-
-    NSDictionary *dictionary = [NSJSONSerialization JSONObjectWithData:data options:(NSJSONReadingOptions) kNilOptions error:nil];
-
-    SupportForums *supportForums = [SupportForums modelObjectWithDictionary:dictionary];
 
 
     [self.dataList removeAllObjects];
 
-    [self.dataList addObjectsFromArray:supportForums.forums];
+    [self.dataList addObjectsFromArray:localForumApi.supportForums];
 
     [self.tableView reloadData];
 
