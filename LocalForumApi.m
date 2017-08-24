@@ -26,7 +26,6 @@
         return nil;
     }
 
-    LocalForumApi *localForumApi = [[LocalForumApi alloc] init];
     id<ForumConfigDelegate> forumConfig = [ForumApiHelper forumConfig:@"bbs.crsky.com"];
 
     LoginUser *user = [[LoginUser alloc] init];
@@ -34,7 +33,7 @@
     if (user.userName == nil || [user.userName isEqualToString:@""]){
         return nil;
     }
-    user.userID = [[NSUserDefaults standardUserDefaults] userId];
+    user.userID = [[NSUserDefaults standardUserDefaults] userId:@"bbs.crsky.com"];
 
     for (int i = 0; i < cookies.count; i++) {
         NSHTTPCookie *cookie = cookies[(NSUInteger) i];

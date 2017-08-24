@@ -70,16 +70,15 @@
     return [self valueForKey:key];
 }
 
-- (void)saveUserId:(NSString *)uid {
-    NSString *key = [[self currentForumHost] stringByAppendingString:@"-UserId"];
+- (void)saveUserId:(NSString *)uid forHost:(NSString *)host {
+    NSString *key = [host stringByAppendingString:@"-UserId"];
     [self setValue:uid forKey:key];
 }
 
-- (NSString *)userId {
-    NSString *key = [[self currentForumHost] stringByAppendingString:@"-UserId"];
+- (NSString *)userId:(NSString *)host {
+    NSString *key = [host stringByAppendingString:@"-UserId"];
     return [self valueForKey:key];
 }
-
 
 - (NSString *)currentForumURL {
     LocalForumApi *localForumApi = [[LocalForumApi alloc] init];

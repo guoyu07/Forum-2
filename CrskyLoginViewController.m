@@ -107,7 +107,7 @@
 
             if (isSuccess){
 
-                [[NSUserDefaults standardUserDefaults] saveUserId:userId];
+                [[NSUserDefaults standardUserDefaults] saveUserId:userId forHost:@"bbs.crsky.com"];
 
                 [self.forumApi listAllForums:^(BOOL success, id msg) {
                     if (success) {
