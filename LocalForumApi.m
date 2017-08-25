@@ -6,7 +6,6 @@
 #import <CloudKit/CloudKit.h>
 #import "LocalForumApi.h"
 #import "LoginUser.h"
-#import "NSUserDefaults+Extensions.h"
 #import "ForumConfigDelegate.h"
 #import "ForumApiHelper.h"
 #import "AppDelegate.h"
@@ -15,9 +14,17 @@
 
 
 @implementation LocalForumApi {
-    //id <ForumConfigDelegate> forumConfig;
+    NSUserDefaults * _userDefaults;
 }
 
+- (instancetype)init {
+    self = [super init];
+    if (self){
+        _userDefaults = [NSUserDefaults standardUserDefaults];
+    }
+
+    return self;
+}
 
 - (LoginUser *)getLoginUserCrsky {
 
@@ -29,11 +36,11 @@
     id<ForumConfigDelegate> forumConfig = [ForumApiHelper forumConfig:@"bbs.crsky.com"];
 
     LoginUser *user = [[LoginUser alloc] init];
-    user.userName = [[NSUserDefaults standardUserDefaults] userName:@"bbs.crsky.com"];
+    user.userName = [self userName:@"bbs.crsky.com"];
     if (user.userName == nil || [user.userName isEqualToString:@""]){
         return nil;
     }
-    user.userID = [[NSUserDefaults standardUserDefaults] userId:@"bbs.crsky.com"];
+    user.userID = [self userId:@"bbs.crsky.com"];
 
     for (int i = 0; i < cookies.count; i++) {
         NSHTTPCookie *cookie = cookies[(NSUInteger) i];
@@ -59,7 +66,7 @@
         return [self getLoginUserCrsky];
     } else {
         LoginUser *user = [[LoginUser alloc] init];
-        user.userName = [[NSUserDefaults standardUserDefaults] userName:host];
+        user.userName = [self userName:host];
         if (user.userName == nil || [user.userName isEqualToString:@""]){
             return nil;
         }
@@ -93,12 +100,26 @@
     return YES;
 }
 
+- (BOOL)isHaveLoginForum {
+    // 判断是否登录
+    NSArray * fs = [self supportForums];
+    int size = (int) fs.count;
+    for (int i = 0; i < size; ++i) {
+        Forums * forums = fs[(NSUInteger) i];
+        NSURL *url = [NSURL URLWithString:forums.url];
+        if ([self isHaveLogin:url.host]){
+            return YES;
+        }
+    }
+    return NO;
+}
+
 - (void)logout {
 
     LocalForumApi *localForumApi = [[LocalForumApi alloc] init];
     id<ForumConfigDelegate> forumConfig = [ForumApiHelper forumConfig:localForumApi.currentForumHost];
     
-    [[NSUserDefaults standardUserDefaults] clearCookie];
+    [self clearCookie];
 
     NSURL *url = forumConfig.forumURL;
     if (url) {
@@ -111,7 +132,7 @@
 }
 
 - (NSString *)currentForumHost {
-    NSString * urlStr = [[NSUserDefaults standardUserDefaults] currentForumURL];
+    NSString * urlStr = [self currentForumURL];
     NSURL *url = [NSURL URLWithString:urlStr];
     return url.host;
 }
@@ -141,13 +162,103 @@
 }
 
 - (NSString *)currentForumBaseUrl {
-    NSString *urlstr = [NSUserDefaults standardUserDefaults].currentForumURL;
+    NSString *urlstr = [self currentForumURL];
     return urlstr;
 }
 
 - (NSString *)bundleIdentifier {
     NSString *bundleId = [[NSBundle mainBundle] bundleIdentifier];
     return bundleId;
+}
+
+- (NSString *)loadCookie {
+    NSData *cookiesdata = [_userDefaults objectForKey:[[self currentForumHost] stringByAppendingString:@"-Cookies"]];
+
+
+    if ([cookiesdata length]) {
+        NSArray *cookies = [NSKeyedUnarchiver unarchiveObjectWithData:cookiesdata];
+
+        NSHTTPCookie *cookie;
+        for (cookie in cookies) {
+            [[NSHTTPCookieStorage sharedHTTPCookieStorage] setCookie:cookie];
+        }
+    }
+
+
+    NSString *result = [[NSString alloc] initWithData:cookiesdata encoding:NSUTF8StringEncoding];
+
+    return result;
+}
+
+- (void)saveCookie {
+    NSArray<NSHTTPCookie *> *cookies = [[NSHTTPCookieStorage sharedHTTPCookieStorage] cookies];
+    NSData *data = [NSKeyedArchiver archivedDataWithRootObject:cookies];
+    [_userDefaults setObject:data forKey:[[self currentForumHost] stringByAppendingString:@"-Cookies"]];
+}
+
+- (void)clearCookie {
+    [_userDefaults removeObjectForKey:[[self currentForumHost] stringByAppendingString:@"-Cookies"]];
+}
+
+- (void)saveFavFormIds:(NSArray *)ids {
+    [_userDefaults setObject:ids forKey:[[self currentForumHost] stringByAppendingString:@"-FavIds"]];
+}
+
+- (NSArray *)favFormIds {
+    return [_userDefaults objectForKey:[[self currentForumHost] stringByAppendingString:@"-FavIds"]];
+}
+
+#define kDB_VERSION @"DB_VERSION"
+- (int)dbVersion {
+    return [[_userDefaults objectForKey:kDB_VERSION] intValue];
+}
+
+- (void)setDBVersion:(int)version {
+    [_userDefaults setObject:@(version) forKey:kDB_VERSION];
+}
+
+- (void)saveUserName:(NSString *)name forHost:(NSString *)host {
+    NSString *key = [host stringByAppendingString:@"-UserName"];
+    [_userDefaults setValue:name forKey:key];
+}
+
+- (NSString *)userName:(NSString *)host {
+    NSString *key = [host stringByAppendingString:@"-UserName"];
+    return [_userDefaults valueForKey:key];
+}
+
+- (void)saveUserId:(NSString *)uid forHost:(NSString *)host {
+    NSString *key = [host stringByAppendingString:@"-UserId"];
+    [_userDefaults setValue:uid forKey:key];
+}
+
+- (NSString *)userId:(NSString *)host {
+    NSString *key = [host stringByAppendingString:@"-UserId"];
+    return [_userDefaults valueForKey:key];
+}
+
+- (NSString *)currentForumURL {
+    LocalForumApi *localForumApi = [[LocalForumApi alloc] init];
+    NSString *bundleId = [localForumApi bundleIdentifier];
+    if ([bundleId isEqualToString:@"com.andforce.et8"]){
+        return @"https://bbs.et8.net/bbs/";
+    } else if ([bundleId isEqualToString:@"com.andforce.DRL"]){
+        return @"https://dream4ever.org/";
+    } else if([bundleId isEqualToString:@"com.andforce.Crsky"]){
+        return @"http://bbs.crsky.com/";
+    } else if ([bundleId isEqualToString:@"com.andforce.CHH"]){
+        return @"https://chiphell.com/";
+    } else{
+        return [_userDefaults valueForKey:@"currentForumURL"];
+    }
+}
+
+- (void)saveCurrentForumURL:(NSString *)url {
+    [_userDefaults setValue:url forKey:@"currentForumURL"];
+}
+
+- (void)clearCurrentForumURL {
+    [_userDefaults removeObjectForKey:@"currentForumURL"];
 }
 
 

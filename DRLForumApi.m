@@ -6,7 +6,6 @@
 #import "DRLForumApi.h"
 
 #import "NSString+Extensions.h"
-#import "NSUserDefaults+Extensions.h"
 #import "NSUserDefaults+Setting.h"
 #import "AFHTTPSessionManager+SimpleAction.h"
 #import "UIImageView+AFNetworking.h"
@@ -53,28 +52,12 @@ typedef void (^CallBack)(NSString *token, NSString *hash, NSString *time);
     [self GET:url parameters:nil requestCallback:callback];
 }
 
-//------
-// private
-- (NSString *)loadCookie {
-    return [[NSUserDefaults standardUserDefaults] loadCookie];
-}
-
-// private
-- (void)saveUserName:(NSString *)name {
-    [[NSUserDefaults standardUserDefaults] saveUserName:name forHost:forumConfig.forumURL.host];
-}
-
-//private
-- (void)saveCookie {
-    [[NSUserDefaults standardUserDefaults] saveCookie];
-}
-//------
-
 - (void)loginWithName:(NSString *)name andPassWord:(NSString *)passWord withCode:(NSString *)code question:(NSString *)q answer:(NSString *)a handler:(HandlerWithBool)handler {
     [self.browser GETWithURLString:forumConfig.login parameters:nil charset:UTF_8 requestCallback:^(BOOL isSuccess, NSString *html) {
         if (isSuccess) {
 
-            [self saveCookie];
+            LocalForumApi *localForumApi = [[LocalForumApi alloc] init];
+            [localForumApi saveCookie];
 
             NSString *md5pwd = [passWord md5HexDigest];
 
@@ -99,9 +82,9 @@ typedef void (^CallBack)(NSString *token, NSString *hash, NSString *time);
 
                     if (userName != nil) {
                         // 保存Cookie
-                        [self saveCookie];
+                        [localForumApi saveCookie];
                         // 保存用户名
-                        [self saveUserName:userName];
+                        [localForumApi saveUserName:userName forHost:forumConfig.forumURL.host];
                         handler(YES, @"登录成功");
                     } else {
                         handler(NO, [forumParser parseLoginErrorMessage:string]);
@@ -194,7 +177,8 @@ typedef void (^CallBack)(NSString *token, NSString *hash, NSString *time);
 
     [self.browser POSTWithURLString:[forumConfig newThreadWithForumId:[NSString stringWithFormat:@"%d", fId]] parameters:parameters charset:UTF_8 requestCallback:^(BOOL isSuccess, NSString *html) {
         if (isSuccess) {
-            [self saveCookie];
+            LocalForumApi *localForumApi = [[LocalForumApi alloc] init];
+            [localForumApi saveCookie];
         }
         handler(isSuccess, html);
 
@@ -302,7 +286,8 @@ typedef void (^CallBack)(NSString *token, NSString *hash, NSString *time);
     [request setTimeoutInterval:60];
     [request setHTTPMethod:@"POST"];
 
-    NSString *cookie = [self loadCookie];
+    LocalForumApi *localForumApi = [[LocalForumApi alloc] init];
+    NSString *cookie = [localForumApi loadCookie];
     [request setValue:cookie forHTTPHeaderField:@"Cookie"];
 
     NSString *boundary = [NSString stringWithFormat:@"----WebKitFormBoundary%@", [self uploadParamDivider]];
@@ -680,7 +665,8 @@ typedef void (^CallBack)(NSString *token, NSString *hash, NSString *time);
     [request setTimeoutInterval:60];
     [request setHTTPMethod:@"POST"];
 
-    NSString *cookie = [self loadCookie];
+    LocalForumApi *localForumApi = [[LocalForumApi alloc] init];
+    NSString *cookie = [localForumApi loadCookie];
     [request setValue:cookie forHTTPHeaderField:@"Cookie"];
 
     NSString *boundary = [NSString stringWithFormat:@"----WebKitFormBoundary%@", [self uploadParamDivider]];
@@ -810,7 +796,9 @@ typedef void (^CallBack)(NSString *token, NSString *hash, NSString *time);
 
             [self.browser POSTWithURLString:forumConfig.search parameters:parameters charset:UTF_8 requestCallback:^(BOOL success, NSString *result) {
                 if (success) {
-                    [self saveCookie];
+
+                    LocalForumApi *localForumApi = [[LocalForumApi alloc] init];
+                    [localForumApi saveCookie];
 
                     if ([result containsString:@"对不起，没有匹配记录。请尝试采用其他条件查询。"]) {
                         handler(NO, @"对不起，没有匹配记录。请尝试采用其他条件查询。");

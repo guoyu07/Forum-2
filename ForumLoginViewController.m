@@ -12,8 +12,6 @@
 #import <SVProgressHUD.h>
 #import "ForumCoreDataManager.h"
 #import "ForumEntry+CoreDataClass.h"
-#import "NSUserDefaults+Extensions.h"
-#import "BaseForumApi.h"
 #import "LocalForumApi.h"
 
 @interface ForumLoginViewController () <UITextFieldDelegate> {
@@ -193,13 +191,12 @@
 }
 
 - (IBAction)cancelLogin:(id)sender {
-    LocalForumApi *forumApi = [[LocalForumApi alloc] init];
-    [forumApi logout];
 
     LocalForumApi *localForumApi = [[LocalForumApi alloc] init];
+    [localForumApi logout];
     NSString *bundleId = [localForumApi bundleIdentifier];
     if ([bundleId isEqualToString:@"com.andforce.forum"]){
-        [[NSUserDefaults standardUserDefaults] clearCurrentForumURL];
+        [localForumApi clearCurrentForumURL];
         [[UIStoryboard mainStoryboard] changeRootViewControllerTo:@"ShowSupportForums" withAnim:UIViewAnimationOptionTransitionFlipFromTop];
     } else {
         [self exitApplication];

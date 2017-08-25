@@ -17,6 +17,9 @@
 // 获取当前登录的账户信息
 - (BOOL)isHaveLogin:(NSString *) host;
 
+// 获取当前登录的账户信息
+- (BOOL)isHaveLoginForum;
+
 // 退出论坛
 - (void)logout;
 
@@ -29,5 +32,35 @@
 - (NSString *)currentForumBaseUrl;
 
 - (NSString *) bundleIdentifier;
+
+//---------------------------------------
+
+- (NSString *)loadCookie;
+
+- (void)saveCookie;
+
+- (void)clearCookie;
+
+- (void)saveFavFormIds:(NSArray *)ids;
+
+- (NSArray *)favFormIds;
+
+- (int)dbVersion;
+
+- (void)setDBVersion:(int)version;
+
+- (void)saveUserName:(NSString *)name forHost:(NSString *)host;
+
+- (NSString *)userName:(NSString *)host;
+
+- (void)saveUserId:(NSString *)uid forHost:(NSString *)host;
+
+- (NSString *)userId:(NSString *)host;
+
+- (NSString *)currentForumURL;
+
+- (void) saveCurrentForumURL:(NSString*) url;
+
+- (void) clearCurrentForumURL;
 
 @end

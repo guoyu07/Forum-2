@@ -6,11 +6,9 @@
 #import "CCFForumApi.h"
 
 #import "NSString+Extensions.h"
-#import "NSUserDefaults+Extensions.h"
 #import "NSUserDefaults+Setting.h"
 #import "AFHTTPSessionManager+SimpleAction.h"
 #import "UIImageView+AFNetworking.h"
-#import "DeviceName.h"
 #import "ForumParserDelegate.h"
 #import "CCFForumConfig.h"
 #import "CCFForumHtmlParser.h"
@@ -60,23 +58,6 @@ typedef void (^CallBack)(NSString *token, NSString *hash, NSString *time);
     [self GET:url parameters:nil requestCallback:callback];
 }
 
-//------
-// private
-- (NSString *)loadCookie {
-    return [[NSUserDefaults standardUserDefaults] loadCookie];
-}
-
-// private
-- (void)saveUserName:(NSString *)name {
-    [[NSUserDefaults standardUserDefaults] saveUserName:name forHost:forumConfig.forumURL.host];
-}
-
-//private
-- (void)saveCookie {
-    [[NSUserDefaults standardUserDefaults] saveCookie];
-}
-//------
-
 - (void)loginWithName:(NSString *)name andPassWord:(NSString *)passWord withCode:(NSString *)code question:(NSString *)q answer:(NSString *)a handler:(HandlerWithBool)handler {
     NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
     [parameters setValue:name forKey:@"vb_login_username"];
@@ -97,10 +78,11 @@ typedef void (^CallBack)(NSString *token, NSString *hash, NSString *time);
             NSString *userName = [html stringWithRegular:@"(?<=<p><strong>感谢您登录，).*(?=。</strong></p>)"];
 
             if (userName) {
+                LocalForumApi *localForumApi = [[LocalForumApi alloc] init];
                 // 保存Cookie
-                [self saveCookie];
+                [localForumApi saveCookie];
                 // 保存用户名
-                [self saveUserName:userName];
+                [localForumApi saveUserName:userName forHost:forumConfig.forumURL.host];
                 handler(YES, @"登录成功");
             } else {
                 handler(NO, [forumParser parseLoginErrorMessage:html]);
@@ -188,7 +170,8 @@ typedef void (^CallBack)(NSString *token, NSString *hash, NSString *time);
 
     [self.browser POSTWithURLString:[forumConfig newThreadWithForumId:[NSString stringWithFormat:@"%d", fId]] parameters:parameters charset:UTF_8 requestCallback:^(BOOL isSuccess, NSString *html) {
         if (isSuccess) {
-            [self saveCookie];
+            LocalForumApi *localForumApi = [[LocalForumApi alloc] init];
+            [localForumApi saveCookie];
         }
         handler(isSuccess, html);
 
@@ -224,7 +207,9 @@ typedef void (^CallBack)(NSString *token, NSString *hash, NSString *time);
     [request setTimeoutInterval:60];
     [request setHTTPMethod:@"POST"];
 
-    NSString *cookie = [self loadCookie];
+    LocalForumApi *localForumApi = [[LocalForumApi alloc] init];
+
+    NSString *cookie = [localForumApi loadCookie];
     [request setValue:cookie forHTTPHeaderField:@"Cookie"];
 
     NSString *boundary = [NSString stringWithFormat:@"----WebKitFormBoundary%@", [self uploadParamDivider]];
@@ -703,7 +688,8 @@ typedef void (^CallBack)(NSString *token, NSString *hash, NSString *time);
     [request setTimeoutInterval:60];
     [request setHTTPMethod:@"POST"];
 
-    NSString *cookie = [self loadCookie];
+    LocalForumApi *localForumApi = [[LocalForumApi alloc] init];
+    NSString *cookie = [localForumApi loadCookie];
     [request setValue:cookie forHTTPHeaderField:@"Cookie"];
 
     NSString *boundary = [NSString stringWithFormat:@"----WebKitFormBoundary%@", [self uploadParamDivider]];
@@ -903,7 +889,8 @@ typedef void (^CallBack)(NSString *token, NSString *hash, NSString *time);
                         handler(NO, error);
                     } else {
                         ViewSearchForumPage *page = [forumParser parseSearchPageFromHtml:searchResult];
-                        [self saveCookie];
+                        LocalForumApi *localForumApi = [[LocalForumApi alloc] init];
+                        [localForumApi saveCookie];
 
                         if (page != nil && page.dataList != nil && page.dataList.count > 0) {
                             handler(YES, page);

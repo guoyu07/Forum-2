@@ -9,7 +9,6 @@
 #import "CrskyForumApi.h"
 #import "ForumParserDelegate.h"
 #import "AFHTTPSessionManager+SimpleAction.h"
-#import "NSUserDefaults+Extensions.h"
 #import "NSUserDefaults+Setting.h"
 #import "ForumCoreDataManager.h"ƒ
 #import "NSString+Extensions.h"
@@ -520,6 +519,8 @@
 
     NSString * data = [store stringForKey:key];
 
+    LocalForumApi *localForumApi = [[LocalForumApi alloc] init];
+
     if (data){
         NSArray * favForumIds = [data componentsSeparatedByString:@","];
         NSLog(@"favoriteForumsWithId \t%@", favForumIds);
@@ -537,7 +538,7 @@
             for (NSString *fid in favForumIds){
                 [ids addObject:@([fid intValue])];
             }
-            [[NSUserDefaults standardUserDefaults] saveFavFormIds:ids];
+            [localForumApi saveFavFormIds:ids];
         }
     } else {
         NSMutableArray * array = [NSMutableArray array];
@@ -552,7 +553,7 @@
         NSMutableArray * ids = [NSMutableArray array];
 
         [ids addObject:@([forumId intValue])];
-        [[NSUserDefaults standardUserDefaults] saveFavFormIds:ids];
+        [localForumApi saveFavFormIds:ids];
     }
 
     handler(YES, @"SUCCESS");
@@ -581,7 +582,8 @@
         for (NSString *fid in favForumIds){
             [ids addObject:@([fid intValue])];
         }
-        [[NSUserDefaults standardUserDefaults] saveFavFormIds:ids];
+        LocalForumApi *localForumApi = [[LocalForumApi alloc] init];
+        [localForumApi saveFavFormIds:ids];
     }
 
     handler(YES, @"SUCCESS");
@@ -657,7 +659,8 @@
     for (NSString *forumId in favForumIds){
         [ids addObject:@([forumId intValue])];
     }
-    [[NSUserDefaults standardUserDefaults] saveFavFormIds:ids];
+    LocalForumApi *localForumApi = [[LocalForumApi alloc] init];
+    [localForumApi saveFavFormIds:ids];
 
     ForumCoreDataManager *manager = [[ForumCoreDataManager alloc] initWithEntryType:EntryTypeForm];
     NSArray *forms = [[manager selectFavForums:ids] mutableCopy];

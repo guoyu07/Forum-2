@@ -9,7 +9,6 @@
 
 #import "ForumEntry+CoreDataClass.h"
 #import "ForumCoreDataManager.h"
-#import "NSUserDefaults+Extensions.h"
 #import "NSString+Extensions.h"
 
 #import "IGHTMLDocument+QueryNode.h"
@@ -619,7 +618,8 @@
         [ids addObject:@(idsStr.intValue)];
     }
 
-    [[NSUserDefaults standardUserDefaults] saveFavFormIds:ids];
+    LocalForumApi *localForumApi = [[LocalForumApi alloc] init];
+    [localForumApi saveFavFormIds:ids];
 
 
     // 通过ids 过滤出Form

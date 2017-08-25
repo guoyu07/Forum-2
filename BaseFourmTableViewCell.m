@@ -7,8 +7,6 @@
 
 #import "BaseFourmTableViewCell.h"
 #import <UIImageView+WebCache.h>
-#import "AppDelegate.h"
-#import "NSUserDefaults+Extensions.h"
 #import "LocalForumApi.h"
 
 @implementation BaseFourmTableViewCell {
@@ -38,14 +36,7 @@
 
 - (void)initData {
     
-    
-    //NSDictionary *infoPlist = [[NSBundle mainBundle] infoDictionary];
-    
-//    NSString *icon = [[infoPlist valueForKeyPath:@"CFBundleIcons.CFBundlePrimaryIcon.CFBundleIconFiles"] lastObject];
-
     defaultAvatarImage = [UIImage imageNamed:@"defaultAvatar.gif"];
-
-//    _forumBrowser = [ForumBrowserFactory browserWithForumConfig:[ForumConfig configWithForumHost:self.currentForumHost]];
 
     LocalForumApi *localForumApi = [[LocalForumApi alloc] init];
     _forumApi = [ForumApiHelper forumApi:localForumApi.currentForumHost];
@@ -76,7 +67,8 @@
 
 - (NSString *)currentForumHost {
 
-    NSString * urlStr = [[NSUserDefaults standardUserDefaults] currentForumURL];
+    LocalForumApi *localForumApi = [[LocalForumApi alloc] init];
+    NSString * urlStr = [localForumApi currentForumURL];
     NSURL *url = [NSURL URLWithString:urlStr];
     return url.host;
 }

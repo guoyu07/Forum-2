@@ -17,15 +17,10 @@
 #import <UIImageView+WebCache.h>
 #import "ForumCoreDataManager.h"
 #import "UserEntry+CoreDataProperties.h"
-#import "LoginUser.h"
 #import "ForumApiHelper.h"
-#import "NSUserDefaults+Extensions.h"
 #import "UIStoryboard+Forum.h"
 #import "ForumTabBarController.h"
 #import "SupportForums.h"
-#import "Forums.h"
-#import "AppDelegate.h"
-#import "BaseForumApi.h"
 #import "LocalForumApi.h"
 
 @interface DrawerView () <UITableViewDelegate, UITableViewDataSource> {
@@ -63,7 +58,7 @@
 
     [self showAvatar:_avatarUIImageView userId:loginUser.userID];
 
-    self.userName.text = [[NSUserDefaults standardUserDefaults] userName:config.forumURL.host];
+    self.userName.text = [forumApi userName:config.forumURL.host];
 
 }
 
@@ -202,7 +197,8 @@
 
     Forums *forums = _haveLoginForums[indexPath.row];
 
-    if ([forums.host isEqualToString:[NSUserDefaults standardUserDefaults].currentForumHost]) {
+    LocalForumApi *localForumApi = [[LocalForumApi alloc] init];
+    if ([forums.host isEqualToString:[localForumApi currentForumHost]]) {
         cell.accessoryType = UITableViewCellAccessoryCheckmark;
     } else {
         cell.accessoryType = UITableViewCellAccessoryNone;
@@ -229,7 +225,8 @@
 
     NSURL *url = [NSURL URLWithString:forums.url];
 
-    [[NSUserDefaults standardUserDefaults] saveCurrentForumURL:forums.url];
+    LocalForumApi *localForumApi = [[LocalForumApi alloc] init];
+    [localForumApi saveCurrentForumURL:forums.url];
 
     LocalForumApi *forumApi = [[LocalForumApi alloc] init];
 
@@ -248,7 +245,8 @@
 
 
 - (NSString *)currentForumHost {
-    NSString *urlStr = [[NSUserDefaults standardUserDefaults] currentForumURL];
+    LocalForumApi *localForumApi = [[LocalForumApi alloc] init];
+    NSString *urlStr = [localForumApi currentForumURL];
     NSURL *url = [NSURL URLWithString:urlStr];
     return url.host;
 }

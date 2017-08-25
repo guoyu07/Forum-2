@@ -6,7 +6,6 @@
 //
 
 #import "ForumApiBaseViewController.h"
-#import "NSUserDefaults+Extensions.h"
 #import "LocalForumApi.h"
 
 @interface ForumApiBaseViewController ()
@@ -51,7 +50,8 @@
 
 - (NSString *)currentForumHost {
 
-    NSString * urlStr = [[NSUserDefaults standardUserDefaults] currentForumURL];
+    LocalForumApi *localForumApi = [[LocalForumApi alloc] init];
+    NSString * urlStr = [localForumApi currentForumURL];
     NSURL *url = [NSURL URLWithString:urlStr];
     return url.host;
 }
