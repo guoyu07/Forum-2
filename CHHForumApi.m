@@ -5,9 +5,6 @@
 
 #import "UIImageView+AFNetworking.h"
 #import "CHHForumApi.h"
-#import "NSUserDefaults+Extensions.h"
-#import "DeviceName.h"
-#import "NSString+Extensions.h"
 #import "AFHTTPSessionManager+SimpleAction.h"
 #import "ForumParserDelegate.h"
 #import "NSUserDefaults+Setting.h"
@@ -418,19 +415,5 @@
 - (void)reportThreadPost:(int)postId andMessage:(NSString *)message handler:(HandlerWithBool)handler {
 
 }
-
-//------
-
-// private
-- (void)saveUserName:(NSString *)name {
-    [[NSUserDefaults standardUserDefaults] saveUserName:name forHost:forumConfig.forumURL.host];
-}
-
-//private
-- (void)saveCookie {
-    [[NSUserDefaults standardUserDefaults] saveCookie];
-}
-
-//------
 
 @end

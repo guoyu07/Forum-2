@@ -9,7 +9,6 @@
 #import "SupportForumTableViewController.h"
 #import "ForumThreadListTableViewController.h"
 #import "ForumTabBarController.h"
-#import "NSUserDefaults+Extensions.h"
 #import "UIStoryboard+Forum.h"
 #import "SupportForums.h"
 #import "AppDelegate.h"
@@ -108,16 +107,17 @@
     Forums *forums = self.dataList[(NSUInteger) indexPath.row];
     
     NSURL * url = [NSURL URLWithString:forums.url];
-    
-    [[NSUserDefaults standardUserDefaults] saveCurrentForumURL:forums.url];
-    
+
+    LocalForumApi *localForumApi = [[LocalForumApi alloc] init];
+    [localForumApi saveCurrentForumURL:forums.url];
+
     if ([self isUserHasLogin:url.host]) {
+
         UIStoryboard *stortboard = [UIStoryboard mainStoryboard];
         [stortboard changeRootViewControllerTo:@"ForumTabBarControllerId"];
-        
+
     } else{
 
-        LocalForumApi *localForumApi = [[LocalForumApi alloc] init];
         id<ForumConfigDelegate> forumConfig = [ForumApiHelper forumConfig:localForumApi.currentForumHost];
         
         NSString * cId = forumConfig.loginControllerId;
@@ -134,9 +134,21 @@
 }
 
 - (IBAction)cancel:(id)sender {
-    
-    [self exitApplication];
 
+    LocalForumApi *localForumApi = [[LocalForumApi alloc] init];
+
+    if (![localForumApi isHaveLogin:localForumApi.currentForumHost]){
+        NSArray<Forums *> * loginForums = localForumApi.loginedSupportForums;
+        if(loginForums != nil && loginForums.count >0){
+            [localForumApi saveCurrentForumURL:loginForums.firstObject.url];
+        }
+    }
+
+    if ([localForumApi isHaveLoginForum]){
+        [self dismissViewControllerAnimated:YES completion:nil  ];
+    } else {
+        [self exitApplication];
+    }
 }
 
 - (void)exitApplication {

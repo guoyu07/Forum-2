@@ -8,7 +8,6 @@
 
 #import "ForumEntry+CoreDataClass.h"
 #import "ForumCoreDataManager.h"
-#import "NSUserDefaults+Extensions.h"
 #import "NSString+Extensions.h"
 
 #import "IGHTMLDocument+QueryNode.h"
@@ -33,27 +32,9 @@
     self.webView.delegate = self;
     self.webView.backgroundColor = [UIColor whiteColor];
 
-//    for (UIView *view in [[self.webView subviews][0] subviews]) {
-//        if ([view isKindOfClass:[UIImageView class]]) {
-//            view.hidden = YES;
-//        }
-//    }
     [self.webView setOpaque:NO];
 
     [self.webView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:@"https://www.chiphell.com/member.php?mod=logging&action=login&mobile=2"]]];
-}
-
-//private
-- (void)saveCookie {
-    [[NSUserDefaults standardUserDefaults] saveCookie];
-}
-
-// private
-- (void)saveUserName:(NSString *)name {
-
-    LocalForumApi *localForumApi = [[LocalForumApi alloc] init];
-    id<ForumConfigDelegate> forumConfig = [ForumApiHelper forumConfig:localForumApi.currentForumHost];
-    [[NSUserDefaults standardUserDefaults] saveUserName:name forHost:forumConfig.forumURL.host];
 }
 
 - (NSString*) getResponseHTML:(UIWebView *)webView {
@@ -76,11 +57,13 @@
         IGXMLNode *logined = [document queryNodeWithXPath:@"/html/body/div[3]/div[1]/a[1]"];
         NSString *userName = [[logined text] trim];
 
+        LocalForumApi *localForumApi = [[LocalForumApi alloc] init];
+        id<ForumConfigDelegate> forumConfig = [ForumApiHelper forumConfig:localForumApi.currentForumHost];
         if (userName != nil) {
             // 保存Cookie
-            [self saveCookie];
+            [localForumApi saveCookie];
             // 保存用户名
-            [self saveUserName:userName];
+            [localForumApi saveUserName:userName forHost:forumConfig.forumURL.host];
         }
 
         [self.forumApi listAllForums:^(BOOL isSuccess, id msg) {
@@ -137,7 +120,7 @@
     LocalForumApi *localForumApi = [[LocalForumApi alloc] init];
     NSString *bundleId = [localForumApi bundleIdentifier];
     if ([bundleId isEqualToString:@"com.andforce.forum"]){
-        [[NSUserDefaults standardUserDefaults] clearCurrentForumURL];
+        [localForumApi clearCurrentForumURL];
         [[UIStoryboard mainStoryboard] changeRootViewControllerTo:@"ShowSupportForums" withAnim:UIViewAnimationOptionTransitionFlipFromTop];
     } else {
         [self exitApplication];

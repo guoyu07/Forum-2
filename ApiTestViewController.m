@@ -7,11 +7,7 @@
 
 #import "ApiTestViewController.h"
 #import "ForumApiHelper.h"
-#import "NSUserDefaults+Extensions.h"
 
-#import "CharUtils.h"
-#import "CharUnicodeBlock.h"
-#import "NSString+Extensions.h"
 #import "LocalForumApi.h"
 
 
@@ -25,7 +21,8 @@
 @implementation ApiTestViewController
 
 - (NSString *)currentForumHost {
-    NSString *urlStr = [[NSUserDefaults standardUserDefaults] currentForumURL];
+    LocalForumApi * localForumApi = [[LocalForumApi alloc] init];
+    NSString *urlStr = [localForumApi currentForumURL];
     NSURL *url = [NSURL URLWithString:urlStr];
     return url.host;
 }

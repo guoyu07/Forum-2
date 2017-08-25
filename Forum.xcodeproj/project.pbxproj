@@ -56,7 +56,6 @@
 		3A2C3F6A1DDFC03400576151 /* LeftDrawerItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A2C3F651DDFC03400576151 /* LeftDrawerItem.m */; };
 		3A2C3F6B1DDFC03400576151 /* UIAutoResizeTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A2C3F671DDFC03400576151 /* UIAutoResizeTextView.m */; };
 		3A2C3F7A1DDFC0CD00576151 /* NSString+Extensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A2C3F6D1DDFC0CD00576151 /* NSString+Extensions.m */; };
-		3A2C3F7B1DDFC0CD00576151 /* NSUserDefaults+Extensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A2C3F6F1DDFC0CD00576151 /* NSUserDefaults+Extensions.m */; };
 		3A2C3F7C1DDFC0CD00576151 /* NSUserDefaults+Setting.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A2C3F711DDFC0CD00576151 /* NSUserDefaults+Setting.m */; };
 		3A2C3F7D1DDFC0CD00576151 /* UIColor+MyColor.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A2C3F731DDFC0CD00576151 /* UIColor+MyColor.m */; };
 		3A2C3F7E1DDFC0CD00576151 /* UIImage+Tint.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A2C3F751DDFC0CD00576151 /* UIImage+Tint.m */; };
@@ -247,8 +246,6 @@
 		3A2C3F671DDFC03400576151 /* UIAutoResizeTextView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UIAutoResizeTextView.m; sourceTree = "<group>"; };
 		3A2C3F6C1DDFC0CD00576151 /* NSString+Extensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+Extensions.h"; sourceTree = "<group>"; };
 		3A2C3F6D1DDFC0CD00576151 /* NSString+Extensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+Extensions.m"; sourceTree = "<group>"; };
-		3A2C3F6E1DDFC0CD00576151 /* NSUserDefaults+Extensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSUserDefaults+Extensions.h"; sourceTree = "<group>"; };
-		3A2C3F6F1DDFC0CD00576151 /* NSUserDefaults+Extensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSUserDefaults+Extensions.m"; sourceTree = "<group>"; };
 		3A2C3F701DDFC0CD00576151 /* NSUserDefaults+Setting.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSUserDefaults+Setting.h"; sourceTree = "<group>"; };
 		3A2C3F711DDFC0CD00576151 /* NSUserDefaults+Setting.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSUserDefaults+Setting.m"; sourceTree = "<group>"; };
 		3A2C3F721DDFC0CD00576151 /* UIColor+MyColor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIColor+MyColor.h"; sourceTree = "<group>"; };
@@ -678,8 +675,6 @@
 				3A2C3F861DDFDF9200576151 /* IGXMLNode+Children.m */,
 				3A2C3F6C1DDFC0CD00576151 /* NSString+Extensions.h */,
 				3A2C3F6D1DDFC0CD00576151 /* NSString+Extensions.m */,
-				3A2C3F6E1DDFC0CD00576151 /* NSUserDefaults+Extensions.h */,
-				3A2C3F6F1DDFC0CD00576151 /* NSUserDefaults+Extensions.m */,
 				3A2C3F701DDFC0CD00576151 /* NSUserDefaults+Setting.h */,
 				3A2C3F711DDFC0CD00576151 /* NSUserDefaults+Setting.m */,
 				3A2C3F721DDFC0CD00576151 /* UIColor+MyColor.h */,
@@ -1208,7 +1203,6 @@
 				3A2C3FE91DDFE0C900576151 /* ForumWebViewController.m in Sources */,
 				4DFB34D11DF82D5E00BD8DD5 /* UserEntry+CoreDataClass.m in Sources */,
 				3A2C3FD21DDFE0C900576151 /* ForumFavThreadPostTableViewController.m in Sources */,
-				3A2C3F7B1DDFC0CD00576151 /* NSUserDefaults+Extensions.m in Sources */,
 				3A92CDB91F35378500E41573 /* AFHTTPSessionManager.m in Sources */,
 				3ACFFD2D1CF9D6BF000312DC /* SDImageCache+URLCache.m in Sources */,
 				3A2C3F3A1DDFBF3900576151 /* BaseFourmTableViewCell.m in Sources */,

@@ -9,7 +9,6 @@
 #import "ForumLoginViewController.h"
 
 #import "ForumCoreDataManager.h"
-#import "NSUserDefaults+Extensions.h"
 #import "ApiTestViewController.h"
 #import "NSUserDefaults+Setting.h"
 #import <AVOSCloud.h>
@@ -34,7 +33,7 @@ static int DB_VERSION = 8;
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
 
-    NSURLCache *cache = [[NSURLCache alloc] initWithMemoryCapacity:10 * 1024 * 1024 diskCapacity:50 * 1024 * 1024 diskPath:nil];
+    NSURLCache *cache = [[NSURLCache alloc] initWithMemoryCapacity:200 * 1024 * 1024 diskCapacity:1024 * 1024 * 1024 diskPath:nil];
     [NSURLCache setSharedURLCache:cache];
 
     [[AFNetworkActivityIndicatorManager sharedManager] setEnabled:YES];
@@ -71,12 +70,18 @@ static int DB_VERSION = 8;
     [dictonary setValue:@1 forKey:kTOP_THREAD];
     [setting registerDefaults:dictonary];
 
-    if (YES){
+    LocalForumApi *localForumApi = [[LocalForumApi alloc] init];
 
-        NSUserDefaults *data = [NSUserDefaults standardUserDefaults];
+    if (localForumApi.currentForumHost){
+        if (![localForumApi isHaveLogin:localForumApi.currentForumHost]){
+            NSArray<Forums *> * loginForums = localForumApi.loginedSupportForums;
+            if(loginForums != nil && loginForums.count >0){
+                [localForumApi saveCurrentForumURL:loginForums.firstObject.url];
+            }
+        }
 
         BOOL isClearDB = NO;
-        if ([data dbVersion] != DB_VERSION) {
+        if ([localForumApi dbVersion] != DB_VERSION) {
 
             ForumCoreDataManager *formManager = [[ForumCoreDataManager alloc] initWithEntryType:EntryTypeForm];
 
@@ -86,29 +91,22 @@ static int DB_VERSION = 8;
             ForumCoreDataManager *userManager = [[ForumCoreDataManager alloc] initWithEntryType:EntryTypeUser];
             [userManager deleteData];
 
-            [data setDBVersion:DB_VERSION];
+            [localForumApi setDBVersion:DB_VERSION];
 
             isClearDB = YES;
         }
 
+
         // 判断是否登录
-        if (![self isUserHasLogin] || isClearDB) {
+        if (![localForumApi isHaveLoginForum] || isClearDB) {
 
-            LocalForumApi *localForumApi = [[LocalForumApi alloc] init];
-            NSString *bundleId = [localForumApi bundleIdentifier];
+            [self showReloginController:localForumApi];
 
-            if ([bundleId isEqualToString:@"com.andforce.forum"]){
-                [[NSUserDefaults standardUserDefaults] clearCurrentForumURL];
-                self.window.rootViewController = [[UIStoryboard mainStoryboard] finControllerById:@"ShowSupportForums"];
-            } else{
-
-                id<ForumConfigDelegate> api = [ForumApiHelper forumConfig:localForumApi.currentForumHost];
-                NSString * cId = api.loginControllerId;
-                [[UIStoryboard mainStoryboard] changeRootViewControllerTo:cId];
-
-            }
         }
+    } else {
+        [self showReloginController:localForumApi];
     }
+
 
 
 
@@ -124,6 +122,21 @@ static int DB_VERSION = 8;
     }
     
     return YES;
+}
+
+- (void)showReloginController:(LocalForumApi *)localForumApi {
+    NSString *bundleId = [localForumApi bundleIdentifier];
+
+    if ([bundleId isEqualToString:@"com.andforce.forum"]){
+                [localForumApi clearCurrentForumURL];
+                self.window.rootViewController = [[UIStoryboard mainStoryboard] finControllerById:@"ShowSupportForums"];
+            } else{
+
+                id<ForumConfigDelegate> api = [ForumApiHelper forumConfig:localForumApi.currentForumHost];
+                NSString * cId = api.loginControllerId;
+                [[UIStoryboard mainStoryboard] changeRootViewControllerTo:cId];
+
+            }
 }
 
 /**
@@ -177,22 +190,6 @@ static int DB_VERSION = 8;
         [[UIApplication sharedApplication] registerForRemoteNotificationTypes:types];
     }
 #pragma clang diagnostic pop
-}
-
-- (BOOL)isUserHasLogin {
-
-    // 判断是否登录
-    LocalForumApi *forumApi = [[LocalForumApi alloc] init];
-    NSArray * fs = [forumApi supportForums];
-    int size = (int) fs.count;
-    for (int i = 0; i < size; ++i) {
-        Forums * forums = fs[(NSUInteger) i];
-        NSURL *url = [NSURL URLWithString:forums.url];
-        if ([forumApi isHaveLogin:url.host]){
-            return YES;
-        }
-    }
-    return NO;
 }
 
 - (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
@@ -348,7 +345,8 @@ static int DB_VERSION = 8;
 
 /** 处理shortcutItem */
 - (void)application:(UIApplication *)application performActionForShortcutItem:(UIApplicationShortcutItem *)shortcutItem completionHandler:(void (^)(BOOL))completionHandler {
-    if ([self isUserHasLogin]){
+    LocalForumApi *localForumApi = [[LocalForumApi alloc] init];
+    if ([localForumApi isHaveLoginForum]){
         NSString *shortCutItemType = shortcutItem.type;
 
         ForumTabBarController * controller = (ForumTabBarController *) self.window.rootViewController;
