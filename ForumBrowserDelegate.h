@@ -70,6 +70,10 @@ typedef void (^HandlerWithBool)(BOOL isSuccess, id message);
 // 读取论坛站内私信List   type 0 表示收件箱   -1表示发件箱
 - (void)listPrivateMessageWithType:(int)type andPage:(int)page handler:(HandlerWithBool)handler;
 
+// 删除一条站内信 type 0 表示收件箱   -1表示发件箱
+@required
+- (void)deletePrivateMessage:(Message *)privateMessage withType:(int)type handler:(HandlerWithBool)handler;
+
 // 获取收藏的论坛板块
 - (void)listFavoriteForums:(HandlerWithBool)handler;
 

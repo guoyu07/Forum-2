@@ -1093,6 +1093,32 @@ typedef void (^CallBack)(NSString *token, NSString *hash, NSString *time);
     }];
 }
 
+- (void)deletePrivateMessage:(Message *)privateMessage withType:(int)type handler:(HandlerWithBool)handler {
+    NSString * url = [forumConfig deletePrivateWithType:type];
+    [self GET:url requestCallback:^(BOOL isSuccess, NSString *html) {
+        if (isSuccess) {
+            NSString *token = [forumParser parseSecurityToken:html];
+
+
+
+            NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
+            [parameters setValue:@"" forKey:@"s"];
+            [parameters setValue:token forKey:@"securitytoken"];
+            [parameters setValue:@"managepm" forKey:@"do"];
+            [parameters setValue:[NSString stringWithFormat:@"%d", type] forKey:@"folderid"];
+            [parameters setValue:@"0" forKey:[NSString stringWithFormat:@"pm[%@]", privateMessage.pmID]];
+            [parameters setValue:@"delete" forKey:@"dowhat"];
+
+            [self.browser POSTWithURLString:url parameters:nil charset:UTF_8 requestCallback:^(BOOL success, NSString *result) {
+                handler(success, result);
+            }];
+
+        } else {
+            handler(NO, nil);
+        }
+    }];
+}
+
 - (void)listFavoriteForums:(HandlerWithBool)handler {
 
     NSString *url = forumConfig.favoriteForums;
