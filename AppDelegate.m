@@ -70,13 +70,18 @@ static int DB_VERSION = 8;
     [dictonary setValue:@1 forKey:kTOP_THREAD];
     [setting registerDefaults:dictonary];
 
-    LocalForumApi *localForumApi1 = [[LocalForumApi alloc] init];
-    if (YES){
+    LocalForumApi *localForumApi = [[LocalForumApi alloc] init];
 
-        NSUserDefaults *data = [NSUserDefaults standardUserDefaults];
+    if (localForumApi.currentForumHost){
+        if (![localForumApi isHaveLogin:localForumApi.currentForumHost]){
+            NSArray<Forums *> * loginForums = localForumApi.loginedSupportForums;
+            if(loginForums != nil && loginForums.count >0){
+                [localForumApi saveCurrentForumURL:loginForums.firstObject.url];
+            }
+        }
 
         BOOL isClearDB = NO;
-        if ([localForumApi1 dbVersion] != DB_VERSION) {
+        if ([localForumApi dbVersion] != DB_VERSION) {
 
             ForumCoreDataManager *formManager = [[ForumCoreDataManager alloc] initWithEntryType:EntryTypeForm];
 
@@ -86,30 +91,22 @@ static int DB_VERSION = 8;
             ForumCoreDataManager *userManager = [[ForumCoreDataManager alloc] initWithEntryType:EntryTypeUser];
             [userManager deleteData];
 
-            [localForumApi1 setDBVersion:DB_VERSION];
+            [localForumApi setDBVersion:DB_VERSION];
 
             isClearDB = YES;
         }
 
-        LocalForumApi *localForumApi = [[LocalForumApi alloc] init];
 
         // 判断是否登录
         if (![localForumApi isHaveLoginForum] || isClearDB) {
 
-            NSString *bundleId = [localForumApi bundleIdentifier];
+            [self showReloginController:localForumApi];
 
-            if ([bundleId isEqualToString:@"com.andforce.forum"]){
-                [localForumApi clearCurrentForumURL];
-                self.window.rootViewController = [[UIStoryboard mainStoryboard] finControllerById:@"ShowSupportForums"];
-            } else{
-
-                id<ForumConfigDelegate> api = [ForumApiHelper forumConfig:localForumApi.currentForumHost];
-                NSString * cId = api.loginControllerId;
-                [[UIStoryboard mainStoryboard] changeRootViewControllerTo:cId];
-
-            }
         }
+    } else {
+        [self showReloginController:localForumApi];
     }
+
 
 
 
@@ -125,6 +122,21 @@ static int DB_VERSION = 8;
     }
     
     return YES;
+}
+
+- (void)showReloginController:(LocalForumApi *)localForumApi {
+    NSString *bundleId = [localForumApi bundleIdentifier];
+
+    if ([bundleId isEqualToString:@"com.andforce.forum"]){
+                [localForumApi clearCurrentForumURL];
+                self.window.rootViewController = [[UIStoryboard mainStoryboard] finControllerById:@"ShowSupportForums"];
+            } else{
+
+                id<ForumConfigDelegate> api = [ForumApiHelper forumConfig:localForumApi.currentForumHost];
+                NSString * cId = api.loginControllerId;
+                [[UIStoryboard mainStoryboard] changeRootViewControllerTo:cId];
+
+            }
 }
 
 /**
