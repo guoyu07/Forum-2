@@ -7,14 +7,8 @@
 //
 
 #import "CrskyLoginViewController.h"
-#import "IGXMLNode+Children.h"
-
 #import "ForumEntry+CoreDataClass.h"
 #import "ForumCoreDataManager.h"
-#import "NSUserDefaults+Extensions.h"
-#import "NSString+Extensions.h"
-
-#import "IGHTMLDocument+QueryNode.h"
 #import "AppDelegate.h"
 #import "UIStoryboard+Forum.h"
 #import "LocalForumApi.h"
@@ -43,16 +37,11 @@
     [self.webView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:@"http://bbs.crsky.com/login.php"]]];
 }
 
-//private
-- (void)saveCookie {
-    [[NSUserDefaults standardUserDefaults] saveCookie];
-}
-
 // private
 - (void)saveUserName:(NSString *)name {
     LocalForumApi *localForumApi = [[LocalForumApi alloc] init];
     id<ForumConfigDelegate> config = [ForumApiHelper forumConfig:localForumApi.currentForumHost];
-    [[NSUserDefaults standardUserDefaults] saveUserName:name forHost:config.forumURL.host];
+    [localForumApi saveUserName:name forHost:config.forumURL.host];
 }
 
 // private
@@ -100,14 +89,16 @@
     }
 
     if ([request.URL.absoluteString isEqualToString:@"http://bbs.crsky.com/index.php"]){
+        LocalForumApi *localForumApi = [[LocalForumApi alloc] init];
+
         // 保存Cookie
-        [self saveCookie];
+        [localForumApi saveCookie];
 
         [self.forumApi fetchUserId:^(BOOL isSuccess, NSString * userId) {
 
             if (isSuccess){
 
-                [[NSUserDefaults standardUserDefaults] saveUserId:userId forHost:@"bbs.crsky.com"];
+                [localForumApi saveUserId:userId forHost:@"bbs.crsky.com"];
 
                 [self.forumApi listAllForums:^(BOOL success, id msg) {
                     if (success) {
@@ -151,7 +142,7 @@
     LocalForumApi *localForumApi = [[LocalForumApi alloc] init];
     NSString *bundleId = [localForumApi bundleIdentifier];
     if ([bundleId isEqualToString:@"com.andforce.forum"]){
-        [[NSUserDefaults standardUserDefaults] clearCurrentForumURL];
+        [localForumApi clearCurrentForumURL];
         [[UIStoryboard mainStoryboard] changeRootViewControllerTo:@"ShowSupportForums" withAnim:UIViewAnimationOptionTransitionFlipFromTop];
     } else {
         [self exitApplication];

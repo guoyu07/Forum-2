@@ -7,10 +7,10 @@
 
 #import "ForumFavFormController.h"
 #import "ForumCoreDataManager.h"
-#import "NSUserDefaults+Extensions.h"
 #import "ForumThreadListTableViewController.h"
 #import "ForumTabBarController.h"
 #import "MGSwipeTableCellWithIndexPath.h"
+#import "LocalForumApi.h"
 
 @interface ForumFavFormController () <MGSwipeTableCellDelegate> {
 
@@ -48,7 +48,8 @@
             for (Forum *forum in message){
                 [ids addObject:@(forum.forumId)];
             }
-            [[NSUserDefaults standardUserDefaults] saveFavFormIds:ids];
+            LocalForumApi *localForumApi = [[LocalForumApi alloc] init];
+            [localForumApi saveFavFormIds:ids];
         }
 
     }];
@@ -64,9 +65,8 @@
     if ([self isNeedHideLeftMenu]){
         self.navigationItem.leftBarButtonItem = nil;
     }
-    NSUserDefaults *userDef = [NSUserDefaults standardUserDefaults];
-
-    if (userDef.favFormIds == nil) {
+    LocalForumApi *localForumApi = [[LocalForumApi alloc] init];
+    if (localForumApi.favFormIds == nil) {
         [self.forumApi listFavoriteForums:^(BOOL isSuccess, NSMutableArray<Forum *> *message) {
             self.dataList = message;
             [self.tableView reloadData];
@@ -75,12 +75,12 @@
             for (Forum *forum in message){
                 [ids addObject:@(forum.forumId)];
             }
-            [[NSUserDefaults standardUserDefaults] saveFavFormIds:ids];
+            [localForumApi saveFavFormIds:ids];
 
         }];
     } else {
         ForumCoreDataManager *manager = [[ForumCoreDataManager alloc] initWithEntryType:EntryTypeForm];
-        NSArray *forms = [[manager selectFavForums:userDef.favFormIds] mutableCopy];
+        NSArray *forms = [[manager selectFavForums:localForumApi.favFormIds] mutableCopy];
 
         [self.dataList addObjectsFromArray:forms];
 

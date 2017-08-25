@@ -12,7 +12,6 @@
 
 #import "IGHTMLDocument+QueryNode.h"
 #import "IGXMLNode+Children.h"
-#import "NSUserDefaults+Extensions.h"
 #import "AppDelegate.h"
 #import "LocalForumApi.h"
 

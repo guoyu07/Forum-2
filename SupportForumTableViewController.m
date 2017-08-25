@@ -9,7 +9,6 @@
 #import "SupportForumTableViewController.h"
 #import "ForumThreadListTableViewController.h"
 #import "ForumTabBarController.h"
-#import "NSUserDefaults+Extensions.h"
 #import "UIStoryboard+Forum.h"
 #import "SupportForums.h"
 #import "AppDelegate.h"
@@ -108,8 +107,9 @@
     Forums *forums = self.dataList[(NSUInteger) indexPath.row];
     
     NSURL * url = [NSURL URLWithString:forums.url];
-    
-    [[NSUserDefaults standardUserDefaults] saveCurrentForumURL:forums.url];
+
+    LocalForumApi *localForumApi1 = [[LocalForumApi alloc] init];
+    [localForumApi1 saveCurrentForumURL:forums.url];
     
     if ([self isUserHasLogin:url.host]) {
         UIStoryboard *stortboard = [UIStoryboard mainStoryboard];
@@ -134,9 +134,13 @@
 }
 
 - (IBAction)cancel:(id)sender {
-    
-    [self exitApplication];
 
+    LocalForumApi *localForumApi = [[LocalForumApi alloc] init];
+    if ([localForumApi isHaveLoginForum]){
+        [self dismissViewControllerAnimated:YES completion:nil  ];
+    } else {
+        [self exitApplication];
+    }
 }
 
 - (void)exitApplication {
