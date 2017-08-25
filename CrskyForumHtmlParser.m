@@ -718,12 +718,12 @@
                 IGHTMLDocument * childForumDoc = [[IGHTMLDocument alloc] initWithHTMLString:childHtml error:nil];
                 IGXMLNodeSet * childForumSet = [childForumDoc queryWithXPath:@"/html/body/div/span/a[position()>0]"];
                 int  c = childForumSet.count;
-                for (IGXMLNode * chileForumNode in childForumSet) {
+                for (IGXMLNode * childForumNode in childForumSet) {
                     Forum *childForum = [[Forum alloc] init];
 
-                    NSString * childForumName = chileForumNode.text.trim;
+                    NSString * childForumName = childForumNode.text.trim;
                     childForum.forumName = childForumName;
-                    childForum.forumId = [[tileNode.html stringWithRegular:@"(?<=fid=)\\d+"] intValue];
+                    childForum.forumId = [[childForumNode.html stringWithRegular:@"(?<=fid=)\\d+"] intValue];
                     childForum.forumHost = host;
                     childForum.parentForumId = forum.forumId;
 
