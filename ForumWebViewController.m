@@ -49,9 +49,7 @@
 
         currentShowThreadPage = threadPage;
 
-
-        NSString *title = [NSString stringWithFormat:@"%lu/%lu", (unsigned long) currentShowThreadPage.pageNumber.currentPageNumber, (unsigned long) currentShowThreadPage.pageNumber.totalPageNumber];
-        self.pageNumber.title = title;
+        [self updatePageTitle];
 
         NSMutableArray<Post *> *posts = threadPage.postList;
 
@@ -97,8 +95,7 @@
         currentShowThreadPage = threadPage;
 
 
-        NSString *title = [NSString stringWithFormat:@"%lu/%lu", (unsigned long) currentShowThreadPage.pageNumber.currentPageNumber, (unsigned long) currentShowThreadPage.pageNumber.totalPageNumber];
-        self.pageNumber.title = title;
+        [self updatePageTitle];
 
         NSMutableArray<Post *> *posts = threadPage.postList;
 
@@ -141,6 +138,11 @@
         threadAuthorName = [bundle getStringValue:@"threadAuthorName"];
 
     }
+}
+
+- (void) updatePageTitle{
+    NSString *title = [NSString stringWithFormat:@"%lu-%lu", (unsigned long) currentShowThreadPage.pageNumber.currentPageNumber, (unsigned long) currentShowThreadPage.pageNumber.totalPageNumber];
+    self.pageTitleTextView.text = title;
 }
 
 - (void)hidesTabBar:(BOOL)hidden{
@@ -212,33 +214,37 @@
 
     self.webView.scrollView.mj_header = [MJRefreshNormalHeader headerWithRefreshingBlock:^{
 
-        if (threadID == -1) {
-            [self showThreadWithP:[NSString stringWithFormat:@"%d", p]];
-        } else {
-            if (currentShowThreadPage == nil) {
-                [self prePage:threadID page:1 withAnim:NO];
-            } else if (currentShowThreadPage.pageNumber.currentPageNumber == 1) {
-                [self prePage:threadID page:1 withAnim:NO];
-            } else {
-                int page = currentShowThreadPage.pageNumber.currentPageNumber - 1;
-                if (page <= 1) {
-                    page = 1;
-                }
-                [self prePage:threadID page:page withAnim:YES];
-            }
-        }
+        [self showPreviousPageOrRefresh];
+
     }];
 
 
     self.webView.scrollView.mj_footer = [MJRefreshBackNormalFooter footerWithRefreshingBlock:^{
 
         // 当前页面 == 页面的最大数，只刷新当前页面就可以了
-
         [self showNextPageOrRefreshCurrentPage:currentShowThreadPage.pageNumber.currentPageNumber forThreadId:threadID];
 
     }];
 
     [self.webView.scrollView.mj_header beginRefreshing];
+}
+
+- (void) showPreviousPageOrRefresh{
+    if (threadID == -1) {
+        [self showThreadWithP:[NSString stringWithFormat:@"%d", p]];
+    } else {
+        if (currentShowThreadPage == nil) {
+            [self prePage:threadID page:1 withAnim:NO];
+        } else if (currentShowThreadPage.pageNumber.currentPageNumber == 1) {
+            [self prePage:threadID page:1 withAnim:NO];
+        } else {
+            int page = currentShowThreadPage.pageNumber.currentPageNumber - 1;
+            if (page <= 1) {
+                page = 1;
+            }
+            [self prePage:threadID page:page withAnim:YES];
+        }
+    }
 }
 
 -(void) showFailedMessage:(id) message{
@@ -270,8 +276,7 @@
         currentShowThreadPage = threadPage;
         threadID = threadPage.threadID;
 
-        NSString *title = [NSString stringWithFormat:@"%d/%d", currentShowThreadPage.pageNumber.currentPageNumber, currentShowThreadPage.pageNumber.totalPageNumber];
-        self.pageNumber.title = title;
+        [self updatePageTitle];
 
         NSMutableArray<Post *> *posts = threadPage.postList;
 
@@ -366,8 +371,7 @@
         currentShowThreadPage = threadPage;
 
 
-        NSString *title = [NSString stringWithFormat:@"%d/%d", currentShowThreadPage.pageNumber.currentPageNumber, currentShowThreadPage.pageNumber.totalPageNumber];
-        self.pageNumber.title = title;
+        [self updatePageTitle];
 
         NSMutableArray<Post *> *posts = threadPage.postList;
 
@@ -468,23 +472,19 @@
 
     NSString *cacheHtml = pageDic[@(page)];
 
-    [self.forumApi showThreadWithId:threadId andPage:page handler:^(BOOL isSuccess, id message) {
+    [self.forumApi showThreadWithId:threadId andPage:page handler:^(BOOL isSuccess, ViewThreadPage *threadPage) {
 
         
         [SVProgressHUD dismiss];
         
         if (!isSuccess){
-            [self showFailedMessage:message];
+            [self showFailedMessage:threadPage];
             return;
         }
 
-        ViewThreadPage *threadPage = message;
-
         currentShowThreadPage = threadPage;
 
-
-        NSString *title = [NSString stringWithFormat:@"%lu/%lu", (unsigned long)currentShowThreadPage.pageNumber.currentPageNumber, (unsigned long)currentShowThreadPage.pageNumber.totalPageNumber];
-        self.pageNumber.title = title;
+        [self updatePageTitle];
 
         NSMutableArray<Post *> *posts = threadPage.postList;
 
@@ -514,10 +514,11 @@
         }
 
         if (![cacheHtml isEqualToString:threadPage.originalHtml]) {
-            LocalForumApi * localeForumApi = [[LocalForumApi alloc] init];
-            [self.webView loadHTMLString:html baseURL:[NSURL URLWithString:localeForumApi.currentForumBaseUrl]];
             pageDic[@(page)] = html;
         }
+        
+        LocalForumApi * localeForumApi = [[LocalForumApi alloc] init];
+        [self.webView loadHTMLString:html baseURL:[NSURL URLWithString:localeForumApi.currentForumBaseUrl]];
 
         if (anim) {
             CABasicAnimation *stretchAnimation = [CABasicAnimation animationWithKeyPath:@"transform.scale.y"];
@@ -837,4 +838,22 @@
 
     }];
 }
+- (IBAction)firstPage:(id)sender {
+    [SVProgressHUD showWithStatus:@"正在切换" maskType:SVProgressHUDMaskTypeBlack];
+    [self showThread:threadID page:1 withAnim:YES];
+}
+
+- (IBAction)lastPage:(id)sender {
+    [SVProgressHUD showWithStatus:@"正在切换" maskType:SVProgressHUDMaskTypeBlack];
+    [self showThread:threadID page:currentShowThreadPage.pageNumber.totalPageNumber withAnim:YES];
+}
+
+- (IBAction)previousPage:(id)sender {
+    [self.webView.scrollView.mj_header beginRefreshing];
+}
+
+- (IBAction)nextPage:(id)sender {
+    [self.webView.scrollView.mj_footer beginRefreshing];
+}
+
 @end
