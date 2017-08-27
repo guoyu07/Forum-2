@@ -785,12 +785,16 @@
     NSString *url = [forumConfig memberWithUserId:userId];
 
     [self GET:url requestCallback:^(BOOL isSuccess, NSString *html) {
-        NSString *avatar = [forumParser parseUserAvatar:html userId:userId];
-        if (!avatar){
-            avatar = forumConfig.avatarNo;
+        if (isSuccess) {
+            NSString *avatar = [forumParser parseUserAvatar:html userId:userId];
+            if (!avatar){
+                avatar = forumConfig.avatarNo;
+            }
+            handler(YES, avatar);
+        } else {
+            handler(NO, html);
         }
-        NSLog(@"getAvatarWithUserId \t%@", avatar);
-        handler(isSuccess, avatar);
+
     }];
 }
 

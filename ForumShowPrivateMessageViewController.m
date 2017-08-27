@@ -20,6 +20,8 @@
     Message *transPrivateMessage;
 
     UIStoryboardSegue *selectSegue;
+
+    int mType;  //0 收件箱  1发件箱
 }
 
 @end
@@ -29,6 +31,7 @@
 
 - (void)transBundle:(TransBundle *)bundle {
     transPrivateMessage = [bundle getObjectValue:@"TransPrivateMessage"];
+    mType = [bundle getIntValue:@"TransPrivateMessageType"];
 }
 
 
@@ -52,13 +55,22 @@
 
     // scrollView
     self.webView.scrollView.delegate = self;
-
+    
     self.webView.scrollView.mj_header = [MJRefreshNormalHeader headerWithRefreshingBlock:^{
 
+        // 0 群发公共消息 1 普通收件 2 发给别人的消息
+        
         int type = 1;
-        if ([transPrivateMessage.pmAuthorId isEqualToString:@"-1"]){
-            type = 0;
+        
+        if (mType == 0) {
+            type = 1;
+            if ([transPrivateMessage.pmAuthorId isEqualToString:@"-1"]){
+                type = 0;
+            }
+        } else {
+            type = 2;
         }
+
         [self.forumApi showPrivateMessageContentWithId:[transPrivateMessage.pmID intValue] withType:type handler:^(BOOL isSuccess, id message) {
 
             ViewMessagePage *content = message;

@@ -147,6 +147,8 @@
 
         TransBundle *bundle = [[TransBundle alloc] init];
         [bundle putObjectValue:message forKey:@"TransPrivateMessage"];
+        [bundle putIntValue:_messageSegmentedControl.selectedSegmentIndex forKey:@"TransPrivateMessageType"];
+
 
         [self transBundle:bundle forController:controller];
 

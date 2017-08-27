@@ -169,10 +169,15 @@
 }
 
 - (NSString *)privateShowWithMessageId:(int)messageId withType:(int)type {
+    // 0 群发公共消息 1 普通收件 2 发给别人的消息
     if (type == 0){
         return [NSString stringWithFormat:@"http://bbs.crsky.com/message.php?action=readpub&mid=%d",messageId];
-    } else {
+    } else  if(type == 1){
         return [NSString stringWithFormat:@"http://bbs.crsky.com/message.php?action=read&mid=%d",messageId];
+    } else if(type == 2){
+        return [NSString stringWithFormat:@"http://bbs.crsky.com/message.php?action=readsnd&mid=%d",messageId];
+    } else {
+        return nil;
     }
 }
 

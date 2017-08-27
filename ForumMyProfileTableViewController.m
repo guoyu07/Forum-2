@@ -100,17 +100,20 @@
     NSString *currentUserId = [[[LocalForumApi alloc] init] getLoginUser:config.forumURL.host].userID;
 
     [self.forumApi showProfileWithUserId:currentUserId handler:^(BOOL isSuccess, UserProfile *message) {
-        userProfile = message;
 
         [self.tableView.mj_header endRefreshing];
 
-        [self showAvatar:_prifileAvatar userId:userProfile.profileUserId];
-        _profileName.text = userProfile.profileName;
-        _profileRank.text = userProfile.profileRank;
+        if (isSuccess) {
+            userProfile = message;
 
-        _registerDate.text = userProfile.profileRegisterDate;
-        _lastLoginTime.text = userProfile.profileRecentLoginDate;
-        _postCount.text = userProfile.profileTotalPostCount;
+            [self showAvatar:_prifileAvatar userId:userProfile.profileUserId];
+            _profileName.text = userProfile.profileName;
+            _profileRank.text = userProfile.profileRank;
+            
+            _registerDate.text = userProfile.profileRegisterDate;
+            _lastLoginTime.text = userProfile.profileRecentLoginDate;
+            _postCount.text = userProfile.profileTotalPostCount;
+        }
     }];
 }
 
