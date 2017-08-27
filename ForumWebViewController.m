@@ -794,11 +794,20 @@
     }];
 }
 - (IBAction)firstPage:(id)sender {
+    if (currentShowThreadPage.pageNumber.totalPageNumber == currentShowThreadPage.pageNumber.currentPageNumber){
+        [self.webView.scrollView.mj_header beginRefreshing];
+        return;
+    }
+
     [SVProgressHUD showWithStatus:@"正在切换" maskType:SVProgressHUDMaskTypeBlack];
     [self showThread:threadID page:1 withAnim:YES];
 }
 
 - (IBAction)lastPage:(id)sender {
+    if (currentShowThreadPage.pageNumber.totalPageNumber == currentShowThreadPage.pageNumber.currentPageNumber){
+        [self.webView.scrollView.mj_footer beginRefreshing];
+        return;
+    }
     [SVProgressHUD showWithStatus:@"正在切换" maskType:SVProgressHUDMaskTypeBlack];
     [self showThread:threadID page:currentShowThreadPage.pageNumber.totalPageNumber withAnim:YES];
 }
