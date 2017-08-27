@@ -63,10 +63,10 @@
             if (parserForums != nil && parserForums.count > 0) {
                 handler(YES, parserForums);
             } else {
-                handler(NO, html);
+                handler(NO, [forumParser parseErrorMessage:html]);
             }
         } else {
-            handler(NO, html);
+            handler(NO, [forumParser parseErrorMessage:html]);
         }
     }];
 }
@@ -78,7 +78,7 @@
             NSString *uid = [html stringWithRegular:@"(?<=UID: )\\d+"];
             handler(isSuccess, uid);
         } else {
-            handler(NO, html);
+            handler(NO, [forumParser parseErrorMessage:html]);
         }
     }];
 }
@@ -105,7 +105,7 @@
 
             handler(isSuccess, array);
         } else {
-            handler(NO, html);
+            handler(NO, [forumParser parseErrorMessage:html]);
         }
     }];
 }
@@ -180,7 +180,7 @@
                 handler(NO, [forumParser parseErrorMessage:html]);
             }
         } else {
-            handler(NO, html);
+            handler(NO, [forumParser parseErrorMessage:html]);
         }
     }];
 
@@ -278,7 +278,7 @@
                 handler(NO, [forumParser parseErrorMessage:html]);
             }
         } else {
-            handler(NO, html);
+            handler(NO, [forumParser parseErrorMessage:html]);
         }
     }];
 }
@@ -354,7 +354,7 @@
                 handler(NO, [forumParser parseErrorMessage:html]);
             }
         } else {
-            handler(NO, html);
+            handler(NO, [forumParser parseErrorMessage:html]);
         }
     }];
 
@@ -439,7 +439,7 @@
                 handler(YES, content);
             }
         } else {
-            handler(NO, html);
+            handler(NO, [forumParser parseErrorMessage:html]);
         }
     }];
 }
@@ -597,7 +597,7 @@
     NSString *preUrl = [forumConfig favThreadWithIdPre:threadPostId];
     [self GET:preUrl requestCallback:^(BOOL isSuccess, NSString *html) {
         if (!isSuccess) {
-            handler(NO, html);
+            handler(NO, [forumParser parseErrorMessage:html]);
         } else {
             NSString *token = [forumParser parseSecurityToken:html];
 
@@ -645,7 +645,7 @@
             ViewForumPage *viewForumPage = [forumParser parsePrivateMessageFromHtml:html forType:type];
             handler(YES, viewForumPage);
         } else {
-            handler(NO, html);
+            handler(NO, [forumParser parseErrorMessage:html]);
         }
     }];
 }
@@ -755,7 +755,7 @@
             ViewForumPage *viewForumPage = [forumParser parseFavorThreadListFromHtml:html];
             handler(isSuccess, viewForumPage);
         } else {
-            handler(NO, html);
+            handler(NO, [forumParser parseErrorMessage:html]);
         }
     }];
 }
@@ -783,7 +783,7 @@
                 ViewSearchForumPage *sarchPage = [forumParser parseSearchPageFromHtml:html];
                 handler(isSuccess, sarchPage);
             } else {
-                handler(NO, html);
+                handler(NO, [forumParser parseErrorMessage:html]);
             }
         }];
     } else {
@@ -795,7 +795,7 @@
                 ViewForumPage *sarchPage = [forumParser parseSearchPageFromHtml:html];
                 handler(isSuccess, sarchPage);
             } else {
-                handler(NO, html);
+                handler(NO, [forumParser parseErrorMessage:html]);
             }
         }];
     }
@@ -810,7 +810,7 @@
             ViewForumPage *viewForumPage = [forumParser parseListMyAllThreadsFromHtml:html];
             handler(isSuccess, viewForumPage);
         } else {
-            handler(NO, html);
+            handler(NO, [forumParser parseErrorMessage:html]);
         }
     }];
 }
@@ -825,7 +825,7 @@
             ViewForumPage *viewForumPage = [forumParser parseListMyAllThreadsFromHtml:html];
             handler(isSuccess, viewForumPage);
         } else {
-            handler(NO, html);
+            handler(NO, [forumParser parseErrorMessage:html]);
         }
     }];
 }
@@ -837,7 +837,7 @@
             ViewThreadPage *detail = [forumParser parseShowThreadWithHtml:html];
             handler(isSuccess, detail);
         } else {
-            handler(NO, html);
+            handler(NO, [forumParser parseErrorMessage:html]);
         }
     }];
 }
@@ -851,13 +851,13 @@
             ViewForumPage *viewForumPage = [forumParser parseThreadListFromHtml:html withThread:forumId andContainsTop:YES];
             handler(isSuccess, viewForumPage);
         } else {
-            handler(NO, html);
+            handler(NO, [forumParser parseErrorMessage:html]);
         }
     }];
 }
 
 - (void)getAvatarWithUserId:(NSString *)userId handler:(HandlerWithBool)handler {
-    if ([userId isEqualToString:@"-1"]){
+    if (userId == nil || [userId isEqualToString:@"-1"]){
         handler(YES, forumConfig.avatarNo);
         return;
     }
@@ -872,7 +872,7 @@
             }
             handler(YES, avatar);
         } else {
-            handler(NO, html);
+            handler(NO, [forumParser parseErrorMessage:html]);
         }
 
     }];
@@ -896,7 +896,7 @@
             }
 
         } else {
-            handler(NO, html);
+            handler(NO, [forumParser parseErrorMessage:html]);
         }
     }];
 }
