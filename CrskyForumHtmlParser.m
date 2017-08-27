@@ -52,7 +52,7 @@
         //3. time
         IGXMLNode *timeNode = [contentDoc queryNodeWithClassName:@"fl gray"];
         NSString *time = [timeNode.text.trim stringByReplacingOccurrencesOfString:@"发表于: " withString:@""];
-        post.postTime = time;
+        post.postTime = [self timeForShort:time withFormat:@"yyyy-MM-dd HH:mm:ss"];
 
         //4. content
         IGXMLNodeSet *contentNodeSet = [contentDoc queryWithClassName:@"tpc_content"];
@@ -305,7 +305,7 @@
             IGXMLNode *lastPostTimeNode = [threadNode childAt:4];
             //11. 最后回帖时间
             NSString *lastPostTime = [lastPostTimeNode childAt:0].text.trim;
-            thread.lastPostTime = lastPostTime;
+            thread.lastPostTime = [self timeForShort:lastPostTime withFormat:@"yyyy-MM-dd HH:mm"];
 
             //12. 最后发表的人
             NSString *lastPostAuthorName = [[lastPostTimeNode childAt:1].text.trim stringByReplacingOccurrencesOfString:@"by: " withString:@""];
@@ -440,7 +440,7 @@
         IGXMLNode *lastPostTimeNode = [threadNode childAt:6];
         //11. 最后回帖时间
         NSString *lastPostTime = [lastPostTimeNode childAt:0].text.trim;
-        thread.lastPostTime = lastPostTime;
+        thread.lastPostTime = [self timeForShort:lastPostTime withFormat:@"yyyy-MM-dd HH:mm:ss"];
 
         //12. 最后发表的人
         NSString *lastPostAuthorName = [lastPostTimeNode.text componentsSeparatedByString:@"by: "].lastObject;
@@ -511,7 +511,8 @@
                     message.pmAuthorId = @"-1";
 
                     // 5. 时间
-                    message.pmTime = [node childAt:3].text.trim;
+                    NSString *time = [node childAt:3].text.trim;
+                    message.pmTime = [self timeForShort:time withFormat:@"yyyy-MM-dd HH:mm:ss"];
 
                     [messagesList addObject:message];
 
@@ -546,7 +547,8 @@
                 message.pmAuthorId = [self userId:msgHtml];
 
                 // 5. 时间
-                message.pmTime = [node childAt:3].text.trim;
+                NSString *time = [node childAt:3].text.trim;
+                message.pmTime = [self timeForShort:time withFormat:@"yyyy-MM-dd HH:mm:ss"];
 
                 [messagesList addObject:message];
 
@@ -580,7 +582,8 @@
                 message.pmAuthorId = [self userId:msgHtml];
 
                 // 5. 时间
-                message.pmTime = [node childAt:3].text.trim;
+                NSString *time = [node childAt:3].text.trim;
+                message.pmTime = [self timeForShort:time withFormat:@"yyyy-MM-dd HH:mm:ss"];
 
                 [messagesList addObject:message];
 
@@ -608,7 +611,7 @@
     privateMessage.pmTitle = pmTitle;
 
     NSString *pmTime = [[[infoBaseNode childAt:0] childAt:2] childAt:1].text.trim;
-    privateMessage.pmTime = pmTime;
+    privateMessage.pmTime = [self timeForShort:pmTime withFormat:@"yyyy-MM-dd HH:mm:ss"];
 
     NSString *pmContent = [[[infoBaseNode childAt:0] childAt:3] childAt:1].html;
     NSString * content = [NSString stringWithFormat:@"<div style=\"overflow-x: hidden;\">%@</div>", pmContent];
