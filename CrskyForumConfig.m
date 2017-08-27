@@ -168,6 +168,14 @@
     }
 }
 
+- (NSString *)deletePrivateWithType:(int)type {
+    if (type == 0){
+        return @"http://bbs.crsky.com/message.php?action=receivebox";
+    } else {
+        return @"http://bbs.crsky.com/message.php?action=sendbox";
+    }
+}
+
 - (NSString *)privateShowWithMessageId:(int)messageId withType:(int)type {
     // 0 群发公共消息 1 普通收件 2 发给别人的消息
     if (type == 0){

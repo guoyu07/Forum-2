@@ -651,7 +651,36 @@
 }
 
 - (void)deletePrivateMessage:(Message *)privateMessage withType:(int)type handler:(HandlerWithBool)handler {
+    NSString * url = [forumConfig deletePrivateWithType:type];
+    [self GET:url requestCallback:^(BOOL isSuccess, NSString *html) {
+        if (isSuccess) {
+            NSString *token = [forumParser parseSecurityToken:html];
 
+            NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
+            [parameters setValue:token forKey:@"verify"];
+            
+            if ([privateMessage.pmAuthorId isEqualToString:@"-1"]) {
+                [parameters setValue:[NSString stringWithFormat:@"%@", privateMessage.pmID] forKey:@"pdelid[]"];
+            } else {
+                [parameters setValue:[NSString stringWithFormat:@"%@", privateMessage.pmID] forKey:@"delid[]"];
+            }
+            
+
+            if (type == 0){
+                [parameters setValue:@"receivebox" forKey:@"towhere"];
+            } else {
+                [parameters setValue:@"sendbox" forKey:@"towhere"];
+            }
+            [parameters setValue:@"del" forKey:@"action"];
+
+            [self.browser POSTWithURLString:@"http://bbs.crsky.com/message.php" parameters:parameters charset:GBK requestCallback:^(BOOL success, NSString *result) {
+                handler(success, result);
+            }];
+
+        } else {
+            handler(NO, nil);
+        }
+    }];
 }
 
 - (BOOL)openUrlByClient:(ForumWebViewController *)controller request:(NSURLRequest *)request {
