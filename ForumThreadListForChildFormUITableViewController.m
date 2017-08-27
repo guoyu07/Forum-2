@@ -129,13 +129,13 @@
 
     ForumThreadListCell *cell = (ForumThreadListCell *) [tableView dequeueReusableCellWithIdentifier:reusedIdentifier];
 
+    Thread *thread;
     if (indexPath.section == 0) {
-        Thread *play = self.threadTopList[(NSUInteger) indexPath.row];
-        [cell setData:play];
+        thread = self.threadTopList[(NSUInteger) indexPath.row];
     } else {
-        Thread *play = self.dataList[(NSUInteger) indexPath.row];
-        [cell setData:play];
+        thread = self.dataList[(NSUInteger) indexPath.row];
     }
+    [cell setData:thread];
 
     cell.indexPath = indexPath;
 
@@ -147,25 +147,22 @@
     [cell setSeparatorInset:UIEdgeInsetsZero];
     [cell setLayoutMargins:UIEdgeInsetsZero];
 
-    [cell setData:self.dataList[(NSUInteger) indexPath.row]];
     return cell;
 }
 
 - (BOOL)swipeTableCell:(MGSwipeTableCellWithIndexPath *)cell tappedButtonAtIndex:(NSInteger)index direction:(MGSwipeDirection)direction fromExpansion:(BOOL)fromExpansion {
     NSIndexPath *indexPath = cell.indexPath;
+    
+    Thread *thread;
     if (indexPath.section == 0) {
-        Thread *play = self.threadTopList[(NSUInteger) indexPath.row];
-
-        [self.forumApi favoriteThreadWithId:play.threadID handler:^(BOOL isSuccess, id message) {
-
-        }];
+        thread = self.threadTopList[(NSUInteger) indexPath.row];
     } else {
-        Thread *play = self.threadTopList[(NSUInteger) indexPath.row];
-
-        [self.forumApi favoriteThreadWithId:play.threadID handler:^(BOOL isSuccess, id message) {
-
-        }];
+        thread = self.dataList[(NSUInteger) indexPath.row];
     }
+    
+    [self.forumApi favoriteThreadWithId:thread.threadID handler:^(BOOL isSuccess, id message) {
+        
+    }];
 
     return YES;
 }

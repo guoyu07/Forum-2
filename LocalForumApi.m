@@ -11,6 +11,7 @@
 #import "AppDelegate.h"
 #import "Forums.h"
 #import "SupportForums.h"
+#import "ForumWebViewController.h"
 
 
 @implementation LocalForumApi {

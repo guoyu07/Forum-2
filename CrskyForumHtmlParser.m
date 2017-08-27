@@ -14,8 +14,14 @@
 #import "IGXMLNode+QueryNode.h"
 
 @implementation CrskyForumHtmlParser
+
 - (NSString *)parseErrorMessage:(NSString *)html {
-    return nil;
+    if ([html containsString:@"<td class=\"h\" colspan=\"2\">霏凡论坛 - 非凡软件站 提示信息</td>"]){
+        IGHTMLDocument *document = [[IGHTMLDocument alloc] initWithHTMLString:html error:nil];
+        IGXMLNode * messageNode = [document queryNodeWithClassName:@"f_one"];
+        return messageNode.text.trim;
+    }
+    return @"未知错误";
 }
 
 
@@ -46,12 +52,31 @@
         //3. time
         IGXMLNode *timeNode = [contentDoc queryNodeWithClassName:@"fl gray"];
         NSString *time = [timeNode.text.trim stringByReplacingOccurrencesOfString:@"发表于: " withString:@""];
-        post.postTime = time;
+        post.postTime = [self timeForShort:time withFormat:@"yyyy-MM-dd HH:mm:ss"];
 
         //4. content
-        IGXMLNode *contentNode = [contentDoc queryNodeWithClassName:@"tpc_content"];
-        NSString *content = contentNode.html;
-        post.postContent = content;
+        IGXMLNodeSet *contentNodeSet = [contentDoc queryWithClassName:@"tpc_content"];
+
+        int childCount = (int)contentNodeSet.count;
+        if (childCount == 1){
+            post.postContent = contentNodeSet.firstObject.html;
+        } else if (childCount > 1) {
+
+            NSMutableString *content = [NSMutableString string];
+
+            for (IGXMLNode * node in contentNodeSet) {
+                if ([node.innerHtml containsString:@"<div class=\"tal s3\">本帖最近评分记录：</div>"]){
+                    continue;
+                }
+                [content appendString:node.innerHtml];
+            }
+
+            post.postContent = [NSString stringWithFormat:@"<div class=\"tpc_content\">%@</div>", [content copy]];
+        } else {
+            post.postContent = @"错误请联系开发者：pobaby";
+        }
+
+
 
         //5. user
         User * user = [[User alloc] init];
@@ -99,15 +124,25 @@
 
 - (ViewThreadPage *)parseShowThreadWithHtml:(NSString *)html {
 
-    IGHTMLDocument *document = [[IGHTMLDocument alloc] initWithHTMLString:html error:nil];
+    NSArray *fontSetString = [html arrayWithRegular:@"<font size=\"\\d+\">"];
+
+    NSString *fixFontSizeHTML = html;
+
+    for (NSString *tmp in fontSetString) {
+        fixFontSizeHTML = [fixFontSizeHTML stringByReplacingOccurrencesOfString:tmp withString:@"<font size=\"\2\">"];
+    }
+
+    NSString *fixedHtml = fixFontSizeHTML;
+
+    IGHTMLDocument *document = [[IGHTMLDocument alloc] initWithHTMLString:fixedHtml error:nil];
 
     ViewThreadPage *showThreadPage = [[ViewThreadPage alloc] init];
     //1. tid
-    int tid = [[html stringWithRegular:@"(?<=tid=)\\d+"] intValue];
+    int tid = [[fixedHtml stringWithRegular:@"(?<=tid=)\\d+"] intValue];
     showThreadPage.threadID = tid;
 
     //2. fid
-    int fid = [[html stringWithRegular:@"(?<=fid=)\\d+"] intValue];
+    int fid = [[fixedHtml stringWithRegular:@"(?<=fid=)\\d+"] intValue];
     showThreadPage.forumId = fid;
 
     //3. title
@@ -120,19 +155,19 @@
     showThreadPage.postList = posts;
 
     //5. orgHtml
-    NSString *orgHtml = [self postMessages:html];
+    NSString *orgHtml = [self postMessages:fixedHtml];
     showThreadPage.originalHtml = orgHtml;
 
     //6. number
-    PageNumber *pageNumber = [self parserPageNumber:html];
+    PageNumber *pageNumber = [self parserPageNumber:fixedHtml];
     showThreadPage.pageNumber = pageNumber;
 
     //7. token
-    NSString * token = [self token:html];
+    NSString * token = [self token:fixedHtml];
     showThreadPage.securityToken = token;
 
     // 10. quick reply title
-    NSString * quickReplyTitle = [html stringWithRegular:@"(?<=<input type=\"text\" class=\"input\" name=\"atc_title\" value=\")\\S+(?=\" size=\"65\" />)"];
+    NSString * quickReplyTitle = [fixedHtml stringWithRegular:@"(?<=<input type=\"text\" class=\"input\" name=\"atc_title\" value=\")[\\S\\s]+(?=\" size=\"65\" />)"];
     showThreadPage.quickReplyTitle = quickReplyTitle;
 
     return showThreadPage;
@@ -270,7 +305,7 @@
             IGXMLNode *lastPostTimeNode = [threadNode childAt:4];
             //11. 最后回帖时间
             NSString *lastPostTime = [lastPostTimeNode childAt:0].text.trim;
-            thread.lastPostTime = lastPostTime;
+            thread.lastPostTime = [self timeForShort:lastPostTime withFormat:@"yyyy-MM-dd HH:mm"];
 
             //12. 最后发表的人
             NSString *lastPostAuthorName = [[lastPostTimeNode childAt:1].text.trim stringByReplacingOccurrencesOfString:@"by: " withString:@""];
@@ -405,7 +440,7 @@
         IGXMLNode *lastPostTimeNode = [threadNode childAt:6];
         //11. 最后回帖时间
         NSString *lastPostTime = [lastPostTimeNode childAt:0].text.trim;
-        thread.lastPostTime = lastPostTime;
+        thread.lastPostTime = [self timeForShort:lastPostTime withFormat:@"yyyy-MM-dd HH:mm:ss"];
 
         //12. 最后发表的人
         NSString *lastPostAuthorName = [lastPostTimeNode.text componentsSeparatedByString:@"by: "].lastObject;
@@ -476,7 +511,8 @@
                     message.pmAuthorId = @"-1";
 
                     // 5. 时间
-                    message.pmTime = [node childAt:3].text.trim;
+                    NSString *time = [node childAt:3].text.trim;
+                    message.pmTime = [self timeForShort:time withFormat:@"yyyy-MM-dd HH:mm:ss"];
 
                     [messagesList addObject:message];
 
@@ -511,7 +547,8 @@
                 message.pmAuthorId = [self userId:msgHtml];
 
                 // 5. 时间
-                message.pmTime = [node childAt:3].text.trim;
+                NSString *time = [node childAt:3].text.trim;
+                message.pmTime = [self timeForShort:time withFormat:@"yyyy-MM-dd HH:mm:ss"];
 
                 [messagesList addObject:message];
 
@@ -545,7 +582,8 @@
                 message.pmAuthorId = [self userId:msgHtml];
 
                 // 5. 时间
-                message.pmTime = [node childAt:3].text.trim;
+                NSString *time = [node childAt:3].text.trim;
+                message.pmTime = [self timeForShort:time withFormat:@"yyyy-MM-dd HH:mm:ss"];
 
                 [messagesList addObject:message];
 
@@ -573,7 +611,7 @@
     privateMessage.pmTitle = pmTitle;
 
     NSString *pmTime = [[[infoBaseNode childAt:0] childAt:2] childAt:1].text.trim;
-    privateMessage.pmTime = pmTime;
+    privateMessage.pmTime = [self timeForShort:pmTime withFormat:@"yyyy-MM-dd HH:mm:ss"];
 
     NSString *pmContent = [[[infoBaseNode childAt:0] childAt:3] childAt:1].html;
     NSString * content = [NSString stringWithFormat:@"<div style=\"overflow-x: hidden;\">%@</div>", pmContent];
@@ -718,12 +756,12 @@
                 IGHTMLDocument * childForumDoc = [[IGHTMLDocument alloc] initWithHTMLString:childHtml error:nil];
                 IGXMLNodeSet * childForumSet = [childForumDoc queryWithXPath:@"/html/body/div/span/a[position()>0]"];
                 int  c = childForumSet.count;
-                for (IGXMLNode * chileForumNode in childForumSet) {
+                for (IGXMLNode * childForumNode in childForumSet) {
                     Forum *childForum = [[Forum alloc] init];
 
-                    NSString * childForumName = chileForumNode.text.trim;
+                    NSString * childForumName = childForumNode.text.trim;
                     childForum.forumName = childForumName;
-                    childForum.forumId = [[tileNode.html stringWithRegular:@"(?<=fid=)\\d+"] intValue];
+                    childForum.forumId = [[childForumNode.html stringWithRegular:@"(?<=fid=)\\d+"] intValue];
                     childForum.forumHost = host;
                     childForum.parentForumId = forum.forumId;
 

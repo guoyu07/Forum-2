@@ -117,6 +117,7 @@
 
     if ([segue.identifier isEqualToString:@"ShowThreadPosts"]) {
         ForumWebViewController *controller = segue.destinationViewController;
+        [controller setHidesBottomBarWhenPushed:YES];
 
         NSIndexPath *indexPath = [self.tableView indexPathForSelectedRow];
 
