@@ -22,8 +22,13 @@
 
 - (IBAction)changeNumber:(id)sender;
 
-@property(weak, nonatomic) IBOutlet UIBarButtonItem *pageNumber;
-
 - (IBAction)reply:(id)sender;
+@property (weak, nonatomic) IBOutlet UIButton *changePageButton;
+@property (weak, nonatomic) IBOutlet UILabel *pageTitleTextView;
+- (IBAction)firstPage:(id)sender;
+- (IBAction)previousPage:(id)sender;
+- (IBAction)lastPage:(id)sender;
+- (IBAction)nextPage:(id)sender;
+@property (strong, nonatomic) IBOutletCollection(UIVisualEffectView) NSArray *blurView;
 
 @end

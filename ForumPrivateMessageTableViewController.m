@@ -106,13 +106,21 @@
     }];
 }
 
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    [tableView deselectRowAtIndexPath:indexPath animated:NO];
+}
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
 
     static NSString *identifier = @"PrivateMessageTableViewCell";
     PrivateMessageTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
+
+    cell.indexPath = indexPath;
     cell.delegate = self;
     cell.showUserProfileDelegate = self;
+
+    cell.rightButtons = @[[MGSwipeButton buttonWithTitle:@"删除" backgroundColor:[UIColor lightGrayColor]]];
+    cell.rightSwipeSettings.transition = MGSwipeTransitionBorder;
 
     Message *message = self.dataList[(NSUInteger) indexPath.row];
 
@@ -122,8 +130,27 @@
     return cell;
 }
 
-#pragma mark CCFThreadListCellDelegate
+- (BOOL)swipeTableCell:(MGSwipeTableCellWithIndexPath *)cell tappedButtonAtIndex:(NSInteger)index direction:(MGSwipeDirection)direction fromExpansion:(BOOL)fromExpansion {
+    NSIndexPath *indexPath = cell.indexPath;
 
+    Message *deleteMessage = self.dataList[(NSUInteger) indexPath.row];
+    int delType = _messageSegmentedControl.selectedSegmentIndex;
+    [self.forumApi deletePrivateMessage:deleteMessage withType:delType handler:^(BOOL isSuccess, id message) {
+        if (isSuccess){
+            [self.dataList removeObjectAtIndex:(NSUInteger) cell.indexPath.row];
+            [self.tableView deleteRowsAtIndexPaths:@[cell.indexPath] withRowAnimation:UITableViewRowAnimationLeft];
+            [self performSelector:@selector(reloadData) withObject:nil afterDelay:0.2f];
+        }
+    }];
+
+    return YES;
+}
+
+-(void)reloadData{
+    [self.tableView reloadData];
+};
+
+#pragma mark CCFThreadListCellDelegate
 - (void)showUserProfile:(NSIndexPath *)indexPath {
     ForumUserProfileTableViewController *controller = selectSegue.destinationViewController;
     Message *message = self.dataList[(NSUInteger) indexPath.row];
@@ -147,6 +174,8 @@
 
         TransBundle *bundle = [[TransBundle alloc] init];
         [bundle putObjectValue:message forKey:@"TransPrivateMessage"];
+        [bundle putIntValue:_messageSegmentedControl.selectedSegmentIndex forKey:@"TransPrivateMessageType"];
+
 
         [self transBundle:bundle forController:controller];
 

@@ -21,6 +21,7 @@
 #import "ForumUserProfileTableViewController.h"
 #import "AppDelegate.h"
 #import "LocalForumApi.h"
+#import "ForumTabBarController.h"
 
 @interface ForumWebViewController () <UIWebViewDelegate, UIScrollViewDelegate, TransBundleDelegate, CAAnimationDelegate> {
 
@@ -49,9 +50,7 @@
 
         currentShowThreadPage = threadPage;
 
-
-        NSString *title = [NSString stringWithFormat:@"%lu/%lu", (unsigned long) currentShowThreadPage.pageNumber.currentPageNumber, (unsigned long) currentShowThreadPage.pageNumber.totalPageNumber];
-        self.pageNumber.title = title;
+        [self updatePageTitle];
 
         NSMutableArray<Post *> *posts = threadPage.postList;
 
@@ -97,8 +96,7 @@
         currentShowThreadPage = threadPage;
 
 
-        NSString *title = [NSString stringWithFormat:@"%lu/%lu", (unsigned long) currentShowThreadPage.pageNumber.currentPageNumber, (unsigned long) currentShowThreadPage.pageNumber.totalPageNumber];
-        self.pageNumber.title = title;
+        [self updatePageTitle];
 
         NSMutableArray<Post *> *posts = threadPage.postList;
 
@@ -143,6 +141,10 @@
     }
 }
 
+- (void) updatePageTitle{
+    NSString *title = [NSString stringWithFormat:@"%lu-%lu", (unsigned long) currentShowThreadPage.pageNumber.currentPageNumber, (unsigned long) currentShowThreadPage.pageNumber.totalPageNumber];
+    self.pageTitleTextView.text = title;
+}
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -167,33 +169,37 @@
 
     self.webView.scrollView.mj_header = [MJRefreshNormalHeader headerWithRefreshingBlock:^{
 
-        if (threadID == -1) {
-            [self showThreadWithP:[NSString stringWithFormat:@"%d", p]];
-        } else {
-            if (currentShowThreadPage == nil) {
-                [self prePage:threadID page:1 withAnim:NO];
-            } else if (currentShowThreadPage.pageNumber.currentPageNumber == 1) {
-                [self prePage:threadID page:1 withAnim:NO];
-            } else {
-                int page = currentShowThreadPage.pageNumber.currentPageNumber - 1;
-                if (page <= 1) {
-                    page = 1;
-                }
-                [self prePage:threadID page:page withAnim:YES];
-            }
-        }
+        [self showPreviousPageOrRefresh];
+
     }];
 
 
     self.webView.scrollView.mj_footer = [MJRefreshBackNormalFooter footerWithRefreshingBlock:^{
 
         // 当前页面 == 页面的最大数，只刷新当前页面就可以了
-
         [self showNextPageOrRefreshCurrentPage:currentShowThreadPage.pageNumber.currentPageNumber forThreadId:threadID];
 
     }];
 
     [self.webView.scrollView.mj_header beginRefreshing];
+}
+
+- (void) showPreviousPageOrRefresh{
+    if (threadID == -1) {
+        [self showThreadWithP:[NSString stringWithFormat:@"%d", p]];
+    } else {
+        if (currentShowThreadPage == nil) {
+            [self prePage:threadID page:1 withAnim:NO];
+        } else if (currentShowThreadPage.pageNumber.currentPageNumber == 1) {
+            [self prePage:threadID page:1 withAnim:NO];
+        } else {
+            int page = currentShowThreadPage.pageNumber.currentPageNumber - 1;
+            if (page <= 1) {
+                page = 1;
+            }
+            [self prePage:threadID page:page withAnim:YES];
+        }
+    }
 }
 
 -(void) showFailedMessage:(id) message{
@@ -225,8 +231,7 @@
         currentShowThreadPage = threadPage;
         threadID = threadPage.threadID;
 
-        NSString *title = [NSString stringWithFormat:@"%d/%d", currentShowThreadPage.pageNumber.currentPageNumber, currentShowThreadPage.pageNumber.totalPageNumber];
-        self.pageNumber.title = title;
+        [self updatePageTitle];
 
         NSMutableArray<Post *> *posts = threadPage.postList;
 
@@ -321,8 +326,7 @@
         currentShowThreadPage = threadPage;
 
 
-        NSString *title = [NSString stringWithFormat:@"%d/%d", currentShowThreadPage.pageNumber.currentPageNumber, currentShowThreadPage.pageNumber.totalPageNumber];
-        self.pageNumber.title = title;
+        [self updatePageTitle];
 
         NSMutableArray<Post *> *posts = threadPage.postList;
 
@@ -423,23 +427,19 @@
 
     NSString *cacheHtml = pageDic[@(page)];
 
-    [self.forumApi showThreadWithId:threadId andPage:page handler:^(BOOL isSuccess, id message) {
+    [self.forumApi showThreadWithId:threadId andPage:page handler:^(BOOL isSuccess, ViewThreadPage *threadPage) {
 
         
         [SVProgressHUD dismiss];
         
         if (!isSuccess){
-            [self showFailedMessage:message];
+            [self showFailedMessage:threadPage];
             return;
         }
 
-        ViewThreadPage *threadPage = message;
-
         currentShowThreadPage = threadPage;
 
-
-        NSString *title = [NSString stringWithFormat:@"%lu/%lu", (unsigned long)currentShowThreadPage.pageNumber.currentPageNumber, (unsigned long)currentShowThreadPage.pageNumber.totalPageNumber];
-        self.pageNumber.title = title;
+        [self updatePageTitle];
 
         NSMutableArray<Post *> *posts = threadPage.postList;
 
@@ -469,10 +469,11 @@
         }
 
         if (![cacheHtml isEqualToString:threadPage.originalHtml]) {
-            LocalForumApi * localeForumApi = [[LocalForumApi alloc] init];
-            [self.webView loadHTMLString:html baseURL:[NSURL URLWithString:localeForumApi.currentForumBaseUrl]];
             pageDic[@(page)] = html;
         }
+        
+        LocalForumApi * localeForumApi = [[LocalForumApi alloc] init];
+        [self.webView loadHTMLString:html baseURL:[NSURL URLWithString:localeForumApi.currentForumBaseUrl]];
 
         if (anim) {
             CABasicAnimation *stretchAnimation = [CABasicAnimation animationWithKeyPath:@"transform.scale.y"];
@@ -536,8 +537,6 @@
 
     return [NSDictionary dictionaryWithDictionary:pairs];
 }
-
-
 
 - (void)reportThreadPost:(int)postId userName:(NSString *)userName {
   UIStoryboard *storyboard = [UIStoryboard mainStoryboard];
@@ -692,24 +691,7 @@
     if (navigationType == UIWebViewNavigationTypeLinkClicked && ([request.URL.scheme isEqualToString:@"http"] || [request.URL.scheme isEqualToString:@"https"])) {
 
 
-        NSString *path = request.URL.path;
-        if ([path rangeOfString:@"showthread.php"].location != NSNotFound) {
-            // 显示帖子
-            NSDictionary *query = [self dictionaryFromQuery:request.URL.query usingEncoding:NSUTF8StringEncoding];
-
-            NSString *threadIdStr = [query valueForKey:@"t"];
-
-
-            UIStoryboard *storyboard = [UIStoryboard mainStoryboard];
-            ForumWebViewController *showThreadController = [storyboard instantiateViewControllerWithIdentifier:@"ShowThreadDetail"];
-
-            TransBundle *bundle = [[TransBundle alloc] init];
-            [bundle putIntValue:[threadIdStr intValue] forKey:@"threadID"];
-
-            [self transBundle:bundle forController:showThreadController];
-
-            [self.navigationController pushViewController:showThreadController animated:YES];
-
+        if ([self.forumApi openUrlByClient:self request:request]){
             return NO;
         } else {
             [[UIApplication sharedApplication] openURL:request.URL];
@@ -811,4 +793,31 @@
 
     }];
 }
+- (IBAction)firstPage:(id)sender {
+    if (currentShowThreadPage.pageNumber.totalPageNumber == currentShowThreadPage.pageNumber.currentPageNumber){
+        [self.webView.scrollView.mj_header beginRefreshing];
+        return;
+    }
+
+    [SVProgressHUD showWithStatus:@"正在切换" maskType:SVProgressHUDMaskTypeBlack];
+    [self showThread:threadID page:1 withAnim:YES];
+}
+
+- (IBAction)lastPage:(id)sender {
+    if (currentShowThreadPage.pageNumber.totalPageNumber == currentShowThreadPage.pageNumber.currentPageNumber){
+        [self.webView.scrollView.mj_footer beginRefreshing];
+        return;
+    }
+    [SVProgressHUD showWithStatus:@"正在切换" maskType:SVProgressHUDMaskTypeBlack];
+    [self showThread:threadID page:currentShowThreadPage.pageNumber.totalPageNumber withAnim:YES];
+}
+
+- (IBAction)previousPage:(id)sender {
+    [self.webView.scrollView.mj_header beginRefreshing];
+}
+
+- (IBAction)nextPage:(id)sender {
+    [self.webView.scrollView.mj_footer beginRefreshing];
+}
+
 @end

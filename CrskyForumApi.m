@@ -10,7 +10,7 @@
 #import "ForumParserDelegate.h"
 #import "AFHTTPSessionManager+SimpleAction.h"
 #import "NSUserDefaults+Setting.h"
-#import "ForumCoreDataManager.h"ƒ
+#import "ForumCoreDataManager.h"
 #import "NSString+Extensions.h"
 #import "CharUtils.h"
 #import "IGHTMLDocument.h"
@@ -19,6 +19,9 @@
 #import "CrskyForumConfig.h"
 #import "CrskyForumHtmlParser.h"
 #import "LocalForumApi.h"
+#import "TransBundle.h"
+#import "UIStoryboard+Forum.h"
+#import "ForumWebViewController.h"
 
 @implementation CrskyForumApi{
     id <ForumConfigDelegate> forumConfig;
@@ -60,10 +63,10 @@
             if (parserForums != nil && parserForums.count > 0) {
                 handler(YES, parserForums);
             } else {
-                handler(NO, html);
+                handler(NO, [forumParser parseErrorMessage:html]);
             }
         } else {
-            handler(NO, html);
+            handler(NO, [forumParser parseErrorMessage:html]);
         }
     }];
 }
@@ -75,7 +78,7 @@
             NSString *uid = [html stringWithRegular:@"(?<=UID: )\\d+"];
             handler(isSuccess, uid);
         } else {
-            handler(NO, html);
+            handler(NO, [forumParser parseErrorMessage:html]);
         }
     }];
 }
@@ -102,7 +105,7 @@
 
             handler(isSuccess, array);
         } else {
-            handler(NO, html);
+            handler(NO, [forumParser parseErrorMessage:html]);
         }
     }];
 }
@@ -174,10 +177,10 @@
             if (thread.postList.count > 0) {
                 handler(YES, thread);
             } else {
-                handler(NO, @"未知错误");
+                handler(NO, [forumParser parseErrorMessage:html]);
             }
         } else {
-            handler(NO, html);
+            handler(NO, [forumParser parseErrorMessage:html]);
         }
     }];
 
@@ -272,10 +275,10 @@
             if (thread.postList.count > 0) {
                 handler(YES, thread);
             } else {
-                handler(NO, @"未知错误");
+                handler(NO, [forumParser parseErrorMessage:html]);
             }
         } else {
-            handler(NO, html);
+            handler(NO, [forumParser parseErrorMessage:html]);
         }
     }];
 }
@@ -348,10 +351,10 @@
             if (thread.postList.count > 0) {
                 handler(YES, thread);
             } else {
-                handler(NO, @"未知错误");
+                handler(NO, [forumParser parseErrorMessage:html]);
             }
         } else {
-            handler(NO, html);
+            handler(NO, [forumParser parseErrorMessage:html]);
         }
     }];
 
@@ -415,7 +418,7 @@
         if (page != nil && page.dataList != nil && page.dataList.count > 0) {
             handler(YES, page);
         } else {
-            handler(NO, @"未知错误");
+            handler(NO, [forumParser parseErrorMessage:searchResult]);
         }
     }];
 }
@@ -436,7 +439,7 @@
                 handler(YES, content);
             }
         } else {
-            handler(NO, html);
+            handler(NO, [forumParser parseErrorMessage:html]);
         }
     }];
 }
@@ -594,7 +597,7 @@
     NSString *preUrl = [forumConfig favThreadWithIdPre:threadPostId];
     [self GET:preUrl requestCallback:^(BOOL isSuccess, NSString *html) {
         if (!isSuccess) {
-            handler(NO, html);
+            handler(NO, [forumParser parseErrorMessage:html]);
         } else {
             NSString *token = [forumParser parseSecurityToken:html];
 
@@ -642,9 +645,86 @@
             ViewForumPage *viewForumPage = [forumParser parsePrivateMessageFromHtml:html forType:type];
             handler(YES, viewForumPage);
         } else {
-            handler(NO, html);
+            handler(NO, [forumParser parseErrorMessage:html]);
         }
     }];
+}
+
+- (void)deletePrivateMessage:(Message *)privateMessage withType:(int)type handler:(HandlerWithBool)handler {
+    NSString * url = [forumConfig deletePrivateWithType:type];
+    [self GET:url requestCallback:^(BOOL isSuccess, NSString *html) {
+        if (isSuccess) {
+            NSString *token = [forumParser parseSecurityToken:html];
+
+            NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
+            [parameters setValue:token forKey:@"verify"];
+            
+            if ([privateMessage.pmAuthorId isEqualToString:@"-1"]) {
+                [parameters setValue:[NSString stringWithFormat:@"%@", privateMessage.pmID] forKey:@"pdelid[]"];
+            } else {
+                [parameters setValue:[NSString stringWithFormat:@"%@", privateMessage.pmID] forKey:@"delid[]"];
+            }
+            
+
+            if (type == 0){
+                [parameters setValue:@"receivebox" forKey:@"towhere"];
+            } else {
+                [parameters setValue:@"sendbox" forKey:@"towhere"];
+            }
+            [parameters setValue:@"del" forKey:@"action"];
+
+            [self.browser POSTWithURLString:@"http://bbs.crsky.com/message.php" parameters:parameters charset:GBK requestCallback:^(BOOL success, NSString *result) {
+                handler(success, result);
+            }];
+
+        } else {
+            handler(NO, nil);
+        }
+    }];
+}
+
+- (BOOL)openUrlByClient:(ForumWebViewController *)controller request:(NSURLRequest *)request {
+    NSString *path = request.URL.path;
+    if ([path rangeOfString:@"read.php"].location != NSNotFound) {
+        // 显示帖子
+        NSDictionary *query = [self dictionaryFromQuery:request.URL.query usingEncoding:NSUTF8StringEncoding];
+
+        NSString *threadIdStr = [query valueForKey:@"tid"];
+
+
+        UIStoryboard *storyboard = [UIStoryboard mainStoryboard];
+        ForumWebViewController *showThreadController = [storyboard instantiateViewControllerWithIdentifier:@"ShowThreadDetail"];
+
+        TransBundle *bundle = [[TransBundle alloc] init];
+        [bundle putIntValue:[threadIdStr intValue] forKey:@"threadID"];
+
+        [controller transBundle:bundle forController:showThreadController];
+
+        [controller.navigationController pushViewController:showThreadController animated:YES];
+
+        return YES;
+    }
+    return NO;
+}
+
+#pragma private
+- (NSDictionary *)dictionaryFromQuery:(NSString *)query usingEncoding:(NSStringEncoding)encoding {
+    NSCharacterSet *delimiterSet = [NSCharacterSet characterSetWithCharactersInString:@"&;"];
+    NSMutableDictionary *pairs = [NSMutableDictionary dictionary];
+    NSScanner *scanner = [[NSScanner alloc] initWithString:query];
+    while (![scanner isAtEnd]) {
+        NSString *pairString = nil;
+        [scanner scanUpToCharactersFromSet:delimiterSet intoString:&pairString];
+        [scanner scanCharactersFromSet:delimiterSet intoString:NULL];
+        NSArray *kvPair = [pairString componentsSeparatedByString:@"="];
+        if (kvPair.count == 2) {
+            NSString *key = [[kvPair objectAtIndex:0] stringByReplacingPercentEscapesUsingEncoding:encoding];
+            NSString *value = [[kvPair objectAtIndex:1] stringByReplacingPercentEscapesUsingEncoding:encoding];
+            [pairs setObject:value forKey:key];
+        }
+    }
+
+    return [NSDictionary dictionaryWithDictionary:pairs];
 }
 
 - (void)listFavoriteForums:(HandlerWithBool)handler {
@@ -675,7 +755,7 @@
             ViewForumPage *viewForumPage = [forumParser parseFavorThreadListFromHtml:html];
             handler(isSuccess, viewForumPage);
         } else {
-            handler(NO, html);
+            handler(NO, [forumParser parseErrorMessage:html]);
         }
     }];
 }
@@ -703,7 +783,7 @@
                 ViewSearchForumPage *sarchPage = [forumParser parseSearchPageFromHtml:html];
                 handler(isSuccess, sarchPage);
             } else {
-                handler(NO, html);
+                handler(NO, [forumParser parseErrorMessage:html]);
             }
         }];
     } else {
@@ -715,7 +795,7 @@
                 ViewForumPage *sarchPage = [forumParser parseSearchPageFromHtml:html];
                 handler(isSuccess, sarchPage);
             } else {
-                handler(NO, html);
+                handler(NO, [forumParser parseErrorMessage:html]);
             }
         }];
     }
@@ -730,7 +810,7 @@
             ViewForumPage *viewForumPage = [forumParser parseListMyAllThreadsFromHtml:html];
             handler(isSuccess, viewForumPage);
         } else {
-            handler(NO, html);
+            handler(NO, [forumParser parseErrorMessage:html]);
         }
     }];
 }
@@ -745,7 +825,7 @@
             ViewForumPage *viewForumPage = [forumParser parseListMyAllThreadsFromHtml:html];
             handler(isSuccess, viewForumPage);
         } else {
-            handler(NO, html);
+            handler(NO, [forumParser parseErrorMessage:html]);
         }
     }];
 }
@@ -757,7 +837,7 @@
             ViewThreadPage *detail = [forumParser parseShowThreadWithHtml:html];
             handler(isSuccess, detail);
         } else {
-            handler(NO, html);
+            handler(NO, [forumParser parseErrorMessage:html]);
         }
     }];
 }
@@ -771,13 +851,13 @@
             ViewForumPage *viewForumPage = [forumParser parseThreadListFromHtml:html withThread:forumId andContainsTop:YES];
             handler(isSuccess, viewForumPage);
         } else {
-            handler(NO, html);
+            handler(NO, [forumParser parseErrorMessage:html]);
         }
     }];
 }
 
 - (void)getAvatarWithUserId:(NSString *)userId handler:(HandlerWithBool)handler {
-    if ([userId isEqualToString:@"-1"]){
+    if (userId == nil || [userId isEqualToString:@"-1"]){
         handler(YES, forumConfig.avatarNo);
         return;
     }
@@ -785,12 +865,16 @@
     NSString *url = [forumConfig memberWithUserId:userId];
 
     [self GET:url requestCallback:^(BOOL isSuccess, NSString *html) {
-        NSString *avatar = [forumParser parseUserAvatar:html userId:userId];
-        if (!avatar){
-            avatar = forumConfig.avatarNo;
+        if (isSuccess) {
+            NSString *avatar = [forumParser parseUserAvatar:html userId:userId];
+            if (!avatar){
+                avatar = forumConfig.avatarNo;
+            }
+            handler(YES, avatar);
+        } else {
+            handler(NO, [forumParser parseErrorMessage:html]);
         }
-        NSLog(@"getAvatarWithUserId \t%@", avatar);
-        handler(isSuccess, avatar);
+
     }];
 }
 
@@ -808,11 +892,11 @@
             if (viewSearchForumPage != nil && viewSearchForumPage.dataList != nil && viewSearchForumPage.dataList.count > 0) {
                 handler(YES, viewSearchForumPage);
             } else {
-                handler(NO, @"未知错误");
+                handler(NO, [forumParser parseErrorMessage:html]);
             }
 
         } else {
-            handler(NO, html);
+            handler(NO, [forumParser parseErrorMessage:html]);
         }
     }];
 }
@@ -824,7 +908,7 @@
             UserProfile *profile = [forumParser parserProfile:html userId:userId];
             handler(YES, profile);
         } else {
-            handler(NO, @"未知错误");
+            handler(NO, [forumParser parseErrorMessage:html]);
         }
     }];
 }
