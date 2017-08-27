@@ -192,8 +192,6 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
 
-    [self hidesTabBar:YES];
-
     pageDic = [NSMutableDictionary dictionary];
 
     [self.webView setScalesPageToFit:YES];
@@ -227,6 +225,14 @@
     }];
 
     [self.webView.scrollView.mj_header beginRefreshing];
+}
+
+- (void)viewDidAppear:(BOOL)animated {
+    [self hidesTabBar:YES];
+}
+
+- (void)viewWillDisappear:(BOOL)animated {
+    [self hidesTabBar:NO];
 }
 
 - (void) showPreviousPageOrRefresh{

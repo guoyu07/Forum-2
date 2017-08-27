@@ -22,8 +22,6 @@
 
 - (IBAction)changeNumber:(id)sender;
 
-@property(weak, nonatomic) IBOutlet UIBarButtonItem *pageNumber;
-
 - (IBAction)reply:(id)sender;
 @property (weak, nonatomic) IBOutlet UIButton *changePageButton;
 @property (weak, nonatomic) IBOutlet UILabel *pageTitleTextView;
