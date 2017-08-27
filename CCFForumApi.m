@@ -1100,9 +1100,6 @@ typedef void (^CallBack)(NSString *token, NSString *hash, NSString *time);
     [self GET:url requestCallback:^(BOOL isSuccess, NSString *html) {
         if (isSuccess) {
             NSString *token = [forumParser parseSecurityToken:html];
-
-
-
             NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
             [parameters setValue:@"" forKey:@"s"];
             [parameters setValue:token forKey:@"securitytoken"];
@@ -1111,7 +1108,7 @@ typedef void (^CallBack)(NSString *token, NSString *hash, NSString *time);
             [parameters setValue:@"0" forKey:[NSString stringWithFormat:@"pm[%@]", privateMessage.pmID]];
             [parameters setValue:@"delete" forKey:@"dowhat"];
 
-            [self.browser POSTWithURLString:url parameters:nil charset:UTF_8 requestCallback:^(BOOL success, NSString *result) {
+            [self.browser POSTWithURLString:url parameters:parameters charset:UTF_8 requestCallback:^(BOOL success, NSString *result) {
                 handler(success, result);
             }];
 

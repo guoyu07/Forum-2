@@ -163,7 +163,11 @@
 }
 
 - (NSString *)deletePrivateWithType:(int)type {
-    return [NSString stringWithFormat:@"%@private.php?folderid=%d", _forumURL.absoluteString, type];
+    int fixType = type;
+    if (fixType != 0){
+        fixType = -1;
+    }
+    return [NSString stringWithFormat:@"%@private.php?folderid=%d", _forumURL.absoluteString, fixType];
 }
 
 - (NSString *)privateShowWithMessageId:(int)messageId withType:(int)type {
