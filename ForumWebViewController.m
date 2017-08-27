@@ -794,7 +794,7 @@
     }];
 }
 - (IBAction)firstPage:(id)sender {
-    if (currentShowThreadPage.pageNumber.totalPageNumber == currentShowThreadPage.pageNumber.currentPageNumber){
+    if (1 == currentShowThreadPage.pageNumber.currentPageNumber){
         [self.webView.scrollView.mj_header beginRefreshing];
         return;
     }
