@@ -102,6 +102,8 @@
 		3A2C40061DDFE3AD00576151 /* TransValueUITableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A2C40051DDFE3AD00576151 /* TransValueUITableViewCell.m */; };
 		3A2C400A1DE0015C00576151 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A2C40091DE0015C00576151 /* main.m */; };
 		3A5A2CD61EBDEA7100B62F96 /* ForumSupportNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A5A2CD51EBDEA7100B62F96 /* ForumSupportNavigationController.m */; };
+		3A66A6CE1F52CFB7009DDEAE /* ChangePageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A66A6CD1F52CFB7009DDEAE /* ChangePageView.m */; };
+		3A66A6D01F52CFCC009DDEAE /* ChangePageView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3A66A6CF1F52CFCC009DDEAE /* ChangePageView.xib */; };
 		3A6B4F611EB705A600B9CD79 /* DeviceName.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A6B4F601EB705A600B9CD79 /* DeviceName.m */; };
 		3A92CD9C1F2C7D9B00E41573 /* CrskyForumApi.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A92CD9B1F2C7D9B00E41573 /* CrskyForumApi.m */; };
 		3A92CD9F1F2C7E6000E41573 /* CrskyForumConfig.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A92CD9E1F2C7E6000E41573 /* CrskyForumConfig.m */; };
@@ -335,6 +337,9 @@
 		3A2C40091DE0015C00576151 /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		3A5A2CD41EBDEA7100B62F96 /* ForumSupportNavigationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ForumSupportNavigationController.h; sourceTree = "<group>"; };
 		3A5A2CD51EBDEA7100B62F96 /* ForumSupportNavigationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ForumSupportNavigationController.m; sourceTree = "<group>"; };
+		3A66A6CC1F52CFB7009DDEAE /* ChangePageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChangePageView.h; sourceTree = "<group>"; };
+		3A66A6CD1F52CFB7009DDEAE /* ChangePageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChangePageView.m; sourceTree = "<group>"; };
+		3A66A6CF1F52CFCC009DDEAE /* ChangePageView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ChangePageView.xib; sourceTree = "<group>"; };
 		3A6B4F5F1EB705A600B9CD79 /* DeviceName.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DeviceName.h; sourceTree = "<group>"; };
 		3A6B4F601EB705A600B9CD79 /* DeviceName.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DeviceName.m; sourceTree = "<group>"; };
 		3A92CD9A1F2C7D9B00E41573 /* CrskyForumApi.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CrskyForumApi.h; sourceTree = "<group>"; };
@@ -550,6 +555,9 @@
 			isa = PBXGroup;
 			children = (
 				3A288A4E1DFAF569002EBBC2 /* DrawerViewDelegate.h */,
+				3A66A6CC1F52CFB7009DDEAE /* ChangePageView.h */,
+				3A66A6CD1F52CFB7009DDEAE /* ChangePageView.m */,
+				3A66A6CF1F52CFCC009DDEAE /* ChangePageView.xib */,
 				3A288A491DFAE47F002EBBC2 /* DrawerView.h */,
 				3A288A4A1DFAE47F002EBBC2 /* DrawerView.m */,
 				3A288A4B1DFAE47F002EBBC2 /* DrawerView.xib */,
@@ -1042,6 +1050,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				3A2C3F211DDFBADA00576151 /* private_message.html in Resources */,
+				3A66A6D01F52CFCC009DDEAE /* ChangePageView.xib in Resources */,
 				3A2C3F5C1DDFBFC500576151 /* ForumListHeaderView.xib in Resources */,
 				3A2C3F1F1DDFBAD000576151 /* post_view.html in Resources */,
 				3A2C3F8E1DDFDFC000576151 /* ApiTestViewController.xib in Resources */,
@@ -1215,6 +1224,7 @@
 				3A2C3FD31DDFE0C900576151 /* ForumLoginViewController.m in Sources */,
 				3A92CDBB1F35378500E41573 /* AFSecurityPolicy.m in Sources */,
 				3A2C3F7E1DDFC0CD00576151 /* UIImage+Tint.m in Sources */,
+				3A66A6CE1F52CFB7009DDEAE /* ChangePageView.m in Sources */,
 				3A6B4F611EB705A600B9CD79 /* DeviceName.m in Sources */,
 				3A2C3F6A1DDFC03400576151 /* LeftDrawerItem.m in Sources */,
 				3A92CD9F1F2C7E6000E41573 /* CrskyForumConfig.m in Sources */,
