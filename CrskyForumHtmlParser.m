@@ -49,9 +49,13 @@
         post.postTime = time;
 
         //4. content
-        IGXMLNode *contentNode = [contentDoc queryNodeWithClassName:@"tpc_content"];
-        NSString *content = contentNode.html;
-        post.postContent = content;
+        IGXMLNodeSet *contentNodeSet = [contentDoc queryWithClassName:@"tpc_content"];
+        NSMutableString *content = [NSMutableString string];
+        for (IGXMLNode * node in contentNodeSet) {
+            [content appendString:node.html];
+        }
+
+        post.postContent = [content copy];
 
         //5. user
         User * user = [[User alloc] init];
