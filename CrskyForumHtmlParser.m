@@ -118,15 +118,25 @@
 
 - (ViewThreadPage *)parseShowThreadWithHtml:(NSString *)html {
 
-    IGHTMLDocument *document = [[IGHTMLDocument alloc] initWithHTMLString:html error:nil];
+    NSArray *fontSetString = [html arrayWithRegular:@"<font size=\"\\d+\">"];
+
+    NSString *fixFontSizeHTML = html;
+
+    for (NSString *tmp in fontSetString) {
+        fixFontSizeHTML = [fixFontSizeHTML stringByReplacingOccurrencesOfString:tmp withString:@"<font size=\"\2\">"];
+    }
+
+    NSString *fixedHtml = fixFontSizeHTML;
+
+    IGHTMLDocument *document = [[IGHTMLDocument alloc] initWithHTMLString:fixedHtml error:nil];
 
     ViewThreadPage *showThreadPage = [[ViewThreadPage alloc] init];
     //1. tid
-    int tid = [[html stringWithRegular:@"(?<=tid=)\\d+"] intValue];
+    int tid = [[fixedHtml stringWithRegular:@"(?<=tid=)\\d+"] intValue];
     showThreadPage.threadID = tid;
 
     //2. fid
-    int fid = [[html stringWithRegular:@"(?<=fid=)\\d+"] intValue];
+    int fid = [[fixedHtml stringWithRegular:@"(?<=fid=)\\d+"] intValue];
     showThreadPage.forumId = fid;
 
     //3. title
@@ -139,19 +149,19 @@
     showThreadPage.postList = posts;
 
     //5. orgHtml
-    NSString *orgHtml = [self postMessages:html];
+    NSString *orgHtml = [self postMessages:fixedHtml];
     showThreadPage.originalHtml = orgHtml;
 
     //6. number
-    PageNumber *pageNumber = [self parserPageNumber:html];
+    PageNumber *pageNumber = [self parserPageNumber:fixedHtml];
     showThreadPage.pageNumber = pageNumber;
 
     //7. token
-    NSString * token = [self token:html];
+    NSString * token = [self token:fixedHtml];
     showThreadPage.securityToken = token;
 
     // 10. quick reply title
-    NSString * quickReplyTitle = [html stringWithRegular:@"(?<=<input type=\"text\" class=\"input\" name=\"atc_title\" value=\")\\S+(?=\" size=\"65\" />)"];
+    NSString * quickReplyTitle = [fixedHtml stringWithRegular:@"(?<=<input type=\"text\" class=\"input\" name=\"atc_title\" value=\")\\S+(?=\" size=\"65\" />)"];
     showThreadPage.quickReplyTitle = quickReplyTitle;
 
     return showThreadPage;
