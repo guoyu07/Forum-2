@@ -29,5 +29,6 @@
 - (IBAction)previousPage:(id)sender;
 - (IBAction)lastPage:(id)sender;
 - (IBAction)nextPage:(id)sender;
+@property (strong, nonatomic) IBOutletCollection(UIVisualEffectView) NSArray *blurView;
 
 @end

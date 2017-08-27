@@ -21,6 +21,7 @@
 #import "ForumUserProfileTableViewController.h"
 #import "AppDelegate.h"
 #import "LocalForumApi.h"
+#import "ForumTabBarController.h"
 
 @interface ForumWebViewController () <UIWebViewDelegate, UIScrollViewDelegate, TransBundleDelegate, CAAnimationDelegate> {
 
@@ -145,50 +146,6 @@
     self.pageTitleTextView.text = title;
 }
 
-- (void)hidesTabBar:(BOOL)hidden{
-
-      [UIView beginAnimations:nil context:NULL];
-
-      [UIView setAnimationDuration:0];
-
-      for (UIView *view in self.tabBarController.view.subviews) {
-
-            if ([view isKindOfClass:[UITabBar class]]) {
-
-                  if (hidden) {
-
-                        [view setFrame:CGRectMake(view.frame.origin.x, [UIScreen mainScreen].bounds.size.height, view.frame.size.width , view.frame.size.height)];
-
-                      } else {
-
-                        [view setFrame:CGRectMake(view.frame.origin.x, [UIScreen mainScreen].bounds.size.height - 49, view.frame.size.width, view.frame.size.height)];
-
-                      }
-
-                } else {
-
-                  if([view isKindOfClass:NSClassFromString(@"UITransitionView")]){
-
-                        if (hidden) {
-
-                             [view setFrame:CGRectMake(view.frame.origin.x, view.frame.origin.y, view.frame.size.width, [UIScreen mainScreen].bounds.size.height)];
-
-                            } else {
-
-                              [view setFrame:CGRectMake(view.frame.origin.x, view.frame.origin.y, view.frame.size.width, [UIScreen mainScreen].bounds.size.height - 49 )];
-
-                            }
-
-                      }
-
-                }
-
-          }
-
-      [UIView commitAnimations];
-
-}
-
 - (void)viewDidLoad {
     [super viewDidLoad];
 
@@ -225,14 +182,6 @@
     }];
 
     [self.webView.scrollView.mj_header beginRefreshing];
-}
-
-- (void)viewDidAppear:(BOOL)animated {
-    [self hidesTabBar:YES];
-}
-
-- (void)viewWillDisappear:(BOOL)animated {
-    [self hidesTabBar:NO];
 }
 
 - (void) showPreviousPageOrRefresh{
