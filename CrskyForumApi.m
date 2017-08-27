@@ -10,7 +10,7 @@
 #import "ForumParserDelegate.h"
 #import "AFHTTPSessionManager+SimpleAction.h"
 #import "NSUserDefaults+Setting.h"
-#import "ForumCoreDataManager.h"ƒ
+#import "ForumCoreDataManager.h"
 #import "NSString+Extensions.h"
 #import "CharUtils.h"
 #import "IGHTMLDocument.h"
@@ -177,7 +177,7 @@
             if (thread.postList.count > 0) {
                 handler(YES, thread);
             } else {
-                handler(NO, @"未知错误");
+                handler(NO, [forumParser parseErrorMessage:html]);
             }
         } else {
             handler(NO, html);
@@ -275,7 +275,7 @@
             if (thread.postList.count > 0) {
                 handler(YES, thread);
             } else {
-                handler(NO, @"未知错误");
+                handler(NO, [forumParser parseErrorMessage:html]);
             }
         } else {
             handler(NO, html);
@@ -351,7 +351,7 @@
             if (thread.postList.count > 0) {
                 handler(YES, thread);
             } else {
-                handler(NO, @"未知错误");
+                handler(NO, [forumParser parseErrorMessage:html]);
             }
         } else {
             handler(NO, html);
@@ -418,7 +418,7 @@
         if (page != nil && page.dataList != nil && page.dataList.count > 0) {
             handler(YES, page);
         } else {
-            handler(NO, @"未知错误");
+            handler(NO, [forumParser parseErrorMessage:searchResult]);
         }
     }];
 }
@@ -892,7 +892,7 @@
             if (viewSearchForumPage != nil && viewSearchForumPage.dataList != nil && viewSearchForumPage.dataList.count > 0) {
                 handler(YES, viewSearchForumPage);
             } else {
-                handler(NO, @"未知错误");
+                handler(NO, [forumParser parseErrorMessage:html]);
             }
 
         } else {
@@ -908,7 +908,7 @@
             UserProfile *profile = [forumParser parserProfile:html userId:userId];
             handler(YES, profile);
         } else {
-            handler(NO, @"未知错误");
+            handler(NO, [forumParser parseErrorMessage:html]);
         }
     }];
 }

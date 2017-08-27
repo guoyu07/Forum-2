@@ -14,8 +14,14 @@
 #import "IGXMLNode+QueryNode.h"
 
 @implementation CrskyForumHtmlParser
+
 - (NSString *)parseErrorMessage:(NSString *)html {
-    return nil;
+    if ([html containsString:@"<td class=\"h\" colspan=\"2\">霏凡论坛 - 非凡软件站 提示信息</td>"]){
+        IGHTMLDocument *document = [[IGHTMLDocument alloc] initWithHTMLString:html error:nil];
+        IGXMLNode * messageNode = [document queryNodeWithClassName:@"f_one"];
+        return messageNode.text.trim;
+    }
+    return @"未知错误";
 }
 
 
