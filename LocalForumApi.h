@@ -7,6 +7,7 @@
 
 @class LoginUser;
 @class Forums;
+@class ForumWebViewController;
 
 
 @interface LocalForumApi : NSObject

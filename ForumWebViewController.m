@@ -537,8 +537,6 @@
     return [NSDictionary dictionaryWithDictionary:pairs];
 }
 
-
-
 - (void)reportThreadPost:(int)postId userName:(NSString *)userName {
   UIStoryboard *storyboard = [UIStoryboard mainStoryboard];
 
@@ -692,24 +690,7 @@
     if (navigationType == UIWebViewNavigationTypeLinkClicked && ([request.URL.scheme isEqualToString:@"http"] || [request.URL.scheme isEqualToString:@"https"])) {
 
 
-        NSString *path = request.URL.path;
-        if ([path rangeOfString:@"showthread.php"].location != NSNotFound) {
-            // 显示帖子
-            NSDictionary *query = [self dictionaryFromQuery:request.URL.query usingEncoding:NSUTF8StringEncoding];
-
-            NSString *threadIdStr = [query valueForKey:@"t"];
-
-
-            UIStoryboard *storyboard = [UIStoryboard mainStoryboard];
-            ForumWebViewController *showThreadController = [storyboard instantiateViewControllerWithIdentifier:@"ShowThreadDetail"];
-
-            TransBundle *bundle = [[TransBundle alloc] init];
-            [bundle putIntValue:[threadIdStr intValue] forKey:@"threadID"];
-
-            [self transBundle:bundle forController:showThreadController];
-
-            [self.navigationController pushViewController:showThreadController animated:YES];
-
+        if ([self.forumApi openUrlByClient:self request:request]){
             return NO;
         } else {
             [[UIApplication sharedApplication] openURL:request.URL];

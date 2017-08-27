@@ -13,6 +13,8 @@
 #import "CCFForumConfig.h"
 #import "CCFForumHtmlParser.h"
 #import "LocalForumApi.h"
+#import "ForumWebViewController.h"
+#import "UIStoryboard+Forum.h"
 
 #define kSecurityToken @"securitytoken"
 
@@ -1384,6 +1386,50 @@ typedef void (^CallBack)(NSString *token, NSString *hash, NSString *time);
             handler(NO, html);
         }
     }];
+}
+
+- (BOOL)openUrlByClient:(ForumWebViewController *)controller request:(NSURLRequest *)request {
+    NSString *path = request.URL.path;
+    if ([path rangeOfString:@"showthread.php"].location != NSNotFound) {
+        // 显示帖子
+        NSDictionary *query = [self dictionaryFromQuery:request.URL.query usingEncoding:NSUTF8StringEncoding];
+
+        NSString *threadIdStr = [query valueForKey:@"t"];
+
+
+        UIStoryboard *storyboard = [UIStoryboard mainStoryboard];
+        ForumWebViewController *showThreadController = [storyboard instantiateViewControllerWithIdentifier:@"ShowThreadDetail"];
+
+        TransBundle *bundle = [[TransBundle alloc] init];
+        [bundle putIntValue:[threadIdStr intValue] forKey:@"threadID"];
+
+        [controller transBundle:bundle forController:showThreadController];
+
+        [controller.navigationController pushViewController:showThreadController animated:YES];
+
+        return YES;
+    }
+    return NO;
+}
+
+#pragma private
+- (NSDictionary *)dictionaryFromQuery:(NSString *)query usingEncoding:(NSStringEncoding)encoding {
+    NSCharacterSet *delimiterSet = [NSCharacterSet characterSetWithCharactersInString:@"&;"];
+    NSMutableDictionary *pairs = [NSMutableDictionary dictionary];
+    NSScanner *scanner = [[NSScanner alloc] initWithString:query];
+    while (![scanner isAtEnd]) {
+        NSString *pairString = nil;
+        [scanner scanUpToCharactersFromSet:delimiterSet intoString:&pairString];
+        [scanner scanCharactersFromSet:delimiterSet intoString:NULL];
+        NSArray *kvPair = [pairString componentsSeparatedByString:@"="];
+        if (kvPair.count == 2) {
+            NSString *key = [[kvPair objectAtIndex:0] stringByReplacingPercentEscapesUsingEncoding:encoding];
+            NSString *value = [[kvPair objectAtIndex:1] stringByReplacingPercentEscapesUsingEncoding:encoding];
+            [pairs setObject:value forKey:key];
+        }
+    }
+
+    return [NSDictionary dictionaryWithDictionary:pairs];
 }
 
 @end

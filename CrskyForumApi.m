@@ -19,6 +19,9 @@
 #import "CrskyForumConfig.h"
 #import "CrskyForumHtmlParser.h"
 #import "LocalForumApi.h"
+#import "TransBundle.h"
+#import "UIStoryboard+Forum.h"
+#import "ForumWebViewController.h"
 
 @implementation CrskyForumApi{
     id <ForumConfigDelegate> forumConfig;
@@ -645,6 +648,54 @@
             handler(NO, html);
         }
     }];
+}
+
+- (void)deletePrivateMessage:(Message *)privateMessage withType:(int)type handler:(HandlerWithBool)handler {
+
+}
+
+- (BOOL)openUrlByClient:(ForumWebViewController *)controller request:(NSURLRequest *)request {
+    NSString *path = request.URL.path;
+    if ([path rangeOfString:@"read.php"].location != NSNotFound) {
+        // 显示帖子
+        NSDictionary *query = [self dictionaryFromQuery:request.URL.query usingEncoding:NSUTF8StringEncoding];
+
+        NSString *threadIdStr = [query valueForKey:@"tid"];
+
+
+        UIStoryboard *storyboard = [UIStoryboard mainStoryboard];
+        ForumWebViewController *showThreadController = [storyboard instantiateViewControllerWithIdentifier:@"ShowThreadDetail"];
+
+        TransBundle *bundle = [[TransBundle alloc] init];
+        [bundle putIntValue:[threadIdStr intValue] forKey:@"threadID"];
+
+        [controller transBundle:bundle forController:showThreadController];
+
+        [controller.navigationController pushViewController:showThreadController animated:YES];
+
+        return YES;
+    }
+    return NO;
+}
+
+#pragma private
+- (NSDictionary *)dictionaryFromQuery:(NSString *)query usingEncoding:(NSStringEncoding)encoding {
+    NSCharacterSet *delimiterSet = [NSCharacterSet characterSetWithCharactersInString:@"&;"];
+    NSMutableDictionary *pairs = [NSMutableDictionary dictionary];
+    NSScanner *scanner = [[NSScanner alloc] initWithString:query];
+    while (![scanner isAtEnd]) {
+        NSString *pairString = nil;
+        [scanner scanUpToCharactersFromSet:delimiterSet intoString:&pairString];
+        [scanner scanCharactersFromSet:delimiterSet intoString:NULL];
+        NSArray *kvPair = [pairString componentsSeparatedByString:@"="];
+        if (kvPair.count == 2) {
+            NSString *key = [[kvPair objectAtIndex:0] stringByReplacingPercentEscapesUsingEncoding:encoding];
+            NSString *value = [[kvPair objectAtIndex:1] stringByReplacingPercentEscapesUsingEncoding:encoding];
+            [pairs setObject:value forKey:key];
+        }
+    }
+
+    return [NSDictionary dictionaryWithDictionary:pairs];
 }
 
 - (void)listFavoriteForums:(HandlerWithBool)handler {

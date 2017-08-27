@@ -18,6 +18,7 @@
 @class ViewThreadPage;
 @class ViewMessagePage;
 @class Message;
+@class ForumWebViewController;
 
 typedef void (^HandlerWithBool)(BOOL isSuccess, id message);
 
@@ -103,5 +104,8 @@ typedef void (^HandlerWithBool)(BOOL isSuccess, id message);
 
 // 举报违规帖子
 - (void)reportThreadPost:(int)postId andMessage:(NSString *)message handler:(HandlerWithBool)handler;
+
+@required
+- (BOOL) openUrlByClient:(ForumWebViewController *) controller request:(NSURLRequest *)request;
 
 @end

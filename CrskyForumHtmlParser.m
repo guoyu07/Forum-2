@@ -50,12 +50,27 @@
 
         //4. content
         IGXMLNodeSet *contentNodeSet = [contentDoc queryWithClassName:@"tpc_content"];
-        NSMutableString *content = [NSMutableString string];
-        for (IGXMLNode * node in contentNodeSet) {
-            [content appendString:node.html];
+
+        int childCount = (int)contentNodeSet.count;
+        if (childCount == 1){
+            post.postContent = contentNodeSet.firstObject.html;
+        } else if (childCount > 1) {
+
+            NSMutableString *content = [NSMutableString string];
+
+            for (IGXMLNode * node in contentNodeSet) {
+                if ([node.innerHtml containsString:@"<div class=\"tal s3\">本帖最近评分记录：</div>"]){
+                    continue;
+                }
+                [content appendString:node.innerHtml];
+            }
+
+            post.postContent = [NSString stringWithFormat:@"<div class=\"tpc_content\">%@</div>", [content copy]];
+        } else {
+            post.postContent = @"错误请联系开发者：pobaby";
         }
 
-        post.postContent = [content copy];
+
 
         //5. user
         User * user = [[User alloc] init];
