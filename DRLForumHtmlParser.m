@@ -629,12 +629,18 @@
             
             IGXMLNode * postForNode = [node childAt:2];
             
-            NSLog(@"--------------------- %ld", (long) [postForNode children].count);
-            
             NSString * postIdNode = [postForNode html];
             NSString * postId = [postIdNode stringWithRegular:@"t=\\d+" andChild:@"\\d+"];
             
-            NSString * postTitle = [[[postForNode text] trim] componentsSeparatedByString:@"\n"].firstObject;
+            NSString * postTitle = @"[标题解析错误请联系@马小甲]";
+
+            IGXMLNodeSet * realNodeSet = postForNode.firstChild.children;
+            for (IGXMLNode * realNode in realNodeSet) {
+                if ([realNode.tag isEqualToString:@"a"] && [[realNode attribute:@"href"] hasPrefix:@"showthread.php?t="]){
+                    postTitle = realNode.text.trim;
+                }
+            }
+
             NSString * postAuthor = [[[node childAt:3] text] trim];
             NSString * postAuthorId = [[node.children[3] html] stringWithRegular:@"=\\d+" andChild:@"\\d+"];
             NSString * postTime = [[node.children[4] text] trim];
