@@ -180,9 +180,7 @@
 
 // private
 - (NSString *)timeForShort:(NSString *)time withFormat:(NSString *)format {
-    if (YES){
-        return time;
-    }
+
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
     //[dateFormatter setLocale:[[NSLocale alloc] initWithLocaleIdentifier:@"en_US"]];
     [dateFormatter setDateFormat:format];
@@ -443,7 +441,7 @@
         IGXMLNode *lastPostTimeNode = [threadNode childAt:6];
         //11. 最后回帖时间
         NSString *lastPostTime = [lastPostTimeNode childAt:0].text.trim;
-        thread.lastPostTime = [self timeForShort:lastPostTime withFormat:@"yyyy-MM-dd HH:mm:ss"];
+        thread.lastPostTime = [self timeForShort:lastPostTime withFormat:@"yyyy-MM-dd HH:mm"];
 
         //12. 最后发表的人
         NSString *lastPostAuthorName = [lastPostTimeNode.text componentsSeparatedByString:@"by: "].lastObject;
@@ -515,7 +513,7 @@
 
                     // 5. 时间
                     NSString *time = [node childAt:3].text.trim;
-                    message.pmTime = [self timeForShort:time withFormat:@"yyyy-MM-dd HH:mm:ss"];
+                    message.pmTime = [self timeForShort:time withFormat:@"yyyy-MM-dd HH:mm"];
 
                     [messagesList addObject:message];
 
@@ -551,7 +549,7 @@
 
                 // 5. 时间
                 NSString *time = [node childAt:3].text.trim;
-                message.pmTime = [self timeForShort:time withFormat:@"yyyy-MM-dd HH:mm:ss"];
+                message.pmTime = [self timeForShort:time withFormat:@"yyyy-MM-dd HH:mm"];
 
                 [messagesList addObject:message];
 
@@ -586,7 +584,7 @@
 
                 // 5. 时间
                 NSString *time = [node childAt:3].text.trim;
-                message.pmTime = [self timeForShort:time withFormat:@"yyyy-MM-dd HH:mm:ss"];
+                message.pmTime = [self timeForShort:time withFormat:@"yyyy-MM-dd HH:mm"];
 
                 [messagesList addObject:message];
 
