@@ -266,7 +266,7 @@
 
     NSString *threadID = [html stringWithRegular:@"(?<=<input type=\"hidden\" name=\"searchthreadid\" value=\")\\d+"];
     showThreadPage.threadID = [threadID intValue];
-    
+
     // page number
 
     PageNumber * pageNumber = [self pageNumber:html];
@@ -473,6 +473,12 @@
         }
     }
     forumDisplayPage.dataList = threadList;
+
+    //forumID
+    int fid = [[html stringWithRegular:@"(?<=newthread&amp;f=)\\d+"] intValue];
+    forumDisplayPage.forumId = fid;
+
+    forumDisplayPage.token = [self parseSecurityToken:html];
 
     // 总页数
     PageNumber * pageNumber = [self pageNumber:html];

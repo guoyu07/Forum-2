@@ -429,6 +429,12 @@
     }
     page.dataList = threadList;
 
+    //forumID
+    int fid = [[html stringWithRegular:@"(?<=newthread&amp;f=)\\d+"] intValue];
+    page.forumId = fid;
+
+    page.token = [self parseSecurityToken:html];
+
     // 总页数
     PageNumber *pageNumber = [self parserPageNumber:html];
     page.pageNumber = pageNumber;
