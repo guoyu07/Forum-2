@@ -180,6 +180,9 @@
 
 // private
 - (NSString *)timeForShort:(NSString *)time withFormat:(NSString *)format {
+    if (YES){
+        return time;
+    }
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
     //[dateFormatter setLocale:[[NSLocale alloc] initWithLocaleIdentifier:@"en_US"]];
     [dateFormatter setDateFormat:format];
@@ -611,7 +614,7 @@
     privateMessage.pmTitle = pmTitle;
 
     NSString *pmTime = [[[infoBaseNode childAt:0] childAt:2] childAt:1].text.trim;
-    privateMessage.pmTime = [self timeForShort:pmTime withFormat:@"yyyy-MM-dd HH:mm:ss"];
+    privateMessage.pmTime = [self timeForShort:pmTime withFormat:@"yyyy-MM-dd HH:mm"];
 
     NSString *pmContent = [[[infoBaseNode childAt:0] childAt:3] childAt:1].html;
     NSString * content = [NSString stringWithFormat:@"<div style=\"overflow-x: hidden;\">%@</div>", pmContent];
