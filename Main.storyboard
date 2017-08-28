@@ -854,9 +854,9 @@
                         <color key="tintColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstItem="IB4-2m-FBB" firstAttribute="top" secondItem="JUG-5g-vNr" secondAttribute="bottom" id="5j2-oV-kEZ"/>
+                            <constraint firstItem="JUG-5g-vNr" firstAttribute="height" secondItem="CQD-JO-ONT" secondAttribute="height" id="6GN-dw-7tZ"/>
                             <constraint firstItem="JUG-5g-vNr" firstAttribute="top" secondItem="3LB-8V-Icr" secondAttribute="bottom" id="8DQ-wb-E0O"/>
-                            <constraint firstAttribute="trailingMargin" secondItem="JUG-5g-vNr" secondAttribute="trailing" constant="-20" id="A2h-C3-3o1"/>
-                            <constraint firstItem="JUG-5g-vNr" firstAttribute="leading" secondItem="CQD-JO-ONT" secondAttribute="leadingMargin" constant="-20" id="Opm-eT-NvT"/>
+                            <constraint firstItem="JUG-5g-vNr" firstAttribute="centerX" secondItem="CQD-JO-ONT" secondAttribute="centerX" id="Yff-w8-1tt"/>
                             <constraint firstItem="JUG-5g-vNr" firstAttribute="width" secondItem="CQD-JO-ONT" secondAttribute="width" id="uSJ-Q4-zyd"/>
                         </constraints>
                     </view>
