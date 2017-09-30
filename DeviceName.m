@@ -1,6 +1,5 @@
 //
-//  DeviceName.m
-//  iOSDeviceName
+//  https://github.com/sebyddd/SDVersion
 //
 //  Created by 迪远 王 on 16/10/2.
 //  Copyright © 2016年 andforce. All rights reserved.
@@ -61,6 +60,13 @@
     if ([platform isEqualToString:@"iPhone9,1"]) return @"iPhone 7";
     if ([platform isEqualToString:@"iPhone9,2"]) return @"iPhone 7 Plus";
     if ([platform isEqualToString:@"iPhone9,4"]) return @"iPhone 7 Plus";
+    
+    if ([platform isEqualToString:@"iPhone10,1"]) return @"iPhone 8";
+    if ([platform isEqualToString:@"iPhone10,4"]) return @"iPhone 8";
+    if ([platform isEqualToString:@"iPhone10,2"]) return @"iPhone 8 Plus";
+    if ([platform isEqualToString:@"iPhone10,5"]) return @"iPhone 8 Plus";
+    if ([platform isEqualToString:@"iPhone10,3"]) return @"iPhone X";
+    if ([platform isEqualToString:@"iPhone10,6"]) return @"iPhone X";
     
     if ([platform isEqualToString:@"i386"]) return @"Simulator";
     if ([platform isEqualToString:@"x86_64"]) return @"Simulator";
