@@ -152,6 +152,7 @@
 		C7B59AE98E801BD822B9F92C /* CCFForumApi.m in Sources */ = {isa = PBXBuildFile; fileRef = C7B593CF20E3E8DCF4B2D83C /* CCFForumApi.m */; };
 		C7B59C89FE57387F98A2F727 /* CCFForumHtmlParser.m in Sources */ = {isa = PBXBuildFile; fileRef = C7B5922924FBE1978D345607 /* CCFForumHtmlParser.m */; };
 		C7B59D8E9D44A593D270BE03 /* NSData+UTF8.m in Sources */ = {isa = PBXBuildFile; fileRef = C7B590FF019B54B2E6BDDE91 /* NSData+UTF8.m */; };
+		C7B59FBEDA751551C16B2A0E /* WillSupportForums.json in Resources */ = {isa = PBXBuildFile; fileRef = C7B5905A537A8FC80DBF00E5 /* WillSupportForums.json */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -431,6 +432,7 @@
 		4DFB34CE1DF82D5E00BD8DD5 /* UserEntry+CoreDataProperties.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UserEntry+CoreDataProperties.m"; sourceTree = "<group>"; };
 		4DFB34D41DF946D300BD8DD5 /* CCFForumConfig.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCFForumConfig.h; sourceTree = "<group>"; };
 		4DFB34D51DF946D300BD8DD5 /* CCFForumConfig.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CCFForumConfig.m; sourceTree = "<group>"; };
+		C7B5905A537A8FC80DBF00E5 /* WillSupportForums.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = WillSupportForums.json; sourceTree = "<group>"; };
 		C7B590FF019B54B2E6BDDE91 /* NSData+UTF8.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSData+UTF8.m"; sourceTree = "<group>"; };
 		C7B5922924FBE1978D345607 /* CCFForumHtmlParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CCFForumHtmlParser.m; sourceTree = "<group>"; };
 		C7B593CF20E3E8DCF4B2D83C /* CCFForumApi.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CCFForumApi.m; sourceTree = "<group>"; };
@@ -481,6 +483,7 @@
 				3A288A541DFC534D002EBBC2 /* SupportForums.h */,
 				3A288A551DFC534D002EBBC2 /* SupportForums.m */,
 				3A288A4F1DFC4EAF002EBBC2 /* supportForums.json */,
+				C7B5905A537A8FC80DBF00E5 /* WillSupportForums.json */,
 			);
 			name = SupportForums;
 			sourceTree = "<group>";
@@ -1058,6 +1061,7 @@
 				3AE854B71DF2B0B3000F62E9 /* defaultAvatar.gif in Resources */,
 				3A2C3F5E1DDFBFC500576151 /* PageHeaderView.xib in Resources */,
 				3A288A4D1DFAE47F002EBBC2 /* DrawerView.xib in Resources */,
+				C7B59FBEDA751551C16B2A0E /* WillSupportForums.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
