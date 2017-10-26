@@ -39,7 +39,7 @@
     LoginUser *user = [[LoginUser alloc] init];
     user.userName = [self userName:@"bbs.crsky.com"];
     if (user.userName == nil || [user.userName isEqualToString:@""]){
-        [self logout];
+        //[self logout];
         return nil;
     }
     user.userID = [self userId:@"bbs.crsky.com"];
