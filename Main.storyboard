@@ -3247,18 +3247,18 @@
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
-                            <constraint firstItem="Vyn-Up-GW6" firstAttribute="leading" secondItem="hIX-vk-f6g" secondAttribute="leadingMargin" constant="-20" id="5Lo-6D-INC"/>
                             <constraint firstAttribute="trailingMargin" secondItem="fHy-E2-ooq" secondAttribute="trailing" constant="-20" id="BRt-jl-AGO"/>
                             <constraint firstItem="XMD-n7-rwN" firstAttribute="bottom" secondItem="Vyn-Up-GW6" secondAttribute="bottom" constant="49" id="FNB-bB-TDk"/>
                             <constraint firstItem="XMD-n7-rwN" firstAttribute="centerX" secondItem="hIX-vk-f6g" secondAttribute="centerX" id="Fbq-m0-71w"/>
                             <constraint firstItem="Vyn-Up-GW6" firstAttribute="top" secondItem="y7X-Xn-jjv" secondAttribute="bottom" id="K1r-Ah-m9h"/>
                             <constraint firstItem="fHy-E2-ooq" firstAttribute="centerX" secondItem="hIX-vk-f6g" secondAttribute="centerX" id="VPI-RL-jEv"/>
                             <constraint firstItem="fHy-E2-ooq" firstAttribute="leading" secondItem="hIX-vk-f6g" secondAttribute="leadingMargin" constant="-20" id="b8j-eX-cN3"/>
+                            <constraint firstItem="Vyn-Up-GW6" firstAttribute="centerX" secondItem="hIX-vk-f6g" secondAttribute="centerX" id="bvB-fX-QwK"/>
                             <constraint firstAttribute="trailingMargin" secondItem="XMD-n7-rwN" secondAttribute="trailing" constant="-20" id="eTH-0H-NdI"/>
                             <constraint firstItem="fHy-E2-ooq" firstAttribute="bottom" secondItem="Vyn-Up-GW6" secondAttribute="bottom" constant="49" id="lW4-fP-aiV"/>
                             <constraint firstItem="Hew-wL-ecQ" firstAttribute="top" secondItem="Vyn-Up-GW6" secondAttribute="bottom" constant="49" id="nFl-9d-Erc"/>
                             <constraint firstItem="XMD-n7-rwN" firstAttribute="leading" secondItem="hIX-vk-f6g" secondAttribute="leadingMargin" constant="-20" id="of8-hi-Jat"/>
-                            <constraint firstAttribute="trailingMargin" secondItem="Vyn-Up-GW6" secondAttribute="trailing" constant="-20" id="tPT-3R-jmN"/>
+                            <constraint firstItem="Vyn-Up-GW6" firstAttribute="width" secondItem="hIX-vk-f6g" secondAttribute="width" id="rj3-Md-ZFo"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="L8q-Ur-XlX">
