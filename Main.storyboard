@@ -149,6 +149,7 @@
                                         <constraint firstItem="vQ0-2H-nuD" firstAttribute="centerY" secondItem="FXM-4L-UfL" secondAttribute="centerY" id="o5j-Be-9rH"/>
                                         <constraint firstItem="vQ0-2H-nuD" firstAttribute="centerX" secondItem="FXM-4L-UfL" secondAttribute="centerX" id="tc9-nj-wLW"/>
                                     </constraints>
+                                    <edgeInsets key="layoutMargins" top="8" left="16" bottom="8" right="16"/>
                                     <variation key="default">
                                         <mask key="constraints">
                                             <exclude reference="f9x-Hu-UvC"/>
@@ -393,6 +394,7 @@
                                         <constraint firstItem="K3F-Iw-2CI" firstAttribute="top" secondItem="Vz4-ye-5E7" secondAttribute="topMargin" id="xYP-kh-bZb"/>
                                         <constraint firstItem="bBZ-R7-k5T" firstAttribute="centerY" secondItem="K3F-Iw-2CI" secondAttribute="centerY" id="yTd-F3-3ac"/>
                                     </constraints>
+                                    <edgeInsets key="layoutMargins" top="8" left="16" bottom="8" right="16"/>
                                 </tableViewCellContentView>
                                 <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                                 <connections>
@@ -1297,6 +1299,7 @@
                                         <constraint firstItem="BkW-lt-nwN" firstAttribute="top" secondItem="6DI-YY-teK" secondAttribute="topMargin" id="q2k-eZ-3hS"/>
                                         <constraint firstItem="gWb-1x-1ch" firstAttribute="centerY" secondItem="kkd-DX-cKv" secondAttribute="centerY" id="tdN-Ha-4JQ"/>
                                     </constraints>
+                                    <edgeInsets key="layoutMargins" top="8" left="16" bottom="8" right="16"/>
                                 </tableViewCellContentView>
                                 <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                                 <connections>
@@ -1337,6 +1340,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="623"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" red="0.93725490199999995" green="0.93725490199999995" blue="0.95686274510000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <edgeInsets key="layoutMargins" top="0.0" left="20" bottom="0.0" right="20"/>
                         <prototypes>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="SearchResultCell" rowHeight="97" id="DVG-eM-DIp" customClass="ForumSearchResultCell">
                                 <rect key="frame" x="0.0" y="55.333333333333336" width="414" height="97"/>
@@ -1411,6 +1415,7 @@
                                         <constraint firstItem="0Ad-wC-oPV" firstAttribute="leading" secondItem="QIY-KP-161" secondAttribute="leadingMargin" id="uhK-M2-T8z"/>
                                         <constraint firstItem="ykB-gW-gUJ" firstAttribute="bottom" secondItem="zGS-lb-LiW" secondAttribute="bottom" id="xJI-i4-fJV"/>
                                     </constraints>
+                                    <edgeInsets key="layoutMargins" top="8" left="16" bottom="8" right="16"/>
                                 </tableViewCellContentView>
                                 <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                                 <connections>
@@ -1564,6 +1569,7 @@
                                         <constraint firstAttribute="trailingMargin" secondItem="hXB-JU-p4k" secondAttribute="trailing" id="zRV-8y-rEh"/>
                                         <constraint firstItem="tLQ-8B-Ztr" firstAttribute="leading" secondItem="OHP-pl-OHN" secondAttribute="leadingMargin" id="zbP-Jz-Bw9"/>
                                     </constraints>
+                                    <edgeInsets key="layoutMargins" top="8" left="16" bottom="8" right="16"/>
                                 </tableViewCellContentView>
                                 <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                                 <connections>
@@ -2416,6 +2422,7 @@
                                         <constraint firstItem="3XX-4P-Uj9" firstAttribute="leading" secondItem="ZxV-Jr-Cq8" secondAttribute="trailing" constant="8" id="yeC-7c-0Au"/>
                                         <constraint firstItem="gby-Sj-yOz" firstAttribute="centerY" secondItem="ZxV-Jr-Cq8" secondAttribute="centerY" id="yuS-OX-gbp"/>
                                     </constraints>
+                                    <edgeInsets key="layoutMargins" top="8" left="16" bottom="8" right="16"/>
                                 </tableViewCellContentView>
                                 <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                                 <connections>
@@ -3306,9 +3313,9 @@
         <image name="tab_new_post" width="18" height="18"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="5JT-rQ-yp7"/>
-        <segue reference="Qk9-TF-3w3"/>
-        <segue reference="lf3-Ra-lJN"/>
+        <segue reference="N1G-Ig-hUe"/>
+        <segue reference="Ysv-Xy-VAF"/>
+        <segue reference="FiC-V2-LqH"/>
         <segue reference="BtX-d5-2Dd"/>
     </inferredMetricsTieBreakers>
 </document>
