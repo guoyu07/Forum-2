@@ -3254,11 +3254,10 @@
                             <constraint firstItem="fHy-E2-ooq" firstAttribute="centerX" secondItem="hIX-vk-f6g" secondAttribute="centerX" id="VPI-RL-jEv"/>
                             <constraint firstItem="fHy-E2-ooq" firstAttribute="leading" secondItem="hIX-vk-f6g" secondAttribute="leadingMargin" constant="-20" id="b8j-eX-cN3"/>
                             <constraint firstItem="Vyn-Up-GW6" firstAttribute="centerX" secondItem="hIX-vk-f6g" secondAttribute="centerX" id="bvB-fX-QwK"/>
-                            <constraint firstAttribute="trailingMargin" secondItem="XMD-n7-rwN" secondAttribute="trailing" constant="-20" id="eTH-0H-NdI"/>
                             <constraint firstItem="fHy-E2-ooq" firstAttribute="bottom" secondItem="Vyn-Up-GW6" secondAttribute="bottom" constant="49" id="lW4-fP-aiV"/>
                             <constraint firstItem="Hew-wL-ecQ" firstAttribute="top" secondItem="Vyn-Up-GW6" secondAttribute="bottom" constant="49" id="nFl-9d-Erc"/>
-                            <constraint firstItem="XMD-n7-rwN" firstAttribute="leading" secondItem="hIX-vk-f6g" secondAttribute="leadingMargin" constant="-20" id="of8-hi-Jat"/>
                             <constraint firstItem="Vyn-Up-GW6" firstAttribute="width" secondItem="hIX-vk-f6g" secondAttribute="width" id="rj3-Md-ZFo"/>
+                            <constraint firstItem="XMD-n7-rwN" firstAttribute="width" secondItem="hIX-vk-f6g" secondAttribute="width" id="uoq-a0-D0n"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="L8q-Ur-XlX">
