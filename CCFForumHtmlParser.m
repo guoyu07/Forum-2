@@ -524,7 +524,7 @@
 }
 
 - (NSString *)parsePostHash:(NSString *)html {
-    NSString *hash = [html stringWithRegular:@"(?<=<input type=\"hidden\" name=\"posthash\" value=\")\\w{32}(?= />)"];
+    NSString *hash = [html stringWithRegular:@"(?<=<input type=\"hidden\" name=\"posthash\" value=\")\\w{32}(?=\" />)"];
 
     return hash;
 }
