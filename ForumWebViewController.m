@@ -703,6 +703,11 @@
 }
 
 - (void)showChangePageActionSheet:(UIBarButtonItem *)sender {
+
+    if (currentShowThreadPage.pageNumber.totalPageNumber <= 1){
+        return;
+    }
+
     NSMutableArray<NSString *> *pages = [NSMutableArray array];
     for (int i = 0; i < currentShowThreadPage.pageNumber.totalPageNumber; i++) {
         NSString *page = [NSString stringWithFormat:@"第 %d 页", i + 1];
