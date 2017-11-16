@@ -27,6 +27,7 @@
     self.webView.dataDetectorTypes = UIDataDetectorTypeNone;
     self.webView.scrollView.decelerationRate = UIScrollViewDecelerationRateNormal;
     self.webView.delegate = self;
+    self.webView.scalesPageToFit=NO;
     self.webView.backgroundColor = [UIColor whiteColor];
     [self.webView setOpaque:NO];
 
@@ -77,8 +78,18 @@
     }
 
     NSLog(@"CrskyLogin.webViewDidFinishLoad %@ ", html);
-
-
+    
+    
+    // 改变样式
+    NSString *js = [NSString stringWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"changeLoginStyle" ofType:@"js"] encoding:NSUTF8StringEncoding error:nil];
+    
+    [webView stringByEvaluatingJavaScriptFromString:js];
+    
+    [self performSelector:@selector(hideMaskView) withObject:nil/*可传任意类型参数*/ afterDelay:1.0];
+}
+    
+- (void)hideMaskView{
+    self.maskLoadingView.hidden = YES;
 }
 
 - (void)webViewDidStartLoad:(UIWebView *)webView {

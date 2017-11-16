@@ -3079,13 +3079,30 @@
                                 <rect key="frame" x="0.0" y="0.0" width="414" height="672"/>
                                 <color key="backgroundColor" red="0.36078431370000003" green="0.38823529410000002" blue="0.4039215686" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             </webView>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="QOv-kG-Gsv">
+                                <rect key="frame" x="0.0" y="0.0" width="414" height="672"/>
+                                <subviews>
+                                    <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="GKa-cL-IIM">
+                                        <rect key="frame" x="197" y="326" width="20" height="20"/>
+                                    </activityIndicatorView>
+                                </subviews>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstItem="GKa-cL-IIM" firstAttribute="centerY" secondItem="QOv-kG-Gsv" secondAttribute="centerY" id="LBU-sT-Ld8"/>
+                                    <constraint firstItem="GKa-cL-IIM" firstAttribute="centerX" secondItem="QOv-kG-Gsv" secondAttribute="centerX" id="Lke-zJ-ZO7"/>
+                                </constraints>
+                            </view>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstItem="jql-FN-xDM" firstAttribute="height" secondItem="cjI-bK-fXy" secondAttribute="height" id="32A-BA-3JJ"/>
                             <constraint firstItem="jql-FN-xDM" firstAttribute="centerX" secondItem="cjI-bK-fXy" secondAttribute="centerX" id="3sI-Th-gh8"/>
+                            <constraint firstItem="QOv-kG-Gsv" firstAttribute="centerX" secondItem="jql-FN-xDM" secondAttribute="centerX" id="6Wr-ck-fbY"/>
                             <constraint firstItem="jql-FN-xDM" firstAttribute="width" secondItem="cjI-bK-fXy" secondAttribute="width" id="Ap6-7U-Voy"/>
+                            <constraint firstItem="QOv-kG-Gsv" firstAttribute="centerY" secondItem="jql-FN-xDM" secondAttribute="centerY" id="dxq-4g-5yk"/>
                             <constraint firstItem="jql-FN-xDM" firstAttribute="centerY" secondItem="cjI-bK-fXy" secondAttribute="centerY" id="gBd-C5-foZ"/>
+                            <constraint firstItem="QOv-kG-Gsv" firstAttribute="height" secondItem="jql-FN-xDM" secondAttribute="height" id="kuh-FM-ac4"/>
+                            <constraint firstItem="QOv-kG-Gsv" firstAttribute="width" secondItem="jql-FN-xDM" secondAttribute="width" id="oov-TJ-e8j"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="登录论坛" id="ixt-RD-2h2">
@@ -3097,6 +3114,7 @@
                         </barButtonItem>
                     </navigationItem>
                     <connections>
+                        <outlet property="maskLoadingView" destination="QOv-kG-Gsv" id="NzI-Oa-df5"/>
                         <outlet property="webView" destination="jql-FN-xDM" id="LVz-7n-OSA"/>
                     </connections>
                 </viewController>
