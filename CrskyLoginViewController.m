@@ -84,8 +84,12 @@
     NSString *js = [NSString stringWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"changeLoginStyle" ofType:@"js"] encoding:NSUTF8StringEncoding error:nil];
     
     [webView stringByEvaluatingJavaScriptFromString:js];
-
-
+    
+    [self performSelector:@selector(hideMaskView) withObject:nil/*可传任意类型参数*/ afterDelay:1.0];
+}
+    
+- (void)hideMaskView{
+    self.maskLoadingView.hidden = YES;
 }
 
 - (void)webViewDidStartLoad:(UIWebView *)webView {
