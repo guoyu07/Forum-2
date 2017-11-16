@@ -32,9 +32,18 @@
 
     NSDictionary*dictionnary = @{@"UserAgent": @"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/54.0.2840.71 Safari/537.36"};
     [[NSUserDefaults standardUserDefaults] registerDefaults:dictionnary];
-    
-    
+
     [self.webView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:@"http://bbs.crsky.com/login.php"]]];
+
+    if ([self isNeedHideLeftMenu]){
+        self.navigationItem.leftBarButtonItem = nil;
+    }
+}
+
+- (BOOL)isNeedHideLeftMenu {
+    LocalForumApi *localForumApi = [[LocalForumApi alloc] init];
+    NSString *bundleId = [localForumApi bundleIdentifier];
+    return ![bundleId isEqualToString:@"com.andforce.forum"];
 }
 
 // private
@@ -142,8 +151,6 @@
     if ([bundleId isEqualToString:@"com.andforce.forum"]){
         [localForumApi clearCurrentForumURL];
         [[UIStoryboard mainStoryboard] changeRootViewControllerTo:@"ShowSupportForums" withAnim:UIViewAnimationOptionTransitionFlipFromTop];
-    } else {
-        [self exitApplication];
     }
 }
 
