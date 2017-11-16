@@ -728,7 +728,12 @@
     int replaceId = 10000;
     for (IGXMLNode *forumP in topNode.children) {
         Forum *parent = [[Forum alloc] init];
-        NSString * name = [[[[[forumP childAt:0] childAt:0] childAt:0] childAt:2] childAt:0].text;
+        
+        NSString *parentName = [forumP childAt:0].html;
+        NSLog(@"%@", parentName);
+        
+        IGXMLNode *nameTitleNode = [[[forumP childAt:0] childAt:0] childAt:0];
+        NSString * name = [[nameTitleNode childAt:nameTitleNode.childrenCount -1] childAt:0].text;
         parent.forumName = name;
         parent.forumId = replaceId ++;
         parent.forumHost = host;
