@@ -77,6 +77,12 @@
     }
 
     NSLog(@"CrskyLogin.webViewDidFinishLoad %@ ", html);
+    
+    
+    // 改变样式
+    NSString *js = [NSString stringWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"changeLoginStyle" ofType:@"js"] encoding:NSUTF8StringEncoding error:nil];
+    
+    [webView stringByEvaluatingJavaScriptFromString:js];
 
 
 }
