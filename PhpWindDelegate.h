@@ -4,10 +4,15 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "ForumBrowserDelegate.h"
+
+typedef void (^UserInfoHandler)(BOOL isSuccess, id userName, id userId);
 
 @protocol PhpWindDelegate <NSObject>
 
 @optional
-- (void)fetchUserId:(HandlerWithBool)handler;
+
+// user's name & id
+- (void)fetchUserInfo:(UserInfoHandler)handler;
 
 @end

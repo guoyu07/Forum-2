@@ -62,7 +62,7 @@
     // 使用JS注入获取用户输入的密码
     NSString * userName = [webView stringByEvaluatingJavaScriptFromString:@"document.getElementsByName('pwuser')[0].value"];
     NSLog(@"CrskyLogin.userName->%@", userName);
-    if (userName != nil) {
+    if (userName != nil && ![userName isEqualToString:@""]) {
         // 保存用户名
         [self saveUserName:userName];
     }
@@ -94,11 +94,11 @@
         // 保存Cookie
         [localForumApi saveCookie];
 
-        [self.forumApi fetchUserId:^(BOOL isSuccess, NSString * userId) {
-
+        [self.forumApi fetchUserInfo:^(BOOL isSuccess, NSString *userName, NSString *userId) {
             if (isSuccess){
 
                 [localForumApi saveUserId:userId forHost:@"bbs.crsky.com"];
+                [localForumApi saveUserName:userName forHost:@"bbs.crsky.com"];
 
                 [self.forumApi listAllForums:^(BOOL success, id msg) {
                     if (success) {
@@ -127,9 +127,7 @@
                 }];
 
             }
-
         }];
-
 
         return NO;
     }
