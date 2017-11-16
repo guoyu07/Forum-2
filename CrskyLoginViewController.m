@@ -32,9 +32,18 @@
 
     NSDictionary*dictionnary = @{@"UserAgent": @"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/54.0.2840.71 Safari/537.36"};
     [[NSUserDefaults standardUserDefaults] registerDefaults:dictionnary];
-    
-    
+
     [self.webView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:@"http://bbs.crsky.com/login.php"]]];
+
+    if ([self isNeedHideLeftMenu]){
+        self.navigationItem.leftBarButtonItem = nil;
+    }
+}
+
+- (BOOL)isNeedHideLeftMenu {
+    LocalForumApi *localForumApi = [[LocalForumApi alloc] init];
+    NSString *bundleId = [localForumApi bundleIdentifier];
+    return ![bundleId isEqualToString:@"com.andforce.forum"];
 }
 
 // private
@@ -62,7 +71,7 @@
     // 使用JS注入获取用户输入的密码
     NSString * userName = [webView stringByEvaluatingJavaScriptFromString:@"document.getElementsByName('pwuser')[0].value"];
     NSLog(@"CrskyLogin.userName->%@", userName);
-    if (userName != nil) {
+    if (userName != nil && ![userName isEqualToString:@""]) {
         // 保存用户名
         [self saveUserName:userName];
     }
@@ -94,11 +103,11 @@
         // 保存Cookie
         [localForumApi saveCookie];
 
-        [self.forumApi fetchUserId:^(BOOL isSuccess, NSString * userId) {
-
+        [self.forumApi fetchUserInfo:^(BOOL isSuccess, NSString *userName, NSString *userId) {
             if (isSuccess){
 
                 [localForumApi saveUserId:userId forHost:@"bbs.crsky.com"];
+                [localForumApi saveUserName:userName forHost:@"bbs.crsky.com"];
 
                 [self.forumApi listAllForums:^(BOOL success, id msg) {
                     if (success) {
@@ -127,9 +136,7 @@
                 }];
 
             }
-
         }];
-
 
         return NO;
     }
@@ -144,8 +151,6 @@
     if ([bundleId isEqualToString:@"com.andforce.forum"]){
         [localForumApi clearCurrentForumURL];
         [[UIStoryboard mainStoryboard] changeRootViewControllerTo:@"ShowSupportForums" withAnim:UIViewAnimationOptionTransitionFlipFromTop];
-    } else {
-        [self exitApplication];
     }
 }
 

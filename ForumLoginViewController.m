@@ -58,6 +58,15 @@
 
     self.title = [forumConfig.forumURL.host uppercaseString];
 
+    if ([self isNeedHideLeftMenu]){
+        self.navigationItem.leftBarButtonItem = nil;
+    }
+}
+
+- (BOOL)isNeedHideLeftMenu {
+    LocalForumApi *localForumApi = [[LocalForumApi alloc] init];
+    NSString *bundleId = [localForumApi bundleIdentifier];
+    return ![bundleId isEqualToString:@"com.andforce.forum"];
 }
 
 #pragma mark UITextFieldDelegate
@@ -198,8 +207,6 @@
     if ([bundleId isEqualToString:@"com.andforce.forum"]){
         [localForumApi clearCurrentForumURL];
         [[UIStoryboard mainStoryboard] changeRootViewControllerTo:@"ShowSupportForums" withAnim:UIViewAnimationOptionTransitionFlipFromTop];
-    } else {
-        [self exitApplication];
     }
 }
 

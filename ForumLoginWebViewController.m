@@ -35,6 +35,16 @@
     [self.webView setOpaque:NO];
 
     [self.webView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:@"https://www.chiphell.com/member.php?mod=logging&action=login&mobile=2"]]];
+    
+    if ([self isNeedHideLeftMenu]){
+        self.navigationItem.leftBarButtonItem = nil;
+    }
+}
+
+- (BOOL)isNeedHideLeftMenu {
+    LocalForumApi *localForumApi = [[LocalForumApi alloc] init];
+    NSString *bundleId = [localForumApi bundleIdentifier];
+    return ![bundleId isEqualToString:@"com.andforce.forum"];
 }
 
 - (NSString*) getResponseHTML:(UIWebView *)webView {
@@ -94,8 +104,6 @@
     }
 
     NSLog(@"ForumLoginWebViewController.webViewDidFinishLoad %@ ", html);
-    
-
 }
 
 - (void)webViewDidStartLoad:(UIWebView *)webView {
@@ -122,8 +130,6 @@
     if ([bundleId isEqualToString:@"com.andforce.forum"]){
         [localForumApi clearCurrentForumURL];
         [[UIStoryboard mainStoryboard] changeRootViewControllerTo:@"ShowSupportForums" withAnim:UIViewAnimationOptionTransitionFlipFromTop];
-    } else {
-        [self exitApplication];
     }
 }
 
