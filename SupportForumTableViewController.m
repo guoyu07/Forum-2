@@ -34,6 +34,14 @@
 
     [self.tableView reloadData];
 
+
+    if ([localForumApi isHaveLoginForum]){
+        [self dismissViewControllerAnimated:YES completion:nil  ];
+        self.navigationItem.leftBarButtonItem.title = @"返回";
+    } else {
+        self.navigationItem.leftBarButtonItem.title = @"";
+    }
+
 }
 
 - (BOOL)setPullRefresh:(BOOL)enable {
@@ -147,7 +155,7 @@
     if ([localForumApi isHaveLoginForum]){
         [self dismissViewControllerAnimated:YES completion:nil  ];
     } else {
-        [self exitApplication];
+        //[self exitApplication];
     }
 }
 
