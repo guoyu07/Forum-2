@@ -55,6 +55,10 @@
     return html;
 }
 
+- (void)hideMaskView{
+    self.maskLoadingView.hidden = YES;
+}
+
 - (void)webViewDidFinishLoad:(UIWebView *)webView {
 
     NSString *html = [self getResponseHTML:webView];
@@ -65,6 +69,8 @@
         NSString *js = [NSString stringWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"chhlogin" ofType:@"js"]
                                                  encoding:NSUTF8StringEncoding error:nil];
         [webView stringByEvaluatingJavaScriptFromString:js];
+
+        [self performSelector:@selector(hideMaskView) withObject:nil/*可传任意类型参数*/ afterDelay:1.0];
 
     } else if ([currentURL isEqualToString:@"https://www.chiphell.com/forum.php?mobile=yes"]){
 
