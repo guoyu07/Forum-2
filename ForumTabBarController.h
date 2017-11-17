@@ -12,4 +12,6 @@
 
 - (void)showLeftDrawer;
 
+- (void) bringLeftDrawerToFront;
+
 @end

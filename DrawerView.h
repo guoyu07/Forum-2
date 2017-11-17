@@ -72,6 +72,8 @@ typedef NS_ENUM(NSInteger, DrawerIndex) {
 
 - (IBAction)showMyProfile:(id)sender;
 
+- (void) bringDrawerToFront;
+
 @property (weak, nonatomic) IBOutlet LeftDrawerItem *favForm;
 @property (weak, nonatomic) IBOutlet LeftDrawerItem *allForm;
 @property (weak, nonatomic) IBOutlet LeftDrawerItem *message;

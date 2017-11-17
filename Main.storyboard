@@ -956,7 +956,7 @@
         <scene sceneID="nUF-pr-pG4">
             <objects>
                 <tabBarController storyboardIdentifier="ForumTabBarControllerId" id="KZC-NN-lJ7" customClass="ForumTabBarController" sceneMemberID="viewController">
-                    <tabBar key="tabBar" contentMode="scaleToFill" translucent="NO" id="l8f-Hy-IeX">
+                    <tabBar key="tabBar" clipsSubviews="YES" contentMode="scaleToFill" translucent="NO" id="l8f-Hy-IeX" customClass="AutoSendBackTabBar">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="49"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
