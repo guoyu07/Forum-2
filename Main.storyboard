@@ -2647,7 +2647,7 @@
             </objects>
             <point key="canvasLocation" x="-2084" y="-6734"/>
         </scene>
-        <!--快速回复-->
+        <!--引用此楼回复-->
         <scene sceneID="OGd-Tp-z9B">
             <objects>
                 <viewController id="kIP-oP-GiC" customClass="ForumSimpleReplyViewController" sceneMemberID="viewController">
@@ -2674,7 +2674,7 @@
                             <constraint firstAttribute="trailingMargin" secondItem="CpD-fN-52J" secondAttribute="trailing" id="vaK-4t-Jm8"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" title="快速回复" id="xD8-HK-v8f">
+                    <navigationItem key="navigationItem" title="引用此楼回复" id="xD8-HK-v8f">
                         <barButtonItem key="leftBarButtonItem" title="取消" id="zIc-fo-mnn">
                             <color key="tintColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             <connections>
