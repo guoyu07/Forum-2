@@ -271,7 +271,7 @@
         [stretchAnimation setDelegate:self];
         [stretchAnimation setBeginTime:CACurrentMediaTime() + 0.35];
         [stretchAnimation setTimingFunction:[CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut]];
-        [self.view.layer addAnimation:stretchAnimation forKey:@"stretchAnimation"];
+        [self.webView.layer addAnimation:stretchAnimation forKey:@"stretchAnimation"];
         CATransition *animation = [CATransition animation];
         [animation setType:kCATransitionPush];
         [animation setSubtype:kCATransitionFromBottom];
@@ -373,7 +373,7 @@
 
             [stretchAnimation setTimingFunction:[CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut]];
             //[self.webView setAnchorPoint:CGPointMake(0.0, 1) forView:self.webView];
-            [self.view.layer addAnimation:stretchAnimation forKey:@"stretchAnimation"];
+            [self.webView.layer addAnimation:stretchAnimation forKey:@"stretchAnimation"];
 
             CATransition *animation = [CATransition animation];
             [animation setType:kCATransitionPush];
@@ -488,7 +488,7 @@
 
             [stretchAnimation setTimingFunction:[CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut]];
             //[self.webView setAnchorPoint:CGPointMake(0.0, 1) forView:self.webView];
-            [self.view.layer addAnimation:stretchAnimation forKey:@"stretchAnimation"];
+            [self.webView.layer addAnimation:stretchAnimation forKey:@"stretchAnimation"];
 
             CATransition *animation = [CATransition animation];
             [animation setType:kCATransitionPush];
