@@ -151,7 +151,6 @@
 		4DFB34D21DF82D5E00BD8DD5 /* UserEntry+CoreDataProperties.m in Sources */ = {isa = PBXBuildFile; fileRef = 4DFB34CE1DF82D5E00BD8DD5 /* UserEntry+CoreDataProperties.m */; };
 		4DFB34D61DF946D300BD8DD5 /* CCFForumConfig.m in Sources */ = {isa = PBXBuildFile; fileRef = 4DFB34D51DF946D300BD8DD5 /* CCFForumConfig.m */; };
 		757C88B17FCB5AFBB7C0CA0B /* libPods-Forum.a in Frameworks */ = {isa = PBXBuildFile; fileRef = EA91F0D805959E8525B7BE0D /* libPods-Forum.a */; };
-		C7B590361A6E9B9291780A1B /* CHHLoginCleanUp.js in Sources */ = {isa = PBXBuildFile; fileRef = C7B59BBCB659C596CB505F41 /* CHHLoginCleanUp.js */; };
 		C7B592195D565E7F41FD734C /* chhlogin.js in Resources */ = {isa = PBXBuildFile; fileRef = C7B59562B16849BAC8C2CE68 /* chhlogin.js */; };
 		C7B59AE98E801BD822B9F92C /* CCFForumApi.m in Sources */ = {isa = PBXBuildFile; fileRef = C7B593CF20E3E8DCF4B2D83C /* CCFForumApi.m */; };
 		C7B59C89FE57387F98A2F727 /* CCFForumHtmlParser.m in Sources */ = {isa = PBXBuildFile; fileRef = C7B5922924FBE1978D345607 /* CCFForumHtmlParser.m */; };
@@ -446,7 +445,6 @@
 		C7B59562B16849BAC8C2CE68 /* chhlogin.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = chhlogin.js; sourceTree = "<group>"; };
 		C7B598A44A0FE5E0B0F59D42 /* CCFForumApi.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCFForumApi.h; sourceTree = "<group>"; };
 		C7B59A3EE329F70B4CDE26BE /* NSData+UTF8.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSData+UTF8.h"; sourceTree = "<group>"; };
-		C7B59BBCB659C596CB505F41 /* CHHLoginCleanUp.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = CHHLoginCleanUp.js; sourceTree = "<group>"; };
 		C7B59F4D903D9AD821ED5B6F /* CCFForumHtmlParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCFForumHtmlParser.h; sourceTree = "<group>"; };
 		DC2C41C75F27D6D0DA04D195 /* Pods-Forum.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Forum.release.xcconfig"; path = "Pods/Target Support Files/Pods-Forum/Pods-Forum.release.xcconfig"; sourceTree = "<group>"; };
 		EA91F0D805959E8525B7BE0D /* libPods-Forum.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Forum.a"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -869,7 +867,6 @@
 				4D339D8C1C31454A0022A6A4 /* Products */,
 				849509D36740A6FFD960CDA8 /* Pods */,
 				CC5E7A99B69535660B7F40C0 /* Frameworks */,
-				C7B59BBCB659C596CB505F41 /* CHHLoginCleanUp.js */,
 			);
 			sourceTree = "<group>";
 		};
@@ -1274,7 +1271,6 @@
 				2F34CDC68B8E6EA4AB5D764B /* PageNumber.m in Sources */,
 				2F34C50DE4CFA57C8F4036DE /* CharUnicodeBlock.m in Sources */,
 				2F34C88B8603A7549BC052D5 /* LocalForumApi.m in Sources */,
-				C7B590361A6E9B9291780A1B /* CHHLoginCleanUp.js in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
