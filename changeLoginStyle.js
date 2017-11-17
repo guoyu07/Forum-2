@@ -3,15 +3,15 @@ for (var index in hideElements){
     document.getElementById(hideElements[index]).style.display="none";
 }
 
-var xpaths=new Array("//*[@id='main']/form/div/table/tbody/tr[6]", "//*[@id='main']/form/div/table/tbody/tr[7]",
+var xpaths=["//*[@id='main']/form/div/table/tbody/tr[6]", "//*[@id='main']/form/div/table/tbody/tr[7]",
                      "//*[@id='main']/form/div/table/tbody/tr[2]/th/input[2]","//*[@id='main']/form/div/table/tbody/tr[2]/td/a",
                      "//*[@id='main']/form/div/table/tbody/tr[3]/td/a","//*[@id='main']/form/div/table/tbody/tr[4]/td/font",
                      "//*[@id='main']/form/div/table/tbody/tr[5]/td/span",
-                     
+
                      "//*[@id='main']/form/div/table/tbody/tr[2]/th",
                      "//*[@id='main']/form/div/table/tbody/tr[3]/th","//*[@id='main']/form/div/table/tbody/tr[4]/th",
                      "//*[@id='main']/form/div/table/tbody/tr[5]/th","//*[@id='main']/form/div/table/tbody/tr[8]/td[1]",
-                     "//*[@id='main']/form/div/table/tbody/tr[1]/th[1]");
+                     "//*[@id='main']/form/div/table/tbody/tr[1]/th[1]"];
 
 for (var indexPath in xpaths){
     var yinshenNode =document.evaluate(xpaths[indexPath], document).iterateNext();
@@ -30,3 +30,7 @@ pwdNode.setAttribute("placeholder","密码");
 
 var answerNode =document.evaluate("//*[@id='main']/form/div/table/tbody/tr[5]/td/input", document).iterateNext();
 answerNode.setAttribute("placeholder","安全问题答案");
+
+
+var adNode =document.evaluate("//*[@id='wrapA']/center", document).iterateNext();
+adNode.innerHTML = "";
