@@ -40,8 +40,12 @@ typedef void (^UserInfoHandler)(BOOL isSuccess, id userName, id userId);
 // 快速回复
 - (void)quickReplyPostWithMessage:(NSString *)message toPostId:(NSString *)postId thread:(ViewThreadPage *)threadPage handler:(HandlerWithBool)handler;
 
-// 高级模式回复
+// 带有图片回复
 - (void)seniorReplyPostWithMessage:(NSString *)message withImages:(NSArray *)images toPostId:(NSString *)postId  thread:(ViewThreadPage *)threadPage handler:(HandlerWithBool)handler;
+
+// 引用回复楼层
+- (void)quoteReplyPostWithMessage:(NSString *)message withImages:(NSArray *)images toPostId:(NSString *)postId  thread:(ViewThreadPage *)threadPage handler:(HandlerWithBool)handler;
+
 
 // 搜索论坛
 // 0.标题 1. 内容 2. 用户

@@ -610,6 +610,7 @@
                 [bundle putStringValue:token forKey:@"SECYRITY_TOKEN"];
                 [bundle putStringValue:currentShowThreadPage.ajaxLastPost forKey:@"AJAX_LAST_POST"];
                 [bundle putStringValue:userName forKey:@"USER_NAME"];
+                [bundle putIntValue:1 forKey:@"ISQUOTEREPLY"];
 
                 [bundle putObjectValue:currentShowThreadPage forKey:@"QUICK_REPLY_THREAD"];
 

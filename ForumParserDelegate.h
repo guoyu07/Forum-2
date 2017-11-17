@@ -70,4 +70,5 @@
 
 - (NSString *)parseLoginErrorMessage:(NSString *)html;
 
+- (NSString *)parseQuote:(NSString *)html;
 @end

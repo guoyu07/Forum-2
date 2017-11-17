@@ -541,6 +541,13 @@
     return contents.firstObject.text;
 }
 
+- (NSString *)parseQuote:(NSString *)html {
+    IGHTMLDocument *document = [[IGHTMLDocument alloc] initWithHTMLString:html error:nil];
+    IGXMLNodeSet *contents = [document queryWithXPath:@"//*[@id=\"vB_Editor_001_textarea\"]/text()"];
+    return contents.firstObject.text;
+}
+
+
 - (ViewSearchForumPage *)parseSearchPageFromHtml:(NSString *)html {
     IGHTMLDocument *document = [[IGHTMLDocument alloc] initWithHTMLString:html error:nil];
     IGXMLNodeSet *searchNodeSet = [document queryWithXPath:@"//*[@id='threadslist']/tr[*]"];

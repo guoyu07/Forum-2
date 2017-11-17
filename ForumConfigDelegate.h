@@ -64,8 +64,11 @@
 // 查看新帖
 - (NSString *)searchNewThread:(int)page;
 
-// 回帖
+// 回复主题帖子
 - (NSString *)replyWithThreadId:(int)threadId forForumId:(int)forumId replyPostId:(int)postId;
+
+// 回复楼层，引用回复
+- (NSString *)quoteReply:(int)threadId postId:(int)postId;
 
 // ShowThread
 - (NSString *)showThreadWithThreadId:(NSString *)threadId withPage:(int)page;
