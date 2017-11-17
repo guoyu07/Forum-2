@@ -68,7 +68,6 @@
 - (void)createNewThreadWithCategory:(NSString *)category categoryIndex:(int)index withTitle:(NSString *)title
                          andMessage:(NSString *)message withImages:(NSArray *)images inPage:(ViewForumPage *)page handler:(HandlerWithBool)handler {
 
-
 }
 
 - (void)quickReplyPostWithMessage:(NSString *)message toPostId:(NSString *)postId thread:(ViewThreadPage *)threadPage handler:(HandlerWithBool)handler {
@@ -174,14 +173,15 @@
 }
 
 - (void)showPrivateMessageContentWithId:(int)pmId withType:(int)type handler:(HandlerWithBool)handler {
+
 }
 
 - (void)sendPrivateMessageToUserName:(NSString *)name andTitle:(NSString *)title andMessage:(NSString *)message handler:(HandlerWithBool)handler {
 
 }
 
-
 - (void)replyPrivateMessage:(Message *)privateMessage andReplyContent:(NSString *)content handler:(HandlerWithBool)handler {
+
 }
 
 - (void)favoriteForumWithId:(NSString *)forumId handler:(HandlerWithBool)handler {
@@ -247,6 +247,14 @@
             handler(NO, html);
         }
     }];
+}
+
+- (void)deletePrivateMessage:(Message *)privateMessage withType:(int)type handler:(HandlerWithBool)handler {
+
+}
+
+- (BOOL)openUrlByClient:(ForumWebViewController *)controller request:(NSURLRequest *)request {
+    return NO;
 }
 
 - (void)listFavoriteForums:(HandlerWithBool)handler {

@@ -72,7 +72,8 @@ static int DB_VERSION = 8;
 
     LocalForumApi *localForumApi = [[LocalForumApi alloc] init];
 
-    if (localForumApi.currentForumHost){
+    NSString *currentSelectForumHost = localForumApi.currentForumHost;
+    if (currentSelectForumHost){
         if (![localForumApi isHaveLogin:localForumApi.currentForumHost]){
             NSArray<Forums *> * loginForums = localForumApi.loginedSupportForums;
             if(loginForums != nil && loginForums.count >0){

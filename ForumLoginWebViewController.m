@@ -80,7 +80,7 @@
 
         LocalForumApi *localForumApi = [[LocalForumApi alloc] init];
         id<ForumConfigDelegate> forumConfig = [ForumApiHelper forumConfig:localForumApi.currentForumHost];
-        if (userName != nil) {
+        if (userName != nil && ![userName isEqualToString:@""]) {
             // 保存Cookie
             [localForumApi saveCookie];
             // 保存用户名
