@@ -2718,10 +2718,10 @@
             </objects>
             <point key="canvasLocation" x="-338" y="-6714"/>
         </scene>
-        <!--举报此帖-->
+        <!--举报违规-->
         <scene sceneID="ddD-8s-RUr">
             <objects>
-                <viewController id="6JW-h0-SxQ" userLabel="举报此帖" customClass="ForumReportViewController" sceneMemberID="viewController">
+                <viewController id="6JW-h0-SxQ" userLabel="举报违规" customClass="ForumReportViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="Uov-sl-f6W"/>
                         <viewControllerLayoutGuide type="bottom" id="WGJ-sz-YNS"/>
@@ -2745,7 +2745,7 @@
                             <constraint firstItem="WGJ-sz-YNS" firstAttribute="top" secondItem="gb1-CM-e7u" secondAttribute="bottom" constant="8" id="a7E-Br-rmu"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" title="举报此帖" id="mdu-LS-HPa">
+                    <navigationItem key="navigationItem" title="举报违规" id="mdu-LS-HPa">
                         <barButtonItem key="leftBarButtonItem" title="取消" id="165-Ys-oZ1">
                             <color key="tintColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             <connections>
