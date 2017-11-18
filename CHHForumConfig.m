@@ -103,8 +103,8 @@
 
 - (NSString *)replyWithThreadId:(int)threadId forForumId:(int)forumId replyPostId:(int)postId {
 
-    if (postId == -1){  //  回复某个楼层
-        return [NSString stringWithFormat:@"https://www.chiphell.com/forum.php?mod=post&infloat=yes&action=reply&fid=%d&extra=page%@1&tid=%d&replysubmit=yes&inajax=1", forumId, @"%3D",threadId];
+    if (postId != -1){  //  回复某个楼层
+        return [NSString stringWithFormat:@"https://www.chiphell.com/forum.php?mod=post&action=reply&fid=%d&tid=%d&extra=page%%3D1&replysubmit=yes", forumId ,threadId];
     } else{
         return [NSString stringWithFormat:@"https://www.chiphell.com/forum.php?mod=post&action=reply&fid=%d&tid=%d&extra=&replysubmit=yes", forumId, threadId];
     }

@@ -37,7 +37,7 @@
 
     ViewThreadPage *showThreadPage = [[ViewThreadPage alloc] init];
     // threadId
-    IGXMLNode * threadIdNode = [document queryNodeWithXPath:@"//*[@id=\"postlist\"]/table[1]/tbody/tr/td[2]/span/a"];
+    IGXMLNode * threadIdNode = [document queryNodeWithXPath:@"//*[@id=\"postlist\"]/table[1]/tr/td[2]/span/a"];
     NSString * threadId = [[threadIdNode attribute:@"href"] componentsSeparatedByString:@"-"][1];
     // threadTitle
     IGXMLNode * threadTitleNode = [document queryNodeWithXPath:@"//*[@id=\"thread_subject\"]"];
@@ -281,6 +281,11 @@
 - (NSString *)parseLoginErrorMessage:(NSString *)html {
     return nil;
 }
+
+- (NSString *)parseQuote:(NSString *)html {
+    return nil;
+}
+
 
 - (ViewSearchForumPage *)parseSearchPageFromHtml:(NSString *)html {
     ViewSearchForumPage *page = [[ViewSearchForumPage alloc] init];

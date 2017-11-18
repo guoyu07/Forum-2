@@ -64,12 +64,6 @@
     handler(YES,categorys);
 }
 
-
-- (void)createNewThreadWithCategory:(NSString *)category categoryIndex:(int)index withTitle:(NSString *)title
-                         andMessage:(NSString *)message withImages:(NSArray *)images inPage:(ViewForumPage *)page handler:(HandlerWithBool)handler {
-
-}
-
 - (void)seniorReplyPostWithMessage:(NSString *)message withImages:(NSArray *)images toPostId:(NSString *)postId thread:(ViewThreadPage *)threadPage handler:(HandlerWithBool)handler {
     NSString *msg = message;
 
@@ -82,27 +76,46 @@
     int threadId = threadPage.threadID;
     int forumId = threadPage.forumId;
 
-    if (replyPostId == -1){     // 表示回复的某一个楼层
-        NSString *preReplyUrl = [NSString stringWithFormat:@"https://www.chiphell.com/forum.php?mod=post&action=reply&fid=%d&tid=%d&reppost=%d&extra=page%%3D1&page=1&infloat=yes&handlekey=reply&inajax=1&ajaxtarget=fwin_content_reply", forumId, threadId, replyPostId];
+    if (replyPostId != -1){     // 表示回复的某一个楼层
+
+        NSString *preReplyUrl = [NSString stringWithFormat:@"https://www.chiphell.com/forum.php?mod=post&action=reply&fid=%d&extra=page%%3D1&tid=%d&repquote=%d", forumId, threadId, replyPostId];
 
         [self GET:preReplyUrl requestCallback:^(BOOL isSuccess, NSString *html) {
             if (isSuccess) {
                 NSString *formHash = nil;
-                NSString *noticeAuthor = nil;
-                NSString *noticeAuthorMsg = nil;
-                int repPid = replyPostId;
-                int repPost = replyPostId;
+                NSString *posttime = nil;
+                NSString *wysiwyg = nil;
+                NSString *noticeauthor = nil;
+                NSString *noticetrimstr = nil;
+                NSString *noticeauthormsg = nil;
+                NSString *reppid = nil;
+                NSString *reppost = nil;
 
                 IGHTMLDocument * document = [[IGHTMLDocument alloc] initWithXMLString:html error:nil];
-                IGXMLNode *paramNode = [document queryNodeWithXPath:@"//*[@id=\"floatlayout_reply\"]/div"];
+
+                IGXMLNode *paramNode = [document queryNodeWithXPath:@"//*[@id='ct']"];
                 for (IGXMLNode *node  in paramNode.children) {
-                    if ([[node attribute:@"name"] isEqualToString:@"formhash"]) {
+                    NSString * nodeName = [node attribute:@"name"];
+
+                    if ([nodeName isEqualToString:@"formhash"]) {
                         formHash = [node attribute:@"value"];
-                    } else if ([[node attribute:@"name"] isEqualToString:@"noticeauthor"]) {
-                        noticeAuthor = [node attribute:@"value"];
-                    } else if ([[node attribute:@"name"] isEqualToString:@"noticeauthormsg"]) {
-                        noticeAuthorMsg = [node attribute:@"value"];
-                    } else {
+                    } else if ([nodeName isEqualToString:@"posttime"]) {
+                        posttime = [node attribute:@"value"];
+                    } else if ([nodeName isEqualToString:@"wysiwyg"]) {
+                        wysiwyg = [node attribute:@"value"];
+                    } else if([nodeName isEqualToString:@"noticeauthor"]){
+                        noticeauthor = [node attribute:@"value"];
+                    } else if ([nodeName isEqualToString:@"noticetrimstr"]){
+                        noticetrimstr = [node attribute:@"value"];
+                    } else if ([nodeName isEqualToString:@"noticeauthormsg"]){
+                        noticeauthormsg = [node attribute:@"value"];
+                    }else if ([nodeName isEqualToString:@"reppid"]){
+                        reppid = [node attribute:@"value"];
+                    }else if ([nodeName isEqualToString:@"reppost"]){
+                        reppost = [node attribute:@"value"];
+                    }
+
+                    else {
                         continue;
                     }
                 }
@@ -112,18 +125,21 @@
 
                 NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
                 [parameters setValue:token forKey:@"formhash"];
-                [parameters setValue:@"reply" forKey:@"handlekey"];
-                [parameters setValue:noticeAuthor forKey:@"noticeauthor"];
-                [parameters setValue:@"" forKey:@"noticetrimstr"];
-                [parameters setValue:noticeAuthorMsg forKey:@"noticeauthormsg"];
-                [parameters setValue:@"0" forKey:@"usesig"];
-                [parameters setValue:[NSString stringWithFormat:@"%d", repPid] forKey:@"reppid"];
-                [parameters setValue:[NSString stringWithFormat:@"%d", repPost] forKey:@"reppost"];
+
+                [parameters setValue:posttime forKey:@"posttime"];
+                [parameters setValue:@"1" forKey:@"wysiwyg"];
+                [parameters setValue:noticeauthor forKey:@"noticeauthor"];
+                [parameters setValue:noticetrimstr forKey:@"noticetrimstr"];
+                [parameters setValue:noticeauthormsg forKey:@"noticeauthormsg"];
+
+                [parameters setValue:reppid forKey:@"reppid"];
+                [parameters setValue:reppost forKey:@"reppost"];
                 [parameters setValue:@"" forKey:@"subject"];
                 [parameters setValue:msg forKey:@"message"];
+                [parameters setValue:@"" forKey:@"save"];
 
                 [self.browser POSTWithURLString:url parameters:parameters charset:UTF_8 requestCallback:^(BOOL repsuccess, NSString *repHtml) {
-                    ViewThreadPage *thread = [forumParser parseShowThreadWithHtml:html];
+                    ViewThreadPage *thread = [forumParser parseShowThreadWithHtml:repHtml];
                     if (thread.postList.count > 0) {
                         handler(YES, thread);
                     } else {
@@ -164,31 +180,6 @@
     }
 }
 
-- (void)quoteReplyPostWithMessage:(NSString *)message withImages:(NSArray *)images toPostId:(NSString *)postId thread:(ViewThreadPage *)threadPage handler:(HandlerWithBool)handler {
-
-}
-
-
-- (void)searchWithKeyWord:(NSString *)keyWord forType:(int)type handler:(HandlerWithBool)handler {
-
-}
-
-- (void)showPrivateMessageContentWithId:(int)pmId withType:(int)type handler:(HandlerWithBool)handler {
-
-}
-
-- (void)sendPrivateMessageToUserName:(NSString *)name andTitle:(NSString *)title andMessage:(NSString *)message handler:(HandlerWithBool)handler {
-
-}
-
-- (void)replyPrivateMessage:(Message *)privateMessage andReplyContent:(NSString *)content handler:(HandlerWithBool)handler {
-
-}
-
-- (void)favoriteForumWithId:(NSString *)forumId handler:(HandlerWithBool)handler {
-
-}
-
 - (void)unFavouriteForumWithId:(NSString *)forumId handler:(HandlerWithBool)handler {
     NSString *rurl = @"https://www.chiphell.com/home.php?mod=space&do=favorite&view=me";
 
@@ -211,9 +202,6 @@
     }];
 }
 
-- (void)favoriteThreadWithId:(NSString *)threadPostId handler:(HandlerWithBool)handler {
-
-}
 
 - (void)unFavoriteThreadWithId:(NSString *)threadPostId handler:(HandlerWithBool)handler {
 
@@ -248,10 +236,6 @@
             handler(NO, html);
         }
     }];
-}
-
-- (void)deletePrivateMessage:(Message *)privateMessage withType:(int)type handler:(HandlerWithBool)handler {
-
 }
 
 - (BOOL)openUrlByClient:(ForumWebViewController *)controller request:(NSURLRequest *)request {
@@ -375,10 +359,6 @@
     }];
 }
 
-- (void)showThreadWithP:(NSString *)p handler:(HandlerWithBool)handler {
-
-}
-
 - (void)forumDisplayWithId:(int)forumId andPage:(int)page handler:(HandlerWithBool)handler {
     NSString *url = [forumConfig forumDisplayWithId:[NSString stringWithFormat:@"%d", forumId] withPage:page];
     [self GET:url requestCallback:^(BOOL isSuccess, NSString *html) {
@@ -406,9 +386,6 @@
     }];
 }
 
-- (void)listSearchResultWithSearchId:(NSString *)searchid keyWord:(NSString *)keyWord andPage:(int)page handler:(HandlerWithBool)handler {
-}
-
 - (void)showProfileWithUserId:(NSString *)userId handler:(HandlerWithBool)handler {
     NSString *url = [forumConfig memberWithUserId:userId];
     [self GET:url requestCallback:^(BOOL isSuccess, NSString *html) {
@@ -422,7 +399,65 @@
 }
 
 - (void)reportThreadPost:(int)postId andMessage:(NSString *)message handler:(HandlerWithBool)handler {
+    handler(YES,@"");
+}
 
+- (void)createNewThreadWithCategory:(NSString *)category categoryIndex:(int)index withTitle:(NSString *)title
+                         andMessage:(NSString *)message withImages:(NSArray *)images inPage:(ViewForumPage *)page handler:(HandlerWithBool)handler {
+
+}
+
+- (void)quoteReplyPostWithMessage:(NSString *)message withImages:(NSArray *)images toPostId:(NSString *)postId thread:(ViewThreadPage *)threadPage handler:(HandlerWithBool)handler {
+//    NSString *quoteUrl = [forumConfig quoteReply:threadPage.forumId threadId:threadPage.threadID postId:[postId intValue]];
+//    [self GET:quoteUrl requestCallback:^(BOOL isSuccess, NSString *html) {
+//        if (isSuccess) {
+//
+//            NSString * quoteString = [forumParser parseQuote:html];
+//
+//            NSString * replyContent = [NSString stringWithFormat:@"%@ %@", quoteString, message];
+//            [self seniorReplyPostWithMessage:replyContent withImages:images toPostId:postId thread:threadPage handler:handler];
+//
+//        } else {
+//            handler(NO, html);
+//        }
+//    }];
+    [self seniorReplyPostWithMessage:message withImages:images toPostId:postId thread:threadPage handler:handler];
+}
+
+
+- (void)searchWithKeyWord:(NSString *)keyWord forType:(int)type handler:(HandlerWithBool)handler {
+
+}
+
+- (void)showPrivateMessageContentWithId:(int)pmId withType:(int)type handler:(HandlerWithBool)handler {
+
+}
+
+- (void)sendPrivateMessageToUserName:(NSString *)name andTitle:(NSString *)title andMessage:(NSString *)message handler:(HandlerWithBool)handler {
+
+}
+
+- (void)replyPrivateMessage:(Message *)privateMessage andReplyContent:(NSString *)content handler:(HandlerWithBool)handler {
+
+}
+
+- (void)favoriteForumWithId:(NSString *)forumId handler:(HandlerWithBool)handler {
+
+}
+
+- (void)favoriteThreadWithId:(NSString *)threadPostId handler:(HandlerWithBool)handler {
+
+}
+
+- (void)deletePrivateMessage:(Message *)privateMessage withType:(int)type handler:(HandlerWithBool)handler {
+
+}
+
+- (void)showThreadWithP:(NSString *)p handler:(HandlerWithBool)handler {
+
+}
+
+- (void)listSearchResultWithSearchId:(NSString *)searchid keyWord:(NSString *)keyWord andPage:(int)page handler:(HandlerWithBool)handler {
 }
 
 @end
