@@ -118,7 +118,7 @@
 }
 
 - (NSString *)quoteReply:(int)threadId postId:(int)postId {
-    return [NSString stringWithFormat:@"%@newreply.php?do=newreply&p=%d", _forumURL.absoluteString, postId];;
+    return [NSString stringWithFormat:@"%@newreply.php?do=newreply&p=%d", _forumURL.absoluteString, postId];
 }
 
 - (NSString *)showThreadWithThreadId:(NSString *)threadId withPage:(int)page {

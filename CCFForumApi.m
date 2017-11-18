@@ -638,8 +638,7 @@ typedef void (^CallBack)(NSString *token, NSString *hash, NSString *time);
             
             NSString * quoteString = [forumParser parseQuote:html];
 
-            NSString * replyContent = [NSString stringWithFormat:@"%@ %@", quoteString, message]
-;
+            NSString * replyContent = [NSString stringWithFormat:@"%@ %@", quoteString, message];
             [self seniorReplyPostWithMessage:replyContent withImages:images toPostId:postId thread:threadPage handler:handler];
 
         } else {
