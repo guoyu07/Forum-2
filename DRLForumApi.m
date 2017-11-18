@@ -571,7 +571,7 @@ typedef void (^CallBack)(NSString *token, NSString *hash, NSString *time);
 
 - (void)quoteReplyPostWithMessage:(NSString *)message withImages:(NSArray *)images toPostId:(NSString *)postId thread:(ViewThreadPage *)threadPage handler:(HandlerWithBool)handler {
 
-    NSString *quoteUrl = [forumConfig quoteReply:threadPage.threadID postId:[postId intValue]];
+    NSString *quoteUrl = [forumConfig quoteReply:threadPage.forumId threadId:threadPage.threadID postId:[postId intValue]];
     [self GET:quoteUrl requestCallback:^(BOOL isSuccess, NSString *html) {
         if (isSuccess) {
 

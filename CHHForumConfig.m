@@ -110,6 +110,14 @@
     }
 }
 
+- (NSString *)quoteReply:(int)fid threadId:(int)threadId postId:(int)postId {
+    return nil;
+}
+
+- (NSString *)deletePrivateWithType:(int)type {
+    return nil;
+}
+
 - (NSString *)showThreadWithThreadId:(NSString *)threadId withPage:(int)page {
     return [NSString stringWithFormat:@"https://www.chiphell.com/thread-%@-%d-1.html", threadId, page];
 }
