@@ -14,6 +14,15 @@
 #import "IGXMLNode+QueryNode.h"
 
 @implementation CrskyForumHtmlParser
+- (NSString *)parseQuote:(NSString *)html {
+
+    IGHTMLDocument *document = [[IGHTMLDocument alloc] initWithHTMLString:html error:nil];
+    IGXMLNodeSet *nodeSet = [document queryWithXPath:@"//*[@id='textarea']"];
+    NSString *node = [[nodeSet firstObject] text];
+    return node;
+
+}
+
 
 - (NSString *)parseErrorMessage:(NSString *)html {
     if ([html containsString:@"<td class=\"h\" colspan=\"2\">霏凡论坛 - 非凡软件站 提示信息</td>"]){
