@@ -472,54 +472,6 @@ typedef void (^CallBack)(NSString *token, NSString *hash, NSString *time);
     return [[NSUserDefaults standardUserDefaults] valueForKey:kSecurityToken];
 }
 
-- (void)quickReplyPostWithMessage:(NSString *)message toPostId:(NSString *)postId thread:(ViewThreadPage *)threadPage handler:(HandlerWithBool)handler {
-
-    int threadId = threadPage.threadID;
-    NSString *token = threadPage.securityToken;
-
-    NSString *url = [forumConfig replyWithThreadId:threadId forForumId:-1 replyPostId:-1];
-
-    if ([NSUserDefaults standardUserDefaults].isSignatureEnabled) {
-        message = [message stringByAppendingString:[forumConfig signature]];
-    }
-
-    NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
-
-    [parameters setValue:message forKey:@"message"];
-    [parameters setValue:@"0" forKey:@"wysiwyg"];
-    [parameters setValue:@"0" forKey:@"styleid"];
-    [parameters setValue:@"1" forKey:@"signature"];
-    [parameters setValue:@"1" forKey:@"quickreply"];
-    [parameters setValue:@"1" forKey:@"fromquickreply"];
-    [parameters setValue:@"" forKey:@"s"];
-    [parameters setValue:token forKey:@"securitytoken"];
-    [parameters setValue:@"postreply" forKey:@"do"];
-    [parameters setValue:[NSString stringWithFormat:@"%d", threadId] forKey:@"t"];
-    [parameters setValue:postId forKey:@"p"];
-    [parameters setValue:@"1" forKey:@"specifiedpost"];
-    [parameters setValue:@"1" forKey:@"parseurl"];
-
-    LoginUser *user = [[[LocalForumApi alloc] init] getLoginUser:(forumConfig.forumURL.host)];
-    [parameters setValue:user.userID forKey:@"loggedinuser"];
-    [parameters setValue:@"sbutton" forKey:@"快速回复帖子"];
-
-    [self.browser POSTWithURLString:url parameters:parameters charset:UTF_8 requestCallback:^(BOOL isSuccess, NSString *html) {
-        if (isSuccess) {
-            if ([html containsString:@"<ol><li>本论坛允许的发表两个帖子的时间间隔必须大于 30 秒。请等待 "] || [html containsString:@"<ol><li>本論壇允許的發表兩個文章的時間間隔必須大於 30 秒。請等待"]) {
-                handler(NO, @"本论坛允许的发表两个帖子的时间间隔必须大于 30 秒");
-            } else {
-                ViewThreadPage *thread = [forumParser parseShowThreadWithHtml:html];
-                if (thread.postList.count > 0) {
-                    handler(YES, thread);
-                } else {
-                    handler(NO, @"未知错误");
-                }
-            }
-        } else {
-            handler(NO, html);
-        }
-    }];
-}
 
 - (void)seniorReplyPostWithMessage:(NSString *)message withImages:(NSArray *)images toPostId:(NSString *)postId thread:(ViewThreadPage *)threadPage handler:(HandlerWithBool)handler {
 

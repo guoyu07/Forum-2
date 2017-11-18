@@ -83,7 +83,6 @@
 		3A2C3FDF1DDFE0C900576151 /* ForumSettingTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A2C3FB51DDFE0C900576151 /* ForumSettingTableViewController.m */; };
 		3A2C3FE01DDFE0C900576151 /* ForumShowNewThreadPostTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A2C3FB71DDFE0C900576151 /* ForumShowNewThreadPostTableViewController.m */; };
 		3A2C3FE11DDFE0C900576151 /* ForumShowPrivateMessageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A2C3FB91DDFE0C900576151 /* ForumShowPrivateMessageViewController.m */; };
-		3A2C3FE21DDFE0C900576151 /* ForumSimpleReplyViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A2C3FBB1DDFE0C900576151 /* ForumSimpleReplyViewController.m */; };
 		3A2C3FE31DDFE0C900576151 /* ForumTabBarController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A2C3FBD1DDFE0C900576151 /* ForumTabBarController.m */; };
 		3A2C3FE41DDFE0C900576151 /* ForumTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A2C3FBF1DDFE0C900576151 /* ForumTableViewController.m */; };
 		3A2C3FE51DDFE0C900576151 /* ForumThreadListForChildFormUITableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A2C3FC11DDFE0C900576151 /* ForumThreadListForChildFormUITableViewController.m */; };
@@ -304,8 +303,6 @@
 		3A2C3FB71DDFE0C900576151 /* ForumShowNewThreadPostTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ForumShowNewThreadPostTableViewController.m; sourceTree = "<group>"; };
 		3A2C3FB81DDFE0C900576151 /* ForumShowPrivateMessageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ForumShowPrivateMessageViewController.h; sourceTree = "<group>"; };
 		3A2C3FB91DDFE0C900576151 /* ForumShowPrivateMessageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ForumShowPrivateMessageViewController.m; sourceTree = "<group>"; };
-		3A2C3FBA1DDFE0C900576151 /* ForumSimpleReplyViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ForumSimpleReplyViewController.h; sourceTree = "<group>"; };
-		3A2C3FBB1DDFE0C900576151 /* ForumSimpleReplyViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ForumSimpleReplyViewController.m; sourceTree = "<group>"; };
 		3A2C3FBC1DDFE0C900576151 /* ForumTabBarController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ForumTabBarController.h; sourceTree = "<group>"; };
 		3A2C3FBD1DDFE0C900576151 /* ForumTabBarController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ForumTabBarController.m; sourceTree = "<group>"; };
 		3A2C3FBE1DDFE0C900576151 /* ForumTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ForumTableViewController.h; sourceTree = "<group>"; };
@@ -651,8 +648,6 @@
 				3A2C3FB71DDFE0C900576151 /* ForumShowNewThreadPostTableViewController.m */,
 				3A2C3FB81DDFE0C900576151 /* ForumShowPrivateMessageViewController.h */,
 				3A2C3FB91DDFE0C900576151 /* ForumShowPrivateMessageViewController.m */,
-				3A2C3FBA1DDFE0C900576151 /* ForumSimpleReplyViewController.h */,
-				3A2C3FBB1DDFE0C900576151 /* ForumSimpleReplyViewController.m */,
 				3A2C3FBC1DDFE0C900576151 /* ForumTabBarController.h */,
 				3A2C3FBD1DDFE0C900576151 /* ForumTabBarController.m */,
 				3A2C3FBE1DDFE0C900576151 /* ForumTableViewController.h */,
@@ -1237,7 +1232,6 @@
 				3ACFFD2D1CF9D6BF000312DC /* SDImageCache+URLCache.m in Sources */,
 				3A2C3F3A1DDFBF3900576151 /* BaseFourmTableViewCell.m in Sources */,
 				3A2C400A1DE0015C00576151 /* main.m in Sources */,
-				3A2C3FE21DDFE0C900576151 /* ForumSimpleReplyViewController.m in Sources */,
 				3A2C3FD91DDFE0C900576151 /* ForumCreateNewThreadViewController.m in Sources */,
 				3A2C3FDE1DDFE0C900576151 /* ForumSeniorNewPostViewController.m in Sources */,
 				3A2C3FEB1DDFE0C900576151 /* ForumWritePMViewController.m in Sources */,
