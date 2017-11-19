@@ -11,11 +11,15 @@
 #import "ForumUserProfileTableViewController.h"
 #import <SVProgressHUD.h>
 #import "ForumWebViewController.h"
+#import "LocalForumApi.h"
+#import "ZhanNeiSearchViewCell.h"
 
 @interface ForumSearchViewController () <UITableViewDataSource, UITableViewDelegate, UISearchBarDelegate, ThreadListCellDelegate, MGSwipeTableCellDelegate> {
     NSString *_searchid;
     UIStoryboardSegue *selectSegue;
     NSString *searchText;
+
+    BOOL isZhanNeiSearch;
 }
 
 @end
@@ -25,15 +29,28 @@
 }
 
 - (void)viewDidLoad {
+
+    isZhanNeiSearch = [self isZhanNeiSearch];
+
     self.searchBar.delegate = self;
 
     self.tableView.rowHeight = UITableViewAutomaticDimension;
-    self.tableView.estimatedRowHeight = 97.0;
+    self.tableView.estimatedRowHeight = (CGFloat) (isZhanNeiSearch ? 44.0 : 97.0);
 
     self.tableView.mj_footer = [MJRefreshAutoNormalFooter footerWithRefreshingBlock:^{
         [self onLoadMore];
     }];
 
+}
+
+- (BOOL)isZhanNeiSearch {
+    LocalForumApi *localForumApi = [[LocalForumApi alloc] init];
+    NSString *bundleId = [localForumApi bundleIdentifier];
+    if ([bundleId isEqualToString:@"com.andforce.CHH"]){
+        return YES;
+    } else {
+        return [localForumApi.currentForumHost containsString:@"chiphell"];
+    }
 }
 
 - (void)onLoadMore {
@@ -89,7 +106,7 @@
             [self.tableView reloadData];
         } else {
             NSLog(@"searchBarSearchButtonClicked   ERROR %@", message);
-            NSString * msg = (NSString *)message;
+            NSString * msg = (id)message;
             [SVProgressHUD showErrorWithStatus:msg maskType:SVProgressHUDMaskTypeBlack];
         }
     }];
@@ -112,28 +129,49 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
 
-    static NSString *QuoteCellIdentifier = @"SearchResultCell";
+    if (isZhanNeiSearch){
+        static NSString *QuoteCellIdentifier = @"ZhanNeiSearchViewCell";
 
-    ForumSearchResultCell *cell = (ForumSearchResultCell *) [tableView dequeueReusableCellWithIdentifier:QuoteCellIdentifier];
-    cell.showUserProfileDelegate = self;
+        ZhanNeiSearchViewCell *cell = [tableView dequeueReusableCellWithIdentifier:QuoteCellIdentifier];
 
-    Thread *thread = self.dataList[(NSUInteger) indexPath.row];
+        Thread *thread = self.dataList[(NSUInteger) indexPath.row];
 
-    [cell setData:thread forIndexPath:indexPath];
+        [cell setData:thread forIndexPath:indexPath];
 
-    cell.showUserProfileDelegate = self;
+        cell.indexPath = indexPath;
 
-    cell.indexPath = indexPath;
+        cell.delegate = self;
 
-    cell.delegate = self;
+        cell.rightButtons = @[[MGSwipeButton buttonWithTitle:@"收藏此主题" backgroundColor:[UIColor lightGrayColor]]];
+        cell.rightSwipeSettings.transition = MGSwipeTransitionBorder;
 
-    cell.rightButtons = @[[MGSwipeButton buttonWithTitle:@"收藏此主题" backgroundColor:[UIColor lightGrayColor]]];
-    cell.rightSwipeSettings.transition = MGSwipeTransitionBorder;
+        [cell setSeparatorInset:UIEdgeInsetsZero];
+        [cell setLayoutMargins:UIEdgeInsetsZero];
+        [cell setData:self.dataList[(NSUInteger) indexPath.row]];
+        return cell;
+    } else {
+        static NSString *QuoteCellIdentifier = @"SearchResultCell";
 
-    [cell setSeparatorInset:UIEdgeInsetsZero];
-    [cell setLayoutMargins:UIEdgeInsetsZero];
-    [cell setData:self.dataList[(NSUInteger) indexPath.row]];
-    return cell;
+        ForumSearchResultCell *cell = [tableView dequeueReusableCellWithIdentifier:QuoteCellIdentifier];
+
+        Thread *thread = self.dataList[(NSUInteger) indexPath.row];
+
+        [cell setData:thread forIndexPath:indexPath];
+
+        cell.showUserProfileDelegate = self;
+
+        cell.indexPath = indexPath;
+
+        cell.delegate = self;
+
+        cell.rightButtons = @[[MGSwipeButton buttonWithTitle:@"收藏此主题" backgroundColor:[UIColor lightGrayColor]]];
+        cell.rightSwipeSettings.transition = MGSwipeTransitionBorder;
+
+        [cell setSeparatorInset:UIEdgeInsetsZero];
+        [cell setLayoutMargins:UIEdgeInsetsZero];
+        [cell setData:self.dataList[(NSUInteger) indexPath.row]];
+        return cell;
+    }
 }
 
 

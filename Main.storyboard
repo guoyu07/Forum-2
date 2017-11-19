@@ -1581,6 +1581,34 @@
                                     <segue destination="Bhk-dY-41O" kind="show" identifier="ShowThreadPosts" id="1YC-MX-JNu"/>
                                 </connections>
                             </tableViewCell>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="ZhanNeiSearchViewCell" rowHeight="44" id="jRb-b8-Kk8" customClass="ZhanNeiSearchViewCell">
+                                <rect key="frame" x="0.0" y="240.33333333333334" width="414" height="44"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="jRb-b8-Kk8" id="nb9-Ay-3yZ">
+                                    <rect key="frame" x="0.0" y="0.0" width="414" height="43.666666666666664"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="帖子标题" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8Lv-dx-tHw">
+                                            <rect key="frame" x="20" y="10.666666666666666" width="374" height="22.333333333333336"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                            <color key="textColor" red="0.1999788284" green="0.2000134885" blue="0.19997125860000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                    </subviews>
+                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                    <constraints>
+                                        <constraint firstAttribute="bottomMargin" secondItem="8Lv-dx-tHw" secondAttribute="bottom" id="cI0-cg-Pk9"/>
+                                        <constraint firstItem="8Lv-dx-tHw" firstAttribute="centerY" secondItem="nb9-Ay-3yZ" secondAttribute="centerY" id="ccc-i6-ZcI"/>
+                                        <constraint firstItem="8Lv-dx-tHw" firstAttribute="leading" secondItem="nb9-Ay-3yZ" secondAttribute="leadingMargin" id="eej-nf-xcN"/>
+                                        <constraint firstAttribute="trailingMargin" secondItem="8Lv-dx-tHw" secondAttribute="trailing" id="rco-YS-uMg"/>
+                                    </constraints>
+                                    <edgeInsets key="layoutMargins" top="8" left="16" bottom="8" right="16"/>
+                                </tableViewCellContentView>
+                                <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
+                                <connections>
+                                    <outlet property="threadTitle" destination="8Lv-dx-tHw" id="vMk-EN-IIJ"/>
+                                </connections>
+                            </tableViewCell>
                         </prototypes>
                         <connections>
                             <outlet property="dataSource" destination="9ek-Pz-X45" id="bnd-df-u7I"/>
@@ -3277,7 +3305,7 @@
         <image name="tab_new_post" width="18" height="18"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="N1G-Ig-hUe"/>
+        <segue reference="1YC-MX-JNu"/>
         <segue reference="Ysv-Xy-VAF"/>
         <segue reference="FiC-V2-LqH"/>
         <segue reference="BtX-d5-2Dd"/>
