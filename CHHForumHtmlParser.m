@@ -313,7 +313,11 @@
 
     IGHTMLDocument *document = [[IGHTMLDocument alloc] initWithHTMLString:html error:nil];
 
-    IGXMLNodeSet *contents = [document queryWithClassName:@"result f s0"];
+    NSString * xpath = @"result f s0";
+    if (type == 1){
+        xpath = @"result f s3";
+    }
+    IGXMLNodeSet *contents = [document queryWithClassName:xpath];
     int childCount = contents.count;
 
     for (int i = 0; i < childCount; ++i) {

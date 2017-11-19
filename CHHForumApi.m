@@ -575,7 +575,7 @@ typedef void (^CallBack)(NSString *token, NSString *forumhash, NSString *posttim
     } else if (type == 1) {
         searchUrl = [NSString stringWithFormat:@"http://zhannei.baidu.com/cse/search?q=%@&s=13836577039777088209&area=2", encodedString];
     } else if (type == 2) {
-
+        // TODO
     }
 
     [self GET:searchUrl requestCallback:^(BOOL isSuccess, NSString *html) {
