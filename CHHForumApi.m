@@ -568,11 +568,12 @@ typedef void (^CallBack)(NSString *token, NSString *forumhash, NSString *posttim
 
 - (void)searchWithKeyWord:(NSString *)keyWord forType:(int)type handler:(HandlerWithBool)handler {
 
+    NSString* encodedString = [keyWord stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
     NSString *searchUrl = nil;
     if (type == 0) {
-        searchUrl = [NSString stringWithFormat:@"http://zhannei.baidu.com/cse/search?q=%@&s=13836577039777088209&area=1", keyWord];
+        searchUrl = [NSString stringWithFormat:@"http://zhannei.baidu.com/cse/search?q=%@&s=13836577039777088209&area=1", encodedString];
     } else if (type == 1) {
-        searchUrl = [NSString stringWithFormat:@"http://zhannei.baidu.com/cse/search?q=%@&s=13836577039777088209&area=2", keyWord];
+        searchUrl = [NSString stringWithFormat:@"http://zhannei.baidu.com/cse/search?q=%@&s=13836577039777088209&area=2", encodedString];
     } else if (type == 2) {
 
     }
