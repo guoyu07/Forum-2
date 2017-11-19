@@ -568,6 +568,23 @@ typedef void (^CallBack)(NSString *token, NSString *forumhash, NSString *posttim
 
 - (void)searchWithKeyWord:(NSString *)keyWord forType:(int)type handler:(HandlerWithBool)handler {
 
+    NSString *searchUrl = nil;
+    if (type == 0) {
+        searchUrl = [NSString stringWithFormat:@"http://zhannei.baidu.com/cse/search?q=%@&s=13836577039777088209&area=1", keyWord];
+    } else if (type == 1) {
+        searchUrl = [NSString stringWithFormat:@"http://zhannei.baidu.com/cse/search?q=%@&s=13836577039777088209&area=2", keyWord];
+    } else if (type == 2) {
+
+    }
+
+    [self GET:searchUrl requestCallback:^(BOOL isSuccess, NSString *html) {
+        if (isSuccess) {
+            ViewSearchForumPage *page = [forumParser parseZhanNeiSearchPageFromHtml:html type:type];
+            handler(YES, page);
+        } else {
+            handler(NO, html);
+        }
+    }];
 }
 
 - (void)showPrivateMessageContentWithId:(int)pmId withType:(int)type handler:(HandlerWithBool)handler {

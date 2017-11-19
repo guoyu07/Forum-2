@@ -306,6 +306,53 @@
     return nil;
 }
 
+- (ViewSearchForumPage *)parseZhanNeiSearchPageFromHtml:(NSString *)html type:(int)type {
+    ViewSearchForumPage *page = [[ViewSearchForumPage alloc] init];
+
+    NSMutableArray<Thread *> *threadList = [NSMutableArray<Thread *> array];
+
+    IGHTMLDocument *document = [[IGHTMLDocument alloc] initWithHTMLString:html error:nil];
+
+    IGXMLNodeSet *contents = [document queryWithClassName:@"result f s0"];
+    int childCount = contents.count;
+
+    for (int i = 0; i < childCount; ++i) {
+        IGXMLNode *node = contents[(NSUInteger) i];
+        IGXMLNode *titleNode = [[node childAt:0] childAt:0];
+        NSString *href = [titleNode attribute:@"href"];
+        if (![href containsString:@"/thread-"]){
+            continue;
+        }
+
+        Thread *thread = [[Thread alloc] init];
+        NSString *tid = [href stringWithRegular:@"(?<=thread-)\\d+"];
+        NSString *title = [[titleNode text] trim];
+
+        thread.threadID = tid;
+        thread.threadTitle = title;
+
+        [threadList addObject:thread];
+    }
+
+    page.dataList = threadList;
+
+    // 总页数
+    PageNumber *pageNumber = [[PageNumber alloc] init];
+    IGXMLNode *curPageNode = [document queryWithClassName:@"fk fk_cur"].firstObject;
+    pageNumber.currentPageNumber = [[[curPageNode text] trim] intValue];
+    NSString * totalCount = [[document queryNodeWithXPath:@"//*[@id=\"results\"]/span"].text stringWithRegular:@"\\d+"];
+    int tInt = [totalCount intValue];
+    if (tInt % 10 == 0){
+        pageNumber.totalPageNumber = [totalCount intValue] / 10;
+    } else {
+        pageNumber.totalPageNumber = [totalCount intValue] / 10 + 1;
+    }
+
+    page.pageNumber = pageNumber;
+
+
+    return page;
+}
 
 - (ViewSearchForumPage *)parseSearchPageFromHtml:(NSString *)html {
     ViewSearchForumPage *page = [[ViewSearchForumPage alloc] init];

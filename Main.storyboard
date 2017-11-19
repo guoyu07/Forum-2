@@ -1607,6 +1607,7 @@
                                 <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                                 <connections>
                                     <outlet property="threadTitle" destination="8Lv-dx-tHw" id="vMk-EN-IIJ"/>
+                                    <segue destination="Bhk-dY-41O" kind="show" id="wLO-He-BF0"/>
                                 </connections>
                             </tableViewCell>
                         </prototypes>

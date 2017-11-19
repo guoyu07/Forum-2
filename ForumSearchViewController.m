@@ -94,6 +94,7 @@
     int select = (int) self.segmentedControl.selectedSegmentIndex;
 
     [self.forumApi searchWithKeyWord:searchText forType:select handler:^(BOOL isSuccess, ViewSearchForumPage *message) {
+        
         [SVProgressHUD dismiss];
 
         if (isSuccess) {
@@ -204,6 +205,21 @@
         TransBundle *transBundle = [[TransBundle alloc] init];
         [transBundle putIntValue:[thread.threadID intValue] forKey:@"threadID"];
         [transBundle putStringValue:thread.threadAuthorName forKey:@"threadAuthorName"];
+
+        [self transBundle:transBundle forController:controller];
+
+    } if ([segue.identifier isEqualToString:@"ZhanNeiSearchViewCell"]) {
+
+        ForumWebViewController *controller = segue.destinationViewController;
+        [controller setHidesBottomBarWhenPushed:YES];
+
+        NSIndexPath *indexPath = [self.tableView indexPathForSelectedRow];
+
+        Thread *thread = self.dataList[(NSUInteger) indexPath.row];
+
+        TransBundle *transBundle = [[TransBundle alloc] init];
+        [transBundle putIntValue:[thread.threadID intValue] forKey:@"threadID"];
+        //[transBundle putStringValue:thread.threadAuthorName forKey:@"threadAuthorName"];
 
         [self transBundle:transBundle forController:controller];
 
