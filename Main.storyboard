@@ -1458,7 +1458,7 @@
             </objects>
             <point key="canvasLocation" x="-3904" y="-5947"/>
         </scene>
-        <!--搜索帖子-->
+        <!--Forum Search View Controller-->
         <scene sceneID="sf1-2L-Kr0">
             <objects>
                 <tableViewController storyboardIdentifier="SearchForum" id="9ek-Pz-X45" customClass="ForumSearchViewController" sceneMemberID="viewController">
@@ -1467,38 +1467,29 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" red="0.93725490199999995" green="0.93725490199999995" blue="0.95686274510000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <view key="tableHeaderView" contentMode="scaleToFill" id="eSv-5V-fLL">
-                            <rect key="frame" x="0.0" y="0.0" width="414" height="88"/>
+                            <rect key="frame" x="0.0" y="0.0" width="414" height="56"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <subviews>
                                 <searchBar contentMode="redraw" translatesAutoresizingMaskIntoConstraints="NO" id="gmr-mu-1bY">
-                                    <rect key="frame" x="0.0" y="0.0" width="414" height="44"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="414" height="56"/>
+                                    <constraints>
+                                        <constraint firstAttribute="height" constant="56" id="V5x-VL-p9O"/>
+                                    </constraints>
                                     <color key="barTintColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                                     <textInputTraits key="textInputTraits"/>
                                 </searchBar>
-                                <segmentedControl opaque="NO" contentMode="scaleToFill" verticalCompressionResistancePriority="751" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="8tJ-KN-Enm">
-                                    <rect key="frame" x="40" y="52" width="334" height="29"/>
-                                    <segments>
-                                        <segment title="标题"/>
-                                        <segment title="内容"/>
-                                        <segment title="用户"/>
-                                    </segments>
-                                    <color key="tintColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                </segmentedControl>
                             </subviews>
                             <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                             <constraints>
-                                <constraint firstAttribute="trailing" secondItem="gmr-mu-1bY" secondAttribute="trailing" id="2fA-Ir-TMp"/>
-                                <constraint firstAttribute="trailing" secondItem="8tJ-KN-Enm" secondAttribute="trailing" constant="40" id="BRo-4g-Amk"/>
-                                <constraint firstItem="8tJ-KN-Enm" firstAttribute="top" secondItem="gmr-mu-1bY" secondAttribute="bottom" constant="8" id="VtB-jM-gsS"/>
-                                <constraint firstItem="8tJ-KN-Enm" firstAttribute="leading" secondItem="eSv-5V-fLL" secondAttribute="leading" constant="40" id="eWP-cC-6y0"/>
-                                <constraint firstItem="gmr-mu-1bY" firstAttribute="leading" secondItem="eSv-5V-fLL" secondAttribute="leading" id="gWK-Kr-cXZ"/>
-                                <constraint firstItem="gmr-mu-1bY" firstAttribute="top" secondItem="eSv-5V-fLL" secondAttribute="top" id="hzo-BS-buS"/>
-                                <constraint firstAttribute="bottom" secondItem="8tJ-KN-Enm" secondAttribute="bottom" constant="8" id="j34-W6-hSL"/>
+                                <constraint firstAttribute="trailing" secondItem="gmr-mu-1bY" secondAttribute="trailing" id="Wub-Tt-ec0"/>
+                                <constraint firstItem="gmr-mu-1bY" firstAttribute="centerY" secondItem="eSv-5V-fLL" secondAttribute="centerY" id="avr-N0-2cs"/>
+                                <constraint firstItem="gmr-mu-1bY" firstAttribute="centerX" secondItem="eSv-5V-fLL" secondAttribute="centerX" id="b3W-QT-eLA"/>
+                                <constraint firstItem="gmr-mu-1bY" firstAttribute="leading" secondItem="eSv-5V-fLL" secondAttribute="leading" id="mtu-kb-AJg"/>
                             </constraints>
                         </view>
                         <prototypes>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="SearchResultCell" rowHeight="97" id="7gX-4U-HVH" customClass="ForumSearchResultCell">
-                                <rect key="frame" x="0.0" y="143.33333333333334" width="414" height="97"/>
+                                <rect key="frame" x="0.0" y="111.33333333333334" width="414" height="97"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="7gX-4U-HVH" id="OHP-pl-OHN">
                                     <rect key="frame" x="0.0" y="0.0" width="414" height="96.666666666666671"/>
@@ -1582,7 +1573,7 @@
                                 </connections>
                             </tableViewCell>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="ZhanNeiSearchViewCell" rowHeight="44" id="jRb-b8-Kk8" customClass="ZhanNeiSearchViewCell">
-                                <rect key="frame" x="0.0" y="240.33333333333334" width="414" height="44"/>
+                                <rect key="frame" x="0.0" y="208.33333333333334" width="414" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="jRb-b8-Kk8" id="nb9-Ay-3yZ">
                                     <rect key="frame" x="0.0" y="0.0" width="414" height="43.666666666666664"/>
@@ -1617,13 +1608,23 @@
                         </connections>
                     </tableView>
                     <extendedEdge key="edgesForExtendedLayout" bottom="YES"/>
-                    <navigationItem key="navigationItem" title="搜索帖子" id="Vq0-nI-wMk">
+                    <navigationItem key="navigationItem" id="Vq0-nI-wMk">
+                        <nil key="title"/>
                         <barButtonItem key="leftBarButtonItem" image="ic_arrow_back_18pt" id="bkF-Sv-dV6" userLabel="返回">
                             <color key="tintColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             <connections>
                                 <action selector="back:" destination="9ek-Pz-X45" id="aPj-BR-Vv3"/>
                             </connections>
                         </barButtonItem>
+                        <segmentedControl key="titleView" opaque="NO" contentMode="scaleToFill" verticalCompressionResistancePriority="751" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" id="8tJ-KN-Enm">
+                            <rect key="frame" x="165.66666666666666" y="7.6666666666666661" width="160" height="29"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <segments>
+                                <segment title="标题"/>
+                                <segment title="内容"/>
+                            </segments>
+                            <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        </segmentedControl>
                     </navigationItem>
                     <simulatedStatusBarMetrics key="simulatedStatusBarMetrics" statusBarStyle="lightContent"/>
                     <connections>
@@ -1633,7 +1634,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="XqI-3M-PxU" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="4056.8000000000002" y="-5954.5727136431788"/>
+            <point key="canvasLocation" x="4056.521739130435" y="-5955.163043478261"/>
         </scene>
         <!--我的页面-->
         <scene sceneID="YlG-dB-QZF">
