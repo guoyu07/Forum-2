@@ -55,13 +55,14 @@
 
 - (void)onLoadMore {
 
-    if (_searchid == nil) {
+    if (!isZhanNeiSearch && _searchid == nil) {
         [self.tableView.mj_footer endRefreshing];
         return;
     }
 
     int toLoadPage = currentSearchForumPage.pageNumber.currentPageNumber + 1;
-    [self.forumApi listSearchResultWithSearchId:_searchid keyWord:searchText andPage:toLoadPage handler:^(BOOL isSuccess, ViewSearchForumPage *message) {
+    int select = (int) self.segmentedControl.selectedSegmentIndex;
+    [self.forumApi listSearchResultWithSearchId:_searchid keyWord:searchText andPage:toLoadPage type:select handler:^(BOOL isSuccess, ViewSearchForumPage *message) {
         [self.tableView.mj_footer endRefreshing];
 
         if (isSuccess) {

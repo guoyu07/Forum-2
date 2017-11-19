@@ -1251,8 +1251,8 @@ typedef void (^CallBack)(NSString *token, NSString *hash, NSString *time);
     }];
 }
 
-- (void)listSearchResultWithSearchId:(NSString *)searchid keyWord:(NSString *)keyWord andPage:(int)page handler:(HandlerWithBool)handler {
-    NSString *searchedUrl = [forumConfig searchWithSearchId:searchid withPage:page];
+- (void)listSearchResultWithSearchId:(NSString *)searchId keyWord:(NSString *)keyWord andPage:(int)page type:(int)type handler:(HandlerWithBool)handler {
+    NSString *searchedUrl = [forumConfig searchWithSearchId:searchId withPage:page];
 
     [self GET:searchedUrl requestCallback:^(BOOL isSuccess, NSString *html) {
         if (isSuccess) {

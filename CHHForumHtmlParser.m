@@ -342,8 +342,10 @@
 
     // 总页数
     PageNumber *pageNumber = [[PageNumber alloc] init];
-    IGXMLNode *curPageNode = [document queryWithClassName:@"fk fk_cur"].firstObject;
-    pageNumber.currentPageNumber = [[[curPageNode text] trim] intValue];
+    IGXMLNode *curPageNode = [document queryWithClassName:@"pager-current-foot"].firstObject;
+    NSString *cnHtml = [curPageNode html];
+    int cNumber = [[[curPageNode text] trim] intValue];
+    pageNumber.currentPageNumber = cNumber == 0 ? cNumber + 1 : cNumber;
     NSString * totalCount = [[document queryNodeWithXPath:@"//*[@id=\"results\"]/span"].text stringWithRegular:@"\\d+"];
     int tInt = [totalCount intValue];
     if (tInt % 10 == 0){

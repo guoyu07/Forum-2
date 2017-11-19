@@ -632,7 +632,26 @@ typedef void (^CallBack)(NSString *token, NSString *forumhash, NSString *posttim
 
 }
 
-- (void)listSearchResultWithSearchId:(NSString *)searchid keyWord:(NSString *)keyWord andPage:(int)page handler:(HandlerWithBool)handler {
+- (void)listSearchResultWithSearchId:(NSString *)searchId keyWord:(NSString *)keyWord andPage:(int)page type:(int)type handler:(HandlerWithBool)handler {
+    NSString* encodedString = [keyWord stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+    NSString *searchUrl = nil;
+    if (type == 0) {
+        searchUrl = [NSString stringWithFormat:@"http://zhannei.baidu.com/cse/search?q=%@&p=%d&s=13836577039777088209&area=1", encodedString, page];
+    } else if (type == 1) {
+        searchUrl = [NSString stringWithFormat:@"http://zhannei.baidu.com/cse/search?q=%@&p=%d&s=13836577039777088209&area=2", encodedString, page];
+    } else if (type == 2) {
+        // TODO
+    }
+
+    [self GET:searchUrl requestCallback:^(BOOL isSuccess, NSString *html) {
+        if (isSuccess) {
+            ViewSearchForumPage *viewSearchForumPage = [forumParser parseZhanNeiSearchPageFromHtml:html type:type];
+            handler(YES, viewSearchForumPage);
+        } else {
+            handler(NO, html);
+        }
+    }];
 }
+
 
 @end
