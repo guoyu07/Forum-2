@@ -212,6 +212,9 @@
             // 是否是置顶
             IGXMLNode * iconNode = [threadNode.firstChild childAt:0];
             BOOL isPin = [iconNode.html containsString:@"<img src=\"static/image/common/pin"];
+            if (!isPin) {
+                isPin = [iconNode.html containsString:@"static/image/common/folder_lock.gif"];
+            }
 
             thread.threadID = tId;
             thread.threadTitle = threadTitle;
