@@ -95,8 +95,11 @@
 - (NSString *)loginvCode;
 
 
+// 准备发表帖子
+- (NSString *)createNewThreadWithForumId:(NSString *)forumId;
+
 // 发表新帖子
-- (NSString *)newThreadWithForumId:(NSString *)forumId;
+- (NSString *)enterCreateNewThreadWithForumId:(NSString *)forumId;
 
 // 站内短信
 - (NSString *)privateWithType:(int)type withPage:(int)page;

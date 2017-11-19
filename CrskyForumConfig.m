@@ -158,7 +158,7 @@
     return nil;
 }
 
-- (NSString *)newThreadWithForumId:(NSString *)forumId {
+- (NSString *)createNewThreadWithForumId:(NSString *)forumId {
     return @"http://bbs.crsky.com/post.php?";
 }
 

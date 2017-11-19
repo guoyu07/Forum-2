@@ -158,9 +158,14 @@
     return [NSString stringWithFormat:@"%@login.php?do=vcode", _forumURL.absoluteString];
 }
 
-- (NSString *)newThreadWithForumId:(NSString *)forumId {
+- (NSString *)createNewThreadWithForumId:(NSString *)forumId {
     return [NSString stringWithFormat:@"%@newthread.php?do=newthread&f=%@", _forumURL.absoluteString, forumId];
 }
+
+- (NSString *)enterCreateNewThreadWithForumId:(NSString *)forumId {
+    return [NSString stringWithFormat:@"%@newthread.php?do=newthread&f=%@", _forumURL.absoluteString, forumId];
+}
+
 
 - (NSString *)privateWithType:(int)type withPage:(int)page {
     return [NSString stringWithFormat:@"%@private.php?folderid=%d&pp=30&sort=date&page=%d", _forumURL.absoluteString, type, page];

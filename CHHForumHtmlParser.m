@@ -153,23 +153,35 @@
             // thread Title
             IGXMLNode * titleNode = [threadNode.firstChild childAt:1];
             NSString * titleHtml = titleNode.html;
-            int c = titleNode.childrenCount;
-            if (c < 5) {
+            int childrenCount = titleNode.childrenCount;
+//            if (childrenCount == 4){
+//
+//            }
+//            if (childrenCount < 5) {
+//                continue;
+//            }
+//
+//            int titleIndex = 3;
+//            if (![titleHtml containsString:@"<em>[<a href=\"forum.php?mod=forumdisplay&amp;fid="]) {
+//                titleIndex = 2;
+//            }
+            NSString *threadTitle = [titleHtml stringWithRegular:@"(?<=class=\"s xst\">).*(?=</a>)"];
+            if (threadTitle == nil || [threadTitle isEqualToString:@""]){
                 continue;
             }
-
-            int titleIndex = 3;
-            if (![titleHtml containsString:@"<em>[<a href=\"forum.php?mod=forumdisplay&amp;fid="]) {
-                titleIndex = 2;
-            }
-            NSString *threadTitle = [titleNode childAt:titleIndex].text;
             // 作者
             IGXMLNode * authorNode = [threadNode.firstChild childAt:2];
+            if (authorNode.childrenCount < 2){
+                continue;
+            }
             NSString *threadAuthor = [[[authorNode childAt:0] text] trim];
             // 作者ID
             NSString *threadAuthorId = [authorNode.innerHtml stringWithRegular:@"space-uid-\\d+" andChild:@"\\d+"];
             //最后发表时间
             IGXMLNode * lastAuthorNode = [threadNode.firstChild childAt:4];
+            if (lastAuthorNode.childrenCount < 2){
+                continue;
+            }
             NSString *lastPostTime = [[lastAuthorNode childAt:1].text trim];
             // 是否是精华
             // 都不是
@@ -220,6 +232,9 @@
 
     page.dataList = threadList;
 
+    //<input type="hidden" name="srhfid" value="201" />
+    int fid = [[html stringWithRegular:@"(?<=<input type=\"hidden\" name=\"srhfid\" value=\")\\d+(?=\" />)"] intValue];
+    page.forumId = fid;
     // 总页数
 
     PageNumber *pageNumber = [self parserPageNumber:html];
@@ -271,7 +286,9 @@
 }
 
 - (NSString *)parsePostHash:(NSString *)html {
-    return nil;
+    //<input type="hidden" name="formhash" value="142b2f4e" />
+    NSString *forumHash = [html stringWithRegular:@"(?<=<input type=\"hidden\" name=\"formhash\" value=\")\\w+(?=\" />)"];
+    return forumHash;
 }
 
 - (NSString *)parserPostStartTime:(NSString *)html {
@@ -509,6 +526,9 @@
 }
 
 - (ViewMessagePage *)parsePrivateMessageContent:(NSString *)html avatarBase:(NSString *)avatarBase noavatar:(NSString *)avatarNO {
+
+    //*[@id="pm_ul"]
+
     return nil;
 }
 

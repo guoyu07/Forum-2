@@ -178,7 +178,7 @@ typedef void (^CallBack)(NSString *token, NSString *hash, NSString *time);
     [parameters setValue:@"4" forKey:@"polloptions"];
 
 
-    [self.browser POSTWithURLString:[forumConfig newThreadWithForumId:[NSString stringWithFormat:@"%d", fId]] parameters:parameters charset:UTF_8 requestCallback:^(BOOL isSuccess, NSString *html) {
+    [self.browser POSTWithURLString:[forumConfig createNewThreadWithForumId:[NSString stringWithFormat:@"%d", fId]] parameters:parameters charset:UTF_8 requestCallback:^(BOOL isSuccess, NSString *html) {
         if (isSuccess) {
             LocalForumApi *localForumApi = [[LocalForumApi alloc] init];
             [localForumApi saveCookie];
@@ -374,7 +374,7 @@ typedef void (^CallBack)(NSString *token, NSString *hash, NSString *time);
 //private  获取发新帖子的Posttime hash 和token
 - (void)createNewThreadPrepair:(int)forumId :(CallBack)callback {
 
-    NSString *url = [forumConfig newThreadWithForumId:[NSString stringWithFormat:@"%d", forumId]];
+    NSString *url = [forumConfig createNewThreadWithForumId:[NSString stringWithFormat:@"%d", forumId]];
     [self GET:url requestCallback:^(BOOL isSuccess, NSString *html) {
         if (isSuccess) {
             NSString *token = [forumParser parseSecurityToken:html];

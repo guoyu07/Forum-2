@@ -155,9 +155,14 @@
     return nil;
 }
 
-- (NSString *)newThreadWithForumId:(NSString *)forumId {
-    return nil;
+- (NSString *)createNewThreadWithForumId:(NSString *)forumId {
+    return [NSString stringWithFormat:@"https://www.chiphell.com/forum.php?mod=post&action=newthread&fid=%@&extra=&topicsubmit=yes", forumId];
 }
+
+- (NSString *)enterCreateNewThreadWithForumId:(NSString *)forumId {
+    return [NSString stringWithFormat:@"https://www.chiphell.com/forum.php?mod=post&action=newthread&fid=%@", forumId];
+}
+
 
 - (NSString *)privateWithType:(int)type withPage:(int)page {
     if (type == 0){
@@ -168,7 +173,7 @@
 }
 
 - (NSString *)privateShowWithMessageId:(int)messageId withType:(int)type {
-    return nil;
+    return [NSString stringWithFormat:@"https://www.chiphell.com/home.php?mod=space&do=pm&subop=view&touid=%d#last", messageId];
 }
 
 - (NSString *)privateReplyWithMessageIdPre:(int)messageId {

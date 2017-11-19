@@ -12,7 +12,9 @@
 #import "IGHTMLDocument+QueryNode.h"
 #import "CHHForumConfig.h"
 #import "CHHForumHtmlParser.h"
+#import "LocalForumApi.h"
 
+typedef void (^CallBack)(NSString *token, NSString *forumhash, NSString *posttime);
 
 @implementation CHHForumApi {
 
@@ -402,35 +404,190 @@
     handler(YES,@"");
 }
 
-- (void)createNewThreadWithCategory:(NSString *)category categoryIndex:(int)index withTitle:(NSString *)title
-                         andMessage:(NSString *)message withImages:(NSArray *)images inPage:(ViewForumPage *)page handler:(HandlerWithBool)handler {
-
-}
-
-- (void)quoteReplyPostWithMessage:(NSString *)message withImages:(NSArray *)images toPostId:(NSString *)postId thread:(ViewThreadPage *)threadPage handler:(HandlerWithBool)handler {
-//    NSString *quoteUrl = [forumConfig quoteReply:threadPage.forumId threadId:threadPage.threadID postId:[postId intValue]];
-//    [self GET:quoteUrl requestCallback:^(BOOL isSuccess, NSString *html) {
-//        if (isSuccess) {
-//
-//            NSString * quoteString = [forumParser parseQuote:html];
-//
-//            NSString * replyContent = [NSString stringWithFormat:@"%@ %@", quoteString, message];
-//            [self seniorReplyPostWithMessage:replyContent withImages:images toPostId:postId thread:threadPage handler:handler];
-//
-//        } else {
-//            handler(NO, html);
-//        }
-//    }];
+- (void)quoteReplyPostWithMessage:(NSString *)message withImages:(NSArray *)images toPostId:(NSString *)postId thread:(ViewThreadPage *)threadPage
+                          handler:(HandlerWithBool)handler {
     [self seniorReplyPostWithMessage:message withImages:images toPostId:postId thread:threadPage handler:handler];
 }
 
+// private
+- (NSString *)checkError:(NSString *)html {
+    NSString *duplicate = @"<p><strong>此帖是您在最后 5 分钟发表的帖子的副本，您将返回该主题。</strong></p>";
+    //NSString *tooShot = @"<ol><li>您输入的信息太短，您发布的信息至少为 5 个字符。</li></ol>";
+    NSString *tooFast = @"<ol><li>本论坛允许的发表两个帖子的时间间隔必须大于 30 秒。请等待";
+
+    NSString *searchFailed = @"<ol><li>对不起，没有匹配记录。请尝试采用其他条件查询。";
+    NSString *searchTooFast = @"<ol><li>本论坛允许的进行两次搜索的时间间隔必须大于 30 秒";
+
+    NSString *urlLost = @"<div style=\"margin: 10px\">没有指定 主题 。如果您来自一个有效链接，请通知<a href=\"sendmessage.php\">管理员</a></div>";
+    NSString *permission = @"<li>您的账号可能没有足够的权限访问此页面或执行需要授权的操作。</li>";
+
+    if ([html containsString:duplicate]) {
+        return @"内容重复";
+    } else if ([html containsString:tooFast]) {
+        return @"30秒发帖限制";
+    } else if ([html containsString:tooFast]) {
+        return @"少于5个字";
+    } else if ([html containsString:searchFailed]) {
+        return @"未查到结果";
+    } else if ([html containsString:searchTooFast]) {
+        return @"30秒搜索限制";
+    } else if ([html containsString:urlLost]) {
+        return @"无效链接";
+    } else if ([html containsString:permission]) {
+        return @"无权查看";
+    } else {
+        return nil;
+    }
+}
+
+// private 正式开始发送
+- (void)doPostThread:(int)fId withSubject:(NSString *)subject andMessage:(NSString *)message withToken:(NSString *)token
+            withHash:(NSString *)hash postTime:(NSString *)time handler:(HandlerWithBool)handler {
+
+    NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
+
+    [parameters setValue:hash forKey:@"formhash"];
+    [parameters setValue:time forKey:@"posttime"];
+    [parameters setValue:@"1" forKey:@"wysiwyg"];
+    [parameters setValue:subject forKey:@"subject"];
+    [parameters setValue:message forKey:@"message"];
+    [parameters setValue:@"1" forKey:@"allownoticeauthor"];
+    [parameters setValue:@"" forKey:@"save"];
+
+    //[parameters setValue:token forKey:@"securitytoken"];
+    NSString *forumId = [NSString stringWithFormat:@"%d", fId];
+    [parameters setValue:forumId forKey:@"f"];
+    [parameters setValue:@"postthread" forKey:@"do"];
+
+    NSString *url = [forumConfig createNewThreadWithForumId:[NSString stringWithFormat:@"%d", fId]];
+    [self.browser POSTWithURLString: url
+                         parameters:parameters charset:UTF_8 requestCallback:^(BOOL isSuccess, NSString *html) {
+
+        if (isSuccess) {
+            LocalForumApi *localForumApi = [[LocalForumApi alloc] init];
+            [localForumApi saveCookie];
+        }
+        handler(isSuccess, html);
+
+    }];
+}
+
+// private 进入图片管理页面，准备上传图片
+- (void)uploadImagePrepair:(int)forumId startPostTime:(NSString *)time postHash:(NSString *)hash :(HandlerWithBool)callback {
+
+    NSString *url = [forumConfig newattachmentForForum:forumId time:time postHash:hash];
+
+    [self GET:url requestCallback:^(BOOL isSuccess, NSString *html) {
+        callback(isSuccess, html);
+    }];
+}
+
+//private  获取发新帖子的Posttime hash 和token
+- (void)enterCreateThreadPage:(int)forumId :(CallBack)callback {
+
+    NSString *url = [forumConfig enterCreateNewThreadWithForumId:[NSString stringWithFormat:@"%d", forumId]];
+    [self GET:url requestCallback:^(BOOL isSuccess, NSString *html) {
+        if (isSuccess) {
+            //NSString *token = [forumParser parseSecurityToken:html];
+
+            //NSString *postTime = [[token componentsSeparatedByString:@"-"] firstObject];
+            NSString *hash = [forumParser parsePostHash:html];
+
+            NSDate *date = [NSDate date];
+            long timeStamp = (NSInteger) [date timeIntervalSince1970];
+            NSString *postTime = [NSString stringWithFormat:@"%ld", timeStamp];
+            callback(@"", hash, postTime);
+        } else {
+            callback(nil, nil, nil);
+        }
+    }];
+}
+
+- (void)createNewThreadWithCategory:(NSString *)category categoryIndex:(int)index withTitle:(NSString *)title
+                         andMessage:(NSString *)message withImages:(NSArray *)images inPage:(ViewForumPage *)page handler:(HandlerWithBool)handler {
+
+    NSString * subject = [category stringByAppendingString:title];
+
+    if ([NSUserDefaults standardUserDefaults].isSignatureEnabled) {
+        message = [message stringByAppendingString:[forumConfig signature]];
+
+    }
+
+    int fId = page.forumId;
+    // 准备发帖
+    [self enterCreateThreadPage:fId :^(NSString *token, NSString *hash, NSString *time) {
+
+        if (images == nil || images.count == 0) {
+            // 没有图片，直接发送主题
+            [self doPostThread:fId withSubject:subject andMessage:message withToken:token withHash:hash postTime:time handler:^(BOOL isSuccess, NSString *result) {
+                if (isSuccess) {
+                    NSString *error = [self checkError:result];
+                    if (error != nil) {
+                        handler(NO, error);
+                    } else {
+                        ViewThreadPage *thread = [forumParser parseShowThreadWithHtml:result];
+                        if (thread.postList.count > 0) {
+                            handler(YES, thread);
+                        } else {
+                            handler(NO, @"未知错误");
+                        }
+                    }
+                } else {
+                    handler(NO, result);
+                }
+
+            }];
+        } else {
+            // 如果有图片，先传图片
+            [self uploadImagePrepair:fId startPostTime:time postHash:hash :^(BOOL isSuccess, NSString *result) {
+
+                if (isSuccess) {
+                    // 解析出上传图片需要的参数
+                    NSString *uploadToken = [forumParser parseSecurityToken:result];
+                    NSString *uploadTime = [[token componentsSeparatedByString:@"-"] firstObject];
+                    NSString *uploadHash = [forumParser parsePostHash:result];
+
+                    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(createThreadUploadImages:) name:@"CREATE_THREAD_UPLOAD_IMAGE" object:nil];
+
+//                    toUploadImages = images;
+//                    _handlerWithBool = handler;
+//                    _message = message;
+//                    _subject = subject;
+
+                    [[NSNotificationCenter defaultCenter] postNotificationName:@"CREATE_THREAD_UPLOAD_IMAGE" object:self userInfo:@{@"uploadToken": uploadToken, @"fId": @(fId), @"uploadTime": uploadTime, @"uploadHash": uploadHash, @"imageId": @(0)}];
+                } else {
+                    handler(NO, result);
+                }
+
+
+            }];
+        }
+
+    }];
+}
 
 - (void)searchWithKeyWord:(NSString *)keyWord forType:(int)type handler:(HandlerWithBool)handler {
 
 }
 
 - (void)showPrivateMessageContentWithId:(int)pmId withType:(int)type handler:(HandlerWithBool)handler {
-
+    NSString * url = [forumConfig privateShowWithMessageId:pmId withType:type];
+    [self GET:url requestCallback:^(BOOL isSuccess, NSString *html) {
+        if (isSuccess) {
+            ViewMessagePage *content = [forumParser parsePrivateMessageContent:html avatarBase:forumConfig.avatarBase noavatar:forumConfig.avatarNo];
+            if (![content.pmUserInfo.userID isEqualToString:@"-1"]){
+                [self getAvatarWithUserId:content.pmUserInfo.userID handler:^(BOOL success, id message) {
+                    content.pmUserInfo.userAvatar = message;
+                    handler(YES, content);
+                }];
+            } else{
+                content.pmUserInfo.userAvatar = forumConfig.avatarNo;
+                handler(YES, content);
+            }
+        } else {
+            handler(NO, [forumParser parseErrorMessage:html]);
+        }
+    }];
 }
 
 - (void)sendPrivateMessageToUserName:(NSString *)name andTitle:(NSString *)title andMessage:(NSString *)message handler:(HandlerWithBool)handler {
@@ -450,7 +607,7 @@
 }
 
 - (void)deletePrivateMessage:(Message *)privateMessage withType:(int)type handler:(HandlerWithBool)handler {
-
+    //https://www.chiphell.com/home.php?mod=spacecp&ac=pm&op=delete&deletesubmit=1&deletepm_deluid[]=311126&inajax=1&ajaxtarget=
 }
 
 - (void)showThreadWithP:(NSString *)p handler:(HandlerWithBool)handler {

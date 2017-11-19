@@ -157,7 +157,7 @@
     return [NSString stringWithFormat:@"%@login.php?do=vcode", _forumURL.absoluteString];
 }
 
-- (NSString *)newThreadWithForumId:(NSString *)forumId {
+- (NSString *)createNewThreadWithForumId:(NSString *)forumId {
     return [NSString stringWithFormat:@"%@newthread.php?do=newthread&f=%@", _forumURL.absoluteString,forumId];
 }
 

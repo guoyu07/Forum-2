@@ -115,7 +115,7 @@
 - (void)createNewThreadWithCategory:(NSString *)category categoryIndex:(int)index withTitle:(NSString *)title
                          andMessage:(NSString *)message withImages:(NSArray *)images inPage:(ViewForumPage *)page handler:(HandlerWithBool)handler {
     NSString *token = page.token;
-    NSString *url = [forumConfig newThreadWithForumId:nil];
+    NSString *url = [forumConfig createNewThreadWithForumId:nil];
 
     if ([NSUserDefaults standardUserDefaults].isSignatureEnabled) {
         message = [message stringByAppendingString:[forumConfig signature]];

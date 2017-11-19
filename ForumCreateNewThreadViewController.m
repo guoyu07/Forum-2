@@ -227,7 +227,8 @@
 
     NSString *threadTitle = [category stringByAppendingString:title];
 
-    [_forumApi createNewThreadWithCategory:category categoryIndex:categoryIndex + 1 withTitle:title andMessage:message withImages:[uploadData copy] inPage:currentForumPage handler:^(BOOL isSuccess, id message) {
+    [_forumApi createNewThreadWithCategory:category categoryIndex:categoryIndex + 1 withTitle:title andMessage:message
+                                withImages:[uploadData copy] inPage:currentForumPage handler:^(BOOL isSuccess, id message) {
         [self dismissViewControllerAnimated:YES completion:^{
 
         }];
