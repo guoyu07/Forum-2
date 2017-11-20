@@ -100,7 +100,6 @@
 		3A2C40021DDFE30300576151 /* TransBundleUIViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A2C3FFC1DDFE30300576151 /* TransBundleUIViewController.m */; };
 		3A2C40061DDFE3AD00576151 /* TransValueUITableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A2C40051DDFE3AD00576151 /* TransValueUITableViewCell.m */; };
 		3A2C400A1DE0015C00576151 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A2C40091DE0015C00576151 /* main.m */; };
-		3A5890921FC1BE3600458A74 /* ZhanNeiSearchViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A5890911FC1BE3500458A74 /* ZhanNeiSearchViewCell.m */; };
 		3A5A2CD61EBDEA7100B62F96 /* ForumSupportNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A5A2CD51EBDEA7100B62F96 /* ForumSupportNavigationController.m */; };
 		3A6B4F611EB705A600B9CD79 /* DeviceName.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A6B4F601EB705A600B9CD79 /* DeviceName.m */; };
 		3A8750C11FBDFC07002757AD /* changeLoginStyle.js in Resources */ = {isa = PBXBuildFile; fileRef = 3A8750C01FBDFC07002757AD /* changeLoginStyle.js */; };
@@ -132,6 +131,7 @@
 		4D0D87251DE40C7900DA9034 /* ForumNavigationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4D0D87241DE40C7900DA9034 /* ForumNavigationViewController.m */; };
 		4D4CCC791F42CA5A009A4D58 /* CloudKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D4CCC781F42CA5A009A4D58 /* CloudKit.framework */; };
 		4D7F74F21FBEB5FD0049BA46 /* AutoSendBackTabBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 4D7F74F11FBEB5FD0049BA46 /* AutoSendBackTabBar.m */; };
+		4DA372A41FC2DFD60094E655 /* ZhanNeiSearchViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 4DA372A31FC2DFD50094E655 /* ZhanNeiSearchViewCell.m */; };
 		4DB47C321F4AC73B00A79AC5 /* IGXMLNode+QueryNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 4DB47C311F4AC73B00A79AC5 /* IGXMLNode+QueryNode.m */; };
 		4DEB34C31C47BBE400063CBB /* AssetsLibrary.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DEB34C21C47BBE400063CBB /* AssetsLibrary.framework */; };
 		4DF737061DDECC8500BF1896 /* ViewSearchForumPage.m in Sources */ = {isa = PBXBuildFile; fileRef = 4DF737041DDECC8500BF1896 /* ViewSearchForumPage.m */; };
@@ -335,8 +335,6 @@
 		3A2C40041DDFE3AD00576151 /* TransValueUITableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TransValueUITableViewCell.h; sourceTree = "<group>"; };
 		3A2C40051DDFE3AD00576151 /* TransValueUITableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TransValueUITableViewCell.m; sourceTree = "<group>"; };
 		3A2C40091DE0015C00576151 /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
-		3A5890901FC1BE3500458A74 /* ZhanNeiSearchViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = ZhanNeiSearchViewCell.h; path = /Users/diyuanwang/github/Forum/ZhanNeiSearchViewCell.h; sourceTree = "<absolute>"; };
-		3A5890911FC1BE3500458A74 /* ZhanNeiSearchViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = ZhanNeiSearchViewCell.m; path = /Users/diyuanwang/github/Forum/ZhanNeiSearchViewCell.m; sourceTree = "<absolute>"; };
 		3A5A2CD41EBDEA7100B62F96 /* ForumSupportNavigationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ForumSupportNavigationController.h; sourceTree = "<group>"; };
 		3A5A2CD51EBDEA7100B62F96 /* ForumSupportNavigationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ForumSupportNavigationController.m; sourceTree = "<group>"; };
 		3A6B4F5F1EB705A600B9CD79 /* DeviceName.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DeviceName.h; sourceTree = "<group>"; };
@@ -401,6 +399,8 @@
 		4D4CCC781F42CA5A009A4D58 /* CloudKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CloudKit.framework; path = System/Library/Frameworks/CloudKit.framework; sourceTree = SDKROOT; };
 		4D7F74F01FBEB5FD0049BA46 /* AutoSendBackTabBar.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AutoSendBackTabBar.h; sourceTree = "<group>"; };
 		4D7F74F11FBEB5FD0049BA46 /* AutoSendBackTabBar.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AutoSendBackTabBar.m; sourceTree = "<group>"; };
+		4DA372A21FC2DFD50094E655 /* ZhanNeiSearchViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZhanNeiSearchViewCell.h; sourceTree = "<group>"; };
+		4DA372A31FC2DFD50094E655 /* ZhanNeiSearchViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZhanNeiSearchViewCell.m; sourceTree = "<group>"; };
 		4DB47C301F4AC73B00A79AC5 /* IGXMLNode+QueryNode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "IGXMLNode+QueryNode.h"; sourceTree = "<group>"; };
 		4DB47C311F4AC73B00A79AC5 /* IGXMLNode+QueryNode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "IGXMLNode+QueryNode.m"; sourceTree = "<group>"; };
 		4DEB34C21C47BBE400063CBB /* AssetsLibrary.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AssetsLibrary.framework; path = System/Library/Frameworks/AssetsLibrary.framework; sourceTree = SDKROOT; };
@@ -590,8 +590,8 @@
 		3A2C400E1DE0024000576151 /* Cells */ = {
 			isa = PBXGroup;
 			children = (
-				3A5890901FC1BE3500458A74 /* ZhanNeiSearchViewCell.h */,
-				3A5890911FC1BE3500458A74 /* ZhanNeiSearchViewCell.m */,
+				4DA372A21FC2DFD50094E655 /* ZhanNeiSearchViewCell.h */,
+				4DA372A31FC2DFD50094E655 /* ZhanNeiSearchViewCell.m */,
 				3A2C3F381DDFBF3900576151 /* BaseFourmTableViewCell.h */,
 				3A2C3F391DDFBF3900576151 /* BaseFourmTableViewCell.m */,
 				3A2C3F3B1DDFBF5900576151 /* ForumProfileTableViewCell.h */,
@@ -1193,7 +1193,7 @@
 				3A2C3FE01DDFE0C900576151 /* ForumShowNewThreadPostTableViewController.m in Sources */,
 				3A288A571DFC534D002EBBC2 /* SupportForums.m in Sources */,
 				3A2C3FE31DDFE0C900576151 /* ForumTabBarController.m in Sources */,
-				3A5890921FC1BE3600458A74 /* ZhanNeiSearchViewCell.m in Sources */,
+				4DA372A41FC2DFD60094E655 /* ZhanNeiSearchViewCell.m in Sources */,
 				3A2C3FEE1DDFE10900576151 /* forum1.xcdatamodeld in Sources */,
 				3A288A641DFD14D8002EBBC2 /* DRLForumHtmlParser.m in Sources */,
 				4DFB34D01DF82D5E00BD8DD5 /* ForumEntry+CoreDataProperties.m in Sources */,
