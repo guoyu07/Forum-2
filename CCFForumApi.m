@@ -170,7 +170,7 @@ typedef void (^CallBack)(NSString *token, NSString *hash, NSString *time);
     [parameters setValue:@"4" forKey:@"polloptions"];
 
 
-    [self.browser POSTWithURLString:[forumConfig newThreadWithForumId:[NSString stringWithFormat:@"%d", fId]] parameters:parameters charset:UTF_8 requestCallback:^(BOOL isSuccess, NSString *html) {
+    [self.browser POSTWithURLString:[forumConfig createNewThreadWithForumId:[NSString stringWithFormat:@"%d", fId]] parameters:parameters charset:UTF_8 requestCallback:^(BOOL isSuccess, NSString *html) {
         if (isSuccess) {
             LocalForumApi *localForumApi = [[LocalForumApi alloc] init];
             [localForumApi saveCookie];
@@ -289,9 +289,9 @@ typedef void (^CallBack)(NSString *token, NSString *hash, NSString *time);
 }
 
 //private  获取发新帖子的Posttime hash 和token
-- (void)createNewThreadPrepair:(int)forumId :(CallBack)callback {
+- (void)enterCreateThreadPage:(int)forumId :(CallBack)callback {
 
-    NSString *url = [forumConfig newThreadWithForumId:[NSString stringWithFormat:@"%d", forumId]];
+    NSString *url = [forumConfig enterCreateNewThreadWithForumId:[NSString stringWithFormat:@"%d", forumId]];
     [self GET:url requestCallback:^(BOOL isSuccess, NSString *html) {
         if (isSuccess) {
             NSString *token = [forumParser parseSecurityToken:html];
@@ -343,7 +343,7 @@ typedef void (^CallBack)(NSString *token, NSString *hash, NSString *time);
     }
 
     // 准备发帖
-    [self createNewThreadPrepair:fId :^(NSString *token, NSString *hash, NSString *time) {
+    [self enterCreateThreadPage:fId :^(NSString *token, NSString *hash, NSString *time) {
 
         if (images == nil || images.count == 0) {
             // 没有图片，直接发送主题
@@ -392,7 +392,6 @@ typedef void (^CallBack)(NSString *token, NSString *hash, NSString *time);
         }
 
     }];
-
 }
 
 - (void)createThreadUploadImages:(NSNotification *)notification {
@@ -442,106 +441,6 @@ typedef void (^CallBack)(NSString *token, NSString *hash, NSString *time);
     return [[NSUserDefaults standardUserDefaults] valueForKey:kSecurityToken];
 }
 
-- (void)quickReplyPostWithMessage:(NSString *)message toPostId:(NSString *)postId thread:(ViewThreadPage *)threadPage handler:(HandlerWithBool)handler {
-
-    int threadId = threadPage.threadID;
-    NSString *token = threadPage.securityToken;
-
-    NSString *url = [forumConfig replyWithThreadId:threadId forForumId:-1 replyPostId:-1];
-
-    if ([NSUserDefaults standardUserDefaults].isSignatureEnabled) {
-        message = [message stringByAppendingString:[forumConfig signature]];
-    }
-
-    NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
-
-    [parameters setValue:message forKey:@"message"];
-    [parameters setValue:@"0" forKey:@"wysiwyg"];
-    [parameters setValue:@"0" forKey:@"styleid"];
-    [parameters setValue:@"1" forKey:@"signature"];
-    [parameters setValue:@"1" forKey:@"quickreply"];
-    [parameters setValue:@"1" forKey:@"fromquickreply"];
-    [parameters setValue:@"" forKey:@"s"];
-    [parameters setValue:token forKey:@"securitytoken"];
-    [parameters setValue:@"postreply" forKey:@"do"];
-    [parameters setValue:[NSString stringWithFormat:@"%d", threadId] forKey:@"t"];
-    [parameters setValue:postId forKey:@"p"];
-    [parameters setValue:@"1" forKey:@"specifiedpost"];
-    [parameters setValue:@"1" forKey:@"parseurl"];
-
-    LocalForumApi *forumApi = [[LocalForumApi alloc] init];
-    LoginUser *user = [forumApi getLoginUser:forumConfig.forumURL.host];
-    [parameters setValue:user.userID forKey:@"loggedinuser"];
-    [parameters setValue:@"sbutton" forKey:@"快速回复帖子"];
-
-    [self.browser POSTWithURLString:url parameters:parameters charset:UTF_8 requestCallback:^(BOOL isSuccess, NSString *html) {
-        if (isSuccess) {
-
-            NSString *error = [self checkError:html];
-            if (error != nil) {
-                handler(NO, error);
-            } else {
-                ViewThreadPage *thread = [forumParser parseShowThreadWithHtml:html];
-                if (thread.postList.count > 0) {
-                    handler(YES, thread);
-                } else {
-                    handler(NO, @"未知错误");
-                }
-            }
-        } else {
-            handler(NO, html);
-        }
-    }];
-}
-
-- (void)quickReplyPostWithThreadId:(int)threadId forPostId:(int)postId andMessage:(NSString *)message securitytoken:(NSString *)token ajaxLastPost:(NSString *)ajax_lastpost handler:(HandlerWithBool)handler {
-    NSString *url = [forumConfig replyWithThreadId:threadId forForumId:-1 replyPostId:-1];
-
-    if ([NSUserDefaults standardUserDefaults].isSignatureEnabled) {
-        message = [message stringByAppendingString:[forumConfig signature]];
-    }
-
-    NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
-
-    [parameters setValue:message forKey:@"message"];
-    [parameters setValue:@"0" forKey:@"wysiwyg"];
-    [parameters setValue:@"0" forKey:@"styleid"];
-    [parameters setValue:@"1" forKey:@"signature"];
-    [parameters setValue:@"1" forKey:@"quickreply"];
-    [parameters setValue:@"1" forKey:@"fromquickreply"];
-    [parameters setValue:@"" forKey:@"s"];
-    [parameters setValue:token forKey:@"securitytoken"];
-    [parameters setValue:@"postreply" forKey:@"do"];
-    [parameters setValue:[NSString stringWithFormat:@"%d", threadId] forKey:@"t"];
-    [parameters setValue:[NSString stringWithFormat:@"%d", postId] forKey:@"p"];
-    [parameters setValue:@"1" forKey:@"specifiedpost"];
-    [parameters setValue:@"1" forKey:@"parseurl"];
-
-    LocalForumApi *forumApi = [[LocalForumApi alloc] init];
-    LoginUser *user = [forumApi getLoginUser:forumConfig.forumURL.host];
-    [parameters setValue:user.userID forKey:@"loggedinuser"];
-    [parameters setValue:@"sbutton" forKey:@"快速回复帖子"];
-
-    [self.browser POSTWithURLString:url parameters:parameters charset:UTF_8 requestCallback:^(BOOL isSuccess, NSString *html) {
-        if (isSuccess) {
-
-            NSString *error = [self checkError:html];
-            if (error != nil) {
-                handler(NO, error);
-            } else {
-                ViewThreadPage *thread = [forumParser parseShowThreadWithHtml:html];
-                if (thread.postList.count > 0) {
-                    handler(YES, thread);
-                } else {
-                    handler(NO, @"未知错误");
-                }
-            }
-        } else {
-            handler(NO, html);
-        }
-    }];
-
-}
 
 - (void)seniorReplyPostWithMessage:(NSString *)message withImages:(NSArray *)images toPostId:(NSString *)postId thread:(ViewThreadPage *)threadPage handler:(HandlerWithBool)handler {
 
@@ -549,7 +448,6 @@ typedef void (^CallBack)(NSString *token, NSString *hash, NSString *time);
     NSString *token = threadPage.securityToken;
     NSString *url = [forumConfig replyWithThreadId:threadId forForumId:-1 replyPostId:-1];
     int forumId = threadPage.forumId;
-
 
     NSMutableDictionary *presparameters = [NSMutableDictionary dictionary];
     [presparameters setValue:@"" forKey:@"message"];
@@ -630,6 +528,25 @@ typedef void (^CallBack)(NSString *token, NSString *hash, NSString *time);
         }
     }];
 }
+
+- (void)quoteReplyPostWithMessage:(NSString *)message withImages:(NSArray *)images toPostId:(NSString *)postId thread:(ViewThreadPage *)threadPage handler:(HandlerWithBool)handler {
+
+    NSString *quoteUrl = [forumConfig quoteReply:threadPage.forumId threadId:threadPage.threadID postId:[postId intValue]];
+    [self GET:quoteUrl requestCallback:^(BOOL isSuccess, NSString *html) {
+        if (isSuccess) {
+
+            NSString * quoteString = [forumParser parseQuote:html];
+
+            NSString * replyContent = [NSString stringWithFormat:@"%@ %@", quoteString, message];
+            [self seniorReplyPostWithMessage:replyContent withImages:images toPostId:postId thread:threadPage handler:handler];
+
+        } else {
+            handler(NO, html);
+        }
+    }];
+
+}
+
 
 // private
 - (void)seniorReplyWithThreadId:(int)threadId andMessage:(NSString *)message securitytoken:(NSString *)token posthash:(NSString *)posthash poststarttime:(NSString *)poststarttime handler:(HandlerWithBool)handler {
@@ -1323,9 +1240,8 @@ typedef void (^CallBack)(NSString *token, NSString *hash, NSString *time);
     }];
 }
 
-
-- (void)listSearchResultWithSearchId:(NSString *)searchid keyWord:(NSString *)keyWord andPage:(int)page handler:(HandlerWithBool)handler {
-    NSString *searchedUrl = [forumConfig searchWithSearchId:searchid withPage:page];
+- (void)listSearchResultWithSearchId:(NSString *)searchId keyWord:(NSString *)keyWord andPage:(int)page type:(int)type handler:(HandlerWithBool)handler {
+    NSString *searchedUrl = [forumConfig searchWithSearchId:searchId withPage:page];
 
     [self GET:searchedUrl requestCallback:^(BOOL isSuccess, NSString *html) {
         if (isSuccess) {

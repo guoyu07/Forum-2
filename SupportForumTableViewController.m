@@ -36,7 +36,6 @@
 
 
     if ([localForumApi isHaveLoginForum]){
-        [self dismissViewControllerAnimated:YES completion:nil  ];
         self.navigationItem.leftBarButtonItem.title = @"返回";
     } else {
         self.navigationItem.leftBarButtonItem.title = @"";

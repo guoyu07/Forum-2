@@ -113,6 +113,10 @@
     return @"http://bbs.crsky.com/post.php?";
 }
 
+- (NSString *)quoteReply:(int)fid threadId:(int)threadId postId:(int)postId {
+    return [NSString stringWithFormat:@"http://bbs.crsky.com/post.php?action=quote&fid=%d&tid=%d&pid=%d", fid, threadId, postId];
+}
+
 - (NSString *)showThreadWithThreadId:(NSString *)threadId withPage:(int)page {
     return [NSString stringWithFormat:@"http://bbs.crsky.com/read.php?tid=%@&fpage=0&toread=&page=%d",threadId, page];
 }
@@ -154,7 +158,7 @@
     return nil;
 }
 
-- (NSString *)newThreadWithForumId:(NSString *)forumId {
+- (NSString *)createNewThreadWithForumId:(NSString *)forumId {
     return @"http://bbs.crsky.com/post.php?";
 }
 

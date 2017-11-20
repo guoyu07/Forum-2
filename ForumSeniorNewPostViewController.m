@@ -28,6 +28,8 @@
     NSString * postId;
 
     ViewThreadPage *replyThread;
+
+    BOOL isQuoteReply;
 }
 
 @end
@@ -44,6 +46,8 @@
     postId = [NSString stringWithFormat:@"%d", pid];
 
     replyThread = [bundle getObjectValue:@"QUICK_REPLY_THREAD"];
+
+    isQuoteReply = [bundle getIntValue:@"ISQUOTEREPLY"] == 1;
 }
 
 
@@ -131,19 +135,9 @@
 
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info {
 
-    NSLog(@"imagePickerController %@", info);
-    //    UIImage *image=info[@"UIImagePickerControllerOriginalImage"];
-
-    //    UIImage *image=info[@"UIImagePickerControllerEditedImage"];
-
     UIImage *select = [info valueForKey:UIImagePickerControllerOriginalImage];
 
     NSURL *selectUrl = [info valueForKey:UIImagePickerControllerReferenceURL];
-
-    NSData *date = UIImageJPEGRepresentation(select, 1.0);
-
-
-    NSLog(@"----------&&&&&&&    %@", [self contentTypeForImageData:date]);
 
     [self fileSizeAtPath:selectUrl];
 
@@ -152,9 +146,6 @@
     [images addObject:[select scaleUIImage:maxImageSize]];
 
     [_insertCollectionView reloadData];
-
-
-    //    [self.imageView setImage:image];
 
     //选取完图片之后关闭视图
     [self dismissViewControllerAnimated:YES completion:nil];
@@ -220,37 +211,58 @@
 - (IBAction)sendSeniorMessage:(UIBarButtonItem *)sender {
     [self.replyContent resignFirstResponder];
 
-    [SVProgressHUD showWithStatus:@"高级回复" maskType:SVProgressHUDMaskTypeBlack];
+    [SVProgressHUD showWithStatus:@"正在回复" maskType:SVProgressHUDMaskTypeBlack];
 
-
-
-    NSMutableArray < NSData * > *uploadData = [NSMutableArray array];
+    NSMutableArray < NSData * > *uploadImages = [NSMutableArray array];
     for (UIImage *image in images) {
         NSData *data = UIImageJPEGRepresentation(image, 1.0);
-        [uploadData addObject:data];
+        [uploadImages addObject:data];
     }
 
-    [self.forumApi seniorReplyPostWithMessage:self.replyContent.text withImages:uploadData toPostId:postId thread:replyThread handler:^(BOOL isSuccess, id message) {
-        if (isSuccess) {
-            [SVProgressHUD showSuccessWithStatus:@"回复成功" maskType:SVProgressHUDMaskTypeBlack];
+    if (isQuoteReply){
+        [self.forumApi quoteReplyPostWithMessage:self.replyContent.text withImages:uploadImages toPostId:postId thread:replyThread handler:^(BOOL isSuccess, id message) {
+            if (isSuccess) {
+                [SVProgressHUD showSuccessWithStatus:@"回复成功" maskType:SVProgressHUDMaskTypeBlack];
 
-            ViewThreadPage *thread = message;
+                ViewThreadPage *thread = message;
 
-            TransBundle *bundle = [[TransBundle alloc] init];
-            [bundle putObjectValue:thread forKey:@"Senior_Reply_Callback"];
+                TransBundle *bundle = [[TransBundle alloc] init];
+                [bundle putObjectValue:thread forKey:@"Senior_Reply_Callback"];
 
-            UITabBarController *presenting = (UITabBarController *) self.presentingViewController;
-            UINavigationController *selected = presenting.selectedViewController;
-            UIViewController *detail = selected.topViewController;
+                UITabBarController *presenting = (UITabBarController *) self.presentingViewController;
+                UINavigationController *selected = presenting.selectedViewController;
+                UIViewController *detail = selected.topViewController;
 
-            [self dismissViewControllerAnimated:YES backToViewController:detail withBundle:bundle completion:^{
+                [self dismissViewControllerAnimated:YES backToViewController:detail withBundle:bundle completion:^{
 
-            }];
+                }];
 
-        } else {
-            [SVProgressHUD showErrorWithStatus:message maskType:SVProgressHUDMaskTypeBlack];
-        }
-    }];
+            } else {
+                [SVProgressHUD showErrorWithStatus:message maskType:SVProgressHUDMaskTypeBlack];
+            }
+        }];
+    } else {
+        [self.forumApi seniorReplyPostWithMessage:self.replyContent.text withImages:uploadImages toPostId:postId thread:replyThread handler:^(BOOL isSuccess, id message) {
+            if (isSuccess) {
+                [SVProgressHUD showSuccessWithStatus:@"回复成功" maskType:SVProgressHUDMaskTypeBlack];
 
+                ViewThreadPage *thread = message;
+
+                TransBundle *bundle = [[TransBundle alloc] init];
+                [bundle putObjectValue:thread forKey:@"Senior_Reply_Callback"];
+
+                UITabBarController *presenting = (UITabBarController *) self.presentingViewController;
+                UINavigationController *selected = presenting.selectedViewController;
+                UIViewController *detail = selected.topViewController;
+
+                [self dismissViewControllerAnimated:YES backToViewController:detail withBundle:bundle completion:^{
+
+                }];
+
+            } else {
+                [SVProgressHUD showErrorWithStatus:message maskType:SVProgressHUDMaskTypeBlack];
+            }
+        }];
+    }
 }
 @end

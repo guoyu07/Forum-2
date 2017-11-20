@@ -271,7 +271,7 @@
         [stretchAnimation setDelegate:self];
         [stretchAnimation setBeginTime:CACurrentMediaTime() + 0.35];
         [stretchAnimation setTimingFunction:[CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut]];
-        [self.view.layer addAnimation:stretchAnimation forKey:@"stretchAnimation"];
+        [self.webView.layer addAnimation:stretchAnimation forKey:@"stretchAnimation"];
         CATransition *animation = [CATransition animation];
         [animation setType:kCATransitionPush];
         [animation setSubtype:kCATransitionFromBottom];
@@ -373,7 +373,7 @@
 
             [stretchAnimation setTimingFunction:[CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut]];
             //[self.webView setAnchorPoint:CGPointMake(0.0, 1) forView:self.webView];
-            [self.view.layer addAnimation:stretchAnimation forKey:@"stretchAnimation"];
+            [self.webView.layer addAnimation:stretchAnimation forKey:@"stretchAnimation"];
 
             CATransition *animation = [CATransition animation];
             [animation setType:kCATransitionPush];
@@ -488,7 +488,7 @@
 
             [stretchAnimation setTimingFunction:[CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut]];
             //[self.webView setAnchorPoint:CGPointMake(0.0, 1) forView:self.webView];
-            [self.view.layer addAnimation:stretchAnimation forKey:@"stretchAnimation"];
+            [self.webView.layer addAnimation:stretchAnimation forKey:@"stretchAnimation"];
 
             CATransition *animation = [CATransition animation];
             [animation setType:kCATransitionPush];
@@ -573,8 +573,8 @@
         int postId = [[query valueForKey:@"postid"] intValue];
         int louCeng = [[query valueForKey:@"postlouceng"] intValue];
 
-        itemActionSheet = [LCActionSheet sheetWithTitle:userName buttonTitles:@[@"快速回复", @"高级回复", @"复制链接", @"举报此帖"] redButtonIndex:-1 clicked:^(NSInteger buttonIndex) {
-            if (buttonIndex == 0) {
+        itemActionSheet = [LCActionSheet sheetWithTitle:userName buttonTitles:@[@"引用此楼回复", @"复制此楼链接", @"举报此楼"] redButtonIndex:-1 clicked:^(NSInteger buttonIndex) {
+            /*if (buttonIndex == 0) {
                 UIStoryboard *storyboard = [UIStoryboard mainStoryboard];
 
                 UINavigationController *simpleReplyController = [storyboard instantiateViewControllerWithIdentifier:@"QuickReplySomeOne"];
@@ -595,7 +595,7 @@
 
                 }];
 
-            } else if (buttonIndex == 1) {
+            } else */if (buttonIndex == 0) {
 
                 UIStoryboard *storyBoard = [UIStoryboard mainStoryboard];
 
@@ -610,6 +610,7 @@
                 [bundle putStringValue:token forKey:@"SECYRITY_TOKEN"];
                 [bundle putStringValue:currentShowThreadPage.ajaxLastPost forKey:@"AJAX_LAST_POST"];
                 [bundle putStringValue:userName forKey:@"USER_NAME"];
+                [bundle putIntValue:1 forKey:@"ISQUOTEREPLY"];
 
                 [bundle putObjectValue:currentShowThreadPage forKey:@"QUICK_REPLY_THREAD"];
 
@@ -617,7 +618,7 @@
 
                 }];
 
-            } else if (buttonIndex == 2) {
+            } else if (buttonIndex == 1) {
 
                 LocalForumApi *localForumApi = [[LocalForumApi alloc] init];
                 id<ForumConfigDelegate> forumConfig = [ForumApiHelper forumConfig:localForumApi.currentForumHost];
@@ -626,7 +627,7 @@
                 UIPasteboard *pasteboard = [UIPasteboard generalPasteboard];
                 pasteboard.string = postUrl;
                 [SVProgressHUD showSuccessWithStatus:@"复制成功" maskType:SVProgressHUDMaskTypeBlack];
-            } else if (buttonIndex == 3){
+            } else if (buttonIndex == 2){
                 [self reportThreadPost:postId userName:userName];
             }
         }];
@@ -758,7 +759,7 @@
     LocalForumApi *localForumApi = [[LocalForumApi alloc] init];
     id<ForumConfigDelegate> forumConfig = [ForumApiHelper forumConfig:localForumApi.currentForumHost];
 
-    itemActionSheet = [LCActionSheet sheetWithTitle:nil buttonTitles:@[@"复制帖子链接", @"在浏览器中查看", @"举报此帖"] redButtonIndex:4 clicked:^(NSInteger buttonIndex) {
+    itemActionSheet = [LCActionSheet sheetWithTitle:nil buttonTitles:@[@"复制帖子链接", @"在浏览器中查看", @"举报此主题"] redButtonIndex:4 clicked:^(NSInteger buttonIndex) {
         if (buttonIndex == 0) {
             // 复制贴链接
             UIPasteboard *pasteboard = [UIPasteboard generalPasteboard];

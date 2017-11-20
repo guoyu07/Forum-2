@@ -116,6 +116,10 @@
     return [NSString stringWithFormat:@"%@newreply.php?do=postreply&t=%d",_forumURL.absoluteString, threadId];
 }
 
+- (NSString *)quoteReply:(int)fid threadId:(int)threadId postId:(int)postId {
+    return [NSString stringWithFormat:@"%@newreply.php?do=newreply&p=%d", _forumURL.absoluteString, postId];
+}
+
 - (NSString *)showThreadWithThreadId:(NSString *)threadId withPage:(int)page {
     return [NSString stringWithFormat:@"%@showthread.php?t=%@&page=%d",_forumURL.absoluteString, threadId, page];
 }
@@ -153,7 +157,7 @@
     return [NSString stringWithFormat:@"%@login.php?do=vcode", _forumURL.absoluteString];
 }
 
-- (NSString *)newThreadWithForumId:(NSString *)forumId {
+- (NSString *)createNewThreadWithForumId:(NSString *)forumId {
     return [NSString stringWithFormat:@"%@newthread.php?do=newthread&f=%@", _forumURL.absoluteString,forumId];
 }
 
