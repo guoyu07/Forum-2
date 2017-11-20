@@ -38,10 +38,14 @@ typedef void (^UserInfoHandler)(BOOL isSuccess, id userName, id userId);
 - (void)createNewThreadWithCategory:(NSString *)category categoryIndex:(int)index withTitle:(NSString *)title andMessage:(NSString *)message withImages:(NSArray *)images inPage:(ViewForumPage *) page handler:(HandlerWithBool)handler;
 
 // 快速回复
-- (void)quickReplyPostWithMessage:(NSString *)message toPostId:(NSString *)postId thread:(ViewThreadPage *)threadPage handler:(HandlerWithBool)handler;
+//- (void)quickReplyPostWithMessage:(NSString *)message toPostId:(NSString *)postId thread:(ViewThreadPage *)threadPage handler:(HandlerWithBool)handler;
 
-// 高级模式回复
+// 带有图片回复
 - (void)seniorReplyPostWithMessage:(NSString *)message withImages:(NSArray *)images toPostId:(NSString *)postId  thread:(ViewThreadPage *)threadPage handler:(HandlerWithBool)handler;
+
+// 引用回复楼层
+- (void)quoteReplyPostWithMessage:(NSString *)message withImages:(NSArray *)images toPostId:(NSString *)postId  thread:(ViewThreadPage *)threadPage handler:(HandlerWithBool)handler;
+
 
 // 搜索论坛
 // 0.标题 1. 内容 2. 用户
@@ -98,7 +102,7 @@ typedef void (^UserInfoHandler)(BOOL isSuccess, id userName, id userId);
 
 - (void)getAvatarWithUserId:(NSString *)userId handler:(HandlerWithBool)handler;
 
-- (void)listSearchResultWithSearchId:(NSString *)searchid keyWord:(NSString *)keyWord andPage:(int)page handler:(HandlerWithBool)handler;
+- (void)listSearchResultWithSearchId:(NSString *)searchId keyWord:(NSString *)keyWord andPage:(int)page type:(int)type  handler:(HandlerWithBool)handler;
 
 // 显示用户信息页面
 - (void)showProfileWithUserId:(NSString *)userId handler:(HandlerWithBool)handler;

@@ -37,6 +37,8 @@
 
 - (ViewSearchForumPage *)parseSearchPageFromHtml:(NSString *)html;
 
+- (ViewSearchForumPage *)parseZhanNeiSearchPageFromHtml:(NSString *)html type:(int) type;
+
 - (ViewMessagePage *)parsePrivateMessageContent:(NSString *)html avatarBase:(NSString *) avatarBase noavatar:(NSString *) avatarNO;
 
 - (UserProfile *)parserProfile:(NSString *)html userId:(NSString *)userId;
@@ -70,4 +72,5 @@
 
 - (NSString *)parseLoginErrorMessage:(NSString *)html;
 
+- (NSString *)parseQuote:(NSString *)html;
 @end

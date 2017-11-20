@@ -15,6 +15,8 @@
 #import "UIStoryboard+Forum.h"
 #import "LocalForumApi.h"
 
+#define LOG_IN_URL @"https://www.chiphell.com/member.php?mod=logging&action=login"
+
 @interface ForumLoginWebViewController () <UIWebViewDelegate> {
 
 }
@@ -34,7 +36,7 @@
 
     [self.webView setOpaque:NO];
 
-    [self.webView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:@"https://www.chiphell.com/member.php?mod=logging&action=login&mobile=2"]]];
+    [self.webView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:LOG_IN_URL]]];
     
     if ([self isNeedHideLeftMenu]){
         self.navigationItem.leftBarButtonItem = nil;
@@ -53,14 +55,23 @@
     return html;
 }
 
+- (void)hideMaskView{
+    self.maskLoadingView.hidden = YES;
+}
+
 - (void)webViewDidFinishLoad:(UIWebView *)webView {
 
     NSString *html = [self getResponseHTML:webView];
 
     NSString *currentURL = [webView stringByEvaluatingJavaScriptFromString:@"document.location.href"];
-    if ([currentURL isEqualToString:@"https://www.chiphell.com/member.php?mod=logging&action=login&mobile=2"]){
-        [webView stringByEvaluatingJavaScriptFromString:@"document.getElementsByClassName('footer')[0].style.visibility='hidden';"
-                "document.getElementsByClassName('header')[0].innerHTML='';"];
+    if ([currentURL isEqualToString:LOG_IN_URL]){
+        // 改变样式
+        NSString *js = [NSString stringWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"chhlogin" ofType:@"js"]
+                                                 encoding:NSUTF8StringEncoding error:nil];
+        [webView stringByEvaluatingJavaScriptFromString:js];
+
+        [self performSelector:@selector(hideMaskView) withObject:nil/*可传任意类型参数*/ afterDelay:1.0];
+
     } else if ([currentURL isEqualToString:@"https://www.chiphell.com/forum.php?mobile=yes"]){
 
         IGHTMLDocument *document = [[IGHTMLDocument alloc] initWithHTMLString:html error:nil];
@@ -69,7 +80,7 @@
 
         LocalForumApi *localForumApi = [[LocalForumApi alloc] init];
         id<ForumConfigDelegate> forumConfig = [ForumApiHelper forumConfig:localForumApi.currentForumHost];
-        if (userName != nil) {
+        if (userName != nil && ![userName isEqualToString:@""]) {
             // 保存Cookie
             [localForumApi saveCookie];
             // 保存用户名

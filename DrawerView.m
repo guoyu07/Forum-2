@@ -29,13 +29,10 @@
 
     UIView *_rightEageView;
 
-    UIImage *defaultAvatar;
-
     ForumCoreDataManager *coreDateManager;
-
     NSArray *_haveLoginForums;
 
-
+    UIImage *defaultAvatar;
     UIImage *defaultAvatarImage;
     NSMutableDictionary *avatarCache;
     NSMutableArray<UserEntry *> *cacheUsers;
@@ -511,6 +508,24 @@
     ForumTabBarController *root = (ForumTabBarController *) self.window.rootViewController;
     root.selectedIndex = 4;
 }
+
+- (void)bringDrawerToFront {
+    [self.superview bringSubviewToFront:self];
+
+    if (_drawerType == DrawerIndexLeft && _leftDrawerView){
+        [self.superview bringSubviewToFront:_leftDrawerView];
+    }
+
+    if (_drawerType == DrawerIndexRight && _rightDrawerView){
+        [self.superview bringSubviewToFront:_rightDrawerView];
+    }
+
+    if (_drawerType == DrawerViewTypeLeftAndRight && _leftDrawerView && _rightDrawerView){
+        [self.superview bringSubviewToFront:_leftDrawerView];
+        [self.superview bringSubviewToFront:_rightDrawerView];
+    }
+}
+
 
 - (void)showRightDrawerWithAdim:(UIView *)view done:(Done)done {
     [UIView animateWithDuration:0.2f animations:^{

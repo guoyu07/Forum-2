@@ -45,4 +45,9 @@
     [_leftDrawerView openLeftDrawer];
 }
 
+- (void)bringLeftDrawerToFront {
+    if (![self isNeedHideLeftMenu]){
+        [_leftDrawerView bringDrawerToFront];
+    }
+}
 @end

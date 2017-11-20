@@ -588,6 +588,12 @@
     return contents.firstObject.text;
 }
 
+- (NSString *)parseQuote:(NSString *)html {
+    IGHTMLDocument *document = [[IGHTMLDocument alloc] initWithHTMLString:html error:nil];
+    IGXMLNodeSet *contents = [document queryWithXPath:@"//*[@id='vBulletin_editor']/table/tr[2]/td[1]/textarea"];
+    return contents.firstObject.text;
+}
+
 
 // private
 -(NSString *)parseListMyThreadRedirectUrl:(NSString *)html{

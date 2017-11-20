@@ -78,7 +78,9 @@
 
             if ([cookie.name isEqualToString:forumConfig.cookieUserIdKey]) {
                 user.userID = [cookie.value componentsSeparatedByString:@"%"][0];
-            } else if ([cookie.name isEqualToString:forumConfig.cookieExpTimeKey]) {
+            }
+            
+            if ([cookie.name isEqualToString:forumConfig.cookieExpTimeKey]) {
                 user.expireTime = cookie.expiresDate;
             }
         }
@@ -251,7 +253,8 @@
     } else if ([bundleId isEqualToString:@"com.andforce.CHH"]){
         return @"https://chiphell.com/";
     } else{
-        return [_userDefaults valueForKey:@"currentForumURL"];
+        NSString *forumUrl = [_userDefaults valueForKey:@"currentForumURL"];
+        return forumUrl;
     }
 }
 
