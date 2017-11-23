@@ -661,6 +661,9 @@
     IGHTMLDocument *document = [[IGHTMLDocument alloc] initWithHTMLString:html error:nil];
     IGXMLNode *picNode = [document queryNodeWithClassName:@"pic"];
     NSString *src = [picNode attribute:@"src"];
+    if (!src) {
+        return nil;
+    }
     if ([src hasPrefix:@"http"]){
         return src;
     } else {
