@@ -46,7 +46,6 @@ static int DB_VERSION = 8;
     application.applicationIconBadgeNumber = 0;
 
     if (API_DEBUG) {
-
         NSDictionary *dic = [[NSBundle mainBundle] infoDictionary];
         NSLog(@"infoDictionary %@",dic);
 
@@ -72,6 +71,24 @@ static int DB_VERSION = 8;
 
     LocalForumApi *localForumApi = [[LocalForumApi alloc] init];
 
+    // 检查数据库
+    BOOL isClearDB = NO;
+    if ([localForumApi dbVersion] != DB_VERSION) {
+        
+        ForumCoreDataManager *formManager = [[ForumCoreDataManager alloc] initWithEntryType:EntryTypeForm];
+        
+        // 清空数据库
+        [formManager deleteData];
+        
+        ForumCoreDataManager *userManager = [[ForumCoreDataManager alloc] initWithEntryType:EntryTypeUser];
+        [userManager deleteData];
+        
+        [localForumApi setDBVersion:DB_VERSION];
+        
+        isClearDB = YES;
+    }
+    
+    // 检查登录情况
     NSString *currentSelectForumHost = localForumApi.currentForumHost;
     if (currentSelectForumHost){
         if (![localForumApi isHaveLogin:localForumApi.currentForumHost]){
@@ -81,23 +98,6 @@ static int DB_VERSION = 8;
             }
         }
 
-        BOOL isClearDB = NO;
-        if ([localForumApi dbVersion] != DB_VERSION) {
-
-            ForumCoreDataManager *formManager = [[ForumCoreDataManager alloc] initWithEntryType:EntryTypeForm];
-
-            // 清空数据库
-            [formManager deleteData];
-
-            ForumCoreDataManager *userManager = [[ForumCoreDataManager alloc] initWithEntryType:EntryTypeUser];
-            [userManager deleteData];
-
-            [localForumApi setDBVersion:DB_VERSION];
-
-            isClearDB = YES;
-        }
-
-
         // 判断是否登录
         if (![localForumApi isHaveLoginForum] || isClearDB) {
 
@@ -105,6 +105,7 @@ static int DB_VERSION = 8;
 
         }
     } else {
+        
         [self showReloginController:localForumApi];
     }
 

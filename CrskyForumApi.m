@@ -23,6 +23,10 @@
 #import "UIStoryboard+Forum.h"
 #import "ForumWebViewController.h"
 
+#import "IGHTMLDocument.h"
+#import "IGHTMLDocument+QueryNode.h"
+#import "IGXMLNode+Children.h"
+
 @implementation CrskyForumApi{
     id <ForumConfigDelegate> forumConfig;
     id <ForumParserDelegate> forumParser;
@@ -76,7 +80,12 @@
     NSString * url = forumConfig.forumURL.absoluteString;
     [self GET:url requestCallback:^(BOOL isSuccess, NSString *html) {
         if (isSuccess) {
-            NSString *name = [html stringWithRegular:@"(?<=<a href=\"u\\.php\" style=\"font-weight:700\">)\\S+(?=</a>)"];
+
+            IGHTMLDocument *document = [[IGHTMLDocument alloc] initWithHTMLString:html error:nil];
+
+            IGXMLNode * nameNode = [document queryNodeWithXPath:@"//*[@id=\"user-login\"]/a[1]"];
+
+            NSString *name = nameNode.text.trim;
             NSString *uid = [html stringWithRegular:@"(?<=UID: )\\d+"];
             handler(isSuccess, name, uid);
         } else {
