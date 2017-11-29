@@ -12,8 +12,22 @@
 #import "IGXMLNode+Children.h"
 #import "NSString+Extensions.h"
 #import "IGXMLNode+QueryNode.h"
+#import "LocalForumApi.h"
 
-@implementation CrskyForumHtmlParser
+@implementation CrskyForumHtmlParser{
+    LocalForumApi *localApi;
+    LoginUser *loginUser;
+}
+
+
+- (instancetype)init {
+    self = [super init];
+    if (self){
+        localApi = [[LocalForumApi alloc] init];
+    }
+    return self;
+}
+
 - (NSString *)parseQuote:(NSString *)html {
 
     IGHTMLDocument *document = [[IGHTMLDocument alloc] initWithHTMLString:html error:nil];
@@ -461,6 +475,13 @@
         NSString *forumName = fourumNmaeNode.text.trim;
         thread.fromFormName = forumName;
 
+        if ([self isSpecial]){
+            NSArray *blackList = [self blackList];
+            if ([blackList containsObject:forumName]){
+                continue;
+            }
+        }
+
         [threads addObject:thread];
     }
 
@@ -746,6 +767,13 @@
         
         IGXMLNode *nameTitleNode = [[[forumP childAt:0] childAt:0] childAt:0];
         NSString * name = [[nameTitleNode childAt:nameTitleNode.childrenCount -1] childAt:0].text;
+        if ([self isSpecial]){
+            NSArray *blackList = [self blackList];
+            if ([blackList containsObject:name]){
+                continue;
+            }
+        }
+
         parent.forumName = name;
         parent.forumId = replaceId ++;
         parent.forumHost = host;
@@ -762,6 +790,14 @@
                 IGXMLNode * tileNode = [[[forumNode childAt:1] childAt:0] firstChild];
 
                 NSString * forumName = tileNode.text.trim;
+
+                if ([self isSpecial]){
+                    NSArray *blackList = [self blackList];
+                    if ([blackList containsObject:forumName]){
+                        continue;
+                    }
+                }
+
                 forum.forumName = forumName;
                 forum.forumId = [[tileNode.html stringWithRegular:@"(?<=fn_)\\d+"] intValue];
                 forum.forumHost = host;
@@ -858,5 +894,17 @@
     return page;
 }
 
+- (BOOL) isSpecial{
+    if (loginUser == nil){
+        NSString * url = localApi.currentForumHost;
+        loginUser = [localApi getLoginUser:url];
+    }
+    return [loginUser.userName isEqualToString:@"chimelong"];
+}
+
+- (NSArray *) blackList{
+    return @[@"口- 非凡AD区", @"电影资源区", @"口- 虚拟交易", @"剧集资源区", @"口- 谈股论金", @"≮交易交流区≯"
+             ,@"≮体坛竞猜≯", @"口- 实物交易", @"口- 交易事务", @"口- 苹果专区", @"╃资源专区=-", @"╃交易理财=-"];
+}
 
 @end
