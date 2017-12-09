@@ -43,7 +43,7 @@ static int DB_VERSION = 8;
     [HPURLProtocol registerURLProtocolIfNeed];
 
     // 注册LeanCloud的推送服务
-    _pushManager = [[ForumPushManager alloc] init];
+    _pushManager = [[ForumPushManager alloc] initWithNotificationCenterDelegate:self];
     [_pushManager registerPushManagerWithOptions:launchOptions];
 
 
@@ -146,15 +146,15 @@ static int DB_VERSION = 8;
 
     if (/* DISABLES CODE */ (NO)){
         // 首先要想LeanCloud保存installation
-        AVInstallation *currentInstallation = [AVInstallation currentInstallation];
-        [currentInstallation setDeviceTokenFromData:deviceToken];
-        [currentInstallation saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
-
-            if (!succeeded) {
-                NSLog(@"Error-------> :%@", error);
-            }
-
-        }];
+//        AVInstallation *currentInstallation = [AVInstallation currentInstallation];
+//        [currentInstallation setDeviceTokenFromData:deviceToken];
+//        [currentInstallation saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
+//
+//            if (!succeeded) {
+//                NSLog(@"Error-------> :%@", error);
+//            }
+//
+//        }];
     } else {
         // 向系统申请推送服务
         [_pushManager handleRemoteNotificationsWithDeviceToken:deviceToken];
@@ -176,7 +176,7 @@ static int DB_VERSION = 8;
         NSLog(@">>>>>>>>>>>>>>>>>>>>>>   didReceiveRemoteNotification   createLocale");
     } else {
         NSLog(@">>>>>>>>>>>>>>>>>>>>>>   didReceiveRemoteNotification  remote");
-        [AVAnalytics trackAppOpenedWithRemoteNotificationPayload:userInfo];
+        //[AVAnalytics trackAppOpenedWithRemoteNotificationPayload:userInfo];
     }
 }
 

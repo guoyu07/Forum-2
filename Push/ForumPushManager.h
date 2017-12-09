@@ -5,10 +5,12 @@
 
 #import <Foundation/Foundation.h>
 
-#import <AVOSCloud/AVOSCloud.h>
+#import <UserNotifications/UserNotifications.h>
 
 
 @interface ForumPushManager : NSObject
+
+- (instancetype) initWithNotificationCenterDelegate:(id<UNUserNotificationCenterDelegate>)delegate;
 
 - (void) registerPushManagerWithOptions:(NSDictionary *)launchOptions;
 
