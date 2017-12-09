@@ -4,10 +4,12 @@
 //
 
 #import "ForumPushManager.h"
-#import <UserNotifications/UserNotifications.h>
+#import <AVOSCloud/AVOSCloud.h>
+
 
 @implementation ForumPushManager {
 
+    id<UNUserNotificationCenterDelegate> _delegate;
 }
 
 - (void)registerPushManagerWithOptions:(NSDictionary *)launchOptions {
@@ -19,6 +21,18 @@
 
     // 添加跟踪App的打开状况
     [AVAnalytics trackAppOpenedWithLaunchOptions:launchOptions];
+}
+
+-(instancetype)init {
+    // 禁止调用原来的init方法
+    return nil;
+}
+
+- (instancetype)initWithNotificationCenterDelegate:(id <UNUserNotificationCenterDelegate>)delegate {
+    if (self = [super init]){
+        _delegate = delegate;
+    };
+    return self;
 }
 
 - (void)handleRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
@@ -36,12 +50,12 @@
         // 使用 UNUserNotificationCenter 来管理通知
         UNUserNotificationCenter *uncenter = [UNUserNotificationCenter currentNotificationCenter];
         // 监听回调事件
-        [uncenter setDelegate:self];
+        [uncenter setDelegate:_delegate];
         //iOS10 使用以下方法注册，才能得到授权
         [uncenter requestAuthorizationWithOptions:(UNAuthorizationOptionAlert+UNAuthorizationOptionBadge+UNAuthorizationOptionSound)
                                 completionHandler:^(BOOL granted, NSError * _Nullable error) {
                                     [[UIApplication sharedApplication] registerForRemoteNotifications];
-                                    //TODO:授权状态改变
+                                    //授权状态改变
                                     NSLog(@"%@" , granted ? @"授权成功" : @"授权失败");
                                 }];
         // 获取当前的通知授权状态, UNNotificationSettings
