@@ -11,7 +11,6 @@
 #import "ForumCoreDataManager.h"
 #import "ApiTestViewController.h"
 #import "NSUserDefaults+Setting.h"
-#import <AVOSCloud.h>
 #import "UIStoryboard+Forum.h"
 #import "HPURLProtocol.h"
 #import "AFNetworkActivityIndicatorManager.h"
@@ -21,10 +20,13 @@
 #import "LocalForumApi.h"
 #import <UserNotifications/UserNotifications.h>
 
+#import "ForumPushManager.h"
+
 static BOOL API_DEBUG = NO;
 static int DB_VERSION = 8;
 
 @interface AppDelegate ()<UNUserNotificationCenterDelegate> {
+    ForumPushManager *_pushManager;
 }
 @end
 
@@ -40,8 +42,10 @@ static int DB_VERSION = 8;
 
     [HPURLProtocol registerURLProtocolIfNeed];
 
-    // 这地方要换成你自己的ID，别用我这个，否则签名不对你也无法收到推送
-    [AVOSCloud setApplicationId:@"B6mSTRMdobQQaYQmPCGdnlgW-gzGzoHsz" clientKey:@"FpkGpLzxCTCY5cRXEIPBA4aX"];
+    // 注册LeanCloud的推送服务
+    _pushManager = [[ForumPushManager alloc] init];
+    [_pushManager registerPushManagerWithOptions:launchOptions];
+
 
     application.applicationIconBadgeNumber = 0;
 
@@ -110,11 +114,6 @@ static int DB_VERSION = 8;
     }
 
 
-
-
-    [AVAnalytics trackAppOpenedWithLaunchOptions:launchOptions];
-    [self registerForRemoteNotification];
-
     if (launchOptions[@"UIApplicationLaunchOptionsShortcutItemKey"] == nil) {
         NSLog(@"UIApplicationLaunchOptionsShortcutItemKey yes");
         return YES;
@@ -141,58 +140,7 @@ static int DB_VERSION = 8;
             }
 }
 
-/**
- * 初始化UNUserNotificationCenter
- */
-- (void)registerForRemoteNotification {
-    // iOS10 兼容
-    if ([[UIDevice currentDevice].systemVersion floatValue] >= 10.0) {
-        // 使用 UNUserNotificationCenter 来管理通知
-        UNUserNotificationCenter *uncenter = [UNUserNotificationCenter currentNotificationCenter];
-        // 监听回调事件
-        [uncenter setDelegate:self];
-        //iOS10 使用以下方法注册，才能得到授权
-        [uncenter requestAuthorizationWithOptions:(UNAuthorizationOptionAlert+UNAuthorizationOptionBadge+UNAuthorizationOptionSound)
-                                completionHandler:^(BOOL granted, NSError * _Nullable error) {
-                                    [[UIApplication sharedApplication] registerForRemoteNotifications];
-                                    //TODO:授权状态改变
-                                    NSLog(@"%@" , granted ? @"授权成功" : @"授权失败");
-                                }];
-        // 获取当前的通知授权状态, UNNotificationSettings
-        [uncenter getNotificationSettingsWithCompletionHandler:^(UNNotificationSettings * _Nonnull settings) {
-            NSLog(@"%s\nline:%@\n-----\n%@\n\n", __func__, @(__LINE__), settings);
-            /*
-             UNAuthorizationStatusNotDetermined : 没有做出选择
-             UNAuthorizationStatusDenied : 用户未授权
-             UNAuthorizationStatusAuthorized ：用户已授权
-             */
-            if (settings.authorizationStatus == UNAuthorizationStatusNotDetermined) {
-                NSLog(@"未选择");
-            } else if (settings.authorizationStatus == UNAuthorizationStatusDenied) {
-                NSLog(@"未授权");
-            } else if (settings.authorizationStatus == UNAuthorizationStatusAuthorized) {
-                NSLog(@"已授权");
-            }
-        }];
-    }
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wdeprecated-declarations"
-    if ([[UIDevice currentDevice].systemVersion floatValue] >= 8.0) {
-        UIUserNotificationType types = UIUserNotificationTypeAlert |
-                UIUserNotificationTypeBadge |
-                UIUserNotificationTypeSound;
-        UIUserNotificationSettings *settings = [UIUserNotificationSettings settingsForTypes:types categories:nil];
 
-        [[UIApplication sharedApplication] registerUserNotificationSettings:settings];
-        [[UIApplication sharedApplication] registerForRemoteNotifications];
-    } else {
-        UIRemoteNotificationType types = UIRemoteNotificationTypeBadge |
-                UIRemoteNotificationTypeAlert |
-                UIRemoteNotificationTypeSound;
-        [[UIApplication sharedApplication] registerForRemoteNotificationTypes:types];
-    }
-#pragma clang diagnostic pop
-}
 
 - (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
 
@@ -209,7 +157,7 @@ static int DB_VERSION = 8;
         }];
     } else {
         // 向系统申请推送服务
-        [AVOSCloud handleRemoteNotificationsWithDeviceToken:deviceToken];
+        [_pushManager handleRemoteNotificationsWithDeviceToken:deviceToken];
     }
 }
 
