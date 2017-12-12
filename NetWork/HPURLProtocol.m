@@ -100,20 +100,20 @@ static id <HPURLMapping> s_URLMapping;
 + (BOOL)canInitWithRequest:(NSURLRequest *)request {
     NSString *protocol = request.URL.scheme;
 
-    NSLog(@"canInit %@", request.URL);
+    //NSLog(@"canInit %@", request.URL);
 
     if (![@[@"http", @"https"] containsObject:protocol]) {
-        NSLog(@"not http(s) -> NO");
+        //NSLog(@"not http(s) -> NO");
         return NO;
     }
 
     if ([NSURLProtocol propertyForKey:HPHTTPURLProtocolHandledKey inRequest:request]) {
-        NSLog(@"duplicate -> NO");
+        //NSLog(@"duplicate -> NO");
         return NO;
     }
 
     if ([self.class shouldCache:request]) {
-        NSLog(@"image -> YES");
+        //NSLog(@"image -> YES");
         return YES;
     }
 
@@ -134,7 +134,7 @@ static id <HPURLMapping> s_URLMapping;
         UIImage *memCachedImage = [[SDImageCache sharedImageCache] imageFromMemoryCacheForKey:cacheKey];
         NSData *data = nil;
         if (memCachedImage) {
-            NSLog(@"HPURLProtocol   get memcache >>>>>>>>>>>>>>>>>>>>>>>>>>>>>> %@", self.request);
+            //NSLog(@"HPURLProtocol   get memcache >>>>>>>>>>>>>>>>>>>>>>>>>>>>>> %@", self.request);
             // 无法从uiimage 判断jpeg png gif, 所以俺jpeg处理
             if (!memCachedImage.images) {
                 data = UIImageJPEGRepresentation(memCachedImage, 1.f);
@@ -146,7 +146,7 @@ static id <HPURLMapping> s_URLMapping;
         } else {
             data = [[SDImageCache sharedImageCache] hp_imageDataFromDiskCacheForKey:cacheKey];
             if (data) {
-                NSLog(@"HPURLProtocol   get disk cache >>>>>>>>>>>>>>>>>>>>>>>>>>>>>> %@", self.request);
+                //NSLog(@"HPURLProtocol   get disk cache >>>>>>>>>>>>>>>>>>>>>>>>>>>>>> %@", self.request);
             }
         }
 
@@ -177,7 +177,7 @@ static id <HPURLMapping> s_URLMapping;
     // 置换请求(域名->ip)
     self.URLConnection = [NSURLConnection connectionWithRequest:[self modifiedRequestWithOriginalRequest:self.request] delegate:self];
 
-    NSLog(@"startLoading %@", self.URLConnection);
+    //NSLog(@"startLoading %@", self.URLConnection);
 }
 
 - (void)stopLoading {
@@ -189,7 +189,7 @@ static id <HPURLMapping> s_URLMapping;
 
 - (void)connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response {
 
-    NSLog(@"HPURLProtocol   didReceiveResponse >>>>>>>>>>>>>>>>>>>>>>>>>>>>>> %@", response.URL);
+    //NSLog(@"HPURLProtocol   didReceiveResponse >>>>>>>>>>>>>>>>>>>>>>>>>>>>>> %@", response.URL);
     //canInit
 
     [self.client URLProtocol:self didReceiveResponse:response cacheStoragePolicy:NSURLCacheStorageNotAllowed];
@@ -228,7 +228,7 @@ static id <HPURLMapping> s_URLMapping;
     // 缓存图片
     if ([self.class shouldCache:self.request]) {
 
-        NSLog(@"HPURLProtocol connectionDidFinishLoading %@", self.request.URL);
+        //NSLog(@"HPURLProtocol connectionDidFinishLoading %@", self.request.URL);
         if ([self.data length] == 0) {
             NSLog(@"self.data.length = 0");
             return;
@@ -259,12 +259,12 @@ static id <HPURLMapping> s_URLMapping;
     NSString *absUrl = [[request.URL absoluteString] lowercaseString];
     if (request.cachePolicy != NSURLRequestReloadIgnoringLocalCacheData && ([absUrl hasSuffix:@"&stc=1"] || [absUrl hasSuffixes:@[@".jpg", @".jpeg", @".gif", @".png"]])) {
 
-        NSLog(@"HPURLProtocol shouldCache >>>>>>>>>>>>>>>>>>>>>>>>>>>>>> YES   %@", absUrl);
+        //NSLog(@"HPURLProtocol shouldCache >>>>>>>>>>>>>>>>>>>>>>>>>>>>>> YES   %@", absUrl);
 
         return YES;
     }
 
-    NSLog(@"HPURLProtocol shouldCache >>>>>>>>>>>>>>>>>>>>>>>>>>>>>> NO     %@", absUrl);
+   // NSLog(@"HPURLProtocol shouldCache >>>>>>>>>>>>>>>>>>>>>>>>>>>>>> NO     %@", absUrl);
     return NO;
 }
 

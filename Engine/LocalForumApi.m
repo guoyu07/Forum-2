@@ -259,18 +259,18 @@
 }
 
 - (NSString *)currentProductID {
-    NSString *forumURL = [self currentForumURL];
-    if ([forumURL isEqualToString:@"https://bbs.et8.net/bbs/"]) {
-        return @"CCF";
-    } else if ([forumURL isEqualToString:@"https://dream4ever.org/"]) {
-        return @"DRL";
-    } else if ([forumURL isEqualToString:@"http://bbs.crsky.com/"]) {
-        return @"Crsky";
-    } else if ([forumURL isEqualToString:@""]) {
-        return @"CHH";
-    }
+//    NSString *forumURL = [self currentForumURL];
+//    if ([forumURL isEqualToString:@"https://bbs.et8.net/bbs/"]) {
+//        return @"CCF";
+//    } else if ([forumURL isEqualToString:@"https://dream4ever.org/"]) {
+//        return @"DRL";
+//    } else if ([forumURL isEqualToString:@"http://bbs.crsky.com/"]) {
+//        return @"Crsky";
+//    } else if ([forumURL isEqualToString:@""]) {
+//        return @"CHH";
+//    }
 
-    return @"PAY-NONE";
+    return @"UnLockLimit";
 }
 
 - (void)saveCurrentForumURL:(NSString *)url {

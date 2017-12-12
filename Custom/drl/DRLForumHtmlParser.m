@@ -877,7 +877,7 @@
     if (avatar == nil) {
         avatar = @"/no_avatar.gif";
     }
-    NSLog(@"avatarLink  >> %@", avatar);
+    //NSLog(@"avatarLink  >> %@", avatar);
     return avatar;
 }
 

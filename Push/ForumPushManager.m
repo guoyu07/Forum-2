@@ -56,11 +56,11 @@
                                 completionHandler:^(BOOL granted, NSError * _Nullable error) {
                                     [[UIApplication sharedApplication] registerForRemoteNotifications];
                                     //授权状态改变
-                                    NSLog(@"%@" , granted ? @"授权成功" : @"授权失败");
+                                    NSLog(@"是否允许推送消息？ \t%@" , granted ? @"授权成功" : @"授权失败");
                                 }];
         // 获取当前的通知授权状态, UNNotificationSettings
         [uncenter getNotificationSettingsWithCompletionHandler:^(UNNotificationSettings * _Nonnull settings) {
-            NSLog(@"%s\nline:%@\n-----\n%@\n\n", __func__, @(__LINE__), settings);
+            //NSLog(@"%s\nline:%@\n-----\n%@\n\n", __func__, @(__LINE__), settings);
             /*
              UNAuthorizationStatusNotDetermined : 没有做出选择
              UNAuthorizationStatusDenied : 用户未授权

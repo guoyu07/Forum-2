@@ -574,7 +574,7 @@
 
             IGXMLNode *postForNode = [node childAt:2];
 
-            NSLog(@"--------------------- %ld title: %@", (long) [postForNode children].count, [[postForNode text] trim]);
+            //NSLog(@"--------------------- %ld title: %@", (long) [postForNode children].count, [[postForNode text] trim]);
 
             NSString *postIdNode = [postForNode html];
             NSString *postId = [postIdNode stringWithRegular:@"(?<=id=\"thread_title_)\\d+(?=\")"];
@@ -827,7 +827,7 @@
     if (avatar == nil) {
         avatar = @"/no_avatar.gif";
     }
-    NSLog(@"avatarLink  >> %@", avatar);
+    //NSLog(@"avatarLink  >> %@", avatar);
     return avatar;
 }
 
