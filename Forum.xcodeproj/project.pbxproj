@@ -155,6 +155,7 @@
 		757C88B17FCB5AFBB7C0CA0B /* libPods-Forum.a in Frameworks */ = {isa = PBXBuildFile; fileRef = EA91F0D805959E8525B7BE0D /* libPods-Forum.a */; };
 		C7B592195D565E7F41FD734C /* chhlogin.js in Resources */ = {isa = PBXBuildFile; fileRef = C7B59562B16849BAC8C2CE68 /* chhlogin.js */; };
 		C7B59AE98E801BD822B9F92C /* CCFForumApi.m in Sources */ = {isa = PBXBuildFile; fileRef = C7B593CF20E3E8DCF4B2D83C /* CCFForumApi.m */; };
+		C7B59B9DABEB94C6EC3B70A4 /* PayManager.m in Sources */ = {isa = PBXBuildFile; fileRef = C7B598437592A403475313FA /* PayManager.m */; };
 		C7B59C89FE57387F98A2F727 /* CCFForumHtmlParser.m in Sources */ = {isa = PBXBuildFile; fileRef = C7B5922924FBE1978D345607 /* CCFForumHtmlParser.m */; };
 		C7B59D8E9D44A593D270BE03 /* NSData+UTF8.m in Sources */ = {isa = PBXBuildFile; fileRef = C7B590FF019B54B2E6BDDE91 /* NSData+UTF8.m */; };
 		C7B59FBEDA751551C16B2A0E /* WillSupportForums.json in Resources */ = {isa = PBXBuildFile; fileRef = C7B5905A537A8FC80DBF00E5 /* WillSupportForums.json */; };
@@ -446,8 +447,10 @@
 		C7B5905A537A8FC80DBF00E5 /* WillSupportForums.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = WillSupportForums.json; sourceTree = "<group>"; };
 		C7B590FF019B54B2E6BDDE91 /* NSData+UTF8.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSData+UTF8.m"; sourceTree = "<group>"; };
 		C7B5922924FBE1978D345607 /* CCFForumHtmlParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CCFForumHtmlParser.m; sourceTree = "<group>"; };
+		C7B59370C7EEC80ACF175D43 /* PayManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PayManager.h; sourceTree = "<group>"; };
 		C7B593CF20E3E8DCF4B2D83C /* CCFForumApi.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CCFForumApi.m; sourceTree = "<group>"; };
 		C7B59562B16849BAC8C2CE68 /* chhlogin.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = chhlogin.js; sourceTree = "<group>"; };
+		C7B598437592A403475313FA /* PayManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PayManager.m; sourceTree = "<group>"; };
 		C7B598A44A0FE5E0B0F59D42 /* CCFForumApi.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCFForumApi.h; sourceTree = "<group>"; };
 		C7B59A3EE329F70B4CDE26BE /* NSData+UTF8.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSData+UTF8.h"; sourceTree = "<group>"; };
 		C7B59F4D903D9AD821ED5B6F /* CCFForumHtmlParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCFForumHtmlParser.h; sourceTree = "<group>"; };
@@ -940,6 +943,7 @@
 		4D339D821C31454A0022A6A4 = {
 			isa = PBXGroup;
 			children = (
+				4D8962BD1FDFE0A30015BD9D /* Payment */,
 				3ACB5C361FDC281000D5339C /* SupportFiles */,
 				3ACB5C351FDC280000D5339C /* PhotoView */,
 				3ACB5C341FDC27ED00D5339C /* NetWork */,
@@ -980,6 +984,15 @@
 				4D339D8B1C31454A0022A6A4 /* Forum.app */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		4D8962BD1FDFE0A30015BD9D /* Payment */ = {
+			isa = PBXGroup;
+			children = (
+				C7B598437592A403475313FA /* PayManager.m */,
+				C7B59370C7EEC80ACF175D43 /* PayManager.h */,
+			);
+			path = Payment;
 			sourceTree = "<group>";
 		};
 		849509D36740A6FFD960CDA8 /* Pods */ = {
@@ -1292,6 +1305,7 @@
 				2F34C50DE4CFA57C8F4036DE /* CharUnicodeBlock.m in Sources */,
 				2F34C88B8603A7549BC052D5 /* LocalForumApi.m in Sources */,
 				2F34CFF359980DE0DEC0C980 /* ForumPushManager.m in Sources */,
+				C7B59B9DABEB94C6EC3B70A4 /* PayManager.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
