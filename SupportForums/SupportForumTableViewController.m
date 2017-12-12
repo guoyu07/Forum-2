@@ -13,6 +13,7 @@
 #import "SupportForums.h"
 #import "AppDelegate.h"
 #import "LocalForumApi.h"
+#import "PayManager.h"
 
 @interface SupportForumTableViewController ()<CAAnimationDelegate>{
     
@@ -115,25 +116,31 @@
     [tableView deselectRowAtIndexPath:indexPath animated:NO];
     
 
-    Forums *forums = self.dataList[(NSUInteger) indexPath.row];
+    if (NO) {
+        Forums *forums = self.dataList[(NSUInteger) indexPath.row];
 
-    NSURL * url = [NSURL URLWithString:forums.url];
+        NSURL * url = [NSURL URLWithString:forums.url];
 
-    LocalForumApi *localForumApi = [[LocalForumApi alloc] init];
-    [localForumApi saveCurrentForumURL:forums.url];
+        LocalForumApi *localForumApi = [[LocalForumApi alloc] init];
+        [localForumApi saveCurrentForumURL:forums.url];
 
-    if ([self isUserHasLogin:url.host]) {
+        if ([self isUserHasLogin:url.host]) {
 
-        UIStoryboard *stortboard = [UIStoryboard mainStoryboard];
-        [stortboard changeRootViewControllerTo:@"ForumTabBarControllerId"];
+            UIStoryboard *stortboard = [UIStoryboard mainStoryboard];
+            [stortboard changeRootViewControllerTo:@"ForumTabBarControllerId"];
 
-    } else{
+        } else{
 
-        id<ForumConfigDelegate> forumConfig = [ForumApiHelper forumConfig:localForumApi.currentForumHost];
+            id<ForumConfigDelegate> forumConfig = [ForumApiHelper forumConfig:localForumApi.currentForumHost];
 
-        NSString * cId = forumConfig.loginControllerId;
-        [[UIStoryboard mainStoryboard] changeRootViewControllerTo:cId withAnim:UIViewAnimationOptionTransitionFlipFromTop];
+            NSString * cId = forumConfig.loginControllerId;
+            [[UIStoryboard mainStoryboard] changeRootViewControllerTo:cId withAnim:UIViewAnimationOptionTransitionFlipFromTop];
+        }
+    } else {
+        PayManager *payManager = [PayManager shareInstance];
+        [payManager payForProductID:@"CCF"];
     }
+
 
 }
 

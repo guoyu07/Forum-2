@@ -3,12 +3,12 @@
 // Copyright (c) 2017 andforce. All rights reserved.
 //
 
-#import <StoreKit/StoreKit.h>
 #import "PayManager.h"
-#import "DDContextFilterLogFormatter.h"
+#import <StoreKit/StoreKit.h>
 
 @interface PayManager () <SKPaymentTransactionObserver, SKProductsRequestDelegate> {
 
+    NSString *_currentProductID;
 }
 
 @end
@@ -29,8 +29,11 @@ static PayManager *_instance = nil;
 }
 
 - (void)payForProductID:(NSString *)productID {
+
+    _currentProductID = productID;
+
     if ([SKPaymentQueue canMakePayments]) {
-        [self requestProductData:productID];
+        [self requestProductData:_currentProductID];
     } else {
         NSLog(@"应用没有开启内购权限");
     }
@@ -51,12 +54,13 @@ static PayManager *_instance = nil;
 }
 
 
-- (void)requestProductData:(NSString *)type {
+- (void)requestProductData:(NSString *)productID {
+
     NSLog(@"-------------请求对应的产品信息----------------");
 
 //    [SVProgressHUD showWithStatus:nil maskType:SVProgressHUDMaskTypeBlack];
 
-    NSArray *product = [[NSArray alloc] initWithObjects:type, nil];
+    NSArray *product = @[productID];
 
     NSSet *nsset = [NSSet setWithArray:product];
     SKProductsRequest *request = [[SKProductsRequest alloc] initWithProductIdentifiers:nsset];
@@ -71,7 +75,7 @@ static PayManager *_instance = nil;
             case SKPaymentTransactionStatePurchased: {
                 NSLog(@"交易完成");
                 // 发送到苹果服务器验证凭证
-                [self verifyPurchaseWithPaymentTransaction];
+                [self verifyPurchaseWithPaymentTransaction:_currentProductID];
                 [[SKPaymentQueue defaultQueue] finishTransaction:tran];
 
             }
@@ -100,7 +104,7 @@ static PayManager *_instance = nil;
 
 // request Failed
 - (void)request:(SKRequest *)request didFailWithError:(NSError *)error {
-
+    NSLog(@"didFailWithError ：%@", error.localizedDescription);
 }
 
 // request Response
@@ -124,7 +128,7 @@ static PayManager *_instance = nil;
         NSLog(@"%@", [pro price]);
         NSLog(@"%@", [pro productIdentifier]);
 
-        if ([pro.productIdentifier isEqualToString:nil]) {
+        if ([pro.productIdentifier isEqualToString:_currentProductID]) {
             p = pro;
         }
     }
@@ -141,18 +145,16 @@ static PayManager *_instance = nil;
 //正式环境验证
 #define AppStore @"https://buy.itunes.apple.com/verifyReceipt"
 
-/**
- *  验证购买，避免越狱软件模拟苹果请求达到非法购买问题
- *
- */
-- (void)verifyPurchaseWithPaymentTransaction {
+// 验证购买，避免越狱软件模拟苹果请求达到非法购买问题
+- (void)verifyPurchaseWithPaymentTransaction:(NSString *)productID {
     //从沙盒中获取交易凭证并且拼接成请求体数据
     NSURL *receiptUrl = [[NSBundle mainBundle] appStoreReceiptURL];
     NSData *receiptData = [NSData dataWithContentsOfURL:receiptUrl];
 
     NSString *receiptString = [receiptData base64EncodedStringWithOptions:NSDataBase64EncodingEndLineWithLineFeed];//转化为base64字符串
 
-    NSString *bodyString = [NSString stringWithFormat:@"{\"receipt-data\" : \"%@\", \"password\":\"%@\"}", receiptString, @"b3189c215c0b423d985bc8d2548bb91a"];//拼接请求数据
+    NSString *bodyString = [NSString stringWithFormat:@"{\"receipt-data\" : \"%@\", \"password\":\"%@\"}",
+                    receiptString, @"b3189c215c0b423d985bc8d2548bb91a"];//拼接请求数据
     NSData *bodyData = [bodyString dataUsingEncoding:NSUTF8StringEncoding];
 
 
@@ -171,14 +173,16 @@ static PayManager *_instance = nil;
     NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responseData options:NSJSONReadingAllowFragments error:nil];
     NSLog(@"%@", dic);
     if ([dic[@"status"] intValue] == 0) {
+
         NSLog(@"购买成功！\t%@", dic);
+
         NSDictionary *dicReceipt = dic[@"receipt"];
         NSDictionary *dicInApp = [dicReceipt[@"in_app"] firstObject];
         NSString *productIdentifier = dicInApp[@"product_id"];//读取产品标识
         //如果是消耗品则记录购买数量，非消耗品则记录是否购买过
         NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-        if ([productIdentifier isEqualToString:@"123"]) {
-            int purchasedCount = [defaults integerForKey:productIdentifier];//已购买数量
+        if ([productIdentifier isEqualToString:productID]) {
+            NSUInteger purchasedCount = [defaults integerForKey:productIdentifier];//已购买数量
             [[NSUserDefaults standardUserDefaults] setInteger:(purchasedCount + 1) forKey:productIdentifier];
         } else {
             [defaults setBool:YES forKey:productIdentifier];
