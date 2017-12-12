@@ -14,6 +14,6 @@
 
 - (BOOL)hasPayed:(NSString *)productID;
 
-- (void)dealloc;
+- (void)removeTransactionObserver;
 
 @end

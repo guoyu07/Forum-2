@@ -14,6 +14,9 @@
 #import "TransBundleDelegate.h"
 #import "TransBundle.h"
 #import "UIImage+Tint.h"
+#import "LocalForumApi.h"
+#import "PayManager.h"
+
 
 @interface ForumSeniorNewPostViewController () <UIImagePickerControllerDelegate, UINavigationControllerDelegate, UICollectionViewDataSource,
         UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, DeleteDelegate, TransBundleDelegate, UIScrollViewDelegate> {
@@ -30,6 +33,10 @@
     ViewThreadPage *replyThread;
 
     BOOL isQuoteReply;
+
+    LocalForumApi *_localForumApi;
+
+    PayManager *_payManager;
 }
 
 @end
@@ -54,6 +61,11 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
 
+    _localForumApi = [[LocalForumApi alloc] init];
+
+    // payManager
+    _payManager = [PayManager shareInstance];
+
     _insertCollectionView.delegate = self;
     _insertCollectionView.dataSource = self;
     _scrollView.delegate = self;
@@ -75,6 +87,28 @@
         self.replyContent.text = [NSString stringWithFormat:@"@%@\n", userName];
     }
 
+    if (![_payManager hasPayed:[_localForumApi currentProductID]]){
+        [self showFailedMessage:@"未订阅用户无法回帖"];
+    }
+
+}
+
+-(void) showFailedMessage:(id) message{
+
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"操作受限" message:message preferredStyle:UIAlertControllerStyleAlert];
+
+
+    UIAlertAction *cancel = [UIAlertAction actionWithTitle:@"立即订阅" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+
+        [_payManager payForProductID:[_localForumApi currentProductID]];
+
+    }];
+
+    [alert addAction:cancel];
+
+    [self presentViewController:alert animated:YES completion:^{
+
+    }];
 }
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView {
@@ -206,6 +240,8 @@
     [[UIApplication sharedApplication] sendAction:@selector(resignFirstResponder) to:nil from:nil forEvent:nil];
 
     [self dismissViewControllerAnimated:YES completion:nil];
+
+    [_payManager removeTransactionObserver];
 }
 
 - (IBAction)sendSeniorMessage:(UIBarButtonItem *)sender {
@@ -265,4 +301,5 @@
         }];
     }
 }
+
 @end

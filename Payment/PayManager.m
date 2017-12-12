@@ -55,7 +55,7 @@ static PayManager *_instance = nil;
 }
 
 // remove all payment queue
-- (void)dealloc {
+- (void)removeTransactionObserver {
     [[SKPaymentQueue defaultQueue] removeTransactionObserver:self];
 }
 
