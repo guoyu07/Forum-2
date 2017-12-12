@@ -38,7 +38,7 @@ static PayManager *_instance = nil;
 
 
 - (instancetype)init {
-    if (self = [super init]){
+    if (self = [super init]) {
         [[SKPaymentQueue defaultQueue] addTransactionObserver:self];
     }
     return self;
@@ -46,17 +46,17 @@ static PayManager *_instance = nil;
 }
 
 // remove all payment queue
-- (void)dealloc{
+- (void)dealloc {
     [[SKPaymentQueue defaultQueue] removeTransactionObserver:self];
 }
 
 
-- (void)requestProductData:(NSString *)type{
+- (void)requestProductData:(NSString *)type {
     NSLog(@"-------------请求对应的产品信息----------------");
 
 //    [SVProgressHUD showWithStatus:nil maskType:SVProgressHUDMaskTypeBlack];
 
-    NSArray *product = [[NSArray alloc] initWithObjects:type,nil];
+    NSArray *product = [[NSArray alloc] initWithObjects:type, nil];
 
     NSSet *nsset = [NSSet setWithArray:product];
     SKProductsRequest *request = [[SKProductsRequest alloc] initWithProductIdentifiers:nsset];
@@ -66,9 +66,9 @@ static PayManager *_instance = nil;
 }
 
 - (void)paymentQueue:(SKPaymentQueue *)queue updatedTransactions:(NSArray<SKPaymentTransaction *> *)transactions {
-    for(SKPaymentTransaction *tran in transactions){
+    for (SKPaymentTransaction *tran in transactions) {
         switch (tran.transactionState) {
-            case SKPaymentTransactionStatePurchased:{
+            case SKPaymentTransactionStatePurchased: {
                 NSLog(@"交易完成");
                 // 发送到苹果服务器验证凭证
                 [self verifyPurchaseWithPaymentTransaction];
@@ -80,13 +80,13 @@ static PayManager *_instance = nil;
                 NSLog(@"商品添加进列表");
 
                 break;
-            case SKPaymentTransactionStateRestored:{
+            case SKPaymentTransactionStateRestored: {
                 NSLog(@"已经购买过商品");
 
                 [[SKPaymentQueue defaultQueue] finishTransaction:tran];
             }
                 break;
-            case SKPaymentTransactionStateFailed:{
+            case SKPaymentTransactionStateFailed: {
                 NSLog(@"交易失败");
                 [[SKPaymentQueue defaultQueue] finishTransaction:tran];
                 //[SVProgressHUD showErrorWithStatus:@"购买失败"];
@@ -99,7 +99,7 @@ static PayManager *_instance = nil;
 }
 
 // request Failed
-- (void)request:(SKRequest *)request didFailWithError:(NSError *)error{
+- (void)request:(SKRequest *)request didFailWithError:(NSError *)error {
 
 }
 
@@ -107,14 +107,14 @@ static PayManager *_instance = nil;
 - (void)productsRequest:(nonnull SKProductsRequest *)request didReceiveResponse:(nonnull SKProductsResponse *)response {
     NSLog(@"--------------收到产品反馈消息---------------------");
     NSArray *product = response.products;
-    if([product count] == 0){
+    if ([product count] == 0) {
         //[SVProgressHUD dismiss];
         NSLog(@"--------------没有商品------------------");
         return;
     }
 
     NSLog(@"productID:%@", response.invalidProductIdentifiers);
-    NSLog(@"产品付费数量:%lu",(unsigned long)[product count]);
+    NSLog(@"产品付费数量:%lu", (unsigned long) [product count]);
 
     SKProduct *p = nil;
     for (SKProduct *pro in product) {
@@ -124,7 +124,7 @@ static PayManager *_instance = nil;
         NSLog(@"%@", [pro price]);
         NSLog(@"%@", [pro productIdentifier]);
 
-        if([pro.productIdentifier isEqualToString:nil]){
+        if ([pro.productIdentifier isEqualToString:nil]) {
             p = pro;
         }
     }
@@ -140,50 +140,51 @@ static PayManager *_instance = nil;
 #define SANDBOX @"https://sandbox.itunes.apple.com/verifyReceipt"
 //正式环境验证
 #define AppStore @"https://buy.itunes.apple.com/verifyReceipt"
+
 /**
  *  验证购买，避免越狱软件模拟苹果请求达到非法购买问题
  *
  */
--(void)verifyPurchaseWithPaymentTransaction{
+- (void)verifyPurchaseWithPaymentTransaction {
     //从沙盒中获取交易凭证并且拼接成请求体数据
-    NSURL *receiptUrl=[[NSBundle mainBundle] appStoreReceiptURL];
-    NSData *receiptData=[NSData dataWithContentsOfURL:receiptUrl];
+    NSURL *receiptUrl = [[NSBundle mainBundle] appStoreReceiptURL];
+    NSData *receiptData = [NSData dataWithContentsOfURL:receiptUrl];
 
-    NSString *receiptString=[receiptData base64EncodedStringWithOptions:NSDataBase64EncodingEndLineWithLineFeed];//转化为base64字符串
+    NSString *receiptString = [receiptData base64EncodedStringWithOptions:NSDataBase64EncodingEndLineWithLineFeed];//转化为base64字符串
 
     NSString *bodyString = [NSString stringWithFormat:@"{\"receipt-data\" : \"%@\", \"password\":\"%@\"}", receiptString, @"b3189c215c0b423d985bc8d2548bb91a"];//拼接请求数据
     NSData *bodyData = [bodyString dataUsingEncoding:NSUTF8StringEncoding];
 
 
     //创建请求到苹果官方进行购买验证
-    NSURL *url=[NSURL URLWithString:SANDBOX];
-    NSMutableURLRequest *requestM=[NSMutableURLRequest requestWithURL:url];
-    requestM.HTTPBody=bodyData;
-    requestM.HTTPMethod=@"POST";
+    NSURL *url = [NSURL URLWithString:SANDBOX];
+    NSMutableURLRequest *requestM = [NSMutableURLRequest requestWithURL:url];
+    requestM.HTTPBody = bodyData;
+    requestM.HTTPMethod = @"POST";
     //创建连接并发送同步请求
-    NSError *error=nil;
-    NSData *responseData=[NSURLConnection sendSynchronousRequest:requestM returningResponse:nil error:&error];
+    NSError *error = nil;
+    NSData *responseData = [NSURLConnection sendSynchronousRequest:requestM returningResponse:nil error:&error];
     if (error) {
-        NSLog(@"验证购买过程中发生错误，错误信息：%@",error.localizedDescription);
+        NSLog(@"验证购买过程中发生错误，错误信息：%@", error.localizedDescription);
         return;
     }
-    NSDictionary *dic=[NSJSONSerialization JSONObjectWithData:responseData options:NSJSONReadingAllowFragments error:nil];
-    NSLog(@"%@",dic);
-    if([dic[@"status"] intValue]==0){
-        NSLog(@"购买成功！");
-        NSDictionary *dicReceipt= dic[@"receipt"];
-        NSDictionary *dicInApp=[dicReceipt[@"in_app"] firstObject];
-        NSString *productIdentifier= dicInApp[@"product_id"];//读取产品标识
+    NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responseData options:NSJSONReadingAllowFragments error:nil];
+    NSLog(@"%@", dic);
+    if ([dic[@"status"] intValue] == 0) {
+        NSLog(@"购买成功！\t%@", dic);
+        NSDictionary *dicReceipt = dic[@"receipt"];
+        NSDictionary *dicInApp = [dicReceipt[@"in_app"] firstObject];
+        NSString *productIdentifier = dicInApp[@"product_id"];//读取产品标识
         //如果是消耗品则记录购买数量，非消耗品则记录是否购买过
-        NSUserDefaults *defaults=[NSUserDefaults standardUserDefaults];
+        NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
         if ([productIdentifier isEqualToString:@"123"]) {
-            int purchasedCount=[defaults integerForKey:productIdentifier];//已购买数量
-            [[NSUserDefaults standardUserDefaults] setInteger:(purchasedCount+1) forKey:productIdentifier];
-        }else{
+            int purchasedCount = [defaults integerForKey:productIdentifier];//已购买数量
+            [[NSUserDefaults standardUserDefaults] setInteger:(purchasedCount + 1) forKey:productIdentifier];
+        } else {
             [defaults setBool:YES forKey:productIdentifier];
         }
         //在此处对购买记录进行存储，可以存储到开发商的服务器端
-    }else{
+    } else {
         NSLog(@"购买失败，未通过验证！");
     }
 }

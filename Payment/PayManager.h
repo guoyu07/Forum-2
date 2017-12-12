@@ -8,9 +8,9 @@
 
 @interface PayManager : NSObject
 
-+(instancetype) shareInstance;
++ (instancetype)shareInstance;
 
--(void) payForProductID:(NSString *)productID;
+- (void)payForProductID:(NSString *)productID;
 
 - (void)dealloc;
 
