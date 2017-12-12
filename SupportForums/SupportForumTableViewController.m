@@ -309,7 +309,7 @@
     
     NSString *receiptString=[receiptData base64EncodedStringWithOptions:NSDataBase64EncodingEndLineWithLineFeed];//转化为base64字符串
     
-    NSString *bodyString = [NSString stringWithFormat:@"{\"receipt-data\" : \"%@\"}", receiptString];//拼接请求数据
+    NSString *bodyString = [NSString stringWithFormat:@"{\"receipt-data\" : \"%@\", \"password\":\"%@\"}", receiptString, @"b3189c215c0b423d985bc8d2548bb91a"];//拼接请求数据
     NSData *bodyData = [bodyString dataUsingEncoding:NSUTF8StringEncoding];
     
     

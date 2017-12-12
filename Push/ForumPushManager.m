@@ -15,7 +15,7 @@
 - (void)registerPushManagerWithOptions:(NSDictionary *)launchOptions {
     // 这地方要换成你自己的ID，别用我这个，否则签名不对你也无法收到推送
     [AVOSCloud setApplicationId:@"N2qq6veAIOoLT8FMgStzeVMW-gzGzoHsz" clientKey:@"Wr4v3A6sMhO7HgGG41hMdzXS"];
-    [AVOSCloud setAllLogsEnabled:YES];
+    [AVOSCloud setAllLogsEnabled:NO];
 
     [self registerForRemoteNotification];
 
