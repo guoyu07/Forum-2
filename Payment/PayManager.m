@@ -48,6 +48,12 @@ static PayManager *_instance = nil;
 
 }
 
+- (BOOL)hasPayed:(NSString *)productID {
+
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    return [defaults boolForKey:productID];
+}
+
 // remove all payment queue
 - (void)dealloc {
     [[SKPaymentQueue defaultQueue] removeTransactionObserver:self];
@@ -182,7 +188,7 @@ static PayManager *_instance = nil;
         //如果是消耗品则记录购买数量，非消耗品则记录是否购买过
         NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
         if ([productIdentifier isEqualToString:productID]) {
-            NSUInteger purchasedCount = [defaults integerForKey:productIdentifier];//已购买数量
+            NSUInteger purchasedCount = (NSUInteger) [defaults integerForKey:productIdentifier];//已购买数量
             [[NSUserDefaults standardUserDefaults] setInteger:(purchasedCount + 1) forKey:productIdentifier];
         } else {
             [defaults setBool:YES forKey:productIdentifier];

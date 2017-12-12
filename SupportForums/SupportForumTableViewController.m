@@ -116,7 +116,7 @@
     [tableView deselectRowAtIndexPath:indexPath animated:NO];
     
 
-    if (NO) {
+    if (YES) {
         Forums *forums = self.dataList[(NSUInteger) indexPath.row];
 
         NSURL * url = [NSURL URLWithString:forums.url];

@@ -60,6 +60,8 @@
 
 - (NSString *)currentForumURL;
 
+- (NSString *)currentProductID;
+
 - (void) saveCurrentForumURL:(NSString*) url;
 
 - (void) clearCurrentForumURL;

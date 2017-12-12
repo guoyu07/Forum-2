@@ -12,6 +12,8 @@
 
 - (void)payForProductID:(NSString *)productID;
 
+- (BOOL)hasPayed:(NSString *)productID;
+
 - (void)dealloc;
 
 @end
