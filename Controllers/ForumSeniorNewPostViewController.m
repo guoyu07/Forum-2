@@ -88,11 +88,12 @@
     if (userName != nil) {
         self.replyContent.text = [NSString stringWithFormat:@"@%@\n", userName];
     }
+}
 
+-(void)viewDidAppear:(BOOL)animated{
     if (![_payManager hasPayed:[_localForumApi currentProductID]]){
         [self showFailedMessage:@"未订阅用户无法回帖"];
     }
-
 }
 
 -(void) showFailedMessage:(id) message{

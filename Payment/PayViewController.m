@@ -85,19 +85,16 @@
     // payManager
     _payManager = [PayManager shareInstance];
 
-    if (self.canBack) {
-        self.navigationItem.leftBarButtonItem.image = [UIImage imageNamed:@"ic_arrow_back_18pt"];
-    } else {
-        self.navigationItem.leftBarButtonItem.image = [UIImage imageNamed:@"ic_close_18pt"];
-    }
-}
-
-
--(void)viewDidAppear:(BOOL)animated{
     if ([_payManager hasPayed:_localForumApi.currentProductID]){
         [restorePayBtn setTitle:@"您已订阅" forState:UIControlStateNormal];
     } else {
         [restorePayBtn setTitle:@"恢复之前的订阅" forState:UIControlStateNormal];
+    }
+
+    if (self.canBack) {
+        self.navigationItem.leftBarButtonItem.image = [UIImage imageNamed:@"ic_arrow_back_18pt"];
+    } else {
+        self.navigationItem.leftBarButtonItem.image = [UIImage imageNamed:@"ic_close_18pt"];
     }
 }
 
