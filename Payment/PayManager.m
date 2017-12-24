@@ -82,7 +82,8 @@ static PayManager *_instance = nil;
 - (BOOL)hasPayed:(NSString *)productID {
 
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    return [defaults boolForKey:productID];
+    BOOL isPayed = [defaults boolForKey:productID];
+    return isPayed;
 }
 
 // remove all payment queue
@@ -108,6 +109,7 @@ static PayManager *_instance = nil;
             case SKPaymentTransactionStateRestored: {
                 NSLog(@"已经购买过商品");
                 [[SKPaymentQueue defaultQueue] finishTransaction:tran];
+                [[NSUserDefaults standardUserDefaults] setBool:YES forKey:_currentProductID];
                 [self handleResult:YES];
             }
                 break;
@@ -180,6 +182,9 @@ static PayManager *_instance = nil;
 
 // 验证购买，避免越狱软件模拟苹果请求达到非法购买问题
 - (void)verifyPay:(NSString *)productID {
+
+    _currentProductID = productID;
+
     //从沙盒中获取交易凭证并且拼接成请求体数据
     NSURL *receiptUrl = [[NSBundle mainBundle] appStoreReceiptURL];
     NSData *receiptData = [NSData dataWithContentsOfURL:receiptUrl];
@@ -207,8 +212,6 @@ static PayManager *_instance = nil;
     NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responseData options:NSJSONReadingAllowFragments error:nil];
     NSLog(@"验证订阅>>>\t%@", dic);
     if ([dic[@"status"] intValue] == 0) {
-        [self handleResult:YES];
-        NSLog(@"购买成功！\t%@", dic);
 
         NSDictionary *dicReceipt = dic[@"receipt"];
         NSDictionary *dicInApp = [dicReceipt[@"in_app"] firstObject];
@@ -222,7 +225,13 @@ static PayManager *_instance = nil;
             [defaults setBool:YES forKey:productIdentifier];
         }
         //在此处对购买记录进行存储，可以存储到开发商的服务器端
+
+        NSLog(@"购买成功！\t%@", dic);
+
+        [[NSUserDefaults standardUserDefaults] setBool:YES forKey:productID];
+        [self handleResult:YES];
     } else {
+        [[NSUserDefaults standardUserDefaults] setBool:NO forKey:productID];
         NSLog(@"购买失败，未通过验证！");
         [self handleResult:FALSE];
     }

@@ -1011,7 +1011,7 @@
                         </barButtonItem>
                     </navigationItem>
                     <connections>
-                        <outlet property="restorePayButton" destination="0xZ-b8-ofL" id="XNo-f1-Ni9"/>
+                        <outlet property="restorePayBtn" destination="0xZ-b8-ofL" id="ZPZ-yI-SOy"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="KWk-rN-xYl" userLabel="First Responder" sceneMemberID="firstResponder"/>

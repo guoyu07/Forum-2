@@ -13,9 +13,9 @@
 @interface PayViewController (){
     LocalForumApi *_localForumApi;
 
+    IBOutlet UIButton *restorePayBtn;
     PayManager *_payManager;
 }
-@property (strong, nonatomic) IBOutlet UIButton *restorePayButton;
 
 @end
 
@@ -23,11 +23,16 @@
 
 - (IBAction)pay:(UIBarButtonItem *)sender {
 
+    if ([_payManager hasPayed:_localForumApi.currentProductID]){
+        [SVProgressHUD showSuccessWithStatus:@"您已订阅" maskType:SVProgressHUDMaskTypeBlack];
+        return;
+    }
+
     [SVProgressHUD showWithMaskType:SVProgressHUDMaskTypeBlack];
 
     [_payManager payForProductID:_localForumApi.currentProductID with:^(BOOL isSuccess) {
         if (isSuccess){
-            self.restorePayButton.titleLabel.text = @"您已订阅";
+            [restorePayBtn setTitle:@"您已订阅" forState:UIControlStateNormal];
             [SVProgressHUD showSuccessWithStatus:@"订阅成功" maskType:SVProgressHUDMaskTypeBlack];
         } else {
             [SVProgressHUD showErrorWithStatus:@"订阅失败" maskType:SVProgressHUDMaskTypeBlack];
@@ -37,11 +42,16 @@
 }
 
 - (IBAction)restorePay:(UIButton *)sender {
+
+    if ([_payManager hasPayed:_localForumApi.currentProductID]){
+        [SVProgressHUD showSuccessWithStatus:@"您已订阅" maskType:SVProgressHUDMaskTypeBlack];
+        return;
+    }
     [SVProgressHUD showWithMaskType:SVProgressHUDMaskTypeBlack];
 
     [_payManager restorePayForProductID:_localForumApi.currentProductID with:^(BOOL isSuccess) {
         if (isSuccess){
-            self.restorePayButton.titleLabel.text = @"您已订阅";
+            [restorePayBtn setTitle:@"您已订阅" forState:UIControlStateNormal];
             [SVProgressHUD showSuccessWithStatus:@"订阅成功" maskType:SVProgressHUDMaskTypeBlack];
         } else {
             [SVProgressHUD showErrorWithStatus:@"订阅失败" maskType:SVProgressHUDMaskTypeBlack];
@@ -71,9 +81,9 @@
     _payManager = [PayManager shareInstance];
 
     if ([_payManager hasPayed:_localForumApi.currentProductID]){
-        self.restorePayButton.titleLabel.text = @"您已订阅";
+        [restorePayBtn setTitle:@"您已订阅" forState:UIControlStateNormal];
     } else {
-        self.restorePayButton.titleLabel.text = @"恢复之前的订阅";
+        [restorePayBtn setTitle:@"恢复之前的订阅" forState:UIControlStateNormal];
     }
 
     if (self.canBack) {

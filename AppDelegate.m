@@ -21,6 +21,7 @@
 #import <UserNotifications/UserNotifications.h>
 
 #import "ForumPushManager.h"
+#import "PayManager.h"
 
 static BOOL API_DEBUG = NO;
 static int DB_VERSION = 8;
@@ -34,6 +35,11 @@ static int DB_VERSION = 8;
 
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+
+    LocalForumApi *localForumApi = [[LocalForumApi alloc] init];
+    // 向服务器验证订阅情况
+    PayManager * payManager = [PayManager shareInstance];
+    [payManager verifyPay:localForumApi.currentProductID];
 
     NSURLCache *cache = [[NSURLCache alloc] initWithMemoryCapacity:200 * 1024 * 1024 diskCapacity:1024 * 1024 * 1024 diskPath:nil];
     [NSURLCache setSharedURLCache:cache];
@@ -72,8 +78,6 @@ static int DB_VERSION = 8;
     [dictonary setValue:@1 forKey:kSIGNATURE];
     [dictonary setValue:@1 forKey:kTOP_THREAD];
     [setting registerDefaults:dictonary];
-
-    LocalForumApi *localForumApi = [[LocalForumApi alloc] init];
 
     // 检查数据库
     BOOL isClearDB = NO;
