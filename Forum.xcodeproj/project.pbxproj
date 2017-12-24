@@ -128,6 +128,7 @@
 		3ACFFD2D1CF9D6BF000312DC /* SDImageCache+URLCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 3ACFFD2B1CF9D6BF000312DC /* SDImageCache+URLCache.m */; };
 		3ACFFD301CF9DD3C000312DC /* HPURLProtocol.m in Sources */ = {isa = PBXBuildFile; fileRef = 3ACFFD2F1CF9DD3C000312DC /* HPURLProtocol.m */; };
 		3ACFFD341CFA641F000312DC /* NYTExamplePhoto.m in Sources */ = {isa = PBXBuildFile; fileRef = 3ACFFD331CFA641F000312DC /* NYTExamplePhoto.m */; };
+		3AD2BB221FEFA5AC00D82792 /* PayViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AD2BB211FEFA5AC00D82792 /* PayViewController.swift */; };
 		3AE854B71DF2B0B3000F62E9 /* defaultAvatar.gif in Resources */ = {isa = PBXBuildFile; fileRef = 3AE854B61DF2B0B3000F62E9 /* defaultAvatar.gif */; };
 		4D0D87251DE40C7900DA9034 /* ForumNavigationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4D0D87241DE40C7900DA9034 /* ForumNavigationViewController.m */; };
 		4D4CCC791F42CA5A009A4D58 /* CloudKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D4CCC781F42CA5A009A4D58 /* CloudKit.framework */; };
@@ -397,6 +398,8 @@
 		3ACFFD2F1CF9DD3C000312DC /* HPURLProtocol.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HPURLProtocol.m; sourceTree = "<group>"; };
 		3ACFFD321CFA641F000312DC /* NYTExamplePhoto.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NYTExamplePhoto.h; sourceTree = "<group>"; };
 		3ACFFD331CFA641F000312DC /* NYTExamplePhoto.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NYTExamplePhoto.m; sourceTree = "<group>"; };
+		3AD2BB201FEFA5AB00D82792 /* Forum-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Forum-Bridging-Header.h"; sourceTree = "<group>"; };
+		3AD2BB211FEFA5AC00D82792 /* PayViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PayViewController.swift; sourceTree = "<group>"; };
 		3AE854B61DF2B0B3000F62E9 /* defaultAvatar.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = defaultAvatar.gif; sourceTree = "<group>"; };
 		4D0D87231DE40C7900DA9034 /* ForumNavigationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ForumNavigationViewController.h; sourceTree = "<group>"; };
 		4D0D87241DE40C7900DA9034 /* ForumNavigationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ForumNavigationViewController.m; sourceTree = "<group>"; };
@@ -991,6 +994,8 @@
 			children = (
 				C7B598437592A403475313FA /* PayManager.m */,
 				C7B59370C7EEC80ACF175D43 /* PayManager.h */,
+				3AD2BB211FEFA5AC00D82792 /* PayViewController.swift */,
+				3AD2BB201FEFA5AB00D82792 /* Forum-Bridging-Header.h */,
 			);
 			path = Payment;
 			sourceTree = "<group>";
@@ -1050,6 +1055,7 @@
 					4D339D8A1C31454A0022A6A4 = {
 						CreatedOnToolsVersion = 7.2;
 						DevelopmentTeam = NRHHX365ZN;
+						LastSwiftMigration = 0910;
 						ProvisioningStyle = Automatic;
 						SystemCapabilities = {
 							com.apple.InAppPurchase = {
@@ -1299,6 +1305,7 @@
 				2F34C79B539AC259648765D1 /* CHHForumApi.m in Sources */,
 				2F34CCE7AE4C35FFB148F31E /* CHHForumConfig.m in Sources */,
 				2F34C77038A45486C1F899BA /* CHHForumHtmlParser.m in Sources */,
+				3AD2BB221FEFA5AC00D82792 /* PayViewController.swift in Sources */,
 				2F34C81F010BA4C4C0199B85 /* ForumLoginWebViewController.m in Sources */,
 				3A92CDBD1F35378500E41573 /* AFURLResponseSerialization.m in Sources */,
 				2F34CDC68B8E6EA4AB5D764B /* PageNumber.m in Sources */,
@@ -1413,6 +1420,7 @@
 			baseConfigurationReference = F9DDCAE3994600C1B70E3DBC /* Pods-Forum.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = Forum.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
@@ -1436,6 +1444,9 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				PROVISIONING_PROFILE_SPECIFIER = "";
+				SWIFT_OBJC_BRIDGING_HEADER = "Payment/Forum-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 3.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
@@ -1445,6 +1456,7 @@
 			baseConfigurationReference = DC2C41C75F27D6D0DA04D195 /* Pods-Forum.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = Forum.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
@@ -1469,6 +1481,8 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				PROVISIONING_PROFILE_SPECIFIER = "";
+				SWIFT_OBJC_BRIDGING_HEADER = "Payment/Forum-Bridging-Header.h";
+				SWIFT_VERSION = 3.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;

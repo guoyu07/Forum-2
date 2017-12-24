@@ -86,7 +86,7 @@
 - (NSString *)favThreadWithId:(NSString *)threadId {
     NSDate *date = [NSDate date];
     NSInteger timeStamp = (NSInteger) [date timeIntervalSince1970];
-    return [NSString stringWithFormat:@"http://bbs.crsky.com/pw_ajax.php?action=favor&type=0&nowtime=%ul&tid=%@", timeStamp, threadId];
+    return [NSString stringWithFormat:@"http://bbs.crsky.com/pw_ajax.php?action=favor&type=0&nowtime=%ldl&tid=%@", (long)timeStamp, threadId];
 }
 
 - (NSString *)unFavorThreadWithId:(NSString *)threadId {

@@ -186,7 +186,7 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 
-    if (indexPath.section == 3 && indexPath.row == 1) {
+    if (indexPath.section == 3 && indexPath.row == 0) {
 
         LocalForumApi *forumApi = [[LocalForumApi alloc] init];
         [forumApi logout];

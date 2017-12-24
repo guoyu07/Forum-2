@@ -494,7 +494,7 @@
     ForumTabBarController *root = (ForumTabBarController *) self.window.rootViewController;
 
 
-    UIViewController *controller = [[UIStoryboard mainStoryboard] finControllerById:@"ShowSupportForums"];
+    UIViewController *controller = [[UIStoryboard mainStoryboard] finControllerById:@"ShowSetting"];
 
 
     [root presentViewController:controller animated:YES completion:^{

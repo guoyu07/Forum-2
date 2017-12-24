@@ -37,12 +37,21 @@
     [self.tableView reloadData];
 
 
-    if ([localForumApi isHaveLoginForum]){
-        self.navigationItem.leftBarButtonItem.title = @"返回";
+    if ([localForumApi isHaveLoginForum]) {
+        if (self.canBack) {
+            self.navigationItem.leftBarButtonItem.image = [UIImage imageNamed:@"ic_arrow_back_18pt"];
+        } else {
+            self.navigationItem.leftBarButtonItem.image = [UIImage imageNamed:@"ic_close_18pt"];
+        }
     } else {
+        self.navigationItem.leftBarButtonItem.image = nil;
         self.navigationItem.leftBarButtonItem.title = @"";
     }
 
+}
+
+- (BOOL) canBack{
+    return self.presentingViewController != nil;
 }
 
 - (BOOL)setPullRefresh:(BOOL)enable {
@@ -163,7 +172,11 @@
     }
 
     if ([localForumApi isHaveLoginForum]){
-        [self dismissViewControllerAnimated:YES completion:nil  ];
+        if (self.canBack){
+            [self.navigationController popViewControllerAnimated:YES];
+        } else {
+            [self dismissViewControllerAnimated:YES completion:nil  ];
+        }
     } else {
         //[self exitApplication];
     }
@@ -175,7 +188,7 @@
     
     CABasicAnimation* rotationAnimation = [CABasicAnimation animationWithKeyPath:@"transform.rotation.x"];
     rotationAnimation.delegate = self;
-    
+
     rotationAnimation.fillMode=kCAFillModeForwards;
     
     rotationAnimation.removedOnCompletion = NO;
