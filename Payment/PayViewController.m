@@ -37,13 +37,31 @@
 }
 
 - (IBAction)restorePay:(UIButton *)sender {
+    [SVProgressHUD showWithMaskType:SVProgressHUDMaskTypeBlack];
 
+    [_payManager restorePayForProductID:_localForumApi.currentProductID with:^(BOOL isSuccess) {
+        if (isSuccess){
+            self.restorePayButton.titleLabel.text = @"您已订阅";
+            [SVProgressHUD showSuccessWithStatus:@"订阅成功" maskType:SVProgressHUDMaskTypeBlack];
+        } else {
+            [SVProgressHUD showErrorWithStatus:@"订阅失败" maskType:SVProgressHUDMaskTypeBlack];
+        }
+    }];
 }
 
 - (IBAction)backOrDismiss:(UIBarButtonItem *)sender {
     [_payManager removeTransactionObserver];
+
+    if (self.canBack){
+        [self.navigationController popViewControllerAnimated:YES];
+    } else {
+        [self dismissViewControllerAnimated:YES completion:nil  ];
+    }
 }
 
+- (BOOL) canBack{
+    return self.presentingViewController != nil;
+}
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -56,6 +74,12 @@
         self.restorePayButton.titleLabel.text = @"您已订阅";
     } else {
         self.restorePayButton.titleLabel.text = @"恢复之前的订阅";
+    }
+
+    if (self.canBack) {
+        self.navigationItem.leftBarButtonItem.image = [UIImage imageNamed:@"ic_arrow_back_18pt"];
+    } else {
+        self.navigationItem.leftBarButtonItem.image = [UIImage imageNamed:@"ic_close_18pt"];
     }
 }
 

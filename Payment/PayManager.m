@@ -11,6 +11,8 @@
     NSString *_currentProductID;
 
     PayHandler _handler;
+
+    BOOL isRestore;
 }
 
 @end
@@ -43,13 +45,39 @@ static PayManager *_instance = nil;
     _handler = handler;
     _currentProductID = productID;
 
+    isRestore = FALSE;
+
     if ([SKPaymentQueue canMakePayments]) {
-        [self requestProductData:_currentProductID];
+        NSArray *product = @[productID];
+
+        NSSet *nsset = [NSSet setWithArray:product];
+        SKProductsRequest *request = [[SKProductsRequest alloc] initWithProductIdentifiers:nsset];
+        request.delegate = self;
+        [request start];
     } else {
         NSLog(@"应用没有开启内购权限");
-        _handler(FALSE);
+        [self handleResult:FALSE];
     }
 }
+
+- (void)restorePayForProductID:(NSString *)productID with:(PayHandler)handler {
+    _handler = handler;
+    _currentProductID = productID;
+    isRestore = YES;
+
+    if ([SKPaymentQueue canMakePayments]) {
+        NSArray *product = @[productID];
+
+        NSSet *nsset = [NSSet setWithArray:product];
+        SKProductsRequest *request = [[SKProductsRequest alloc] initWithProductIdentifiers:nsset];
+        request.delegate = self;
+        [request start];
+    } else {
+        NSLog(@"应用没有开启内购权限");
+        [self handleResult:FALSE];
+    }
+}
+
 
 - (BOOL)hasPayed:(NSString *)productID {
 
@@ -63,28 +91,13 @@ static PayManager *_instance = nil;
 }
 
 
-- (void)requestProductData:(NSString *)productID {
-
-    NSLog(@"-------------请求对应的产品信息----------------");
-
-//    [SVProgressHUD showWithStatus:nil maskType:SVProgressHUDMaskTypeBlack];
-
-    NSArray *product = @[productID];
-
-    NSSet *nsset = [NSSet setWithArray:product];
-    SKProductsRequest *request = [[SKProductsRequest alloc] initWithProductIdentifiers:nsset];
-    request.delegate = self;
-    [request start];
-
-}
-
 - (void)paymentQueue:(SKPaymentQueue *)queue updatedTransactions:(NSArray<SKPaymentTransaction *> *)transactions {
     for (SKPaymentTransaction *tran in transactions) {
         switch (tran.transactionState) {
             case SKPaymentTransactionStatePurchased: {
                 NSLog(@"交易完成");
                 // 发送到苹果服务器验证凭证
-                [self verifyPurchaseWithPaymentTransaction:_currentProductID];
+                [self verifyPay:_currentProductID];
                 [[SKPaymentQueue defaultQueue] finishTransaction:tran];
 
             }
@@ -95,14 +108,14 @@ static PayManager *_instance = nil;
             case SKPaymentTransactionStateRestored: {
                 NSLog(@"已经购买过商品");
                 [[SKPaymentQueue defaultQueue] finishTransaction:tran];
-                _handler(YES);
+                [self handleResult:YES];
             }
                 break;
             case SKPaymentTransactionStateFailed: {
                 NSLog(@"交易失败");
                 [[SKPaymentQueue defaultQueue] finishTransaction:tran];
                 //[SVProgressHUD showErrorWithStatus:@"购买失败"];
-                _handler(FALSE);
+                [self handleResult:FALSE];
             }
                 break;
             default:
@@ -144,10 +157,21 @@ static PayManager *_instance = nil;
 
     SKPayment *payment = [SKPayment paymentWithProduct:p];
 
-    NSLog(@"发送购买请求");
-    [[SKPaymentQueue defaultQueue] addPayment:payment];
+    if (isRestore){
+        NSLog(@"发送恢复购买请求");
+        [[SKPaymentQueue defaultQueue] restoreCompletedTransactions];
+    } else {
+        NSLog(@"发送购买请求");
+        [[SKPaymentQueue defaultQueue] addPayment:payment];
+    }
+
 }
 
+- (void)handleResult:(BOOL) isSuccess{
+    if (_handler){
+        _handler(isSuccess);
+    }
+}
 
 //沙盒测试环境验证
 #define SANDBOX @"https://sandbox.itunes.apple.com/verifyReceipt"
@@ -155,7 +179,7 @@ static PayManager *_instance = nil;
 #define AppStore @"https://buy.itunes.apple.com/verifyReceipt"
 
 // 验证购买，避免越狱软件模拟苹果请求达到非法购买问题
-- (void)verifyPurchaseWithPaymentTransaction:(NSString *)productID {
+- (void)verifyPay:(NSString *)productID {
     //从沙盒中获取交易凭证并且拼接成请求体数据
     NSURL *receiptUrl = [[NSBundle mainBundle] appStoreReceiptURL];
     NSData *receiptData = [NSData dataWithContentsOfURL:receiptUrl];
@@ -177,13 +201,13 @@ static PayManager *_instance = nil;
     NSData *responseData = [NSURLConnection sendSynchronousRequest:requestM returningResponse:nil error:&error];
     if (error) {
         NSLog(@"验证购买过程中发生错误，错误信息：%@", error.localizedDescription);
-        _handler(FALSE);
+        [self handleResult:FALSE];
         return;
     }
     NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responseData options:NSJSONReadingAllowFragments error:nil];
-    NSLog(@"%@", dic);
+    NSLog(@"验证订阅>>>\t%@", dic);
     if ([dic[@"status"] intValue] == 0) {
-        _handler(YES);
+        [self handleResult:YES];
         NSLog(@"购买成功！\t%@", dic);
 
         NSDictionary *dicReceipt = dic[@"receipt"];
@@ -200,7 +224,7 @@ static PayManager *_instance = nil;
         //在此处对购买记录进行存储，可以存储到开发商的服务器端
     } else {
         NSLog(@"购买失败，未通过验证！");
-        _handler(FALSE);
+        [self handleResult:FALSE];
     }
 }
 

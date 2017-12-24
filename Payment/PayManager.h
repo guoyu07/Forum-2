@@ -12,7 +12,11 @@ typedef void (^PayHandler)(BOOL isSuccess);
 
 + (instancetype)shareInstance;
 
+- (void)verifyPay:(NSString *)productID;
+
 - (void)payForProductID:(NSString *)productID with:(PayHandler) handler;
+
+- (void)restorePayForProductID:(NSString *)productID with:(PayHandler) handler;
 
 - (BOOL)hasPayed:(NSString *)productID;
 
