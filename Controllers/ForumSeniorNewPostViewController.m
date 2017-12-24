@@ -100,7 +100,7 @@
 
     UIAlertAction *cancel = [UIAlertAction actionWithTitle:@"立即订阅" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
 
-        [_payManager payForProductID:[_localForumApi currentProductID]];
+        //[_payManager payForProductID:[_localForumApi currentProductID]];
 
     }];
 

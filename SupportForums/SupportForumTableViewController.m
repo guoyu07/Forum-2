@@ -146,8 +146,8 @@
             [[UIStoryboard mainStoryboard] changeRootViewControllerTo:cId withAnim:UIViewAnimationOptionTransitionFlipFromTop];
         }
     } else {
-        PayManager *payManager = [PayManager shareInstance];
-        [payManager payForProductID:@"CCF"];
+//        PayManager *payManager = [PayManager shareInstance];
+//        [payManager payForProductID:@"CCF"];
     }
 
 

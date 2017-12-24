@@ -9,6 +9,8 @@
 @interface PayManager () <SKPaymentTransactionObserver, SKProductsRequestDelegate> {
 
     NSString *_currentProductID;
+
+    PayHandler _handler;
 }
 
 @end
@@ -28,17 +30,6 @@ static PayManager *_instance = nil;
     return _instance;
 }
 
-- (void)payForProductID:(NSString *)productID {
-
-    _currentProductID = productID;
-
-    if ([SKPaymentQueue canMakePayments]) {
-        [self requestProductData:_currentProductID];
-    } else {
-        NSLog(@"应用没有开启内购权限");
-    }
-}
-
 
 - (instancetype)init {
     if (self = [super init]) {
@@ -46,6 +37,18 @@ static PayManager *_instance = nil;
     }
     return self;
 
+}
+
+- (void)payForProductID:(NSString *)productID with:(PayHandler)handler {
+    _handler = handler;
+    _currentProductID = productID;
+
+    if ([SKPaymentQueue canMakePayments]) {
+        [self requestProductData:_currentProductID];
+    } else {
+        NSLog(@"应用没有开启内购权限");
+        _handler(FALSE);
+    }
 }
 
 - (BOOL)hasPayed:(NSString *)productID {
@@ -88,18 +91,18 @@ static PayManager *_instance = nil;
                 break;
             case SKPaymentTransactionStatePurchasing:
                 NSLog(@"商品添加进列表");
-
                 break;
             case SKPaymentTransactionStateRestored: {
                 NSLog(@"已经购买过商品");
-
                 [[SKPaymentQueue defaultQueue] finishTransaction:tran];
+                _handler(YES);
             }
                 break;
             case SKPaymentTransactionStateFailed: {
                 NSLog(@"交易失败");
                 [[SKPaymentQueue defaultQueue] finishTransaction:tran];
                 //[SVProgressHUD showErrorWithStatus:@"购买失败"];
+                _handler(FALSE);
             }
                 break;
             default:
@@ -174,12 +177,13 @@ static PayManager *_instance = nil;
     NSData *responseData = [NSURLConnection sendSynchronousRequest:requestM returningResponse:nil error:&error];
     if (error) {
         NSLog(@"验证购买过程中发生错误，错误信息：%@", error.localizedDescription);
+        _handler(FALSE);
         return;
     }
     NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responseData options:NSJSONReadingAllowFragments error:nil];
     NSLog(@"%@", dic);
     if ([dic[@"status"] intValue] == 0) {
-
+        _handler(YES);
         NSLog(@"购买成功！\t%@", dic);
 
         NSDictionary *dicReceipt = dic[@"receipt"];
@@ -196,6 +200,7 @@ static PayManager *_instance = nil;
         //在此处对购买记录进行存储，可以存储到开发商的服务器端
     } else {
         NSLog(@"购买失败，未通过验证！");
+        _handler(FALSE);
     }
 }
 

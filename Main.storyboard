@@ -931,12 +931,112 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="eXx-LE-uTu" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-3496" y="697"/>
+            <point key="canvasLocation" x="-3814" y="430"/>
+        </scene>
+        <!--订阅全功能-->
+        <scene sceneID="yhx-Qv-8zo">
+            <objects>
+                <viewController id="DUL-vl-hgC" customClass="PayViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="200-KL-tMQ"/>
+                        <viewControllerLayoutGuide type="bottom" id="gp5-S5-Mjd"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="awI-tF-GCi">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" editable="NO" textAlignment="natural" selectable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pID-rw-97s">
+                                <rect key="frame" x="20" y="84" width="374" height="300"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="300" id="kpx-te-7Wi"/>
+                                </constraints>
+                                <string key="text">说明:
+
+由于客户端前期近两年的销量非常低,维护需要长期大量的时间和精力,再者需要每年缴纳99美元的费用,不得已采取了按年订阅全功能的做法。
+
+不订阅会限制回帖和搜索功能,以及以后推出的其他功能。
+
+费用是12元/每年。
+
+订阅后会每年自动延期,如不再需要,请去AppStore内取消自动订阅。</string>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                            </textView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0xZ-b8-ofL">
+                                <rect key="frame" x="20" y="672" width="374" height="44"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="44" id="vo8-LT-FEs"/>
+                                </constraints>
+                                <state key="normal" title="恢复之前的订阅"/>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="color" keyPath="borderColor">
+                                        <color key="value" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="borderWidth">
+                                        <real key="value" value="1"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                        <real key="value" value="1"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
+                                <connections>
+                                    <action selector="restorePay:" destination="DUL-vl-hgC" eventType="touchUpInside" id="hbS-9a-eeQ"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="pID-rw-97s" firstAttribute="top" secondItem="200-KL-tMQ" secondAttribute="bottom" constant="20" id="1iJ-XY-ynm"/>
+                            <constraint firstItem="0xZ-b8-ofL" firstAttribute="leading" secondItem="awI-tF-GCi" secondAttribute="leading" constant="20" id="E9b-dy-30J"/>
+                            <constraint firstItem="gp5-S5-Mjd" firstAttribute="top" secondItem="0xZ-b8-ofL" secondAttribute="bottom" constant="20" id="LQk-vg-eM2"/>
+                            <constraint firstItem="pID-rw-97s" firstAttribute="centerX" secondItem="awI-tF-GCi" secondAttribute="centerX" id="ZJV-Bt-CgD"/>
+                            <constraint firstItem="0xZ-b8-ofL" firstAttribute="centerX" secondItem="awI-tF-GCi" secondAttribute="centerX" id="gSD-EP-Qng"/>
+                            <constraint firstItem="pID-rw-97s" firstAttribute="leading" secondItem="awI-tF-GCi" secondAttribute="leading" constant="20" id="gvO-L2-BoY"/>
+                            <constraint firstAttribute="trailing" secondItem="pID-rw-97s" secondAttribute="trailing" constant="20" id="stc-Kt-kb8"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" title="订阅全功能" id="3aa-Mr-21l">
+                        <barButtonItem key="leftBarButtonItem" image="ic_arrow_back_18pt" id="jdv-pF-F3m">
+                            <color key="tintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <connections>
+                                <action selector="backOrDismiss:" destination="DUL-vl-hgC" id="PwE-Iu-mCR"/>
+                            </connections>
+                        </barButtonItem>
+                        <barButtonItem key="rightBarButtonItem" title="订阅" id="1GA-xb-xlX">
+                            <color key="tintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <connections>
+                                <action selector="pay:" destination="DUL-vl-hgC" id="6sm-x1-El7"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
+                    <connections>
+                        <outlet property="restorePayButton" destination="0xZ-b8-ofL" id="XNo-f1-Ni9"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="KWk-rN-xYl" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-3814.4927536231885" y="1206.521739130435"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="Zw5-G1-0II">
+            <objects>
+                <navigationController id="umf-uP-x9n" sceneMemberID="viewController">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="K9C-Mj-NPy">
+                        <rect key="frame" x="0.0" y="20" width="414" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <connections>
+                        <segue destination="DUL-vl-hgC" kind="relationship" relationship="rootViewController" id="lgj-VG-MG7"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="qqL-oJ-3R0" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-3143" y="1207"/>
         </scene>
         <!--Forum Support Navigation Controller-->
         <scene sceneID="Okx-LC-yVb">
             <objects>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="Jfg-Wt-vA8" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <navigationController storyboardIdentifier="ShowSupportForums" id="of7-9w-Eye" customClass="ForumSupportNavigationController" sceneMemberID="viewController">
                     <navigationBar key="navigationBar" contentMode="scaleToFill" translucent="NO" id="DR5-0D-7aZ">
                         <rect key="frame" x="0.0" y="20" width="414" height="44"/>
@@ -949,8 +1049,9 @@
                         <segue destination="2hj-fq-jCt" kind="relationship" relationship="rootViewController" id="8Rx-uC-wIb"/>
                     </connections>
                 </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Jfg-Wt-vA8" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-4470" y="697"/>
+            <point key="canvasLocation" x="-3143" y="430"/>
         </scene>
         <!--Forum Tab Bar Controller-->
         <scene sceneID="nUF-pr-pG4">
@@ -1196,10 +1297,34 @@
                                     </tableViewCell>
                                 </cells>
                             </tableViewSection>
+                            <tableViewSection id="WV6-vV-lpS">
+                                <cells>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" textLabel="OqC-J8-CUa" style="IBUITableViewCellStyleDefault" id="PSw-zE-k4Y">
+                                        <rect key="frame" x="0.0" y="239" width="414" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="PSw-zE-k4Y" id="yI6-16-i8F">
+                                            <rect key="frame" x="0.0" y="0.0" width="376" height="43.666666666666664"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="订阅全功能" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="OqC-J8-CUa">
+                                                    <rect key="frame" x="20" y="0.0" width="356" height="43.666666666666664"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                                                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                        </tableViewCellContentView>
+                                        <connections>
+                                            <segue destination="DUL-vl-hgC" kind="show" id="x8t-6C-lcc"/>
+                                        </connections>
+                                    </tableViewCell>
+                                </cells>
+                            </tableViewSection>
                             <tableViewSection id="PSX-tf-efc">
                                 <cells>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" textLabel="W5G-at-VAe" detailTextLabel="VBb-n4-Xu9" style="IBUITableViewCellStyleValue1" id="nUC-gf-bu1">
-                                        <rect key="frame" x="0.0" y="239" width="414" height="44"/>
+                                        <rect key="frame" x="0.0" y="319" width="414" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="nUC-gf-bu1" id="YWM-3d-8k5">
                                             <rect key="frame" x="0.0" y="0.0" width="414" height="43.666666666666664"/>
@@ -1223,7 +1348,7 @@
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" textLabel="ELt-5Z-eK5" style="IBUITableViewCellStyleDefault" id="di0-Gg-XfM">
-                                        <rect key="frame" x="0.0" y="283" width="414" height="44"/>
+                                        <rect key="frame" x="0.0" y="363" width="414" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="di0-Gg-XfM" id="GMh-kC-dbU">
                                             <rect key="frame" x="0.0" y="0.0" width="376" height="43.666666666666664"/>
@@ -3362,7 +3487,8 @@
         <segue reference="wLO-He-BF0"/>
         <segue reference="Ysv-Xy-VAF"/>
         <segue reference="FiC-V2-LqH"/>
-        <segue reference="tJd-yI-EGE"/>
+        <segue reference="lgj-VG-MG7"/>
+        <segue reference="8Rx-uC-wIb"/>
         <segue reference="BtX-d5-2Dd"/>
     </inferredMetricsTieBreakers>
 </document>

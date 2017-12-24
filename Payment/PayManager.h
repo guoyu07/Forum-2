@@ -8,9 +8,11 @@
 
 @interface PayManager : NSObject
 
+typedef void (^PayHandler)(BOOL isSuccess);
+
 + (instancetype)shareInstance;
 
-- (void)payForProductID:(NSString *)productID;
+- (void)payForProductID:(NSString *)productID with:(PayHandler) handler;
 
 - (BOOL)hasPayed:(NSString *)productID;
 

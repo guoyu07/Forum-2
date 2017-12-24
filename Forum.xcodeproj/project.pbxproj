@@ -124,11 +124,11 @@
 		3A92CDDB1F35379500E41573 /* UIRefreshControl+AFNetworking.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A92CDD11F35379500E41573 /* UIRefreshControl+AFNetworking.m */; };
 		3A92CDDC1F35379500E41573 /* UIWebView+AFNetworking.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A92CDD31F35379500E41573 /* UIWebView+AFNetworking.m */; };
 		3A92CE061F37527800E41573 /* CharUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A92CE051F37527400E41573 /* CharUtils.m */; };
+		3AC0DF181FEFED3B00B70273 /* PayViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3AC0DF171FEFED3B00B70273 /* PayViewController.m */; };
 		3ACFFD2C1CF9D6BF000312DC /* HPURLCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 3ACFFD291CF9D6BF000312DC /* HPURLCache.m */; };
 		3ACFFD2D1CF9D6BF000312DC /* SDImageCache+URLCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 3ACFFD2B1CF9D6BF000312DC /* SDImageCache+URLCache.m */; };
 		3ACFFD301CF9DD3C000312DC /* HPURLProtocol.m in Sources */ = {isa = PBXBuildFile; fileRef = 3ACFFD2F1CF9DD3C000312DC /* HPURLProtocol.m */; };
 		3ACFFD341CFA641F000312DC /* NYTExamplePhoto.m in Sources */ = {isa = PBXBuildFile; fileRef = 3ACFFD331CFA641F000312DC /* NYTExamplePhoto.m */; };
-		3AD2BB221FEFA5AC00D82792 /* PayViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AD2BB211FEFA5AC00D82792 /* PayViewController.swift */; };
 		3AE854B71DF2B0B3000F62E9 /* defaultAvatar.gif in Resources */ = {isa = PBXBuildFile; fileRef = 3AE854B61DF2B0B3000F62E9 /* defaultAvatar.gif */; };
 		4D0D87251DE40C7900DA9034 /* ForumNavigationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4D0D87241DE40C7900DA9034 /* ForumNavigationViewController.m */; };
 		4D4CCC791F42CA5A009A4D58 /* CloudKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D4CCC781F42CA5A009A4D58 /* CloudKit.framework */; };
@@ -390,6 +390,8 @@
 		3A92CDD31F35379500E41573 /* UIWebView+AFNetworking.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIWebView+AFNetworking.m"; sourceTree = "<group>"; };
 		3A92CE041F37527400E41573 /* CharUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CharUtils.h; sourceTree = "<group>"; };
 		3A92CE051F37527400E41573 /* CharUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CharUtils.m; sourceTree = "<group>"; };
+		3AC0DF161FEFED3B00B70273 /* PayViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = PayViewController.h; path = /Users/diyuanwang/github/Forum/Payment/PayViewController.h; sourceTree = "<absolute>"; };
+		3AC0DF171FEFED3B00B70273 /* PayViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = PayViewController.m; path = /Users/diyuanwang/github/Forum/Payment/PayViewController.m; sourceTree = "<absolute>"; };
 		3ACFFD281CF9D6BF000312DC /* HPURLCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HPURLCache.h; sourceTree = "<group>"; };
 		3ACFFD291CF9D6BF000312DC /* HPURLCache.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HPURLCache.m; sourceTree = "<group>"; };
 		3ACFFD2A1CF9D6BF000312DC /* SDImageCache+URLCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "SDImageCache+URLCache.h"; sourceTree = "<group>"; };
@@ -398,8 +400,6 @@
 		3ACFFD2F1CF9DD3C000312DC /* HPURLProtocol.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HPURLProtocol.m; sourceTree = "<group>"; };
 		3ACFFD321CFA641F000312DC /* NYTExamplePhoto.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NYTExamplePhoto.h; sourceTree = "<group>"; };
 		3ACFFD331CFA641F000312DC /* NYTExamplePhoto.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NYTExamplePhoto.m; sourceTree = "<group>"; };
-		3AD2BB201FEFA5AB00D82792 /* Forum-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Forum-Bridging-Header.h"; sourceTree = "<group>"; };
-		3AD2BB211FEFA5AC00D82792 /* PayViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PayViewController.swift; sourceTree = "<group>"; };
 		3AE854B61DF2B0B3000F62E9 /* defaultAvatar.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = defaultAvatar.gif; sourceTree = "<group>"; };
 		4D0D87231DE40C7900DA9034 /* ForumNavigationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ForumNavigationViewController.h; sourceTree = "<group>"; };
 		4D0D87241DE40C7900DA9034 /* ForumNavigationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ForumNavigationViewController.m; sourceTree = "<group>"; };
@@ -992,10 +992,10 @@
 		4D8962BD1FDFE0A30015BD9D /* Payment */ = {
 			isa = PBXGroup;
 			children = (
+				3AC0DF161FEFED3B00B70273 /* PayViewController.h */,
+				3AC0DF171FEFED3B00B70273 /* PayViewController.m */,
 				C7B598437592A403475313FA /* PayManager.m */,
 				C7B59370C7EEC80ACF175D43 /* PayManager.h */,
-				3AD2BB211FEFA5AC00D82792 /* PayViewController.swift */,
-				3AD2BB201FEFA5AB00D82792 /* Forum-Bridging-Header.h */,
 			);
 			path = Payment;
 			sourceTree = "<group>";
@@ -1260,6 +1260,7 @@
 				4DFB34CF1DF82D5E00BD8DD5 /* ForumEntry+CoreDataClass.m in Sources */,
 				3A2C3FD51DDFE0C900576151 /* ForumMyProfileTableViewController.m in Sources */,
 				4DF737191DDECC8D00BF1896 /* Post.m in Sources */,
+				3AC0DF181FEFED3B00B70273 /* PayViewController.m in Sources */,
 				3A2C3FCE1DDFE0C900576151 /* ForumApiBaseTableViewController.m in Sources */,
 				4DF737061DDECC8500BF1896 /* ViewSearchForumPage.m in Sources */,
 				3A288A631DFD14D8002EBBC2 /* DRLForumConfig.m in Sources */,
@@ -1305,7 +1306,6 @@
 				2F34C79B539AC259648765D1 /* CHHForumApi.m in Sources */,
 				2F34CCE7AE4C35FFB148F31E /* CHHForumConfig.m in Sources */,
 				2F34C77038A45486C1F899BA /* CHHForumHtmlParser.m in Sources */,
-				3AD2BB221FEFA5AC00D82792 /* PayViewController.swift in Sources */,
 				2F34C81F010BA4C4C0199B85 /* ForumLoginWebViewController.m in Sources */,
 				3A92CDBD1F35378500E41573 /* AFURLResponseSerialization.m in Sources */,
 				2F34CDC68B8E6EA4AB5D764B /* PageNumber.m in Sources */,
