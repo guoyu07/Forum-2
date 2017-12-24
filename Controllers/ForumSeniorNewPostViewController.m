@@ -16,6 +16,8 @@
 #import "UIImage+Tint.h"
 #import "LocalForumApi.h"
 #import "PayManager.h"
+#import "ForumTabBarController.h"
+#import "UIStoryboard+Forum.h"
 
 
 @interface ForumSeniorNewPostViewController () <UIImagePickerControllerDelegate, UINavigationControllerDelegate, UICollectionViewDataSource,
@@ -98,13 +100,28 @@
     UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"操作受限" message:message preferredStyle:UIAlertControllerStyleAlert];
 
 
-    UIAlertAction *cancel = [UIAlertAction actionWithTitle:@"立即订阅" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+    UIAlertAction *showPayPage = [UIAlertAction actionWithTitle:@"订阅" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
 
-        //[_payManager payForProductID:[_localForumApi currentProductID]];
+        UIViewController *controller = [[UIStoryboard mainStoryboard] finControllerById:@"ShowPayPage"];
+
+        [self presentViewController:controller animated:YES completion:^{
+
+        }];
+
+    }];
+
+    UIAlertAction *cancel = [UIAlertAction actionWithTitle:@"返回" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+
+        [self dismissViewControllerAnimated:YES completion:^{
+
+        }];
 
     }];
 
     [alert addAction:cancel];
+
+    [alert addAction:showPayPage];
+
 
     [self presentViewController:alert animated:YES completion:^{
 

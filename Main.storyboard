@@ -1018,16 +1018,16 @@
             </objects>
             <point key="canvasLocation" x="-3814.4927536231885" y="1206.521739130435"/>
         </scene>
-        <!--Navigation Controller-->
+        <!--Forum Support Navigation Controller-->
         <scene sceneID="Zw5-G1-0II">
             <objects>
-                <navigationController id="umf-uP-x9n" sceneMemberID="viewController">
+                <navigationController storyboardIdentifier="ShowPayPage" id="umf-uP-x9n" customClass="ForumSupportNavigationController" sceneMemberID="viewController">
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="K9C-Mj-NPy">
                         <rect key="frame" x="0.0" y="20" width="414" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <connections>
-                        <segue destination="DUL-vl-hgC" kind="relationship" relationship="rootViewController" id="lgj-VG-MG7"/>
+                        <segue destination="DUL-vl-hgC" kind="relationship" relationship="rootViewController" id="UB6-76-MCr"/>
                     </connections>
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="qqL-oJ-3R0" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -1316,7 +1316,7 @@
                                             </subviews>
                                         </tableViewCellContentView>
                                         <connections>
-                                            <segue destination="DUL-vl-hgC" kind="show" id="x8t-6C-lcc"/>
+                                            <segue destination="DUL-vl-hgC" kind="show" id="hla-BN-cvQ"/>
                                         </connections>
                                     </tableViewCell>
                                 </cells>
@@ -3487,8 +3487,8 @@
         <segue reference="wLO-He-BF0"/>
         <segue reference="Ysv-Xy-VAF"/>
         <segue reference="FiC-V2-LqH"/>
-        <segue reference="lgj-VG-MG7"/>
-        <segue reference="8Rx-uC-wIb"/>
+        <segue reference="UB6-76-MCr"/>
+        <segue reference="tJd-yI-EGE"/>
         <segue reference="BtX-d5-2Dd"/>
     </inferredMetricsTieBreakers>
 </document>
