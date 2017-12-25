@@ -204,25 +204,21 @@ static PayManager *_instance = nil;
 
     if (isRestore){
         NSLog(@"发送恢复购买请求");
-        [self verifyPay:_currentProductID with:^(NSDictionary *response) {
-            if (response == nil){
-                return;
-            }
-            int code = [response[@"status"] intValue];
-
-            NSLog(@"发送恢复购买请求> %d", code);
-            if (code == 21002){
-                [self handleResult:FALSE];
-            } else {
-                [[SKPaymentQueue defaultQueue] restoreCompletedTransactions];
-            }
-        }];
+        [[SKPaymentQueue defaultQueue] restoreCompletedTransactions];
 
     } else {
         NSLog(@"发送购买请求");
         [[SKPaymentQueue defaultQueue] addPayment:payment];
     }
 
+}
+
+- (void)paymentQueueRestoreCompletedTransactionsFinished:(SKPaymentQueue *)queue {
+    NSLog(@"restore payment finished");
+}
+
+- (void)paymentQueue:(SKPaymentQueue *)queue restoreCompletedTransactionsFailedWithError:(NSError *)error {
+    NSLog(@"restore payment finished %@", error.localizedDescription);
 }
 
 - (void)handleResult:(BOOL) isSuccess{
