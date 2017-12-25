@@ -39,7 +39,9 @@ static int DB_VERSION = 8;
     LocalForumApi *localForumApi = [[LocalForumApi alloc] init];
     // 向服务器验证订阅情况
     PayManager * payManager = [PayManager shareInstance];
-    [payManager verifyPay:localForumApi.currentProductID];
+    [payManager verifyPay:localForumApi.currentProductID with:^(NSDictionary *response) {
+        
+    }];
 
     NSURLCache *cache = [[NSURLCache alloc] initWithMemoryCapacity:200 * 1024 * 1024 diskCapacity:1024 * 1024 * 1024 diskPath:nil];
     [NSURLCache setSharedURLCache:cache];
