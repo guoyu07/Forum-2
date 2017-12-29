@@ -102,7 +102,7 @@ static PayManager *_instance = nil;
             case SKPaymentTransactionStatePurchased: {
                 NSLog(@"交易完成");
                 // 发送到苹果服务器验证凭证
-                [self verifyPay:_currentProductID trans:tran with:^(NSDictionary *response) {
+                [self verifyPay:_currentProductID with:^(NSDictionary *response) {
                     [[SKPaymentQueue defaultQueue] finishTransaction:tran];
 
                     if (response == nil){
@@ -261,7 +261,7 @@ static PayManager *_instance = nil;
 //正式环境验证
 #define AppStore @"https://buy.itunes.apple.com/verifyReceipt"
 // 验证购买，避免越狱软件模拟苹果请求达到非法购买问题
-- (void)verifyPay:(NSString *)productID trans:(SKPaymentTransaction *)trans with:(VerifyHandler)handler {
+- (void)verifyPay:(NSString *)productID with:(VerifyHandler)handler {
     _currentProductID = productID;
 
     //从沙盒中获取交易凭证并且拼接成请求体数据
@@ -276,9 +276,9 @@ static PayManager *_instance = nil;
 
     //创建请求到苹果官方进行购买验证
     NSURL *url = [NSURL URLWithString:SANDBOX];
-    if (trans == nil || [self isSandbox:trans]) {
-        url = [NSURL URLWithString:AppStore];
-    }
+//    if (trans == nil || [self isSandbox:trans]) {
+//        url = [NSURL URLWithString:AppStore];
+//    }
     NSMutableURLRequest *requestM = [NSMutableURLRequest requestWithURL:url];
     requestM.HTTPBody = bodyData;
     requestM.HTTPMethod = @"POST";
