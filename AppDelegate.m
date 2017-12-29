@@ -39,7 +39,7 @@ static int DB_VERSION = 8;
     LocalForumApi *localForumApi = [[LocalForumApi alloc] init];
     // 向服务器验证订阅情况
     PayManager * payManager = [PayManager shareInstance];
-    [payManager verifyPay:localForumApi.currentProductID with:^(NSDictionary *response) {
+    [payManager verifyPay:localForumApi.currentProductID trans:nil with:^(NSDictionary *response) {
         
     }];
 

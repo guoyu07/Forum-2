@@ -4,7 +4,7 @@
 //
 
 #import <Foundation/Foundation.h>
-
+#import <StoreKit/StoreKit.h>
 
 @interface PayManager : NSObject
 
@@ -15,7 +15,7 @@ typedef void (^VerifyHandler)(NSDictionary *response);
 + (instancetype)shareInstance;
 
 
-- (void)verifyPay:(NSString *)productID with:(VerifyHandler) handler;
+- (void)verifyPay:(NSString *)productID trans:(SKPaymentTransaction *)trans with:(VerifyHandler) handler;
 
 - (void)payForProductID:(NSString *)productID with:(PayHandler) handler;
 

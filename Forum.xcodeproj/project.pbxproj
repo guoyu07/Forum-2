@@ -994,8 +994,8 @@
 			children = (
 				4D8C11F01FF0CB22008813C4 /* PayViewController.h */,
 				4D8C11F11FF0CB22008813C4 /* PayViewController.m */,
-				C7B598437592A403475313FA /* PayManager.m */,
 				C7B59370C7EEC80ACF175D43 /* PayManager.h */,
+				C7B598437592A403475313FA /* PayManager.m */,
 			);
 			path = Payment;
 			sourceTree = "<group>";
