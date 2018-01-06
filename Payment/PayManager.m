@@ -215,6 +215,7 @@ static PayManager *_instance = nil;
 
 }
 
+
 - (void)paymentQueueRestoreCompletedTransactionsFinished:(SKPaymentQueue *)queue {
     NSLog(@"restore payment finished");
     
