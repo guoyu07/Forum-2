@@ -13,6 +13,8 @@
 #import "ForumWebViewController.h"
 #import "LocalForumApi.h"
 #import "ZhanNeiSearchViewCell.h"
+#import "PayManager.h"
+#import "UIStoryboard+Forum.h"
 
 @interface ForumSearchViewController () <UITableViewDataSource, UITableViewDelegate, UISearchBarDelegate, ThreadListCellDelegate, MGSwipeTableCellDelegate> {
     NSString *_searchid;
@@ -20,6 +22,9 @@
     NSString *searchText;
 
     BOOL isZhanNeiSearch;
+
+    LocalForumApi *_localForumApi;
+    PayManager *_payManager;
 }
 
 @end
@@ -29,6 +34,10 @@
 }
 
 - (void)viewDidLoad {
+
+    _localForumApi = [[LocalForumApi alloc] init];
+    // payManager
+    _payManager = [PayManager shareInstance];
 
     isZhanNeiSearch = [self isZhanNeiSearch];
 
@@ -41,6 +50,43 @@
         [self onLoadMore];
     }];
 
+}
+
+-(void)viewDidAppear:(BOOL)animated{
+    if (![_payManager hasPayed:[_localForumApi currentProductID]]){
+        [self showFailedMessage:@"未订阅用户无法搜索"];
+    }
+}
+
+-(void) showFailedMessage:(id) message{
+
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"操作受限" message:message preferredStyle:UIAlertControllerStyleAlert];
+
+
+    UIAlertAction *showPayPage = [UIAlertAction actionWithTitle:@"订阅" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+
+        UIViewController *controller = [[UIStoryboard mainStoryboard] finControllerById:@"ShowPayPage"];
+
+        [self presentViewController:controller animated:YES completion:^{
+
+        }];
+
+    }];
+
+    UIAlertAction *cancel = [UIAlertAction actionWithTitle:@"返回" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+        
+        [self.navigationController popViewControllerAnimated:YES];
+
+    }];
+
+    [alert addAction:cancel];
+
+    [alert addAction:showPayPage];
+
+
+    [self presentViewController:alert animated:YES completion:^{
+
+    }];
 }
 
 - (BOOL)isZhanNeiSearch {
