@@ -228,6 +228,9 @@
 
 - (NSString *)userName:(NSString *)host {
     NSString *key = [host stringByAppendingString:@"-UserName"];
+    if (key == nil) {
+        return nil;
+    }
     return [_userDefaults valueForKey:key];
 }
 
