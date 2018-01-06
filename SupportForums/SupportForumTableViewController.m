@@ -17,7 +17,7 @@
 #import "ForumSupportNavigationController.h"
 
 @interface SupportForumTableViewController ()<CAAnimationDelegate>{
-    
+    LocalForumApi *localForumApi;
 }
 
 @end
@@ -27,7 +27,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
 
-    LocalForumApi *localForumApi = [[LocalForumApi alloc] init];
+    localForumApi = [[LocalForumApi alloc] init];
     self.forumApi = [ForumApiHelper forumApi:localForumApi.currentForumHost];
 
 
@@ -98,7 +98,9 @@
 
     cell.textLabel.text = forums.name;
 
-    cell.detailTextLabel.text = forums.host;
+    NSString * login = [localForumApi isHaveLogin:forums.host] ? @"已登录" : @"未登录";
+    cell.detailTextLabel.text = [NSString stringWithFormat:@"%@\t~\t%@", forums.host.uppercaseString, login];
+    forums.host;
 
     UIEdgeInsets edgeInsets = UIEdgeInsetsMake(0,16,0,16);
     [cell setSeparatorInset:edgeInsets];
