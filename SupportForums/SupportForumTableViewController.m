@@ -14,6 +14,7 @@
 #import "AppDelegate.h"
 #import "LocalForumApi.h"
 #import "PayManager.h"
+#import "ForumSupportNavigationController.h"
 
 @interface SupportForumTableViewController ()<CAAnimationDelegate>{
     
@@ -41,7 +42,15 @@
         if (self.canBack) {
             self.navigationItem.leftBarButtonItem.image = [UIImage imageNamed:@"ic_arrow_back_18pt"];
         } else {
-            self.navigationItem.leftBarButtonItem.image = [UIImage imageNamed:@"ic_close_18pt"];
+            UIWindow *window = [UIApplication sharedApplication].keyWindow;
+            UIViewController *rootViewController = window.rootViewController;
+            if ([rootViewController isKindOfClass:[ForumSupportNavigationController class]]){
+                self.navigationItem.leftBarButtonItem.image = nil;
+                self.navigationItem.leftBarButtonItem.title = @"";
+            } else {
+                self.navigationItem.leftBarButtonItem.image = [UIImage imageNamed:@"ic_close_18pt"];
+            }
+
         }
     } else {
         self.navigationItem.leftBarButtonItem.image = nil;
