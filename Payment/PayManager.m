@@ -111,7 +111,9 @@ static PayManager *_instance = nil;
                         return;
                     }
                     int code = [response[@"status"] intValue];
-                    // 保存购买状体啊
+
+
+                    // 保存购买购买状态
                     [self setPayed:code == 0 for:_currentProductID];
                     [self handleResult:code == 0];
 
