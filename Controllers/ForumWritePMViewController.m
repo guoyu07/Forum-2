@@ -7,6 +7,9 @@
 //
 
 #import "ForumWritePMViewController.h"
+#import "PayManager.h"
+#import "LocalForumApi.h"
+#import "UIStoryboard+Forum.h"
 #import <SVProgressHUD.h>
 
 
@@ -14,6 +17,10 @@
     NSString *profileName;
     BOOL isReply;
     Message *_privateMessage;
+
+    LocalForumApi *_localForumApi;
+
+    PayManager *_payManager;
 }
 
 @end
@@ -37,6 +44,11 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
 
+    _localForumApi = [[LocalForumApi alloc] init];
+
+    // payManager
+    _payManager = [PayManager shareInstance];
+
     if (isReply) {
         self.toWho.text = _privateMessage.pmAuthor;
         self.privateMessageTitle.text = [NSString stringWithFormat:@"回复：%@", _privateMessage.pmTitle];
@@ -52,6 +64,44 @@
     }
 }
 
+-(void)viewDidAppear:(BOOL)animated{
+    if (![_payManager hasPayed:[_localForumApi currentProductID]]){
+        [self showFailedMessage:@"未订阅用户无法使用私信"];
+    }
+}
+
+-(void) showFailedMessage:(id) message{
+
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"操作受限" message:message preferredStyle:UIAlertControllerStyleAlert];
+
+
+    UIAlertAction *showPayPage = [UIAlertAction actionWithTitle:@"订阅" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+
+        UIViewController *controller = [[UIStoryboard mainStoryboard] finControllerById:@"ShowPayPage"];
+
+        [self presentViewController:controller animated:YES completion:^{
+
+        }];
+
+    }];
+
+    UIAlertAction *cancel = [UIAlertAction actionWithTitle:@"返回" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+
+        [self dismissViewControllerAnimated:YES completion:^{
+
+        }];
+
+    }];
+
+    [alert addAction:cancel];
+
+    [alert addAction:showPayPage];
+
+
+    [self presentViewController:alert animated:YES completion:^{
+
+    }];
+}
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];

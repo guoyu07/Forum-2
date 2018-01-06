@@ -74,7 +74,7 @@
     }];
 
     UIAlertAction *cancel = [UIAlertAction actionWithTitle:@"返回" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
-        
+
         [self.navigationController popViewControllerAnimated:YES];
 
     }];

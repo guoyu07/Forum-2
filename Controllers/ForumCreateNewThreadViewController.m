@@ -16,6 +16,8 @@
 #import "TransBundleDelegate.h"
 #import "UIImage+Tint.h"
 #import "LocalForumApi.h"
+#import "PayManager.h"
+#import "UIStoryboard+Forum.h"
 
 @interface ForumCreateNewThreadViewController () <UIImagePickerControllerDelegate, UINavigationControllerDelegate,
         UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout,
@@ -32,6 +34,9 @@
     NSArray *categorys;
 
     int categoryIndex;
+
+    PayManager *_payManager;
+    LocalForumApi *_localForumApi;
 }
 
 @end
@@ -49,8 +54,11 @@
 
     categoryIndex = 0;
 
-    LocalForumApi *localForumApi = [[LocalForumApi alloc] init];
-    _forumApi = [ForumApiHelper forumApi:localForumApi.currentForumHost];
+    // payManager
+    _payManager = [PayManager shareInstance];
+
+    _localForumApi = [[LocalForumApi alloc] init];
+    _forumApi = [ForumApiHelper forumApi:_localForumApi.currentForumHost];
 
     _selectPhotos.delegate = self;
     _selectPhotos.dataSource = self;
@@ -80,6 +88,44 @@
     }];
 }
 
+-(void)viewDidAppear:(BOOL)animated{
+    if (![_payManager hasPayed:[_localForumApi currentProductID]]){
+        [self showFailedMessage:@"未订阅用户无法发新帖"];
+    }
+}
+
+-(void) showFailedMessage:(id) message{
+
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"操作受限" message:message preferredStyle:UIAlertControllerStyleAlert];
+
+
+    UIAlertAction *showPayPage = [UIAlertAction actionWithTitle:@"订阅" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+
+        UIViewController *controller = [[UIStoryboard mainStoryboard] finControllerById:@"ShowPayPage"];
+
+        [self presentViewController:controller animated:YES completion:^{
+
+        }];
+
+    }];
+
+    UIAlertAction *cancel = [UIAlertAction actionWithTitle:@"返回" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+
+        [self dismissViewControllerAnimated:YES completion:^{
+
+        }];
+
+    }];
+
+    [alert addAction:cancel];
+
+    [alert addAction:showPayPage];
+
+
+    [self presentViewController:alert animated:YES completion:^{
+
+    }];
+}
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView {
     [[UIApplication sharedApplication] sendAction:@selector(resignFirstResponder) to:nil from:nil forEvent:nil];
