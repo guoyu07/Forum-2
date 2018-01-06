@@ -42,10 +42,10 @@ static int DB_VERSION = 8;
     [payManager verifyPay:localForumApi.currentProductID with:^(NSDictionary *response) {
 
         if (response == nil || [response[@"status"] intValue] != 0){
-            [payManager setPayed:YES for:localForumApi.currentProductID];
+            [payManager setPayed:FALSE for:localForumApi.currentProductID];
             NSLog(@"not payed");
         } else {
-            [payManager setPayed:FALSE for:localForumApi.currentProductID];
+            [payManager setPayed:TRUE for:localForumApi.currentProductID];
             NSLog(@"payed success");
         }
     }];
