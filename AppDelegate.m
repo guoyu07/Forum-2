@@ -24,7 +24,7 @@
 #import "PayManager.h"
 
 static BOOL API_DEBUG = NO;
-static int DB_VERSION = 8;
+static int DB_VERSION = 9;
 
 @interface AppDelegate ()<UNUserNotificationCenterDelegate> {
     ForumPushManager *_pushManager;
