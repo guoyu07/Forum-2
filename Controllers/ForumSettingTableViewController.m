@@ -10,6 +10,8 @@
 
 @interface ForumSettingTableViewController ()
 
+@property (strong, nonatomic) IBOutlet UILabel *version;
+
 @end
 
 @implementation ForumSettingTableViewController
@@ -21,6 +23,9 @@
     [self.signatureSwitch setOn:[NSUserDefaults standardUserDefaults].isSignatureEnabled];
     [self.topThreadPostSwitch setOn:[NSUserDefaults standardUserDefaults].isTopThreadPostCanShow];
 
+    NSString *versionCode = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleShortVersionString"];
+    _version.text = versionCode;
+
 }
 
 - (void)didReceiveMemoryWarning {
@@ -31,7 +36,7 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 
-    if (indexPath.section == 2 && indexPath.row == 1) {
+    if (indexPath.section == 3 && indexPath.row == 1) {
         [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"https://github.com/andforce/Forum"]];
     }
 
