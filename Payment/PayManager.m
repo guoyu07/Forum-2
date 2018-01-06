@@ -260,11 +260,27 @@ static PayManager *_instance = nil;
 #define SANDBOX @"https://sandbox.itunes.apple.com/verifyReceipt"
 //正式环境验证
 #define AppStore @"https://buy.itunes.apple.com/verifyReceipt"
-// 验证购买，避免越狱软件模拟苹果请求达到非法购买问题
+
+// 验证购买，避免越狱软件模拟苹果请求达到非法购买问题, 先验证Appstore版本，如果失败了再验证沙盒
 - (void)verifyPay:(NSString *)productID with:(VerifyHandler)handler {
     _currentProductID = productID;
 
-    //从沙盒中获取交易凭证并且拼接成请求体数据
+    [self verifyWithUrl:[NSURL URLWithString:AppStore] handler:^(NSDictionary *response) {
+        if (response == nil || [response[@"status"] intValue] != 0){
+
+            [self verifyWithUrl:[NSURL URLWithString:SANDBOX] handler:^(NSDictionary *response) {
+                handler(response);
+            }];
+            return;
+        }
+
+        handler(response);
+    }];
+
+}
+
+- (void)verifyWithUrl:(NSURL *)url handler:(VerifyHandler)handler{
+//从沙盒中获取交易凭证并且拼接成请求体数据
     NSURL *receiptUrl = [[NSBundle mainBundle] appStoreReceiptURL];
     NSData *receiptData = [NSData dataWithContentsOfURL:receiptUrl];
 
@@ -275,10 +291,7 @@ static PayManager *_instance = nil;
     NSData *bodyData = [bodyString dataUsingEncoding:NSUTF8StringEncoding];
 
     //创建请求到苹果官方进行购买验证
-    NSURL *url = [NSURL URLWithString:SANDBOX];
-//    if (trans == nil || [self isSandbox:trans]) {
-//        url = [NSURL URLWithString:AppStore];
-//    }
+
     NSMutableURLRequest *requestM = [NSMutableURLRequest requestWithURL:url];
     requestM.HTTPBody = bodyData;
     requestM.HTTPMethod = @"POST";
@@ -295,7 +308,6 @@ static PayManager *_instance = nil;
     NSLog(@"验证订阅>>>\t%@", dic);
     handler(dic);
 }
-
 
 
 @end

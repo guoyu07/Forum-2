@@ -40,7 +40,12 @@ static int DB_VERSION = 8;
     // 向服务器验证订阅情况
     PayManager * payManager = [PayManager shareInstance];
     [payManager verifyPay:localForumApi.currentProductID with:^(NSDictionary *response) {
-        
+
+        if (response == nil || [response[@"status"] intValue] != 0){
+            NSLog(@"not payed");
+        } else {
+            NSLog(@"payed success");
+        }
     }];
 
     NSURLCache *cache = [[NSURLCache alloc] initWithMemoryCapacity:200 * 1024 * 1024 diskCapacity:1024 * 1024 * 1024 diskPath:nil];
@@ -53,7 +58,6 @@ static int DB_VERSION = 8;
     // 注册LeanCloud的推送服务
     _pushManager = [[ForumPushManager alloc] initWithNotificationCenterDelegate:self];
     [_pushManager registerPushManagerWithOptions:launchOptions];
-
 
     application.applicationIconBadgeNumber = 0;
 
