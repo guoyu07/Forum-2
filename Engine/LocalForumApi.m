@@ -118,11 +118,19 @@
     return NO;
 }
 
+- (void)deleteLoginUser:(LoginUser *)loginUser {
+    NSString *uid = [self.currentForumHost stringByAppendingString:@"-UserId"];
+    [_userDefaults setValue:@"" forKey:uid];
+
+    NSString *name = [self.currentForumHost stringByAppendingString:@"-UserName"];
+    [_userDefaults setValue:@"" forKey:name];
+}
+
 - (void)logout {
 
     LocalForumApi *localForumApi = [[LocalForumApi alloc] init];
     id<ForumConfigDelegate> forumConfig = [ForumApiHelper forumConfig:localForumApi.currentForumHost];
-    
+
     [self clearCookie];
 
     NSURL *url = forumConfig.forumURL;
@@ -133,6 +141,9 @@
             [[NSHTTPCookieStorage sharedHTTPCookieStorage] deleteCookie:cookie];
         }
     }
+
+    LoginUser *user = [localForumApi getLoginUser:localForumApi.currentForumHost];
+    [self deleteLoginUser:user];
 }
 
 - (NSString *)currentForumHost {
@@ -233,6 +244,7 @@
     }
     return [_userDefaults valueForKey:key];
 }
+
 
 - (void)saveUserId:(NSString *)uid forHost:(NSString *)host {
     NSString *key = [host stringByAppendingString:@"-UserId"];
