@@ -124,6 +124,7 @@
 		3A92CDDB1F35379500E41573 /* UIRefreshControl+AFNetworking.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A92CDD11F35379500E41573 /* UIRefreshControl+AFNetworking.m */; };
 		3A92CDDC1F35379500E41573 /* UIWebView+AFNetworking.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A92CDD31F35379500E41573 /* UIWebView+AFNetworking.m */; };
 		3A92CE061F37527800E41573 /* CharUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A92CE051F37527400E41573 /* CharUtils.m */; };
+		3ABEBF092020C44E00AB67E9 /* CloseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3ABEBF082020C44E00AB67E9 /* CloseViewController.m */; };
 		3ACFFD2C1CF9D6BF000312DC /* HPURLCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 3ACFFD291CF9D6BF000312DC /* HPURLCache.m */; };
 		3ACFFD2D1CF9D6BF000312DC /* SDImageCache+URLCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 3ACFFD2B1CF9D6BF000312DC /* SDImageCache+URLCache.m */; };
 		3ACFFD301CF9DD3C000312DC /* HPURLProtocol.m in Sources */ = {isa = PBXBuildFile; fileRef = 3ACFFD2F1CF9DD3C000312DC /* HPURLProtocol.m */; };
@@ -390,6 +391,8 @@
 		3A92CDD31F35379500E41573 /* UIWebView+AFNetworking.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIWebView+AFNetworking.m"; sourceTree = "<group>"; };
 		3A92CE041F37527400E41573 /* CharUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CharUtils.h; sourceTree = "<group>"; };
 		3A92CE051F37527400E41573 /* CharUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CharUtils.m; sourceTree = "<group>"; };
+		3ABEBF072020C44E00AB67E9 /* CloseViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CloseViewController.h; sourceTree = "<group>"; };
+		3ABEBF082020C44E00AB67E9 /* CloseViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CloseViewController.m; sourceTree = "<group>"; };
 		3ACFFD281CF9D6BF000312DC /* HPURLCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HPURLCache.h; sourceTree = "<group>"; };
 		3ACFFD291CF9D6BF000312DC /* HPURLCache.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HPURLCache.m; sourceTree = "<group>"; };
 		3ACFFD2A1CF9D6BF000312DC /* SDImageCache+URLCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "SDImageCache+URLCache.h"; sourceTree = "<group>"; };
@@ -726,6 +729,8 @@
 				3A2C3FCD1DDFE0C900576151 /* ForumWritePMViewController.m */,
 				2F34CA3EA8022D958EAEA736 /* ForumShortCutCreateNewThreadViewController.h */,
 				2F34CA129BA2D7ADF167E05D /* ForumShortCutCreateNewThreadViewController.m */,
+				3ABEBF072020C44E00AB67E9 /* CloseViewController.h */,
+				3ABEBF082020C44E00AB67E9 /* CloseViewController.m */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -1255,6 +1260,7 @@
 				3A2C40021DDFE30300576151 /* TransBundleUIViewController.m in Sources */,
 				4D0D87251DE40C7900DA9034 /* ForumNavigationViewController.m in Sources */,
 				3A92CDDA1F35379500E41573 /* UIProgressView+AFNetworking.m in Sources */,
+				3ABEBF092020C44E00AB67E9 /* CloseViewController.m in Sources */,
 				3A2C3F511DDFBF5900576151 /* SelectPhotoCollectionViewCell.m in Sources */,
 				4DB47C321F4AC73B00A79AC5 /* IGXMLNode+QueryNode.m in Sources */,
 				3A288A5A1DFC544B002EBBC2 /* SupportForumTableViewController.m in Sources */,

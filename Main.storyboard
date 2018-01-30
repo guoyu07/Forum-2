@@ -952,10 +952,10 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" editable="NO" textAlignment="natural" selectable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pID-rw-97s">
-                                <rect key="frame" x="20" y="84" width="374" height="207"/>
+                                <rect key="frame" x="20" y="84" width="374" height="302.66666666666669"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="207" id="YSa-YA-yO7"/>
+                                    <constraint firstAttribute="height" constant="302.66666666666669" id="YSa-YA-yO7"/>
                                 </constraints>
                                 <string key="text">关于[全功能]自动续期订阅的说明:
 • 订阅服务内容是1年的【全功能】使用服务
@@ -964,13 +964,16 @@
 • 如果要取消订阅，请至少在24小时之前取消
 • 本期订阅将在结束24小时前自动订阅下一期，并自动续费
 • 订阅后，您可以去账户管理种进行自动更新的关闭
-• 暂时不提供免费试用</string>
+• 暂时不提供免费试用 
+订阅服务：
+1：将解锁回帖功能
+2：将解锁搜索功能
+3：将解锁发表新帖功能</string>
                                 <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                             </textView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0xZ-b8-ofL">
                                 <rect key="frame" x="20" y="672" width="374" height="44"/>
-                                <color key="backgroundColor" red="0.920589149" green="0.28459346289999998" blue="0.41174674030000002" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="44" id="vo8-LT-FEs"/>
                                 </constraints>
@@ -991,7 +994,7 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Qdc-O6-h6c">
-                                <rect key="frame" x="20" y="311" width="374" height="44"/>
+                                <rect key="frame" x="20" y="404.66666666666669" width="374" height="44"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="44" id="YGH-tc-Hq3"/>
                                 </constraints>
@@ -1001,13 +1004,13 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="BFM-wx-9JV">
-                                <rect key="frame" x="20" y="375" width="374" height="44"/>
+                                <rect key="frame" x="20" y="468.66666666666669" width="374" height="44.000000000000057"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="44" id="ybH-60-aC7"/>
                                 </constraints>
                                 <state key="normal" title="隐私条款&gt;"/>
                                 <connections>
-                                    <segue destination="FfQ-yT-bNB" kind="show" id="8Fe-eY-fQM"/>
+                                    <segue destination="JfC-rS-uO9" kind="show" id="RuD-VM-YHR"/>
                                 </connections>
                             </button>
                         </subviews>
@@ -1021,7 +1024,7 @@
                             <constraint firstAttribute="trailing" secondItem="pID-rw-97s" secondAttribute="trailing" constant="20" id="ZEV-CF-B75"/>
                             <constraint firstItem="0xZ-b8-ofL" firstAttribute="centerX" secondItem="awI-tF-GCi" secondAttribute="centerX" id="gSD-EP-Qng"/>
                             <constraint firstItem="BFM-wx-9JV" firstAttribute="top" secondItem="Qdc-O6-h6c" secondAttribute="bottom" constant="20" id="gwZ-1O-2Dc"/>
-                            <constraint firstItem="Qdc-O6-h6c" firstAttribute="top" secondItem="pID-rw-97s" secondAttribute="bottom" constant="20" id="j0I-hc-kWy"/>
+                            <constraint firstItem="Qdc-O6-h6c" firstAttribute="top" secondItem="pID-rw-97s" secondAttribute="bottom" constant="18" id="j0I-hc-kWy"/>
                             <constraint firstAttribute="trailing" secondItem="BFM-wx-9JV" secondAttribute="trailing" constant="20" id="nyg-YF-9rV"/>
                             <constraint firstItem="pID-rw-97s" firstAttribute="leading" secondItem="awI-tF-GCi" secondAttribute="leading" constant="20" id="xoy-mI-ryd"/>
                             <constraint firstItem="Qdc-O6-h6c" firstAttribute="leading" secondItem="awI-tF-GCi" secondAttribute="leading" constant="20" id="yiL-g6-bkH"/>
@@ -1066,28 +1069,10 @@
             </objects>
             <point key="canvasLocation" x="-3143" y="1207"/>
         </scene>
-        <!--View Controller-->
-        <scene sceneID="aNo-r6-7yx">
-            <objects>
-                <viewController id="FfQ-yT-bNB" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="S05-ii-Sqz"/>
-                        <viewControllerLayoutGuide type="bottom" id="0dw-8M-T08"/>
-                    </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="8ZK-Xi-NTj">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                    </view>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="g05-vc-Jg6" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="-3814" y="1957"/>
-        </scene>
-        <!--View Controller-->
+        <!--使用条款-->
         <scene sceneID="vRV-CM-Luk">
             <objects>
-                <viewController id="L1e-ai-WY1" sceneMemberID="viewController">
+                <viewController id="L1e-ai-WY1" customClass="CloseViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="j0r-v0-HHh"/>
                         <viewControllerLayoutGuide type="bottom" id="XXQ-UK-3bB"/>
@@ -1102,7 +1087,7 @@
                                     <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" editable="NO" textAlignment="natural" selectable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cOd-rp-PL1">
                                         <rect key="frame" x="16" y="0.0" width="382" height="736"/>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                        <mutableString key="text">在购买「奇点推送」这项由「奇点」（以下简称「我们」）服务（以下简称「服务」）前，请仔细阅读以下条款。
+                                        <mutableString key="text">请仔细阅读以下条款。
 
 订阅
 
@@ -1112,15 +1097,11 @@
 
 免费试用
 
-当前我们为每个订阅周期（每月或每年）均提供了长达 7 天的免费试用，保证你在试用满意后再进行支付。
-
-在试用周期开始时，您可能需要为此服务输入相关支付信息，但不会真正扣款。直到试用的最后一天，如果您不取消订阅，那么将被视为继续使用，扣款将自动发生。
-
-我们将保留修改试用周期的权利，以便更好地进行相关服务。
+暂时还没有提供免费试用的选项
 
 费用
 
-当前我们为该服务提供了两档选择，6 元每月和 60 元每年。
+当前我们为该服务提供了一档选择，12 元每年。
 
 为保证服务质量，我们将会动态调整该费用并通知到您。新的费用将会在您的下一个订阅周期发生。
 
@@ -1153,6 +1134,14 @@
                             <constraint firstItem="n5a-PN-Hqg" firstAttribute="height" secondItem="8p5-N0-1fr" secondAttribute="height" id="fFI-8U-ZCC"/>
                         </constraints>
                     </view>
+                    <navigationItem key="navigationItem" title="使用条款" id="VBQ-7L-btG">
+                        <barButtonItem key="leftBarButtonItem" image="ic_arrow_back_18pt" id="kZD-Fq-S73">
+                            <color key="tintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <connections>
+                                <action selector="close:" destination="L1e-ai-WY1" id="eFa-a7-Tl1"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="efo-3j-6A2" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -3590,6 +3579,98 @@
             </objects>
             <point key="canvasLocation" x="-6665" y="664"/>
         </scene>
+        <!--隐私条款-->
+        <scene sceneID="uxS-Do-DZd">
+            <objects>
+                <viewController title="隐私条款" id="JfC-rS-uO9" customClass="CloseViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="q6F-gr-hGc"/>
+                        <viewControllerLayoutGuide type="bottom" id="Pvj-x6-Uno"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="vML-9d-xZp">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="L6h-77-rLX">
+                                <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
+                                <subviews>
+                                    <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" editable="NO" textAlignment="natural" selectable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gES-QT-g62">
+                                        <rect key="frame" x="16" y="0.0" width="382" height="736"/>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <string key="text">《论坛》尊重并保护您的个人隐私。本隐私策略解释我们会手机您的那些信息以及原因，以及我们会如何利用和保护这些信息。
+
+《论坛》会收集我的哪些信息？
+设备ID，只是为了统计活跃度，以及发送推送
+《论坛》如何保护我的隐私？
+所有数据都通过HTTPS进行传输，并保存在LeanCloud上
+不收集Cookies，用户名密码等敏感信息，保证用户安全</string>
+                                        <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                                        <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                                    </textView>
+                                </subviews>
+                                <constraints>
+                                    <constraint firstItem="gES-QT-g62" firstAttribute="height" secondItem="L6h-77-rLX" secondAttribute="height" id="0oK-Tx-fey"/>
+                                    <constraint firstItem="gES-QT-g62" firstAttribute="leading" secondItem="L6h-77-rLX" secondAttribute="leading" constant="16" id="1lc-kV-4A7"/>
+                                    <constraint firstItem="gES-QT-g62" firstAttribute="top" secondItem="L6h-77-rLX" secondAttribute="top" id="D79-cS-wcU"/>
+                                    <constraint firstAttribute="trailing" secondItem="gES-QT-g62" secondAttribute="trailing" constant="-16" id="GXA-bw-AzI"/>
+                                    <constraint firstAttribute="bottom" secondItem="gES-QT-g62" secondAttribute="bottom" id="cFR-Va-JiQ"/>
+                                    <constraint firstItem="gES-QT-g62" firstAttribute="centerX" secondItem="L6h-77-rLX" secondAttribute="centerX" id="nAA-cA-mfR"/>
+                                </constraints>
+                            </scrollView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="L6h-77-rLX" firstAttribute="width" secondItem="vML-9d-xZp" secondAttribute="width" id="Iwg-Am-DVB"/>
+                            <constraint firstItem="L6h-77-rLX" firstAttribute="height" secondItem="vML-9d-xZp" secondAttribute="height" id="MMw-rd-KUT"/>
+                            <constraint firstItem="L6h-77-rLX" firstAttribute="centerY" secondItem="vML-9d-xZp" secondAttribute="centerY" id="OXW-s0-Sfi"/>
+                            <constraint firstItem="L6h-77-rLX" firstAttribute="centerX" secondItem="vML-9d-xZp" secondAttribute="centerX" id="tb6-eU-CxN"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" title="隐私条款" id="lpx-qe-ZMy" userLabel="隐私条款">
+                        <barButtonItem key="leftBarButtonItem" image="ic_arrow_back_18pt" id="g3P-Jn-wFu">
+                            <color key="tintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <connections>
+                                <action selector="close:" destination="JfC-rS-uO9" id="wVI-ca-DyR"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Yiq-mF-kz2" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-2945" y="2222"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="JDP-vM-x1t">
+            <objects>
+                <navigationController id="NYR-wo-aJj" sceneMemberID="viewController">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="93P-a3-PGD">
+                        <rect key="frame" x="0.0" y="20" width="414" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <connections>
+                        <segue destination="JfC-rS-uO9" kind="relationship" relationship="rootViewController" id="Cdj-X7-sw8"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="hvo-VO-s3j" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-1955" y="2239"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="bgE-Lk-Pxg">
+            <objects>
+                <navigationController id="s4p-li-tJz" sceneMemberID="viewController">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="4VI-dH-tC3">
+                        <rect key="frame" x="0.0" y="20" width="414" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <connections>
+                        <segue destination="L1e-ai-WY1" kind="relationship" relationship="rootViewController" id="0QS-ay-JeA"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="EnX-RT-Hfz" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-1438" y="1317"/>
+        </scene>
     </scenes>
     <resources>
         <image name="ic_account_balance_18pt" width="18" height="18"/>
@@ -3608,9 +3689,11 @@
         <image name="tab_new_post" width="18" height="18"/>
     </resources>
     <inferredMetricsTieBreakers>
+        <segue reference="RuD-VM-YHR"/>
         <segue reference="wLO-He-BF0"/>
         <segue reference="Ysv-Xy-VAF"/>
         <segue reference="FiC-V2-LqH"/>
+        <segue reference="i72-7o-Zg0"/>
         <segue reference="UB6-76-MCr"/>
         <segue reference="tJd-yI-EGE"/>
         <segue reference="BtX-d5-2Dd"/>
