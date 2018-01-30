@@ -948,29 +948,29 @@
                         <viewControllerLayoutGuide type="bottom" id="gp5-S5-Mjd"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="awI-tF-GCi">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="672"/>
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" editable="NO" textAlignment="natural" selectable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pID-rw-97s">
-                                <rect key="frame" x="20" y="20" width="374" height="300"/>
+                                <rect key="frame" x="20" y="84" width="374" height="207"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="300" id="kpx-te-7Wi"/>
+                                    <constraint firstAttribute="height" constant="207" id="YSa-YA-yO7"/>
                                 </constraints>
-                                <string key="text">说明:
-
-由于客户端前期近两年的销量非常低,维护需要长期大量的时间和精力,再者需要每年缴纳99美元的费用,不得已采取了按年订阅全功能的做法。
-
-不订阅会限制回帖和搜索功能,以及以后推出的其他功能。
-
-费用是12元/每年。
-
-订阅后会每年自动延期,如不再需要,请去AppStore内取消自动订阅。</string>
-                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <string key="text">关于[全功能]自动续期订阅的说明:
+• 订阅服务内容是1年的【全功能】使用服务
+• 每年的费用是￥12
+• 购买订阅后，将通过iTunes账户扣款
+• 如果要取消订阅，请至少在24小时之前取消
+• 本期订阅将在结束24小时前自动订阅下一期，并自动续费
+• 订阅后，您可以去账户管理种进行自动更新的关闭
+• 暂时不提供免费试用</string>
+                                <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                             </textView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0xZ-b8-ofL">
-                                <rect key="frame" x="20" y="564" width="374" height="44"/>
+                                <rect key="frame" x="20" y="672" width="374" height="44"/>
+                                <color key="backgroundColor" red="0.920589149" green="0.28459346289999998" blue="0.41174674030000002" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="44" id="vo8-LT-FEs"/>
                                 </constraints>
@@ -990,16 +990,42 @@
                                     <action selector="restorePay:" destination="DUL-vl-hgC" eventType="touchUpInside" id="hbS-9a-eeQ"/>
                                 </connections>
                             </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Qdc-O6-h6c">
+                                <rect key="frame" x="20" y="311" width="374" height="44"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="44" id="YGH-tc-Hq3"/>
+                                </constraints>
+                                <state key="normal" title="使用条款&gt;"/>
+                                <connections>
+                                    <segue destination="L1e-ai-WY1" kind="show" id="i72-7o-Zg0"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="BFM-wx-9JV">
+                                <rect key="frame" x="20" y="375" width="374" height="44"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="44" id="ybH-60-aC7"/>
+                                </constraints>
+                                <state key="normal" title="隐私条款&gt;"/>
+                                <connections>
+                                    <segue destination="FfQ-yT-bNB" kind="show" id="8Fe-eY-fQM"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
-                            <constraint firstItem="pID-rw-97s" firstAttribute="top" secondItem="200-KL-tMQ" secondAttribute="bottom" constant="20" id="1iJ-XY-ynm"/>
+                            <constraint firstItem="pID-rw-97s" firstAttribute="top" secondItem="200-KL-tMQ" secondAttribute="bottom" constant="20" id="Bvy-AL-1qB"/>
                             <constraint firstItem="0xZ-b8-ofL" firstAttribute="leading" secondItem="awI-tF-GCi" secondAttribute="leading" constant="20" id="E9b-dy-30J"/>
                             <constraint firstItem="gp5-S5-Mjd" firstAttribute="top" secondItem="0xZ-b8-ofL" secondAttribute="bottom" constant="20" id="LQk-vg-eM2"/>
-                            <constraint firstItem="pID-rw-97s" firstAttribute="centerX" secondItem="awI-tF-GCi" secondAttribute="centerX" id="ZJV-Bt-CgD"/>
+                            <constraint firstItem="pID-rw-97s" firstAttribute="centerX" secondItem="awI-tF-GCi" secondAttribute="centerX" id="PLD-Jt-ObO"/>
+                            <constraint firstAttribute="trailing" secondItem="Qdc-O6-h6c" secondAttribute="trailing" constant="20" id="Wle-2a-sTL"/>
+                            <constraint firstAttribute="trailing" secondItem="pID-rw-97s" secondAttribute="trailing" constant="20" id="ZEV-CF-B75"/>
                             <constraint firstItem="0xZ-b8-ofL" firstAttribute="centerX" secondItem="awI-tF-GCi" secondAttribute="centerX" id="gSD-EP-Qng"/>
-                            <constraint firstItem="pID-rw-97s" firstAttribute="leading" secondItem="awI-tF-GCi" secondAttribute="leading" constant="20" id="gvO-L2-BoY"/>
-                            <constraint firstAttribute="trailing" secondItem="pID-rw-97s" secondAttribute="trailing" constant="20" id="stc-Kt-kb8"/>
+                            <constraint firstItem="BFM-wx-9JV" firstAttribute="top" secondItem="Qdc-O6-h6c" secondAttribute="bottom" constant="20" id="gwZ-1O-2Dc"/>
+                            <constraint firstItem="Qdc-O6-h6c" firstAttribute="top" secondItem="pID-rw-97s" secondAttribute="bottom" constant="20" id="j0I-hc-kWy"/>
+                            <constraint firstAttribute="trailing" secondItem="BFM-wx-9JV" secondAttribute="trailing" constant="20" id="nyg-YF-9rV"/>
+                            <constraint firstItem="pID-rw-97s" firstAttribute="leading" secondItem="awI-tF-GCi" secondAttribute="leading" constant="20" id="xoy-mI-ryd"/>
+                            <constraint firstItem="Qdc-O6-h6c" firstAttribute="leading" secondItem="awI-tF-GCi" secondAttribute="leading" constant="20" id="yiL-g6-bkH"/>
+                            <constraint firstItem="BFM-wx-9JV" firstAttribute="leading" secondItem="awI-tF-GCi" secondAttribute="leading" constant="20" id="zJB-bd-Tfh"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="订阅全功能" id="3aa-Mr-21l">
@@ -1039,6 +1065,98 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="qqL-oJ-3R0" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-3143" y="1207"/>
+        </scene>
+        <!--View Controller-->
+        <scene sceneID="aNo-r6-7yx">
+            <objects>
+                <viewController id="FfQ-yT-bNB" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="S05-ii-Sqz"/>
+                        <viewControllerLayoutGuide type="bottom" id="0dw-8M-T08"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="8ZK-Xi-NTj">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="g05-vc-Jg6" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-3814" y="1957"/>
+        </scene>
+        <!--View Controller-->
+        <scene sceneID="vRV-CM-Luk">
+            <objects>
+                <viewController id="L1e-ai-WY1" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="j0r-v0-HHh"/>
+                        <viewControllerLayoutGuide type="bottom" id="XXQ-UK-3bB"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="8p5-N0-1fr">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="n5a-PN-Hqg">
+                                <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
+                                <subviews>
+                                    <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" editable="NO" textAlignment="natural" selectable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cOd-rp-PL1">
+                                        <rect key="frame" x="16" y="0.0" width="382" height="736"/>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <mutableString key="text">在购买「奇点推送」这项由「奇点」（以下简称「我们」）服务（以下简称「服务」）前，请仔细阅读以下条款。
+
+订阅
+
+该服务是订阅制的收费服务，这意味着您将为未来的订阅使用而提前预支费用。当前您可以选择以按月或按年的方式来使用该服务。
+
+在每个订阅周期即将结束时，您的订阅默认将自动续费，除非您明确自行取消自动续费，或者由我们取消该服务。您可以通过该服务的「管理订阅」处自行取消自动续费功能。
+
+免费试用
+
+当前我们为每个订阅周期（每月或每年）均提供了长达 7 天的免费试用，保证你在试用满意后再进行支付。
+
+在试用周期开始时，您可能需要为此服务输入相关支付信息，但不会真正扣款。直到试用的最后一天，如果您不取消订阅，那么将被视为继续使用，扣款将自动发生。
+
+我们将保留修改试用周期的权利，以便更好地进行相关服务。
+
+费用
+
+当前我们为该服务提供了两档选择，6 元每月和 60 元每年。
+
+为保证服务质量，我们将会动态调整该费用并通知到您。新的费用将会在您的下一个订阅周期发生。
+
+退款
+
+试用期过后，当期的订阅费用将无法退款。请务必在试用结束前自行取消服务。
+
+联系我们
+
+如果您对该服务还有任何疑问，请随时联系我们。</mutableString>
+                                        <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                                        <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                                    </textView>
+                                </subviews>
+                                <constraints>
+                                    <constraint firstItem="cOd-rp-PL1" firstAttribute="height" secondItem="n5a-PN-Hqg" secondAttribute="height" id="3Bb-il-IUN"/>
+                                    <constraint firstItem="cOd-rp-PL1" firstAttribute="leading" secondItem="n5a-PN-Hqg" secondAttribute="leading" constant="16" id="HWA-He-9VB"/>
+                                    <constraint firstItem="cOd-rp-PL1" firstAttribute="centerX" secondItem="n5a-PN-Hqg" secondAttribute="centerX" id="f1v-0a-Soq"/>
+                                    <constraint firstAttribute="trailing" secondItem="cOd-rp-PL1" secondAttribute="trailing" constant="-16" id="h0e-34-uH7"/>
+                                    <constraint firstItem="cOd-rp-PL1" firstAttribute="top" secondItem="n5a-PN-Hqg" secondAttribute="top" id="lUy-c1-mhb"/>
+                                    <constraint firstAttribute="bottom" secondItem="cOd-rp-PL1" secondAttribute="bottom" id="qh3-eU-LeD"/>
+                                </constraints>
+                            </scrollView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="n5a-PN-Hqg" firstAttribute="width" secondItem="8p5-N0-1fr" secondAttribute="width" id="5HR-N4-84Q"/>
+                            <constraint firstItem="n5a-PN-Hqg" firstAttribute="centerX" secondItem="8p5-N0-1fr" secondAttribute="centerX" id="PU9-Yg-lzY"/>
+                            <constraint firstItem="n5a-PN-Hqg" firstAttribute="centerY" secondItem="8p5-N0-1fr" secondAttribute="centerY" id="R4y-Mf-B1H"/>
+                            <constraint firstItem="n5a-PN-Hqg" firstAttribute="height" secondItem="8p5-N0-1fr" secondAttribute="height" id="fFI-8U-ZCC"/>
+                        </constraints>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="efo-3j-6A2" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-2301.449275362319" y="1301.9021739130435"/>
         </scene>
         <!--Forum Support Navigation Controller-->
         <scene sceneID="Okx-LC-yVb">
@@ -1646,12 +1764,12 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="623"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" red="0.93725490199999995" green="0.93725490199999995" blue="0.95686274510000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                        <view key="tableHeaderView" contentMode="scaleToFill" id="eSv-5V-fLL">
+                        <view key="tableHeaderView" contentMode="scaleToFill" misplaced="YES" id="eSv-5V-fLL">
                             <rect key="frame" x="0.0" y="0.0" width="414" height="56"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <subviews>
                                 <searchBar contentMode="redraw" translatesAutoresizingMaskIntoConstraints="NO" id="gmr-mu-1bY">
-                                    <rect key="frame" x="0.0" y="0.0" width="414" height="56"/>
+                                    <rect key="frame" x="0.0" y="-28" width="414" height="56"/>
                                     <constraints>
                                         <constraint firstAttribute="height" constant="56" id="V5x-VL-p9O"/>
                                     </constraints>
@@ -3493,7 +3611,7 @@
         <segue reference="wLO-He-BF0"/>
         <segue reference="Ysv-Xy-VAF"/>
         <segue reference="FiC-V2-LqH"/>
-        <segue reference="hla-BN-cvQ"/>
+        <segue reference="UB6-76-MCr"/>
         <segue reference="tJd-yI-EGE"/>
         <segue reference="BtX-d5-2Dd"/>
     </inferredMetricsTieBreakers>
