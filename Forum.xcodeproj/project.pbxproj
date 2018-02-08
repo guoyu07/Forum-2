@@ -122,6 +122,8 @@
 		3ACFFD2D1CF9D6BF000312DC /* SDImageCache+URLCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 3ACFFD2B1CF9D6BF000312DC /* SDImageCache+URLCache.m */; };
 		3ACFFD301CF9DD3C000312DC /* HPURLProtocol.m in Sources */ = {isa = PBXBuildFile; fileRef = 3ACFFD2F1CF9DD3C000312DC /* HPURLProtocol.m */; };
 		3ACFFD341CFA641F000312DC /* NYTExamplePhoto.m in Sources */ = {isa = PBXBuildFile; fileRef = 3ACFFD331CFA641F000312DC /* NYTExamplePhoto.m */; };
+		3AE61550202C91B800D71112 /* PetsSellCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3AE6154F202C91B800D71112 /* PetsSellCollectionViewCell.m */; };
+		3AE61553202C93F600D71112 /* MarketCollectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3AE61552202C93F600D71112 /* MarketCollectionViewController.m */; };
 		3AE854B71DF2B0B3000F62E9 /* defaultAvatar.gif in Resources */ = {isa = PBXBuildFile; fileRef = 3AE854B61DF2B0B3000F62E9 /* defaultAvatar.gif */; };
 		4D0D87251DE40C7900DA9034 /* ForumNavigationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4D0D87241DE40C7900DA9034 /* ForumNavigationViewController.m */; };
 		4D4CCC791F42CA5A009A4D58 /* CloudKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D4CCC781F42CA5A009A4D58 /* CloudKit.framework */; };
@@ -380,6 +382,10 @@
 		3ACFFD2F1CF9DD3C000312DC /* HPURLProtocol.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HPURLProtocol.m; sourceTree = "<group>"; };
 		3ACFFD321CFA641F000312DC /* NYTExamplePhoto.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NYTExamplePhoto.h; sourceTree = "<group>"; };
 		3ACFFD331CFA641F000312DC /* NYTExamplePhoto.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NYTExamplePhoto.m; sourceTree = "<group>"; };
+		3AE6154E202C91B800D71112 /* PetsSellCollectionViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PetsSellCollectionViewCell.h; sourceTree = "<group>"; };
+		3AE6154F202C91B800D71112 /* PetsSellCollectionViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PetsSellCollectionViewCell.m; sourceTree = "<group>"; };
+		3AE61551202C93F600D71112 /* MarketCollectionViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MarketCollectionViewController.h; sourceTree = "<group>"; };
+		3AE61552202C93F600D71112 /* MarketCollectionViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MarketCollectionViewController.m; sourceTree = "<group>"; };
 		3AE854B61DF2B0B3000F62E9 /* defaultAvatar.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = defaultAvatar.gif; sourceTree = "<group>"; };
 		4D0D87231DE40C7900DA9034 /* ForumNavigationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ForumNavigationViewController.h; sourceTree = "<group>"; };
 		4D0D87241DE40C7900DA9034 /* ForumNavigationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ForumNavigationViewController.m; sourceTree = "<group>"; };
@@ -461,6 +467,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		3A728A9E202C955C00DAA972 /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				3AE61551202C93F600D71112 /* MarketCollectionViewController.h */,
+				3AE61552202C93F600D71112 /* MarketCollectionViewController.m */,
+			);
+			path = Controllers;
+			sourceTree = "<group>";
+		};
 		3A92CDAB1F35378500E41573 /* AFNetworking */ = {
 			isa = PBXGroup;
 			children = (
@@ -882,6 +897,15 @@
 			path = SupportFiles;
 			sourceTree = "<group>";
 		};
+		3AE6154D202C918100D71112 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				3AE6154E202C91B800D71112 /* PetsSellCollectionViewCell.h */,
+				3AE6154F202C91B800D71112 /* PetsSellCollectionViewCell.m */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
 		4D339D821C31454A0022A6A4 = {
 			isa = PBXGroup;
 			children = (
@@ -943,6 +967,8 @@
 		4D89A966202C509B00663377 /* LaiCiGou */ = {
 			isa = PBXGroup;
 			children = (
+				3A728A9E202C955C00DAA972 /* Controllers */,
+				3AE6154D202C918100D71112 /* Views */,
 				3A2C3FB61DDFE0C900576151 /* ForumShowNewThreadPostTableViewController.h */,
 				3A2C3FB71DDFE0C900576151 /* ForumShowNewThreadPostTableViewController.m */,
 				4D89A971202C50BF00663377 /* Bean */,
@@ -1222,6 +1248,7 @@
 				3A2C3F511DDFBF5900576151 /* SelectPhotoCollectionViewCell.m in Sources */,
 				4DB47C321F4AC73B00A79AC5 /* IGXMLNode+QueryNode.m in Sources */,
 				3A288A5A1DFC544B002EBBC2 /* SupportForumTableViewController.m in Sources */,
+				3AE61550202C91B800D71112 /* PetsSellCollectionViewCell.m in Sources */,
 				4DFB34CF1DF82D5E00BD8DD5 /* ForumEntry+CoreDataClass.m in Sources */,
 				3A2C3FD51DDFE0C900576151 /* ForumMyProfileTableViewController.m in Sources */,
 				4DF737191DDECC8D00BF1896 /* Post.m in Sources */,
@@ -1260,6 +1287,7 @@
 				4DF737271DDECC9600BF1896 /* ViewMessagePage.m in Sources */,
 				3A92CDD91F35379500E41573 /* UIImageView+AFNetworking.m in Sources */,
 				3A2C3F4E1DDFBF5900576151 /* ForumThreadListCell.m in Sources */,
+				3AE61553202C93F600D71112 /* MarketCollectionViewController.m in Sources */,
 				3A2C3FE71DDFE0C900576151 /* ForumUserProfileTableViewController.m in Sources */,
 				3A2C3F5B1DDFBFC500576151 /* ForumListHeaderView.m in Sources */,
 				C7B59D8E9D44A593D270BE03 /* NSData+UTF8.m in Sources */,
