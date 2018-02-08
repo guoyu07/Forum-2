@@ -12,13 +12,89 @@
 
 @implementation LaiCiGouApi
 
-- (void)getPetsOnSell:(int)page count:(int)count handler:(LaiCiGouHandler)handler {
 
-    [_browser.requestSerializer setValue:@"" forHTTPHeaderField:@"User-Agent"];
-    
-//    builder.host("https://pet-chain.baidu.com/");
-//    builder.path("data/market/queryPetsOnSale");
-//    builder.method("POST");
+- (void)createBuyDogOrder:(LaiCiGouPetsOnSale *)petsOnSell seed:(NSString *)seed captcha:(NSString *)captcha handler:(LaiCiGouHandler)handler {
+
+
+    [_browser.requestSerializer setValue:@"application/json" forHTTPHeaderField:@"Accept"];
+    [_browser.requestSerializer setValue:@"gzip, deflate, br" forHTTPHeaderField:@"Accept-Encoding"];
+    [_browser.requestSerializer setValue:@"zh-CN,zh;q=0.9,en;q=0.8" forHTTPHeaderField:@"Accept-Language"];
+    [_browser.requestSerializer setValue:@"no-cache" forHTTPHeaderField:@"Cache-Control"];
+    [_browser.requestSerializer setValue:@"keep-alive" forHTTPHeaderField:@"Connection"];
+    [_browser.requestSerializer setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
+    [_browser.requestSerializer setValue:@"BIDUPSID=2912576290A31870B509702CE524D314; PSTM=1513673325; BAIDUID=97382737C6B3B77EEBDAE9C8650202E7:FG=1; H_PS_PSSID=1428_21096_17001_22158; BDORZ=B490B5EBF6F3CD402E515D22BCDA1598; FP_UID=6e686ace6d2388db8612dc735e69c110; BDUSS=VIZEVwSWlPdVhsMUdSVWY1bnVVeXo4ZnJlTUVaaGlXS0JBSEYtd2c5a3k5NkZhQVFBQUFBJCQAAAAAAAAAAAEAAACFcFMHQW5kZm9yY2UAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADJqeloyanpaZX; BDRCVFR[feWj1Vr5u3D]=I67x6TjHwwYf0; PSINO=1" forHTTPHeaderField:@"Cookie"];
+    [_browser.requestSerializer setValue:@"1" forHTTPHeaderField:@"DNT"];
+    [_browser.requestSerializer setValue:@"pet-chain.baidu.com" forHTTPHeaderField:@"Host"];
+    [_browser.requestSerializer setValue:@"https://pet-chain.baidu.com" forHTTPHeaderField:@"Origin"];
+    [_browser.requestSerializer setValue:@"no-cache" forHTTPHeaderField:@"Pragma"];
+
+    NSString * refer = [NSString stringWithFormat:@"https://pet-chain.baidu.com/chain/detail?channel=market&petId=%@&validCode=%@",[petsOnSell petId], [petsOnSell validCode]];
+    [_browser.requestSerializer setValue:refer forHTTPHeaderField:@"Referer"];
+
+    [_browser.requestSerializer setValue:@"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.132 Safari/537.36" forHTTPHeaderField:@"User-Agent"];
+
+    NSDate *date = [NSDate date];
+    NSInteger timeStamp = (NSInteger) [date timeIntervalSince1970];
+
+    NSString * json = [NSString stringWithFormat:@"{\"petId\":\"%@\""
+                                                         ",\"amount\":\"%@\""
+                                                         ",\"seed\":\"%@\""
+                                                         ",\"captcha\":\"%@\""
+                                                         ",\"validCode\":\"%@\""
+                                                         ",\"requestId\":%ld"
+                                                         ",\"appId\":1,\"tpl\":\"\"}",
+            [petsOnSell petId], [petsOnSell amount], seed, captcha, [petsOnSell validCode], timeStamp];
+
+//    _browser.responseSerializer = [AFJSONResponseSerializer serializer];
+    _browser.responseSerializer = [AFHTTPResponseSerializer serializer];
+    _browser.requestSerializer = [AFJSONRequestSerializer serializer];
+
+    _browser.responseSerializer.acceptableContentTypes = [_browser.responseSerializer.acceptableContentTypes setByAddingObject:@"text/html"];
+
+    NSDictionary * dictionary = [NSJSONSerialization JSONObjectWithData:[json dataUsingEncoding:NSUTF8StringEncoding] options:0 error:nil];
+    [_browser POSTWithURLString:@"https://pet-chain.baidu.com/data/txn/create" parameters:dictionary charset:UTF_8 requestCallback:^(BOOL isSuccess, NSString *html) {
+        NSLog(@"%@", html);
+    }];
+
+}
+
+
+- (void)captchaGen:(LaiCiGouPetsOnSale *)petsOnSell handler:(LaiCiGouHandler)handler {
+
+    [_browser.requestSerializer setValue:@"application/json" forHTTPHeaderField:@"Accept"];
+    [_browser.requestSerializer setValue:@"gzip, deflate, br" forHTTPHeaderField:@"Accept-Encoding"];
+    [_browser.requestSerializer setValue:@"zh-CN,zh;q=0.9,en;q=0.8" forHTTPHeaderField:@"Accept-Language"];
+    [_browser.requestSerializer setValue:@"keep-alive" forHTTPHeaderField:@"Connection"];
+    [_browser.requestSerializer setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
+    [_browser.requestSerializer setValue:@"BIDUPSID=2912576290A31870B509702CE524D314; PSTM=1513673325; BAIDUID=97382737C6B3B77EEBDAE9C8650202E7:FG=1; H_PS_PSSID=1428_21096_17001_22158; BDORZ=B490B5EBF6F3CD402E515D22BCDA1598; FP_UID=6e686ace6d2388db8612dc735e69c110; BDUSS=VIZEVwSWlPdVhsMUdSVWY1bnVVeXo4ZnJlTUVaaGlXS0JBSEYtd2c5a3k5NkZhQVFBQUFBJCQAAAAAAAAAAAEAAACFcFMHQW5kZm9yY2UAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADJqeloyanpaZX; BDRCVFR[feWj1Vr5u3D]=I67x6TjHwwYf0; PSINO=1" forHTTPHeaderField:@"Cookie"];
+    [_browser.requestSerializer setValue:@"1" forHTTPHeaderField:@"DNT"];
+    [_browser.requestSerializer setValue:@"pet-chain.baidu.com" forHTTPHeaderField:@"Host"];
+    [_browser.requestSerializer setValue:@"https://pet-chain.baidu.com" forHTTPHeaderField:@"Origin"];
+    NSString * refer = [NSString stringWithFormat:@"https://pet-chain.baidu.com/chain/detail?channel=market&petId=%@&validCode=%@",[petsOnSell petId], [petsOnSell validCode]];
+    [_browser.requestSerializer setValue:refer forHTTPHeaderField:@"Referer"];
+    [_browser.requestSerializer setValue:@"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.132 Safari/537.36" forHTTPHeaderField:@"User-Agent"];
+
+
+
+    NSDate *date = [NSDate date];
+    NSInteger timeStamp = (NSInteger) [date timeIntervalSince1970];
+
+    NSString * json = [NSString stringWithFormat:@"{\"requestId\":%ld,\"appId\":1,\"tpl\":""}",timeStamp];
+
+//    _browser.responseSerializer = [AFJSONResponseSerializer serializer];
+    _browser.responseSerializer = [AFHTTPResponseSerializer serializer];
+    _browser.requestSerializer = [AFJSONRequestSerializer serializer];
+
+    _browser.responseSerializer.acceptableContentTypes = [_browser.responseSerializer.acceptableContentTypes setByAddingObject:@"text/html"];
+
+    NSDictionary * dictionary = [NSJSONSerialization JSONObjectWithData:[json dataUsingEncoding:NSUTF8StringEncoding] options:0 error:nil];
+    [_browser POSTWithURLString:@"https://pet-chain.baidu.com/data/txn/create" parameters:dictionary charset:UTF_8 requestCallback:^(BOOL isSuccess, NSString *html) {
+        NSLog(@"%@", html);
+    }];
+}
+
+
+- (void)getPetsOnSell:(int)page count:(int)count handler:(LaiCiGouHandler)handler {
 
     [_browser.requestSerializer setValue:@"pet-chain.baidu.com" forHTTPHeaderField:@"Host"];
     [_browser.requestSerializer setValue:@"keep-alive" forHTTPHeaderField:@"Connection"];
@@ -32,14 +108,12 @@
     [_browser.requestSerializer setValue:@"zh-CN,zh;q=0.9,en;q=0.8" forHTTPHeaderField:@"Accept-Language"];
     [_browser.requestSerializer setValue:@"BIDUPSID=2912576290A31870B509702CE524D314; PSTM=1513673325; BAIDUID=97382737C6B3B77EEBDAE9C8650202E7:FG=1; H_PS_PSSID=1428_21096_17001_22158; BDORZ=B490B5EBF6F3CD402E515D22BCDA1598; FP_UID=6e686ace6d2388db8612dc735e69c110; BDUSS=VIZEVwSWlPdVhsMUdSVWY1bnVVeXo4ZnJlTUVaaGlXS0JBSEYtd2c5a3k5NkZhQVFBQUFBJCQAAAAAAAAAAAEAAACFcFMHQW5kZm9yY2UAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADJqeloyanpaZX; BDRCVFR[feWj1Vr5u3D]=I67x6TjHwwYf0; PSINO=1" forHTTPHeaderField:@"Cookie"];
 
-    //builder.postJsonBody("{\"pageNo\":" + 1 +",\"pageSize\":10,\"querySortType\":\"AMOUNT_ASC\",\"petIds\":[],\"lastAmount\":null,\"lastRareDegree\":null,\"requestId\":" + 1 + ",\"appId\":1,\"tpl\":\"\"}");
-
     NSDate *date = [NSDate date];
     NSInteger timeStamp = (NSInteger) [date timeIntervalSince1970];
 
     NSString * json = [NSString stringWithFormat:@"{\"pageNo\":1,"
             "\"pageSize\":10,"
-            "\"querySortType\":\"AMOUNT_DESC\","
+            "\"querySortType\":\"AMOUNT_ASC\","
             "\"petIds\":[],"
             "\"lastAmount\":null,"
             "\"lastRareDegree\":null,"

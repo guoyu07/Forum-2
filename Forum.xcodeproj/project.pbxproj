@@ -643,8 +643,6 @@
 				3A2C3FB31DDFE0C900576151 /* ForumSeniorNewPostViewController.m */,
 				3A2C3FB41DDFE0C900576151 /* ForumSettingTableViewController.h */,
 				3A2C3FB51DDFE0C900576151 /* ForumSettingTableViewController.m */,
-				3A2C3FB61DDFE0C900576151 /* ForumShowNewThreadPostTableViewController.h */,
-				3A2C3FB71DDFE0C900576151 /* ForumShowNewThreadPostTableViewController.m */,
 				3A2C3FB81DDFE0C900576151 /* ForumShowPrivateMessageViewController.h */,
 				3A2C3FB91DDFE0C900576151 /* ForumShowPrivateMessageViewController.m */,
 				3A2C3FBC1DDFE0C900576151 /* ForumTabBarController.h */,
@@ -945,6 +943,8 @@
 		4D89A966202C509B00663377 /* LaiCiGou */ = {
 			isa = PBXGroup;
 			children = (
+				3A2C3FB61DDFE0C900576151 /* ForumShowNewThreadPostTableViewController.h */,
+				3A2C3FB71DDFE0C900576151 /* ForumShowNewThreadPostTableViewController.m */,
 				4D89A971202C50BF00663377 /* Bean */,
 				4D89A972202C513300663377 /* LaiCiGouApi.h */,
 				4D89A973202C513300663377 /* LaiCiGouApi.m */,

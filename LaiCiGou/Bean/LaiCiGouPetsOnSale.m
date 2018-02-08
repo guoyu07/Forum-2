@@ -58,16 +58,16 @@ NSString *const kLaiCiGouPetsOnSaleBirthType = @"birthType";
     if(self && [dict isKindOfClass:[NSDictionary class]]) {
             self.petsOnSaleIdentifier = [self objectOrNilForKey:kLaiCiGouPetsOnSaleId fromDictionary:dict];
             self.petUrl = [self objectOrNilForKey:kLaiCiGouPetsOnSalePetUrl fromDictionary:dict];
-            self.generation = [[self objectOrNilForKey:kLaiCiGouPetsOnSaleGeneration fromDictionary:dict] doubleValue];
+            self.generation = [[self objectOrNilForKey:kLaiCiGouPetsOnSaleGeneration fromDictionary:dict] intValue];
             self.amount = [self objectOrNilForKey:kLaiCiGouPetsOnSaleAmount fromDictionary:dict];
-            self.rareDegree = [[self objectOrNilForKey:kLaiCiGouPetsOnSaleRareDegree fromDictionary:dict] doubleValue];
+            self.rareDegree = [[self objectOrNilForKey:kLaiCiGouPetsOnSaleRareDegree fromDictionary:dict] intValue];
             self.bgColor = [self objectOrNilForKey:kLaiCiGouPetsOnSaleBgColor fromDictionary:dict];
             self.desc = [self objectOrNilForKey:kLaiCiGouPetsOnSaleDesc fromDictionary:dict];
-            self.petType = [[self objectOrNilForKey:kLaiCiGouPetsOnSalePetType fromDictionary:dict] doubleValue];
+            self.petType = [[self objectOrNilForKey:kLaiCiGouPetsOnSalePetType fromDictionary:dict] intValue];
             self.petId = [self objectOrNilForKey:kLaiCiGouPetsOnSalePetId fromDictionary:dict];
-            self.mutation = [[self objectOrNilForKey:kLaiCiGouPetsOnSaleMutation fromDictionary:dict] doubleValue];
+            self.mutation = [[self objectOrNilForKey:kLaiCiGouPetsOnSaleMutation fromDictionary:dict] intValue];
             self.validCode = [self objectOrNilForKey:kLaiCiGouPetsOnSaleValidCode fromDictionary:dict];
-            self.birthType = [[self objectOrNilForKey:kLaiCiGouPetsOnSaleBirthType fromDictionary:dict] doubleValue];
+            self.birthType = [[self objectOrNilForKey:kLaiCiGouPetsOnSaleBirthType fromDictionary:dict] intValue];
 
     }
     
@@ -80,16 +80,16 @@ NSString *const kLaiCiGouPetsOnSaleBirthType = @"birthType";
     NSMutableDictionary *mutableDict = [NSMutableDictionary dictionary];
     [mutableDict setValue:self.petsOnSaleIdentifier forKey:kLaiCiGouPetsOnSaleId];
     [mutableDict setValue:self.petUrl forKey:kLaiCiGouPetsOnSalePetUrl];
-    [mutableDict setValue:[NSNumber numberWithDouble:self.generation] forKey:kLaiCiGouPetsOnSaleGeneration];
+    [mutableDict setValue:[NSNumber numberWithInt:self.generation] forKey:kLaiCiGouPetsOnSaleGeneration];
     [mutableDict setValue:self.amount forKey:kLaiCiGouPetsOnSaleAmount];
-    [mutableDict setValue:[NSNumber numberWithDouble:self.rareDegree] forKey:kLaiCiGouPetsOnSaleRareDegree];
+    [mutableDict setValue:[NSNumber numberWithInt:self.rareDegree] forKey:kLaiCiGouPetsOnSaleRareDegree];
     [mutableDict setValue:self.bgColor forKey:kLaiCiGouPetsOnSaleBgColor];
     [mutableDict setValue:self.desc forKey:kLaiCiGouPetsOnSaleDesc];
-    [mutableDict setValue:[NSNumber numberWithDouble:self.petType] forKey:kLaiCiGouPetsOnSalePetType];
+    [mutableDict setValue:[NSNumber numberWithInt:self.petType] forKey:kLaiCiGouPetsOnSalePetType];
     [mutableDict setValue:self.petId forKey:kLaiCiGouPetsOnSalePetId];
-    [mutableDict setValue:[NSNumber numberWithDouble:self.mutation] forKey:kLaiCiGouPetsOnSaleMutation];
+    [mutableDict setValue:[NSNumber numberWithFloat:self.mutation] forKey:kLaiCiGouPetsOnSaleMutation];
     [mutableDict setValue:self.validCode forKey:kLaiCiGouPetsOnSaleValidCode];
-    [mutableDict setValue:[NSNumber numberWithDouble:self.birthType] forKey:kLaiCiGouPetsOnSaleBirthType];
+    [mutableDict setValue:[NSNumber numberWithInt:self.birthType] forKey:kLaiCiGouPetsOnSaleBirthType];
 
     return [NSDictionary dictionaryWithDictionary:mutableDict];
 }

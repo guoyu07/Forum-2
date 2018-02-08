@@ -13,16 +13,16 @@
 
 @property (nonatomic, strong) NSString *petsOnSaleIdentifier;
 @property (nonatomic, strong) NSString *petUrl;
-@property (nonatomic, assign) double generation;
+@property (nonatomic, assign) int generation;
 @property (nonatomic, strong) NSString *amount;
-@property (nonatomic, assign) double rareDegree;
+@property (nonatomic, assign) int rareDegree;
 @property (nonatomic, strong) NSString *bgColor;
 @property (nonatomic, strong) NSString *desc;
-@property (nonatomic, assign) double petType;
+@property (nonatomic, assign) int petType;
 @property (nonatomic, strong) NSString *petId;
-@property (nonatomic, assign) double mutation;
+@property (nonatomic, assign) float mutation;
 @property (nonatomic, strong) NSString *validCode;
-@property (nonatomic, assign) double birthType;
+@property (nonatomic, assign) int birthType;
 
 + (instancetype)modelObjectWithDictionary:(NSDictionary *)dict;
 - (instancetype)initWithDictionary:(NSDictionary *)dict;

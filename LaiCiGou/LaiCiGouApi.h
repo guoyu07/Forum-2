@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "LaiCiGouPetsOnSale.h"
 
 @class AFHTTPSessionManager;
 
@@ -17,5 +18,9 @@ typedef void (^LaiCiGouHandler)(id);
 @property (nonatomic, strong) AFHTTPSessionManager *browser;
 
 - (void) getPetsOnSell:(int)page count:(int) count handler:(LaiCiGouHandler) handler;
+
+- (void) captchaGen:(LaiCiGouPetsOnSale *) petsOnSell handler:(LaiCiGouHandler) handler;
+
+- (void) createBuyDogOrder:(LaiCiGouPetsOnSale *) petsOnSell seed:(NSString *)seed captcha:(NSString *) captcha handler:(LaiCiGouHandler) handler;
 
 @end
