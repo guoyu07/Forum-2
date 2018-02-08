@@ -37,18 +37,6 @@ static int DB_VERSION = 9;
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
 
     LocalForumApi *localForumApi = [[LocalForumApi alloc] init];
-    // 向服务器验证订阅情况
-    PayManager * payManager = [PayManager shareInstance];
-    [payManager verifyPay:localForumApi.currentProductID with:^(NSDictionary *response) {
-
-        if (response == nil || [response[@"status"] intValue] != 0){
-            [payManager setPayed:FALSE for:localForumApi.currentProductID];
-            NSLog(@"not payed");
-        } else {
-            [payManager setPayed:TRUE for:localForumApi.currentProductID];
-            NSLog(@"payed success");
-        }
-    }];
 
     NSURLCache *cache = [[NSURLCache alloc] initWithMemoryCapacity:200 * 1024 * 1024 diskCapacity:1024 * 1024 * 1024 diskPath:nil];
     [NSURLCache setSharedURLCache:cache];
@@ -87,43 +75,6 @@ static int DB_VERSION = 9;
     [dictonary setValue:@1 forKey:kTOP_THREAD];
     [setting registerDefaults:dictonary];
 
-    // 检查数据库
-    BOOL isClearDB = NO;
-    if ([localForumApi dbVersion] != DB_VERSION) {
-        
-        ForumCoreDataManager *formManager = [[ForumCoreDataManager alloc] initWithEntryType:EntryTypeForm];
-        
-        // 清空数据库
-        [formManager deleteData];
-        
-        ForumCoreDataManager *userManager = [[ForumCoreDataManager alloc] initWithEntryType:EntryTypeUser];
-        [userManager deleteData];
-        
-        [localForumApi setDBVersion:DB_VERSION];
-        
-        isClearDB = YES;
-    }
-    
-    // 检查登录情况
-    NSString *currentSelectForumHost = localForumApi.currentForumHost;
-    if (currentSelectForumHost){
-        if (![localForumApi isHaveLogin:localForumApi.currentForumHost]){
-            NSArray<Forums *> * loginForums = localForumApi.loginedSupportForums;
-            if(loginForums != nil && loginForums.count >0){
-                [localForumApi saveCurrentForumURL:loginForums.firstObject.url];
-            }
-        }
-
-        // 判断是否登录
-        if (![localForumApi isHaveLoginForum] || isClearDB) {
-
-            [self showReloginController:localForumApi];
-
-        }
-    } else {
-        
-        [self showReloginController:localForumApi];
-    }
 
 
     if (launchOptions[@"UIApplicationLaunchOptionsShortcutItemKey"] == nil) {
