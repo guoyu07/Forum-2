@@ -129,6 +129,7 @@
     NSDictionary * dictionary = [NSJSONSerialization JSONObjectWithData:[json dataUsingEncoding:NSUTF8StringEncoding] options:0 error:nil];
     [_browser POSTWithURLString:@"https://pet-chain.baidu.com/data/market/queryPetsOnSale" parameters:dictionary charset:UTF_8 requestCallback:^(BOOL isSuccess, NSString *html) {
         NSLog(@"%@", html);
+        handler(html);
     }];
 }
 

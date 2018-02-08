@@ -6,8 +6,11 @@
 //  Copyright © 2018年 andforce. All rights reserved.
 //
 
+#import <MJRefresh/MJRefreshNormalHeader.h>
+#import <MJRefresh/MJRefreshAutoNormalFooter.h>
 #import "MarketCollectionViewController.h"
 #import "PetsSellCollectionViewCell.h"
+#import "LaiCiGouApi.h"
 
 @interface MarketCollectionViewController ()<UICollectionViewDelegateFlowLayout>
 
@@ -27,11 +30,37 @@ static NSString * const reuseIdentifier = @"Cell";
     //[self.collectionView registerClass:[PetsSellCollectionViewCell class] forCellWithReuseIdentifier:reuseIdentifier];
     
     // Do any additional setup after loading the view.
+
+
+    self.collectionView.mj_header = [MJRefreshNormalHeader headerWithRefreshingBlock:^{
+        [self onPullRefresh];
+    }];
+
+    [self.collectionView.mj_header beginRefreshing];
+
+
+
+    self.collectionView.mj_footer = [MJRefreshAutoNormalFooter footerWithRefreshingBlock:^{
+        [self onLoadMore];
+    }];
 }
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+
+- (void)onPullRefresh {
+    LaiCiGouApi * api = [[LaiCiGouApi alloc] init];
+    [api getPetsOnSell:1 count:10 handler:^(id o) {
+        [self.collectionView.mj_header endRefreshing];
+    }];
+
+}
+
+- (void)onLoadMore {
+
 }
 
 /*
