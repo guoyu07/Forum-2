@@ -127,6 +127,10 @@
 		4D4CCC791F42CA5A009A4D58 /* CloudKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D4CCC781F42CA5A009A4D58 /* CloudKit.framework */; };
 		4D7F74F21FBEB5FD0049BA46 /* AutoSendBackTabBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 4D7F74F11FBEB5FD0049BA46 /* AutoSendBackTabBar.m */; };
 		4D8962BB1FDFA6C30015BD9D /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D8962BA1FDFA6C30015BD9D /* StoreKit.framework */; };
+		4D89A96E202C50B000663377 /* LaiCiGouPetsOnSale.m in Sources */ = {isa = PBXBuildFile; fileRef = 4D89A969202C50AF00663377 /* LaiCiGouPetsOnSale.m */; };
+		4D89A96F202C50B000663377 /* LaiCiGouData.m in Sources */ = {isa = PBXBuildFile; fileRef = 4D89A96B202C50AF00663377 /* LaiCiGouData.m */; };
+		4D89A970202C50B000663377 /* LaiCiGouInSellDog.m in Sources */ = {isa = PBXBuildFile; fileRef = 4D89A96C202C50AF00663377 /* LaiCiGouInSellDog.m */; };
+		4D89A974202C513300663377 /* LaiCiGouApi.m in Sources */ = {isa = PBXBuildFile; fileRef = 4D89A973202C513300663377 /* LaiCiGouApi.m */; };
 		4D8C11F21FF0CB23008813C4 /* PayViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4D8C11F11FF0CB22008813C4 /* PayViewController.m */; };
 		4DA372A41FC2DFD60094E655 /* ZhanNeiSearchViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 4DA372A31FC2DFD50094E655 /* ZhanNeiSearchViewCell.m */; };
 		4DB47C321F4AC73B00A79AC5 /* IGXMLNode+QueryNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 4DB47C311F4AC73B00A79AC5 /* IGXMLNode+QueryNode.m */; };
@@ -384,6 +388,15 @@
 		4D7F74F01FBEB5FD0049BA46 /* AutoSendBackTabBar.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AutoSendBackTabBar.h; sourceTree = "<group>"; };
 		4D7F74F11FBEB5FD0049BA46 /* AutoSendBackTabBar.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AutoSendBackTabBar.m; sourceTree = "<group>"; };
 		4D8962BA1FDFA6C30015BD9D /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
+		4D89A967202C50AF00663377 /* LaiCiGouPetsOnSale.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LaiCiGouPetsOnSale.h; sourceTree = "<group>"; };
+		4D89A968202C50AF00663377 /* LaiCiGouInSellDog.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LaiCiGouInSellDog.h; sourceTree = "<group>"; };
+		4D89A969202C50AF00663377 /* LaiCiGouPetsOnSale.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LaiCiGouPetsOnSale.m; sourceTree = "<group>"; };
+		4D89A96A202C50AF00663377 /* LaiCiGouData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LaiCiGouData.h; sourceTree = "<group>"; };
+		4D89A96B202C50AF00663377 /* LaiCiGouData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LaiCiGouData.m; sourceTree = "<group>"; };
+		4D89A96C202C50AF00663377 /* LaiCiGouInSellDog.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LaiCiGouInSellDog.m; sourceTree = "<group>"; };
+		4D89A96D202C50B000663377 /* DataModels.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DataModels.h; sourceTree = "<group>"; };
+		4D89A972202C513300663377 /* LaiCiGouApi.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LaiCiGouApi.h; sourceTree = "<group>"; };
+		4D89A973202C513300663377 /* LaiCiGouApi.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LaiCiGouApi.m; sourceTree = "<group>"; };
 		4D8C11F01FF0CB22008813C4 /* PayViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PayViewController.h; sourceTree = "<group>"; };
 		4D8C11F11FF0CB22008813C4 /* PayViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PayViewController.m; sourceTree = "<group>"; };
 		4DA372A21FC2DFD50094E655 /* ZhanNeiSearchViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZhanNeiSearchViewCell.h; sourceTree = "<group>"; };
@@ -874,6 +887,7 @@
 		4D339D821C31454A0022A6A4 = {
 			isa = PBXGroup;
 			children = (
+				4D89A966202C509B00663377 /* LaiCiGou */,
 				4D8962BD1FDFE0A30015BD9D /* Payment */,
 				3ACB5C361FDC281000D5339C /* SupportFiles */,
 				3ACB5C351FDC280000D5339C /* PhotoView */,
@@ -926,6 +940,30 @@
 				C7B598437592A403475313FA /* PayManager.m */,
 			);
 			path = Payment;
+			sourceTree = "<group>";
+		};
+		4D89A966202C509B00663377 /* LaiCiGou */ = {
+			isa = PBXGroup;
+			children = (
+				4D89A971202C50BF00663377 /* Bean */,
+				4D89A972202C513300663377 /* LaiCiGouApi.h */,
+				4D89A973202C513300663377 /* LaiCiGouApi.m */,
+			);
+			path = LaiCiGou;
+			sourceTree = "<group>";
+		};
+		4D89A971202C50BF00663377 /* Bean */ = {
+			isa = PBXGroup;
+			children = (
+				4D89A96D202C50B000663377 /* DataModels.h */,
+				4D89A96A202C50AF00663377 /* LaiCiGouData.h */,
+				4D89A96B202C50AF00663377 /* LaiCiGouData.m */,
+				4D89A968202C50AF00663377 /* LaiCiGouInSellDog.h */,
+				4D89A96C202C50AF00663377 /* LaiCiGouInSellDog.m */,
+				4D89A967202C50AF00663377 /* LaiCiGouPetsOnSale.h */,
+				4D89A969202C50AF00663377 /* LaiCiGouPetsOnSale.m */,
+			);
+			path = Bean;
 			sourceTree = "<group>";
 		};
 		849509D36740A6FFD960CDA8 /* Pods */ = {
@@ -1177,6 +1215,7 @@
 				3A288A561DFC534D002EBBC2 /* Forums.m in Sources */,
 				3A92CDDB1F35379500E41573 /* UIRefreshControl+AFNetworking.m in Sources */,
 				3A2C40021DDFE30300576151 /* TransBundleUIViewController.m in Sources */,
+				4D89A96E202C50B000663377 /* LaiCiGouPetsOnSale.m in Sources */,
 				4D0D87251DE40C7900DA9034 /* ForumNavigationViewController.m in Sources */,
 				3A92CDDA1F35379500E41573 /* UIProgressView+AFNetworking.m in Sources */,
 				3ABEBF092020C44E00AB67E9 /* CloseViewController.m in Sources */,
@@ -1197,12 +1236,14 @@
 				3A288A4C1DFAE47F002EBBC2 /* DrawerView.m in Sources */,
 				3A2C3FE91DDFE0C900576151 /* ForumWebViewController.m in Sources */,
 				4DFB34D11DF82D5E00BD8DD5 /* UserEntry+CoreDataClass.m in Sources */,
+				4D89A974202C513300663377 /* LaiCiGouApi.m in Sources */,
 				3A2C3FD21DDFE0C900576151 /* ForumFavThreadPostTableViewController.m in Sources */,
 				3A92CDB91F35378500E41573 /* AFHTTPSessionManager.m in Sources */,
 				3ACFFD2D1CF9D6BF000312DC /* SDImageCache+URLCache.m in Sources */,
 				3A2C3F3A1DDFBF3900576151 /* BaseFourmTableViewCell.m in Sources */,
 				3A2C400A1DE0015C00576151 /* main.m in Sources */,
 				3A2C3FD91DDFE0C900576151 /* ForumCreateNewThreadViewController.m in Sources */,
+				4D89A970202C50B000663377 /* LaiCiGouInSellDog.m in Sources */,
 				3A2C3FDE1DDFE0C900576151 /* ForumSeniorNewPostViewController.m in Sources */,
 				3A2C3FEB1DDFE0C900576151 /* ForumWritePMViewController.m in Sources */,
 				3A2C3FCF1DDFE0C900576151 /* ForumApiBaseViewController.m in Sources */,
@@ -1228,6 +1269,7 @@
 				3A92CDBD1F35378500E41573 /* AFURLResponseSerialization.m in Sources */,
 				2F34CDC68B8E6EA4AB5D764B /* PageNumber.m in Sources */,
 				2F34C50DE4CFA57C8F4036DE /* CharUnicodeBlock.m in Sources */,
+				4D89A96F202C50B000663377 /* LaiCiGouData.m in Sources */,
 				2F34C88B8603A7549BC052D5 /* LocalForumApi.m in Sources */,
 				2F34CFF359980DE0DEC0C980 /* ForumPushManager.m in Sources */,
 				C7B59B9DABEB94C6EC3B70A4 /* PayManager.m in Sources */,

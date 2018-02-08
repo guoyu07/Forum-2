@@ -11,6 +11,7 @@
 #import "ForumUserProfileTableViewController.h"
 #import "ForumTabBarController.h"
 #import "ForumWebViewController.h"
+#import "LaiCiGouApi.h"
 
 @interface ForumShowNewThreadPostTableViewController () <ThreadListCellDelegate, MGSwipeTableCellDelegate> {
     UIStoryboardSegue *selectSegue;
@@ -22,24 +23,34 @@
     ViewForumPage *currentForumPage;
 }
 
+
+- (BOOL)autoPullfresh {
+    return NO;
+}
+
 - (void)onPullRefresh {
-    [self.forumApi listNewThreadWithPage:1 handler:^(BOOL isSuccess, ViewForumPage *message) {
-        [self.tableView.mj_header endRefreshing];
-        if (isSuccess) {
-            [self.tableView.mj_footer endRefreshing];
 
-            currentForumPage = message;
-
-            if (currentForumPage.pageNumber.currentPageNumber >= currentForumPage.pageNumber.totalPageNumber) {
-                [self.tableView.mj_footer endRefreshingWithNoMoreData];
-            }
-
-            [self.dataList removeAllObjects];
-            [self.dataList addObjectsFromArray:message.dataList];
-            [self.tableView reloadData];
-        }
+    LaiCiGouApi * api = [[LaiCiGouApi alloc] init];
+    [api getPetsOnSell:1 count:10 handler:^(id o) {
 
     }];
+//    [self.forumApi listNewThreadWithPage:1 handler:^(BOOL isSuccess, ViewForumPage *message) {
+//        [self.tableView.mj_header endRefreshing];
+//        if (isSuccess) {
+//            [self.tableView.mj_footer endRefreshing];
+//
+//            currentForumPage = message;
+//
+//            if (currentForumPage.pageNumber.currentPageNumber >= currentForumPage.pageNumber.totalPageNumber) {
+//                [self.tableView.mj_footer endRefreshingWithNoMoreData];
+//            }
+//
+//            [self.dataList removeAllObjects];
+//            [self.dataList addObjectsFromArray:message.dataList];
+//            [self.tableView reloadData];
+//        }
+//
+//    }];
 }
 
 - (void)onLoadMore {
