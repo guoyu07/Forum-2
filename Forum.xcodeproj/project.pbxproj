@@ -131,6 +131,8 @@
 		3ACFFD341CFA641F000312DC /* NYTExamplePhoto.m in Sources */ = {isa = PBXBuildFile; fileRef = 3ACFFD331CFA641F000312DC /* NYTExamplePhoto.m */; };
 		3AE854B71DF2B0B3000F62E9 /* defaultAvatar.gif in Resources */ = {isa = PBXBuildFile; fileRef = 3AE854B61DF2B0B3000F62E9 /* defaultAvatar.gif */; };
 		4D0D87251DE40C7900DA9034 /* ForumNavigationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4D0D87241DE40C7900DA9034 /* ForumNavigationViewController.m */; };
+		4D1B072120456F1D0013B6A1 /* privacy.html in Resources */ = {isa = PBXBuildFile; fileRef = 4D1B072020456F1D0013B6A1 /* privacy.html */; };
+		4D1B0724204572FD0013B6A1 /* ForumShowPrivatePolicyUiViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4D1B0723204572FD0013B6A1 /* ForumShowPrivatePolicyUiViewController.m */; };
 		4D4CCC791F42CA5A009A4D58 /* CloudKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D4CCC781F42CA5A009A4D58 /* CloudKit.framework */; };
 		4D7F74F21FBEB5FD0049BA46 /* AutoSendBackTabBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 4D7F74F11FBEB5FD0049BA46 /* AutoSendBackTabBar.m */; };
 		4D8962BB1FDFA6C30015BD9D /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D8962BA1FDFA6C30015BD9D /* StoreKit.framework */; };
@@ -404,6 +406,9 @@
 		3AE854B61DF2B0B3000F62E9 /* defaultAvatar.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = defaultAvatar.gif; sourceTree = "<group>"; };
 		4D0D87231DE40C7900DA9034 /* ForumNavigationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ForumNavigationViewController.h; sourceTree = "<group>"; };
 		4D0D87241DE40C7900DA9034 /* ForumNavigationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ForumNavigationViewController.m; sourceTree = "<group>"; };
+		4D1B072020456F1D0013B6A1 /* privacy.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = privacy.html; sourceTree = "<group>"; };
+		4D1B0722204572FD0013B6A1 /* ForumShowPrivatePolicyUiViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ForumShowPrivatePolicyUiViewController.h; sourceTree = "<group>"; };
+		4D1B0723204572FD0013B6A1 /* ForumShowPrivatePolicyUiViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ForumShowPrivatePolicyUiViewController.m; sourceTree = "<group>"; };
 		4D339D8B1C31454A0022A6A4 /* Forum.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Forum.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4D4CCC781F42CA5A009A4D58 /* CloudKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CloudKit.framework; path = System/Library/Frameworks/CloudKit.framework; sourceTree = SDKROOT; };
 		4D7F74F01FBEB5FD0049BA46 /* AutoSendBackTabBar.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AutoSendBackTabBar.h; sourceTree = "<group>"; };
@@ -711,6 +716,8 @@
 				3A2C3FB71DDFE0C900576151 /* ForumShowNewThreadPostTableViewController.m */,
 				3A2C3FB81DDFE0C900576151 /* ForumShowPrivateMessageViewController.h */,
 				3A2C3FB91DDFE0C900576151 /* ForumShowPrivateMessageViewController.m */,
+				4D1B0722204572FD0013B6A1 /* ForumShowPrivatePolicyUiViewController.h */,
+				4D1B0723204572FD0013B6A1 /* ForumShowPrivatePolicyUiViewController.m */,
 				3A2C3FBC1DDFE0C900576151 /* ForumTabBarController.h */,
 				3A2C3FBD1DDFE0C900576151 /* ForumTabBarController.m */,
 				3A2C3FBE1DDFE0C900576151 /* ForumTableViewController.h */,
@@ -941,6 +948,7 @@
 		3ACB5C361FDC281000D5339C /* SupportFiles */ = {
 			isa = PBXGroup;
 			children = (
+				4D1B072020456F1D0013B6A1 /* privacy.html */,
 				3AE854B61DF2B0B3000F62E9 /* defaultAvatar.gif */,
 				3A2C40091DE0015C00576151 /* main.m */,
 				3A2C3F0D1DDFB8D300576151 /* paperclip.gif */,
@@ -1103,6 +1111,7 @@
 				3A2C3F5C1DDFBFC500576151 /* ForumListHeaderView.xib in Resources */,
 				3A2C3F1F1DDFBAD000576151 /* post_view.html in Resources */,
 				3A2C3F8E1DDFDFC000576151 /* ApiTestViewController.xib in Resources */,
+				4D1B072120456F1D0013B6A1 /* privacy.html in Resources */,
 				3A8750C11FBDFC07002757AD /* changeLoginStyle.js in Resources */,
 				3A2C3F0E1DDFB8D300576151 /* paperclip.gif in Resources */,
 				3A2C3F0C1DDFB88400576151 /* Assets.xcassets in Resources */,
@@ -1137,12 +1146,18 @@
 				"${PODS_ROOT}/CSSSelectorConverter/CSSSelectorConverter/CSSSelectorParser.plist",
 				"${PODS_ROOT}/LCActionSheet/LCActionSheet/LCActionSheet.bundle",
 				"${PODS_ROOT}/MJRefresh/MJRefresh/MJRefresh.bundle",
-				$PODS_CONFIGURATION_BUILD_DIR/NYTPhotoViewer/NYTPhotoViewer.bundle,
+				"${PODS_CONFIGURATION_BUILD_DIR}/NYTPhotoViewer/NYTPhotoViewer.bundle",
 				"${PODS_ROOT}/SVProgressHUD/SVProgressHUD/SVProgressHUD.bundle",
 			);
 			name = "[CP] Copy Pods Resources";
 			outputPaths = (
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/AVOSCloud_Art.inc",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/CSSSelectorGrammar.txt",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/CSSSelectorParser.plist",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/LCActionSheet.bundle",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/MJRefresh.bundle",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/NYTPhotoViewer.bundle",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/SVProgressHUD.bundle",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -1217,6 +1232,7 @@
 				4DF7372A1DDECCA200BF1896 /* LoginUser.m in Sources */,
 				3A92CDDC1F35379500E41573 /* UIWebView+AFNetworking.m in Sources */,
 				3A2C3F6B1DDFC03400576151 /* UIAutoResizeTextView.m in Sources */,
+				4D1B0724204572FD0013B6A1 /* ForumShowPrivatePolicyUiViewController.m in Sources */,
 				3A2C3FE51DDFE0C900576151 /* ForumThreadListForChildFormUITableViewController.m in Sources */,
 				3A2C3F371DDFBD2700576151 /* ForumCoreDataManager.m in Sources */,
 				3ACFFD2C1CF9D6BF000312DC /* HPURLCache.m in Sources */,

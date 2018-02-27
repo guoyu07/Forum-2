@@ -354,7 +354,10 @@
             c(a)
         }, !1), a.onclick = null))
     }
-    var deviceIsAndroid = 0 < navigator.userAgent.indexOf("Android"), deviceIsIOS = /iP(ad|hone|od)/.test(navigator.userAgent), deviceIsIOS4 = deviceIsIOS && /OS 4_\d(_\d)?/.test(navigator.userAgent), deviceIsIOSWithBadTarget = deviceIsIOS && /OS ([6-9]|\d{2})_\d/.test(navigator.userAgent);
+    var deviceIsAndroid = 0 < navigator.userAgent.indexOf("Android"),
+        deviceIsIOS = /iP(ad|hone|od)/.test(navigator.userAgent),
+        deviceIsIOS4 = deviceIsIOS && /OS 4_\d(_\d)?/.test(navigator.userAgent),
+        deviceIsIOSWithBadTarget = deviceIsIOS && /OS ([6-9]|\d{2})_\d/.test(navigator.userAgent);
     FastClick.prototype.needsClick = function (a) {
         switch (a.nodeName.toLowerCase()) {
             case "button":
@@ -551,15 +554,15 @@
 
         var el = event.target;
 
-        if (el.nodeName == 'A') {
+        if (el.nodeName === 'A') {
             return;
 
-        } else if (el.nodeName == 'DIV' && el.className == 'img_placeholder') {
+        } else if (el.nodeName === 'DIV' && el.className === 'img_placeholder') {
             return;
 
-        } else if (el.nodeName == 'IMG') {
+        } else if (el.nodeName === 'IMG') {
 
-            if (el.parentNode.nodeName == 'A') {
+            if (el.parentNode.nodeName === 'A') {
                 return;
             }
             if (el.getAttribute('data-id')) {
@@ -568,14 +571,14 @@
                 img_click_el(el);
             }
 
-        } else if (el.nodeName == 'SPAN' && el.getAttribute('data-id')) {
+        } else if (el.nodeName === 'SPAN' && el.getAttribute('data-id')) {
 
             location.href = el.getAttribute('data-id');
 
         } else {
             while (el && !el.getAttribute('data-id')) {
                 el = el.parentNode;
-                if (el.nodeName == 'A') return;
+                if (el.nodeName === 'A') return;
             }
             if (el) location.href = el.getAttribute('data-id');
         }
@@ -598,9 +601,9 @@
     //http://stackoverflow.com/questions/4712310/javascript-how-to-detect-if-a-word-is-highlighted
     function getSelectedText() {
         var text = "";
-        if (typeof window.getSelection != "undefined") {
+        if (typeof window.getSelection !== "undefined") {
             text = window.getSelection().toString();
-        } else if (typeof document.selection != "undefined" && document.selection.type == "Text") {
+        } else if (typeof document.selection !== "undefined" && document.selection.type === "Text") {
             text = document.selection.createRange().text;
         }
         return text;
