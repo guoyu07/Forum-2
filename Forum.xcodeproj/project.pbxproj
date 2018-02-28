@@ -133,6 +133,7 @@
 		4D0D87251DE40C7900DA9034 /* ForumNavigationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4D0D87241DE40C7900DA9034 /* ForumNavigationViewController.m */; };
 		4D1B072120456F1D0013B6A1 /* privacy.html in Resources */ = {isa = PBXBuildFile; fileRef = 4D1B072020456F1D0013B6A1 /* privacy.html */; };
 		4D1B0724204572FD0013B6A1 /* ForumShowPrivatePolicyUiViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4D1B0723204572FD0013B6A1 /* ForumShowPrivatePolicyUiViewController.m */; };
+		4D1B0726204686350013B6A1 /* terms_of_use.html in Resources */ = {isa = PBXBuildFile; fileRef = 4D1B0725204686340013B6A1 /* terms_of_use.html */; };
 		4D4CCC791F42CA5A009A4D58 /* CloudKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D4CCC781F42CA5A009A4D58 /* CloudKit.framework */; };
 		4D7F74F21FBEB5FD0049BA46 /* AutoSendBackTabBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 4D7F74F11FBEB5FD0049BA46 /* AutoSendBackTabBar.m */; };
 		4D8962BB1FDFA6C30015BD9D /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D8962BA1FDFA6C30015BD9D /* StoreKit.framework */; };
@@ -409,6 +410,7 @@
 		4D1B072020456F1D0013B6A1 /* privacy.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = privacy.html; sourceTree = "<group>"; };
 		4D1B0722204572FD0013B6A1 /* ForumShowPrivatePolicyUiViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ForumShowPrivatePolicyUiViewController.h; sourceTree = "<group>"; };
 		4D1B0723204572FD0013B6A1 /* ForumShowPrivatePolicyUiViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ForumShowPrivatePolicyUiViewController.m; sourceTree = "<group>"; };
+		4D1B0725204686340013B6A1 /* terms_of_use.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = terms_of_use.html; sourceTree = "<group>"; };
 		4D339D8B1C31454A0022A6A4 /* Forum.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Forum.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4D4CCC781F42CA5A009A4D58 /* CloudKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CloudKit.framework; path = System/Library/Frameworks/CloudKit.framework; sourceTree = SDKROOT; };
 		4D7F74F01FBEB5FD0049BA46 /* AutoSendBackTabBar.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AutoSendBackTabBar.h; sourceTree = "<group>"; };
@@ -949,6 +951,7 @@
 			isa = PBXGroup;
 			children = (
 				4D1B072020456F1D0013B6A1 /* privacy.html */,
+				4D1B0725204686340013B6A1 /* terms_of_use.html */,
 				3AE854B61DF2B0B3000F62E9 /* defaultAvatar.gif */,
 				3A2C40091DE0015C00576151 /* main.m */,
 				3A2C3F0D1DDFB8D300576151 /* paperclip.gif */,
@@ -1124,6 +1127,7 @@
 				3A2C3FF11DDFE13500576151 /* LaunchScreen.storyboard in Resources */,
 				3A288A501DFC4EAF002EBBC2 /* supportForums.json in Resources */,
 				3AE854B71DF2B0B3000F62E9 /* defaultAvatar.gif in Resources */,
+				4D1B0726204686350013B6A1 /* terms_of_use.html in Resources */,
 				3A2C3F5E1DDFBFC500576151 /* PageHeaderView.xib in Resources */,
 				3A288A4D1DFAE47F002EBBC2 /* DrawerView.xib in Resources */,
 				C7B59FBEDA751551C16B2A0E /* WillSupportForums.json in Resources */,
