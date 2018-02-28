@@ -41,11 +41,18 @@
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    return 1;
+    return 3;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return 5;
+    if (section == 0){
+        return 2;
+    } else if (section == 1){
+        return 2;
+    } else if (section == 2){
+        return 1;
+    }
+    return 0;
 }
 
 /*
