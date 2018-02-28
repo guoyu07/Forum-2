@@ -8,11 +8,29 @@
 
 #import "ForumShowPrivatePolicyUiViewController.h"
 
-@interface ForumShowPrivatePolicyUiViewController ()
+@interface ForumShowPrivatePolicyUiViewController ()<TransBundleDelegate>{
+    NSString *_title;
+    NSString *_html;
+}
 
 @end
 
 @implementation ForumShowPrivatePolicyUiViewController
+
+- (void)transBundle:(TransBundle *)bundle {
+
+    NSString * type = [bundle getStringValue:@"ShowType"];
+    NSLog(@"ShowType %@", type);
+
+    if ([type isEqualToString:@"ShowTermsOfUse"]){
+        _title = @"使用条款";
+        _html = @"terms_of_use";
+    } else if ([type isEqualToString:@"ShowPolicy"]){
+        _title = @"隐私条款";
+        _html = @"privacy";
+    }
+}
+
 
 - (IBAction)close:(id)sender {
     
@@ -20,14 +38,16 @@
     [navigationController popViewControllerAnimated:YES];
 }
 
+
 - (void)viewDidLoad {
     [super viewDidLoad];
-    // Do any additional setup after loading the view.
+
+    self.navigationItem.title = _title;
     
     [self.webView setScalesPageToFit:YES];
     self.webView.dataDetectorTypes = UIDataDetectorTypeNone;
     self.webView.scrollView.decelerationRate = UIScrollViewDecelerationRateNormal;
-    self.webView.delegate = self;
+    //self.webView.delegate = self;
     self.webView.backgroundColor = [UIColor whiteColor];
     
     for (UIView *view in [[self.webView subviews][0] subviews]) {
@@ -37,7 +57,7 @@
     }
     [self.webView setOpaque:NO];
     
-    NSString *filePath = [[NSBundle mainBundle] pathForResource:@"privacy" ofType:@"html"];
+    NSString *filePath = [[NSBundle mainBundle] pathForResource:_html ofType:@"html"];
     NSString *htmlString = [NSString stringWithContentsOfFile:filePath encoding:NSUTF8StringEncoding error:nil];
     NSURL *url = [[NSURL alloc] initWithString:filePath];
     [self.webView loadHTMLString:htmlString baseURL:url];

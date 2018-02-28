@@ -6,7 +6,8 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "ForumApiBaseViewController.h"
 
-@interface PayViewController : UIViewController
+@interface PayViewController : ForumApiBaseViewController
 
 @end

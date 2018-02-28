@@ -8,6 +8,7 @@
 #import "PayViewController.h"
 #import "PayManager.h"
 #import "LocalForumApi.h"
+#import "ForumShowPrivatePolicyUiViewController.h"
 #import <SVProgressHUD.h>
 
 @interface PayViewController (){
@@ -103,14 +104,18 @@
     // Dispose of any resources that can be recreated.
 }
 
-/*
 #pragma mark - Navigation
 
-// In a storyboard-based application, you will often want to do a little preparation before navigation
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
+    NSString * type = segue.identifier;
+    if ([type isEqualToString:@"ShowTermsOfUse"] || [type isEqualToString:@"ShowPolicy"]) {
+        ForumShowPrivatePolicyUiViewController *controller = segue.destinationViewController;
+
+        TransBundle * bundle = [[TransBundle alloc] init];
+        [bundle putStringValue:segue.identifier forKey:@"ShowType"];
+        [self transBundle:bundle forController:controller];
+
+    }
 }
-*/
 
 @end
