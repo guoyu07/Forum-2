@@ -134,6 +134,7 @@
 		4D1B072120456F1D0013B6A1 /* privacy.html in Resources */ = {isa = PBXBuildFile; fileRef = 4D1B072020456F1D0013B6A1 /* privacy.html */; };
 		4D1B0724204572FD0013B6A1 /* ForumShowPrivatePolicyUiViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4D1B0723204572FD0013B6A1 /* ForumShowPrivatePolicyUiViewController.m */; };
 		4D1B0726204686350013B6A1 /* terms_of_use.html in Resources */ = {isa = PBXBuildFile; fileRef = 4D1B0725204686340013B6A1 /* terms_of_use.html */; };
+		4D1B072A2046B15F0013B6A1 /* ForumPayUITableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4D1B07292046B15F0013B6A1 /* ForumPayUITableViewController.m */; };
 		4D4CCC791F42CA5A009A4D58 /* CloudKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D4CCC781F42CA5A009A4D58 /* CloudKit.framework */; };
 		4D7F74F21FBEB5FD0049BA46 /* AutoSendBackTabBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 4D7F74F11FBEB5FD0049BA46 /* AutoSendBackTabBar.m */; };
 		4D8962BB1FDFA6C30015BD9D /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D8962BA1FDFA6C30015BD9D /* StoreKit.framework */; };
@@ -411,6 +412,8 @@
 		4D1B0722204572FD0013B6A1 /* ForumShowPrivatePolicyUiViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ForumShowPrivatePolicyUiViewController.h; sourceTree = "<group>"; };
 		4D1B0723204572FD0013B6A1 /* ForumShowPrivatePolicyUiViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ForumShowPrivatePolicyUiViewController.m; sourceTree = "<group>"; };
 		4D1B0725204686340013B6A1 /* terms_of_use.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = terms_of_use.html; sourceTree = "<group>"; };
+		4D1B07282046B15F0013B6A1 /* ForumPayUITableViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ForumPayUITableViewController.h; sourceTree = "<group>"; };
+		4D1B07292046B15F0013B6A1 /* ForumPayUITableViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ForumPayUITableViewController.m; sourceTree = "<group>"; };
 		4D339D8B1C31454A0022A6A4 /* Forum.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Forum.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4D4CCC781F42CA5A009A4D58 /* CloudKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CloudKit.framework; path = System/Library/Frameworks/CloudKit.framework; sourceTree = SDKROOT; };
 		4D7F74F01FBEB5FD0049BA46 /* AutoSendBackTabBar.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AutoSendBackTabBar.h; sourceTree = "<group>"; };
@@ -680,18 +683,13 @@
 		3ACB5C291FDC26C900D5339C /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				4D1B07272046AF030013B6A1 /* Base */,
 				3A2C3F9D1DDFE0C900576151 /* ForumLoginViewController.h */,
 				3A2C3F9E1DDFE0C900576151 /* ForumLoginViewController.m */,
 				3A5A2CD41EBDEA7100B62F96 /* ForumSupportNavigationController.h */,
 				3A5A2CD51EBDEA7100B62F96 /* ForumSupportNavigationController.m */,
 				4D0D87231DE40C7900DA9034 /* ForumNavigationViewController.h */,
 				4D0D87241DE40C7900DA9034 /* ForumNavigationViewController.m */,
-				3A2C3F931DDFE0C900576151 /* ForumApiBaseTableViewController.h */,
-				3A2C3F941DDFE0C900576151 /* ForumApiBaseTableViewController.m */,
-				3A2C3F951DDFE0C900576151 /* ForumApiBaseViewController.h */,
-				3A2C3F961DDFE0C900576151 /* ForumApiBaseViewController.m */,
-				3A2C3F971DDFE0C900576151 /* ForumBaseStaticTableViewController.h */,
-				3A2C3F981DDFE0C900576151 /* ForumBaseStaticTableViewController.m */,
 				3A2C3F991DDFE0C900576151 /* ForumFavFormController.h */,
 				3A2C3F9A1DDFE0C900576151 /* ForumFavFormController.m */,
 				3A2C3F9B1DDFE0C900576151 /* ForumFavThreadPostTableViewController.h */,
@@ -959,6 +957,19 @@
 			path = SupportFiles;
 			sourceTree = "<group>";
 		};
+		4D1B07272046AF030013B6A1 /* Base */ = {
+			isa = PBXGroup;
+			children = (
+				3A2C3F931DDFE0C900576151 /* ForumApiBaseTableViewController.h */,
+				3A2C3F941DDFE0C900576151 /* ForumApiBaseTableViewController.m */,
+				3A2C3F971DDFE0C900576151 /* ForumBaseStaticTableViewController.h */,
+				3A2C3F981DDFE0C900576151 /* ForumBaseStaticTableViewController.m */,
+				3A2C3F951DDFE0C900576151 /* ForumApiBaseViewController.h */,
+				3A2C3F961DDFE0C900576151 /* ForumApiBaseViewController.m */,
+			);
+			path = Base;
+			sourceTree = "<group>";
+		};
 		4D339D821C31454A0022A6A4 = {
 			isa = PBXGroup;
 			children = (
@@ -1008,6 +1019,8 @@
 		4D8962BD1FDFE0A30015BD9D /* Payment */ = {
 			isa = PBXGroup;
 			children = (
+				4D1B07282046B15F0013B6A1 /* ForumPayUITableViewController.h */,
+				4D1B07292046B15F0013B6A1 /* ForumPayUITableViewController.m */,
 				4D8C11F01FF0CB22008813C4 /* PayViewController.h */,
 				4D8C11F11FF0CB22008813C4 /* PayViewController.m */,
 				C7B59370C7EEC80ACF175D43 /* PayManager.h */,
@@ -1238,6 +1251,7 @@
 				3A2C3F6B1DDFC03400576151 /* UIAutoResizeTextView.m in Sources */,
 				4D1B0724204572FD0013B6A1 /* ForumShowPrivatePolicyUiViewController.m in Sources */,
 				3A2C3FE51DDFE0C900576151 /* ForumThreadListForChildFormUITableViewController.m in Sources */,
+				4D1B072A2046B15F0013B6A1 /* ForumPayUITableViewController.m in Sources */,
 				3A2C3F371DDFBD2700576151 /* ForumCoreDataManager.m in Sources */,
 				3ACFFD2C1CF9D6BF000312DC /* HPURLCache.m in Sources */,
 				3A2C3FDA1DDFE0C900576151 /* ForumPrivateMessageTableViewController.m in Sources */,

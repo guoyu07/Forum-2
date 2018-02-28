@@ -26,7 +26,7 @@
         _title = @"使用条款";
         _html = @"terms_of_use";
     } else if ([type isEqualToString:@"ShowPolicy"]){
-        _title = @"隐私条款";
+        _title = @"隐私政策";
         _html = @"privacy";
     }
 }

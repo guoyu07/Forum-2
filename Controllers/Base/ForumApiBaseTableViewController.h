@@ -18,9 +18,7 @@
 @property(nonatomic, strong) NSMutableArray *dataList;
 @property(nonatomic, strong) PageNumber *pageNumber;
 
-
 - (void)onPullRefresh;
-
 
 - (void)onLoadMore;
 
