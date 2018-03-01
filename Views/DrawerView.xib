@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="13529" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13527"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -24,8 +25,13 @@
             <rect key="frame" x="0.0" y="0.0" width="280" height="570"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
+                <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="grouped" separatorStyle="default" rowHeight="44" sectionHeaderHeight="18" sectionFooterHeight="18" translatesAutoresizingMaskIntoConstraints="NO" id="RoY-1E-1dD">
+                    <rect key="frame" x="0.0" y="175" width="280" height="351"/>
+                    <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
+                </tableView>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" showsTouchWhenHighlighted="YES" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="brC-N9-KEl">
                     <rect key="frame" x="0.0" y="526" width="280" height="44"/>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="44" id="Idh-Em-KOs"/>
                     </constraints>
@@ -66,21 +72,18 @@
                         <action selector="showMyProfile:" destination="-1" eventType="touchUpInside" id="PFV-pR-2f2"/>
                     </connections>
                 </button>
-                <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="grouped" separatorStyle="default" rowHeight="44" sectionHeaderHeight="18" sectionFooterHeight="18" translatesAutoresizingMaskIntoConstraints="NO" id="RoY-1E-1dD">
-                    <rect key="frame" x="0.0" y="175" width="280" height="351"/>
-                    <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
-                </tableView>
             </subviews>
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
                 <constraint firstItem="bCv-xg-GdF" firstAttribute="top" secondItem="EMP-9K-WJf" secondAttribute="bottom" constant="6" id="9kJ-9a-3eK"/>
                 <constraint firstAttribute="trailing" secondItem="brC-N9-KEl" secondAttribute="trailing" id="Dre-dr-gOJ"/>
-                <constraint firstAttribute="bottom" secondItem="brC-N9-KEl" secondAttribute="bottom" id="Hqf-Fc-WgB"/>
+                <constraint firstItem="brC-N9-KEl" firstAttribute="top" secondItem="RoY-1E-1dD" secondAttribute="bottom" id="Gbc-MP-fsm"/>
+                <constraint firstAttribute="bottomMargin" secondItem="brC-N9-KEl" secondAttribute="bottom" id="Hqf-Fc-WgB"/>
                 <constraint firstItem="bCv-xg-GdF" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="JG7-9H-TbO"/>
+                <constraint firstItem="brC-N9-KEl" firstAttribute="bottom" secondItem="iN0-l3-epB" secondAttribute="bottomMargin" id="Vso-5g-f4h"/>
                 <constraint firstItem="brC-N9-KEl" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="Zl9-s8-q0L"/>
                 <constraint firstAttribute="trailing" secondItem="RoY-1E-1dD" secondAttribute="trailing" id="aKm-2B-vxv"/>
                 <constraint firstItem="7SC-OU-YuA" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="hln-Sh-HKD"/>
-                <constraint firstAttribute="bottom" secondItem="RoY-1E-1dD" secondAttribute="bottom" constant="44" id="miK-Sv-esd"/>
                 <constraint firstItem="7SC-OU-YuA" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="45" id="oqw-0b-NH8"/>
                 <constraint firstItem="EMP-9K-WJf" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="45" id="rvq-Zx-eQF"/>
                 <constraint firstItem="RoY-1E-1dD" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="tLU-Wi-bdm"/>
