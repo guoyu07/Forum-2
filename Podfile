@@ -8,7 +8,7 @@ target 'Forum' do
 	pod 'MJRefresh', '~> 3.1.15.3'
     #pod 'UITableView+FDTemplateLayoutCell', '~> 1.4'
 	pod 'SVProgressHUD', '~> 1.1.3'
-	pod 'LCActionSheet', '~>1.2.3'
+	pod 'LCActionSheet', '~>3.4.0'
 	pod 'ActionSheetPicker-3.0'
 	pod 'FDFullscreenPopGesture', '1.1'
 	pod 'SDWebImage', '~>3.7.5'

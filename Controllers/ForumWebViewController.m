@@ -573,36 +573,18 @@
         int postId = [[query valueForKey:@"postid"] intValue];
         int louCeng = [[query valueForKey:@"postlouceng"] intValue];
 
-        itemActionSheet = [LCActionSheet sheetWithTitle:userName buttonTitles:@[@"引用此楼回复", @"复制此楼链接", @"举报此楼"] redButtonIndex:-1 clicked:^(NSInteger buttonIndex) {
-            /*if (buttonIndex == 0) {
-                UIStoryboard *storyboard = [UIStoryboard mainStoryboard];
-
-                UINavigationController *simpleReplyController = [storyboard instantiateViewControllerWithIdentifier:@"QuickReplySomeOne"];
-
-                TransBundle *bundle = [[TransBundle alloc] init];
-
-                [bundle putIntValue:currentShowThreadPage.forumId forKey:@"FORM_ID"];
-                [bundle putIntValue:threadID forKey:@"THREAD_ID"];
-                [bundle putIntValue:postId forKey:@"POST_ID"];
-                NSString *token = currentShowThreadPage.securityToken;
-                [bundle putStringValue:token forKey:@"SECYRITY_TOKEN"];
-                [bundle putStringValue:currentShowThreadPage.ajaxLastPost forKey:@"AJAX_LAST_POST"];
-                [bundle putStringValue:userName forKey:@"POST_USER"];
+        itemActionSheet = [LCActionSheet sheetWithTitle:userName cancelButtonTitle:@"取消" clicked:^(LCActionSheet * _Nonnull actionSheet, NSInteger buttonIndex) {
+            
+            NSLog(@"LCActionSheet click index %ld", buttonIndex);
+            
+            if (buttonIndex == 1) {
                 
-                [bundle putObjectValue:currentShowThreadPage forKey:@"QUICK_REPLY_THREAD"];
-
-                [self presentViewController:simpleReplyController withBundle:bundle forRootController:YES animated:YES completion:^{
-
-                }];
-
-            } else */if (buttonIndex == 0) {
-
                 UIStoryboard *storyBoard = [UIStoryboard mainStoryboard];
-
+                
                 UINavigationController *controller = [storyBoard instantiateViewControllerWithIdentifier:@"SeniorReplySomeOne"];
-
+                
                 TransBundle *bundle = [[TransBundle alloc] init];
-
+                
                 [bundle putIntValue:currentShowThreadPage.forumId forKey:@"FORM_ID"];
                 [bundle putIntValue:threadID forKey:@"THREAD_ID"];
                 [bundle putIntValue:postId forKey:@"POST_ID"];
@@ -611,27 +593,27 @@
                 [bundle putStringValue:currentShowThreadPage.ajaxLastPost forKey:@"AJAX_LAST_POST"];
                 [bundle putStringValue:userName forKey:@"USER_NAME"];
                 [bundle putIntValue:1 forKey:@"ISQUOTEREPLY"];
-
+                
                 [bundle putObjectValue:currentShowThreadPage forKey:@"QUICK_REPLY_THREAD"];
-
+                
                 [self presentViewController:controller withBundle:bundle forRootController:YES animated:YES completion:^{
-
+                    
                 }];
-
-            } else if (buttonIndex == 1) {
-
+                
+            } else if (buttonIndex == 2) {
+                
                 LocalForumApi *localForumApi = [[LocalForumApi alloc] init];
                 id<ForumConfigDelegate> forumConfig = [ForumApiHelper forumConfig:localForumApi.currentForumHost];
-
+                
                 NSString *postUrl = [forumConfig copyThreadUrl:[NSString stringWithFormat:@"%d", threadID] withPostId:[NSString stringWithFormat:@"%d", postId] withPostCout:louCeng];
                 UIPasteboard *pasteboard = [UIPasteboard generalPasteboard];
                 pasteboard.string = postUrl;
                 [SVProgressHUD showSuccessWithStatus:@"复制成功" maskType:SVProgressHUDMaskTypeBlack];
-            } else if (buttonIndex == 2){
+            } else if (buttonIndex == 3){
                 [self reportThreadPost:postId userName:userName];
             }
-        }];
-
+        } otherButtonTitleArray:@[@"引用此楼回复", @"复制此楼链接", @"举报此楼"]];
+        
         [itemActionSheet show];
         return NO;
 
@@ -759,6 +741,27 @@
     LocalForumApi *localForumApi = [[LocalForumApi alloc] init];
     id<ForumConfigDelegate> forumConfig = [ForumApiHelper forumConfig:localForumApi.currentForumHost];
 
+    itemActionSheet = [LCActionSheet sheetWithTitle:nil cancelButtonTitle:@"" clicked:^(LCActionSheet * _Nonnull actionSheet, NSInteger buttonIndex) {
+        if (buttonIndex == 0) {
+            // 复制贴链接
+            UIPasteboard *pasteboard = [UIPasteboard generalPasteboard];
+            
+            pasteboard.string = [forumConfig showThreadWithThreadId:[NSString stringWithFormat:@"%d", threadID] withPage:0];
+            
+            [SVProgressHUD showSuccessWithStatus:@"复制成功" maskType:SVProgressHUDMaskTypeBlack];
+            
+        } else if (buttonIndex == 1) {
+            // 在浏览器种查看
+            NSURL *url = [NSURL URLWithString:[forumConfig showThreadWithThreadId:[NSString stringWithFormat:@"%d", threadID] withPage:1]];
+            [[UIApplication sharedApplication] openURL:url];
+        } else if (buttonIndex == 2) {
+            [self reportThreadPost:nil userName:nil];
+        }
+        
+    } otherButtonTitleArray:@[@"复制帖子链接", @"在浏览器中查看", @"举报此主题"]];
+    
+    
+    /*
     itemActionSheet = [LCActionSheet sheetWithTitle:nil buttonTitles:@[@"复制帖子链接", @"在浏览器中查看", @"举报此主题"] redButtonIndex:4 clicked:^(NSInteger buttonIndex) {
         if (buttonIndex == 0) {
             // 复制贴链接
@@ -775,7 +778,7 @@
         } else if (buttonIndex == 2) {
             [self reportThreadPost:nil userName:nil];
         }
-    }];
+    }];*/
 
     [itemActionSheet show];
 }
