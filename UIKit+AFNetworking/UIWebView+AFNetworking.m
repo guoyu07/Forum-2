@@ -26,8 +26,6 @@
 #if TARGET_OS_IOS
 
 #import "AFHTTPSessionManager.h"
-#import "AFURLResponseSerialization.h"
-#import "AFURLRequestSerialization.h"
 
 @interface UIWebView (_AFNetworking)
 @property (readwrite, nonatomic, strong, setter = af_setURLSessionTask:) NSURLSessionDataTask *af_URLSessionTask;

@@ -25,8 +25,6 @@
 
 #if TARGET_OS_IOS || TARGET_OS_TV
 
-#import "AFURLSessionManager.h"
-
 static void * AFTaskCountOfBytesSentContext = &AFTaskCountOfBytesSentContext;
 static void * AFTaskCountOfBytesReceivedContext = &AFTaskCountOfBytesReceivedContext;
 

@@ -4,8 +4,6 @@
 //
 
 #import "TransBundleUIViewController.h"
-#import "TransBundle.h"
-#import "TransBundleDelegate.h"
 
 
 @implementation TransBundleUIViewController {

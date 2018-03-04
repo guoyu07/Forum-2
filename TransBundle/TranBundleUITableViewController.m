@@ -4,8 +4,6 @@
 //
 
 #import "TranBundleUITableViewController.h"
-#import "TransBundle.h"
-#import "TransBundleDelegate.h"
 
 
 @implementation TranBundleUITableViewController {

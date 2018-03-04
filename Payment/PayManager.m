@@ -4,7 +4,6 @@
 //
 
 #import "PayManager.h"
-#import <StoreKit/StoreKit.h>
 
 @interface PayManager () <SKPaymentTransactionObserver, SKProductsRequestDelegate> {
 

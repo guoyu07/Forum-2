@@ -8,7 +8,6 @@
 
 #import "HPURLProtocol.h"
 #import <SDWebImageManager.h>
-#import <UIImage+MultiFormat.h>
 #import "SDImageCache+URLCache.h"
 
 

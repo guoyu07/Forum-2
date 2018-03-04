@@ -9,8 +9,6 @@
 
 #import <sys/utsname.h>
 
-#import <sys/sysctl.h>
-
 @implementation DeviceName
 
 + (NSString *)platform{
