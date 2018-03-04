@@ -12,7 +12,7 @@ target 'Forum' do
 	pod 'ActionSheetPicker-3.0'
 	pod 'FDFullscreenPopGesture', '1.1'
 	pod 'SDWebImage', '~>3.7.5'
-	pod 'MGSwipeTableCell', '~>1.5.6'
+	pod 'MGSwipeTableCell', '~>1.6.6'
 	pod 'AVOSCloud', '~>4.2.0'
     #pod 'AVOSCloudIM', '~>4.2.0'
 	pod 'NYTPhotoViewer', :git => "https://github.com/andforce/NYTPhotoViewer.git", :commit => "659d4ac"
