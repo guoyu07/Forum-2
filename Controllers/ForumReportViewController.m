@@ -6,7 +6,6 @@
 //
 
 #import "ForumReportViewController.h"
-#import "SVProgressHUD.h"
 #import "ProgressDialog.h"
 
 @interface ForumReportViewController ()<TransBundleDelegate>{

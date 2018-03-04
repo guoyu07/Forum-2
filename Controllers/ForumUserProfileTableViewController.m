@@ -11,7 +11,6 @@
 
 #import <UIImageView+WebCache.h>
 #import "UIStoryboard+Forum.h"
-#import "AppDelegate.h"
 #import "LocalForumApi.h"
 
 @interface ForumUserProfileTableViewController () <TransBundleDelegate> {

@@ -10,7 +10,6 @@
 #import "ForumTabBarController.h"
 #import "ForumWebViewController.h"
 #import "ForumUserProfileTableViewController.h"
-#import "BaseForumApi.h"
 #import "LocalForumApi.h"
 
 @interface ForumFavThreadPostTableViewController () <MGSwipeTableCellDelegate, ThreadListCellDelegate> {

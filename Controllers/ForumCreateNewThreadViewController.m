@@ -6,13 +6,10 @@
 //
 
 #import "ForumCreateNewThreadViewController.h"
-#import "ForumApiHelper.h"
 #import <AssetsLibrary/AssetsLibrary.h>
 #import "LCActionSheet.h"
 #import "ActionSheetStringPicker.h"
 #import "AFNetworking.h"
-#import "TransBundle.h"
-#import "TransBundleDelegate.h"
 #import "UIImage+Tint.h"
 #import "LocalForumApi.h"
 #import "PayManager.h"

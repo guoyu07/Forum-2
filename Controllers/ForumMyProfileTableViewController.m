@@ -10,9 +10,7 @@
 #import "ForumCoreDataManager.h"
 #import "UserEntry+CoreDataProperties.h"
 #import "UIStoryboard+Forum.h"
-#import "AppDelegate.h"
 #import "ForumTabBarController.h"
-#import "BaseForumApi.h"
 #import "LocalForumApi.h"
 
 

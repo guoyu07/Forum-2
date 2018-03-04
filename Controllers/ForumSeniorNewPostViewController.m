@@ -10,12 +10,9 @@
 #import "SelectPhotoCollectionViewCell.h"
 #import "LCActionSheet.h"
 #import <AssetsLibrary/AssetsLibrary.h>
-#import "TransBundleDelegate.h"
-#import "TransBundle.h"
 #import "UIImage+Tint.h"
 #import "LocalForumApi.h"
 #import "PayManager.h"
-#import "ForumTabBarController.h"
 #import "UIStoryboard+Forum.h"
 #import "ProgressDialog.h"
 

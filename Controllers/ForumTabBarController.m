@@ -8,7 +8,6 @@
 
 #import "ForumTabBarController.h"
 #import "DrawerView.h"
-#import "AppDelegate.h"
 #import "LocalForumApi.h"
 
 @interface ForumTabBarController () {

@@ -8,20 +8,16 @@
 #import "ForumWebViewController.h"
 #import <MJRefresh.h>
 #import "SDImageCache+URLCache.h"
-
 #import <NYTPhotosViewController.h>
 #import <NYTPhotoViewer/NYTPhoto.h>
 #import "NYTExamplePhoto.h"
 #import "LCActionSheet.h"
-
-#import "SVProgressHUD.h"
 #import "UIStoryboard+Forum.h"
 #import "ActionSheetPicker.h"
 #import "NSString+Extensions.h"
 #import "ForumUserProfileTableViewController.h"
 #import "AppDelegate.h"
 #import "LocalForumApi.h"
-#import "ForumTabBarController.h"
 #import "ProgressDialog.h"
 
 @interface ForumWebViewController () <UIWebViewDelegate, UIScrollViewDelegate, TransBundleDelegate, CAAnimationDelegate> {
