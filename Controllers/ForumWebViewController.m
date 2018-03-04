@@ -19,6 +19,7 @@
 #import "AppDelegate.h"
 #import "LocalForumApi.h"
 #import "ProgressDialog.h"
+#import "NYTPhotoViewerArrayDataSource.h"
 
 @interface ForumWebViewController () <UIWebViewDelegate, UIScrollViewDelegate, TransBundleDelegate, CAAnimationDelegate> {
 
@@ -636,19 +637,17 @@
             data = [[SDImageCache sharedImageCache] hp_imageDataFromDiskCacheForKey:src];
             memCachedImage = [UIImage imageWithData:data];
         }
-
-        NSMutableArray *array = [NSMutableArray array];
-
-        NYTExamplePhoto *photo1 = [[NYTExamplePhoto alloc] init];
-
-        photo1.attributedCaptionTitle = [[NSAttributedString alloc] initWithString:@"1" attributes:nil];
-        photo1.image = memCachedImage;
-        [array addObject:photo1];
-        NYTPhotosViewController *photosViewController = [[NYTPhotosViewController alloc] initWithPhotos:array];
+        
+        NYTPhotoViewerArrayDataSource * ds = [self.class newTimesBuildingDataSource:@[memCachedImage]];
+        
+        NYTPhotosViewController *photosViewController = [[NYTPhotosViewController alloc] initWithDataSource:ds initialPhoto:nil delegate:nil];
+        
         [self presentViewController:photosViewController animated:YES completion:nil];
 
         return NO;
     }
+
+
 
     if ([request.URL.scheme isEqualToString:@"avatar"]) {
         NSDictionary *query = [self dictionaryFromQuery:request.URL.query usingEncoding:NSUTF8StringEncoding];
@@ -806,4 +805,16 @@
     [self.webView.scrollView.mj_footer beginRefreshing];
 }
 
++ (NYTPhotoViewerArrayDataSource *)newTimesBuildingDataSource:(NSArray *)images {
+    NSMutableArray *photos = [NSMutableArray array];
+    
+    for (UIImage * image in images) {
+        NYTExamplePhoto *photo = [[NYTExamplePhoto alloc] init];
+        photo.attributedCaptionTitle = [[NSAttributedString alloc] initWithString:@"1" attributes:nil];
+        photo.image = image;
+        [photos addObject:photo];
+    }
+    
+    return [NYTPhotoViewerArrayDataSource dataSourceWithPhotos:photos];
+}
 @end
