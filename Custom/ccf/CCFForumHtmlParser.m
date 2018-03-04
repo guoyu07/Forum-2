@@ -77,29 +77,29 @@
         NSString *xPathAttImage = [NSString stringWithFormat:@"//*[@id='td_post_%@']/div[2]", postId];
         IGXMLNode *attImage = [postDocument queryWithXPath:xPathAttImage].firstObject;
 
-        NSString *attImageHtml = [attImage html];
-
-        //<a href="attachment.php?attachmentid=725161&amp;stc=1" target="_blank">
-        //<img class="attach" src="attachment.php?attachmentid=725161&amp;stc=1&amp;d=1261896941" onload="if(this.width>screen.width*0.7) {this.width=screen.width*0.7;}" border="0" alt="">
-        //</a>
-
-        // 上传的图片，外面包了一层，影响点击事件，
-        // 因此要替换成<img src="attachment.php?attachmentid=725161&amp;stc=1" /> 这种形式
-        IGHTMLDocument *attImageDocument = [[IGHTMLDocument alloc] initWithHTMLString:attImageHtml error:nil];
-
-        IGXMLNodeSet *attImageSet = [attImageDocument queryWithXPath:@"/html/body/div/fieldset/div/a[*]"];
-
-
-        NSString *newImagePattern = @"<img src=\"%@\" />";
-        for (IGXMLNode *node in attImageSet) {
-            NSString *href = [node attribute:@"href"];
-            NSString *newImage = [NSString stringWithFormat:newImagePattern, href];
-
-            attImageHtml = [attImageHtml stringByReplacingOccurrencesOfString:node.html withString:newImage];
-        }
-
-
-        if (attImage != nil) {
+        if (attImage) {
+            
+            NSString *attImageHtml = [attImage html];
+            
+            //<a href="attachment.php?attachmentid=725161&amp;stc=1" target="_blank">
+            //<img class="attach" src="attachment.php?attachmentid=725161&amp;stc=1&amp;d=1261896941" onload="if(this.width>screen.width*0.7) {this.width=screen.width*0.7;}" border="0" alt="">
+            //</a>
+            
+            // 上传的图片，外面包了一层，影响点击事件，
+            // 因此要替换成<img src="attachment.php?attachmentid=725161&amp;stc=1" /> 这种形式
+            IGHTMLDocument *attImageDocument = [[IGHTMLDocument alloc] initWithHTMLString:attImageHtml error:nil];
+            
+            IGXMLNodeSet *attImageSet = [attImageDocument queryWithXPath:@"/html/body/div/fieldset/div/a[*]"];
+            
+            
+            NSString *newImagePattern = @"<img src=\"%@\" />";
+            for (IGXMLNode *node in attImageSet) {
+                NSString *href = [node attribute:@"href"];
+                NSString *newImage = [NSString stringWithFormat:newImagePattern, href];
+                
+                attImageHtml = [attImageHtml stringByReplacingOccurrencesOfString:node.html withString:newImage];
+            }
+            
             post.postContent = [post.postContent stringByAppendingString:attImageHtml];
         }
 

@@ -2,7 +2,7 @@ source 'https://github.com/CocoaPods/Specs.git'
 platform :ios, '8.0'
 
 target 'Forum' do
-	pod 'IGHTMLQuery', '~> 0.8.4'
+#	pod 'IGHTMLQuery', '~> 0.8.4'
 	pod 'JSONModel', '~> 1.7.0' 			#2018/03/04
 	pod 'MJRefresh', '~> 3.1.15.3'			#2018/03/04
 	pod 'SVProgressHUD', '~> 2.2.5'			#2018/03/04
@@ -13,6 +13,7 @@ target 'Forum' do
 	pod 'MGSwipeTableCell', '~>1.6.6'		#2018/03/04
 	pod 'AVOSCloud', '~>9.0'			#2018/03/04
 	pod 'NYTPhotoViewer', :git => "https://github.com/andforce/NYTPhotoViewer.git", :commit => "659d4ac"
+	pod 'IGHTMLQuery', :git => "https://github.com/andforce/IGHTMLQuery.git", :commit => "069d74e"
 end
     #pod 'UITableView+FDTemplateLayoutCell', '~> 1.4'
     #pod 'AFNetworking', '~> 3.1.0'
