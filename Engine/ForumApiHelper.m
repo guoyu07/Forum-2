@@ -9,7 +9,6 @@
 
 #import "CCFForumApi.h"
 #import "DRLForumApi.h"
-#import "AppDelegate.h"
 #import "CHHForumApi.h"
 #import "CrskyForumApi.h"
 #import "CCFForumConfig.h"
