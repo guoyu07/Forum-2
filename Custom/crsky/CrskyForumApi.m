@@ -23,10 +23,6 @@
 #import "UIStoryboard+Forum.h"
 #import "ForumWebViewController.h"
 
-#import "IGHTMLDocument.h"
-#import "IGHTMLDocument+QueryNode.h"
-#import "IGXMLNode+Children.h"
-
 @implementation CrskyForumApi{
     id <ForumConfigDelegate> forumConfig;
     id <ForumParserDelegate> forumParser;

@@ -11,7 +11,6 @@
 #import "IGHTMLDocument+QueryNode.h"
 #import "IGXMLNode+Children.h"
 #import "NSString+Extensions.h"
-#import "IGXMLNode+QueryNode.h"
 #import "LocalForumApi.h"
 
 @implementation CrskyForumHtmlParser{

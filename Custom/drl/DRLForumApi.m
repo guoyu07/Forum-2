@@ -9,7 +9,6 @@
 #import "NSUserDefaults+Setting.h"
 #import "AFHTTPSessionManager+SimpleAction.h"
 #import "UIImageView+AFNetworking.h"
-#import "DeviceName.h"
 #import "ForumParserDelegate.h"
 #import "DRLForumHtmlParser.h"
 #import "DRLForumConfig.h"
