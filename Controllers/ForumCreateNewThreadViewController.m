@@ -8,7 +8,6 @@
 #import "ForumCreateNewThreadViewController.h"
 #import "ForumApiHelper.h"
 #import <AssetsLibrary/AssetsLibrary.h>
-#import <SVProgressHUD.h>
 #import "LCActionSheet.h"
 #import "ActionSheetStringPicker.h"
 #import "AFNetworking.h"
@@ -18,6 +17,7 @@
 #import "LocalForumApi.h"
 #import "PayManager.h"
 #import "UIStoryboard+Forum.h"
+#import "ProgressDialog.h"
 
 @interface ForumCreateNewThreadViewController () <UIImagePickerControllerDelegate, UINavigationControllerDelegate,
         UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout,
@@ -76,11 +76,11 @@
 
     images = [NSMutableArray array];
 
-    [SVProgressHUD showWithStatus:@"获取分类" maskType:SVProgressHUDMaskTypeBlack];
+    [ProgressDialog showStatus:@"获取分类"];
     NSString *fId = [NSString stringWithFormat:@"%d", forumId];
     [_forumApi listThreadCategory:fId handler:^(BOOL isSuccess, id message) {
         if (isSuccess){
-            [SVProgressHUD dismiss];
+            [ProgressDialog dismiss];
             categorys = message;
         } else {
             [self dismissViewControllerAnimated:YES completion:nil];
@@ -255,15 +255,15 @@
     NSString *category = self.category.titleLabel.text;
 
     if ([category isEqualToString:@"[请选分类]"]){
-        [SVProgressHUD showErrorWithStatus:@"请选择分类" maskType:SVProgressHUDMaskTypeBlack];
+        [ProgressDialog showError:@"请选择分类"];
         return;
     }
 
     if (title.length < 1) {
-        [SVProgressHUD showErrorWithStatus:@"标题太短" maskType:SVProgressHUDMaskTypeBlack];
+        [ProgressDialog showError:@"标题太短"];
         return;
     }
-    [SVProgressHUD showWithStatus:@"正在发送" maskType:SVProgressHUDMaskTypeBlack];
+    [ProgressDialog showStatus:@"正在发送"];
 
     NSMutableArray<NSData *> *uploadData = [NSMutableArray array];
     for (UIImage *image in images) {
@@ -280,9 +280,9 @@
         }];
 
         if (isSuccess) {
-            [SVProgressHUD showSuccessWithStatus:@"发帖成功" maskType:SVProgressHUDMaskTypeBlack];
+            [ProgressDialog showSuccess:@"发帖成功"];
         } else {
-            [SVProgressHUD showErrorWithStatus:@"发帖失败" maskType:SVProgressHUDMaskTypeBlack];
+            [ProgressDialog showError:@"发帖失败"];
         }
     }];
 }

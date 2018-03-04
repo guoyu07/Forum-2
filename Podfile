@@ -7,7 +7,7 @@ target 'Forum' do
 	pod 'JSONModel', '~> 1.1.2' #json解:析
 	pod 'MJRefresh', '~> 3.1.15.3'
     #pod 'UITableView+FDTemplateLayoutCell', '~> 1.4'
-	pod 'SVProgressHUD', '~> 1.1.3'
+	pod 'SVProgressHUD', '~> 2.2.5'
 	pod 'LCActionSheet', '~>3.4.0'
 	pod 'ActionSheetPicker-3.0'
 	pod 'FDFullscreenPopGesture', '1.1'

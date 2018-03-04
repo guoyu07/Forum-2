@@ -164,7 +164,6 @@ static PayManager *_instance = nil;
             case SKPaymentTransactionStateFailed: {
                 NSLog(@"交易失败");
                 [[SKPaymentQueue defaultQueue] finishTransaction:tran];
-                //[SVProgressHUD showErrorWithStatus:@"购买失败"];
                 [self handleResult:FALSE];
             }
                 break;

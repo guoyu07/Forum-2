@@ -7,6 +7,7 @@
 
 #import "ForumReportViewController.h"
 #import "SVProgressHUD.h"
+#import "ProgressDialog.h"
 
 @interface ForumReportViewController ()<TransBundleDelegate>{
     NSString * userName;
@@ -34,15 +35,15 @@
 
 - (IBAction)reportThreadPost:(id)sender {
     [self.reportMessage resignFirstResponder];
-    [SVProgressHUD showWithStatus:@"请等待..." maskType:SVProgressHUDMaskTypeBlack];
+    [ProgressDialog showStatus:@"请等待..."];
     
     if (userName == nil || postId == 0) {
-        
-        [SVProgressHUD showSuccessWithStatus:@"已经举报给管理员" maskType:SVProgressHUDMaskTypeBlack];
+
+        [ProgressDialog showSuccess:@"已经举报给管理员"];
         [self dismissViewControllerAnimated:YES completion:nil];
     } else{
         [self.forumApi reportThreadPost:postId andMessage:self.reportMessage.text handler:^(BOOL isSuccess, id message) {
-            [SVProgressHUD showSuccessWithStatus:@"已经举报给管理员" maskType:SVProgressHUDMaskTypeBlack];
+            [ProgressDialog showSuccess:@"已经举报给管理员"];
         [self dismissViewControllerAnimated:YES completion:nil];
         }];
     }

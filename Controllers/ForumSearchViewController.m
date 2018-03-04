@@ -9,12 +9,12 @@
 
 #import "ForumSearchResultCell.h"
 #import "ForumUserProfileTableViewController.h"
-#import <SVProgressHUD.h>
 #import "ForumWebViewController.h"
 #import "LocalForumApi.h"
 #import "ZhanNeiSearchViewCell.h"
 #import "PayManager.h"
 #import "UIStoryboard+Forum.h"
+#import "ProgressDialog.h"
 
 @interface ForumSearchViewController () <UITableViewDataSource, UITableViewDelegate, UISearchBarDelegate, ThreadListCellDelegate, MGSwipeTableCellDelegate> {
     NSString *_searchid;
@@ -136,13 +136,13 @@
 
     [searchBar resignFirstResponder];
 
-    [SVProgressHUD showWithStatus:@"搜索中" maskType:SVProgressHUDMaskTypeBlack];
+    [ProgressDialog showStatus:@"搜索中"];
 
     int select = (int) self.segmentedControl.selectedSegmentIndex;
 
     [self.forumApi searchWithKeyWord:searchText forType:select handler:^(BOOL isSuccess, ViewSearchForumPage *message) {
-        
-        [SVProgressHUD dismiss];
+
+        [ProgressDialog dismiss];
 
         if (isSuccess) {
             _searchid = message.searchid;
@@ -155,7 +155,7 @@
         } else {
             NSLog(@"searchBarSearchButtonClicked   ERROR %@", message);
             NSString * msg = (id)message;
-            [SVProgressHUD showErrorWithStatus:msg maskType:SVProgressHUDMaskTypeBlack];
+            [ProgressDialog showError:msg];
         }
     }];
 

@@ -9,7 +9,7 @@
 #import "PayManager.h"
 #import "LocalForumApi.h"
 #import "ForumShowPrivatePolicyUiViewController.h"
-#import <SVProgressHUD.h>
+#import "ProgressDialog.h"
 
 @interface PayViewController (){
     LocalForumApi *_localForumApi;
@@ -25,18 +25,18 @@
 - (IBAction)pay:(UIBarButtonItem *)sender {
 
     if ([_payManager hasPayed:_localForumApi.currentProductID]){
-        [SVProgressHUD showSuccessWithStatus:@"您已订阅" maskType:SVProgressHUDMaskTypeBlack];
+        [ProgressDialog showSuccess:@"您已订阅"];
         return;
     }
 
-    [SVProgressHUD showWithMaskType:SVProgressHUDMaskTypeBlack];
+    [ProgressDialog show];
 
     [_payManager payForProductID:_localForumApi.currentProductID with:^(BOOL isSuccess) {
         if (isSuccess){
             [restorePayBtn setTitle:@"您已订阅" forState:UIControlStateNormal];
-            [SVProgressHUD showSuccessWithStatus:@"订阅成功" maskType:SVProgressHUDMaskTypeBlack];
+            [ProgressDialog showSuccess:@"订阅成功"];
         } else {
-            [SVProgressHUD showErrorWithStatus:@"订阅失败" maskType:SVProgressHUDMaskTypeBlack];
+            [ProgressDialog showError:@"订阅失败"];
         }
     }];
 
@@ -45,17 +45,17 @@
 - (IBAction)restorePay:(UIButton *)sender {
 
     if ([_payManager hasPayed:_localForumApi.currentProductID]){
-        [SVProgressHUD showSuccessWithStatus:@"您已订阅" maskType:SVProgressHUDMaskTypeBlack];
+        [ProgressDialog showStatus:@"您已订阅"];
         return;
     }
-    [SVProgressHUD showWithMaskType:SVProgressHUDMaskTypeBlack];
+    [ProgressDialog show];
 
     [_payManager restorePayForProductID:_localForumApi.currentProductID with:^(BOOL isSuccess) {
         if (isSuccess){
             [restorePayBtn setTitle:@"您已订阅" forState:UIControlStateNormal];
-            [SVProgressHUD showSuccessWithStatus:@"订阅成功" maskType:SVProgressHUDMaskTypeBlack];
+            [ProgressDialog showSuccess:@"订阅成功"];
         } else {
-            [SVProgressHUD showErrorWithStatus:@"订阅失败" maskType:SVProgressHUDMaskTypeBlack];
+            [ProgressDialog showError:@"订阅失败"];
         }
     }];
 }

@@ -13,6 +13,7 @@
 		2F34C81F010BA4C4C0199B85 /* ForumLoginWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2F34C9F7371B8DDC9EEA62AB /* ForumLoginWebViewController.m */; };
 		2F34C87F00AC80AC3FF866BF /* BaseForumApi.m in Sources */ = {isa = PBXBuildFile; fileRef = 2F34C9AF3EEEE19C34102D22 /* BaseForumApi.m */; };
 		2F34C88B8603A7549BC052D5 /* LocalForumApi.m in Sources */ = {isa = PBXBuildFile; fileRef = 2F34CE82EC5F0149A7675701 /* LocalForumApi.m */; };
+		2F34CA0802E0D84DC825B125 /* ProgressDialog.m in Sources */ = {isa = PBXBuildFile; fileRef = 2F34C0C48D6A20923716C6EC /* ProgressDialog.m */; };
 		2F34CCE7AE4C35FFB148F31E /* CHHForumConfig.m in Sources */ = {isa = PBXBuildFile; fileRef = 2F34C36FABA87760B3B5B1B3 /* CHHForumConfig.m */; };
 		2F34CD24DA52CC996BE6F47A /* ForumApiHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 2F34C14160BC257F07318CEF /* ForumApiHelper.m */; };
 		2F34CDC68B8E6EA4AB5D764B /* PageNumber.m in Sources */ = {isa = PBXBuildFile; fileRef = 2F34CA39D274171CAD239E5E /* PageNumber.m */; };
@@ -170,6 +171,7 @@
 /* Begin PBXFileReference section */
 		2F34C04114894D17500F95D1 /* ForumPushManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ForumPushManager.h; sourceTree = "<group>"; };
 		2F34C076378D371E57F0863F /* CHHForumApi.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CHHForumApi.m; sourceTree = "<group>"; };
+		2F34C0C48D6A20923716C6EC /* ProgressDialog.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ProgressDialog.m; sourceTree = "<group>"; };
 		2F34C14160BC257F07318CEF /* ForumApiHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ForumApiHelper.m; sourceTree = "<group>"; };
 		2F34C1D609B2659CED986D39 /* ForumPushManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ForumPushManager.m; sourceTree = "<group>"; };
 		2F34C2A567EB792DCF9E85BD /* vBulletinDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = vBulletinDelegate.h; sourceTree = "<group>"; };
@@ -187,6 +189,7 @@
 		2F34CA3EA8022D958EAEA736 /* ForumShortCutCreateNewThreadViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ForumShortCutCreateNewThreadViewController.h; sourceTree = "<group>"; };
 		2F34CAE13DEE2EFC6579F89E /* CHHForumConfig.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CHHForumConfig.h; sourceTree = "<group>"; };
 		2F34CAFE1A4BB2690531ABD9 /* PageNumber.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PageNumber.h; sourceTree = "<group>"; };
+		2F34CBBCB62F26627BA0E932 /* ProgressDialog.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProgressDialog.h; sourceTree = "<group>"; };
 		2F34CE82EC5F0149A7675701 /* LocalForumApi.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LocalForumApi.m; sourceTree = "<group>"; };
 		2F34CEDC13FE605A95AACC4B /* ForumLoginWebViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ForumLoginWebViewController.h; sourceTree = "<group>"; };
 		2F34CEDE561AF2B8E93A940E /* PhpWindDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PhpWindDelegate.h; sourceTree = "<group>"; };
@@ -676,6 +679,8 @@
 				3A2C3F791DDFC0CD00576151 /* UIView+Corner.m */,
 				C7B590FF019B54B2E6BDDE91 /* NSData+UTF8.m */,
 				C7B59A3EE329F70B4CDE26BE /* NSData+UTF8.h */,
+				2F34C0C48D6A20923716C6EC /* ProgressDialog.m */,
+				2F34CBBCB62F26627BA0E932 /* ProgressDialog.h */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
@@ -1162,7 +1167,7 @@
 				"${PODS_ROOT}/CSSSelectorConverter/CSSSelectorConverter/CSSSelectorGrammar.txt",
 				"${PODS_ROOT}/CSSSelectorConverter/CSSSelectorConverter/CSSSelectorParser.plist",
 				"${PODS_ROOT}/MJRefresh/MJRefresh/MJRefresh.bundle",
-				"$PODS_CONFIGURATION_BUILD_DIR/NYTPhotoViewer/NYTPhotoViewer.bundle",
+				$PODS_CONFIGURATION_BUILD_DIR/NYTPhotoViewer/NYTPhotoViewer.bundle,
 				"${PODS_ROOT}/SVProgressHUD/SVProgressHUD/SVProgressHUD.bundle",
 			);
 			name = "[CP] Copy Pods Resources";
@@ -1346,6 +1351,7 @@
 				2F34C88B8603A7549BC052D5 /* LocalForumApi.m in Sources */,
 				2F34CFF359980DE0DEC0C980 /* ForumPushManager.m in Sources */,
 				C7B59B9DABEB94C6EC3B70A4 /* PayManager.m in Sources */,
+				2F34CA0802E0D84DC825B125 /* ProgressDialog.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -8,7 +8,6 @@
 #import "ForumSeniorNewPostViewController.h"
 
 #import "SelectPhotoCollectionViewCell.h"
-#import <SVProgressHUD.h>
 #import "LCActionSheet.h"
 #import <AssetsLibrary/AssetsLibrary.h>
 #import "TransBundleDelegate.h"
@@ -18,6 +17,7 @@
 #import "PayManager.h"
 #import "ForumTabBarController.h"
 #import "UIStoryboard+Forum.h"
+#import "ProgressDialog.h"
 
 
 @interface ForumSeniorNewPostViewController () <UIImagePickerControllerDelegate, UINavigationControllerDelegate, UICollectionViewDataSource,
@@ -266,7 +266,7 @@
 - (IBAction)sendSeniorMessage:(UIBarButtonItem *)sender {
     [self.replyContent resignFirstResponder];
 
-    [SVProgressHUD showWithStatus:@"正在回复" maskType:SVProgressHUDMaskTypeBlack];
+    [ProgressDialog showStatus:@"正在回复"];
 
     NSMutableArray < NSData * > *uploadImages = [NSMutableArray array];
     for (UIImage *image in images) {
@@ -277,7 +277,7 @@
     if (isQuoteReply){
         [self.forumApi quoteReplyPostWithMessage:self.replyContent.text withImages:uploadImages toPostId:postId thread:replyThread handler:^(BOOL isSuccess, id message) {
             if (isSuccess) {
-                [SVProgressHUD showSuccessWithStatus:@"回复成功" maskType:SVProgressHUDMaskTypeBlack];
+                [ProgressDialog showSuccess:@"回复成功"];
 
                 ViewThreadPage *thread = message;
 
@@ -293,13 +293,13 @@
                 }];
 
             } else {
-                [SVProgressHUD showErrorWithStatus:message maskType:SVProgressHUDMaskTypeBlack];
+                [ProgressDialog showError:message];
             }
         }];
     } else {
         [self.forumApi seniorReplyPostWithMessage:self.replyContent.text withImages:uploadImages toPostId:postId thread:replyThread handler:^(BOOL isSuccess, id message) {
             if (isSuccess) {
-                [SVProgressHUD showSuccessWithStatus:@"回复成功" maskType:SVProgressHUDMaskTypeBlack];
+                [ProgressDialog showSuccess:@"回复成功"];
 
                 ViewThreadPage *thread = message;
 
@@ -315,7 +315,7 @@
                 }];
 
             } else {
-                [SVProgressHUD showErrorWithStatus:message maskType:SVProgressHUDMaskTypeBlack];
+                [ProgressDialog showError:message];
             }
         }];
     }

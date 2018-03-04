@@ -4,16 +4,13 @@
 //
 
 #import "ForumShortCutCreateNewThreadViewController.h"
-#import "ForumApiHelper.h"
 #import <AssetsLibrary/AssetsLibrary.h>
-#import <SVProgressHUD.h>
 #import "LCActionSheet.h"
 #import "ActionSheetStringPicker.h"
 #import "AFNetworking.h"
-#import "TransBundle.h"
-#import "TransBundleDelegate.h"
 #import "UIImage+Tint.h"
 #import "LocalForumApi.h"
+#import "ProgressDialog.h"
 
 @interface ForumShortCutCreateNewThreadViewController () <UIImagePickerControllerDelegate, UINavigationControllerDelegate,
         UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout,
@@ -195,16 +192,16 @@
     NSString *message = self.message.text;
 
     if (title.length < 1) {
-        [SVProgressHUD showErrorWithStatus:@"标题太短" maskType:SVProgressHUDMaskTypeBlack];
+        [ProgressDialog showError:@"标题太短"];
         return;
     }
     
     if (self.createWhichForum.text.length == 0){
-        [SVProgressHUD showErrorWithStatus:@"标题太短" maskType:SVProgressHUDMaskTypeBlack];
+        [ProgressDialog showError:@"标题太短"];
         return;
     }
-    
-    [SVProgressHUD showWithStatus:@"正在发送" maskType:SVProgressHUDMaskTypeBlack];
+
+    [ProgressDialog showStatus:@"正在发送"];
 
     NSMutableArray<NSData *> *uploadData = [NSMutableArray array];
     for (UIImage *image in images) {
@@ -221,9 +218,9 @@
         }];
 
         if (isSuccess) {
-            [SVProgressHUD showSuccessWithStatus:@"发帖成功" maskType:SVProgressHUDMaskTypeBlack];
+            [ProgressDialog showSuccess:@"发帖成功"];
         } else {
-            [SVProgressHUD showErrorWithStatus:@"发帖失败" maskType:SVProgressHUDMaskTypeBlack];
+            [ProgressDialog showError:@"发帖失败"];
         }
     }];
 }

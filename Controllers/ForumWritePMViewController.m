@@ -10,7 +10,7 @@
 #import "PayManager.h"
 #import "LocalForumApi.h"
 #import "UIStoryboard+Forum.h"
-#import <SVProgressHUD.h>
+#import "ProgressDialog.h"
 
 
 @interface ForumWritePMViewController () <TransBundleDelegate> {
@@ -117,41 +117,41 @@
 - (IBAction)sendPrivateMessage:(id)sender {
 
     if ([self.toWho.text isEqualToString:@""]) {
-        [SVProgressHUD showErrorWithStatus:@"无收件人" maskType:SVProgressHUDMaskTypeBlack];
+        [ProgressDialog showError:@"无收件人"];
     } else if ([self.privateMessageTitle.text isEqualToString:@""]) {
-        [SVProgressHUD showErrorWithStatus:@"无标题" maskType:SVProgressHUDMaskTypeBlack];
+        [ProgressDialog showError:@"无标题"];
     } else if ([self.privateMessageContent.text isEqualToString:@""]) {
-        [SVProgressHUD showErrorWithStatus:@"无内容" maskType:SVProgressHUDMaskTypeBlack];
+        [ProgressDialog showError:@"无内容"];
     } else {
 
         [self.privateMessageContent resignFirstResponder];
 
-        [SVProgressHUD showWithStatus:@"正在发送" maskType:SVProgressHUDMaskTypeBlack];
+        [ProgressDialog showStatus:@"正在发送"];
 
         if (isReply) {
 
             [self.forumApi replyPrivateMessage:_privateMessage andReplyContent:self.privateMessageContent.text handler:^(BOOL isSuccess, id message){
-                [SVProgressHUD dismiss];
+                [ProgressDialog dismiss];
 
                 if (isSuccess) {
                     [self dismissViewControllerAnimated:YES completion:^{
 
                     }];
                 } else {
-                    [SVProgressHUD showErrorWithStatus:message maskType:SVProgressHUDMaskTypeBlack];
+                    [ProgressDialog showError:message];
                 }
             }];
         } else {
             [self.forumApi sendPrivateMessageToUserName:self.toWho.text andTitle:self.privateMessageTitle.text andMessage:self.privateMessageContent.text handler:^(BOOL isSuccess, id message) {
 
-                [SVProgressHUD dismiss];
+                [ProgressDialog dismiss];
 
                 if (isSuccess) {
                     [self dismissViewControllerAnimated:YES completion:^{
 
                     }];
                 } else {
-                    [SVProgressHUD showErrorWithStatus:message maskType:SVProgressHUDMaskTypeBlack];
+                    [ProgressDialog showError:message];
                 }
 
             }];

@@ -22,6 +22,7 @@
 #import "AppDelegate.h"
 #import "LocalForumApi.h"
 #import "ForumTabBarController.h"
+#import "ProgressDialog.h"
 
 @interface ForumWebViewController () <UIWebViewDelegate, UIScrollViewDelegate, TransBundleDelegate, CAAnimationDelegate> {
 
@@ -429,8 +430,8 @@
 
     [self.forumApi showThreadWithId:threadId andPage:page handler:^(BOOL isSuccess, ViewThreadPage *threadPage) {
 
-        
-        [SVProgressHUD dismiss];
+
+        [ProgressDialog dismiss];
         
         if (!isSuccess){
             [self showFailedMessage:threadPage];
@@ -608,7 +609,7 @@
                 NSString *postUrl = [forumConfig copyThreadUrl:[NSString stringWithFormat:@"%d", threadID] withPostId:[NSString stringWithFormat:@"%d", postId] withPostCout:louCeng];
                 UIPasteboard *pasteboard = [UIPasteboard generalPasteboard];
                 pasteboard.string = postUrl;
-                [SVProgressHUD showSuccessWithStatus:@"复制成功" maskType:SVProgressHUDMaskTypeBlack];
+                [ProgressDialog showSuccess:@"复制成功"];
             } else if (buttonIndex == 3){
                 [self reportThreadPost:postId userName:userName];
             }
@@ -704,7 +705,7 @@
 
         if (selectPage != currentShowThreadPage.pageNumber.currentPageNumber) {
 
-            [SVProgressHUD showWithStatus:@"正在切换" maskType:SVProgressHUDMaskTypeBlack];
+            [ProgressDialog showStatus:@"正在切换"];
             [self showThread:threadID page:selectPage withAnim:YES];
         }
 
@@ -741,14 +742,14 @@
     LocalForumApi *localForumApi = [[LocalForumApi alloc] init];
     id<ForumConfigDelegate> forumConfig = [ForumApiHelper forumConfig:localForumApi.currentForumHost];
 
-    itemActionSheet = [LCActionSheet sheetWithTitle:nil cancelButtonTitle:@"" clicked:^(LCActionSheet * _Nonnull actionSheet, NSInteger buttonIndex) {
+    itemActionSheet = [LCActionSheet sheetWithTitle:nil cancelButtonTitle:nil clicked:^(LCActionSheet * _Nonnull actionSheet, NSInteger buttonIndex) {
         if (buttonIndex == 0) {
             // 复制贴链接
             UIPasteboard *pasteboard = [UIPasteboard generalPasteboard];
             
             pasteboard.string = [forumConfig showThreadWithThreadId:[NSString stringWithFormat:@"%d", threadID] withPage:0];
-            
-            [SVProgressHUD showSuccessWithStatus:@"复制成功" maskType:SVProgressHUDMaskTypeBlack];
+
+            [ProgressDialog showSuccess:@"复制成功"];
             
         } else if (buttonIndex == 1) {
             // 在浏览器种查看
@@ -759,26 +760,6 @@
         }
         
     } otherButtonTitleArray:@[@"复制帖子链接", @"在浏览器中查看", @"举报此主题"]];
-    
-    
-    /*
-    itemActionSheet = [LCActionSheet sheetWithTitle:nil buttonTitles:@[@"复制帖子链接", @"在浏览器中查看", @"举报此主题"] redButtonIndex:4 clicked:^(NSInteger buttonIndex) {
-        if (buttonIndex == 0) {
-            // 复制贴链接
-            UIPasteboard *pasteboard = [UIPasteboard generalPasteboard];
-
-            pasteboard.string = [forumConfig showThreadWithThreadId:[NSString stringWithFormat:@"%d", threadID] withPage:0];
-
-            [SVProgressHUD showSuccessWithStatus:@"复制成功" maskType:SVProgressHUDMaskTypeBlack];
-
-        } else if (buttonIndex == 1) {
-            // 在浏览器种查看
-            NSURL *url = [NSURL URLWithString:[forumConfig showThreadWithThreadId:[NSString stringWithFormat:@"%d", threadID] withPage:1]];
-            [[UIApplication sharedApplication] openURL:url];
-        } else if (buttonIndex == 2) {
-            [self reportThreadPost:nil userName:nil];
-        }
-    }];*/
 
     [itemActionSheet show];
 }
@@ -808,7 +789,7 @@
         return;
     }
 
-    [SVProgressHUD showWithStatus:@"正在切换" maskType:SVProgressHUDMaskTypeBlack];
+    [ProgressDialog showStatus:@"正在切换"];
     [self showThread:threadID page:1 withAnim:YES];
 }
 
@@ -817,7 +798,7 @@
         [self.webView.scrollView.mj_footer beginRefreshing];
         return;
     }
-    [SVProgressHUD showWithStatus:@"正在切换" maskType:SVProgressHUDMaskTypeBlack];
+    [ProgressDialog showStatus:@"正在切换"];
     [self showThread:threadID page:currentShowThreadPage.pageNumber.totalPageNumber withAnim:YES];
 }
 

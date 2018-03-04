@@ -9,10 +9,10 @@
 #import "AppDelegate.h"
 
 #import "UIStoryboard+Forum.h"
-#import <SVProgressHUD.h>
 #import "ForumCoreDataManager.h"
 #import "ForumEntry+CoreDataClass.h"
 #import "LocalForumApi.h"
+#import "ProgressDialog.h"
 
 @interface ForumLoginViewController () <UITextFieldDelegate> {
 
@@ -144,7 +144,7 @@
         return;
     }
 
-    [SVProgressHUD showWithStatus:@"正在登录" maskType:SVProgressHUDMaskTypeBlack];
+    [ProgressDialog showStatus:@"正在登录"];
 
     [_forumApi loginWithName:name andPassWord:password withCode:code question:nil answer:nil handler:^(BOOL isSuccess, id message) {
         if (isSuccess) {
@@ -152,7 +152,7 @@
             [_forumApi listAllForums:^(BOOL success, id msg) {
 
 
-                [SVProgressHUD dismiss];
+                [ProgressDialog dismiss];
                 if (success) {
                     NSMutableArray<Forum *> *needInsert = msg;
                     ForumCoreDataManager *formManager = [[ForumCoreDataManager alloc] initWithEntryType:EntryTypeForm];
@@ -181,7 +181,7 @@
             
             
         } else {
-            [SVProgressHUD dismiss];
+            [ProgressDialog dismiss];
             
             UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"错误" message:message preferredStyle:UIAlertControllerStyleAlert];
             UIAlertAction *action = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:nil];
