@@ -41,6 +41,10 @@
 
 }
 
+- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
+    return 10.f;
+}
+
 
 - (IBAction)pay:(UIBarButtonItem *)sender {
 
@@ -84,7 +88,7 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [self.tableView deselectRowAtIndexPath:indexPath animated:FALSE];
 
-    if (indexPath.section == 0){
+    if (indexPath.section == 1){
         if (indexPath.row == 0){
             [self pay:nil];
         } else if (indexPath.row == 2){
