@@ -28,6 +28,9 @@
     } else if ([type isEqualToString:@"ShowPolicy"]){
         _title = @"隐私政策";
         _html = @"privacy";
+    } else if ([type isEqualToString:@"ShowMore"]){
+        _title = @"了解更多";
+        _html = @"more";
     }
 }
 

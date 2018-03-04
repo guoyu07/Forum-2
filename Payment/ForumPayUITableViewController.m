@@ -125,7 +125,7 @@
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
     NSString * type = segue.identifier;
-    if ([type isEqualToString:@"ShowTermsOfUse"] || [type isEqualToString:@"ShowPolicy"]) {
+    if ([type isEqualToString:@"ShowTermsOfUse"] || [type isEqualToString:@"ShowPolicy"] || [type isEqualToString:@"ShowMore"]) {
         ForumShowPrivatePolicyUiViewController *controller = segue.destinationViewController;
 
         TransBundle * bundle = [[TransBundle alloc] init];
