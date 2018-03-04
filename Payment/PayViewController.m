@@ -13,9 +13,9 @@
 
 @interface PayViewController (){
     LocalForumApi *_localForumApi;
+    PayManager *_payManager;
 
     IBOutlet UIButton *restorePayBtn;
-    PayManager *_payManager;
 }
 
 @end

@@ -8,21 +8,89 @@
 
 #import "ForumPayUITableViewController.h"
 #import "ForumShowPrivatePolicyUiViewController.h"
+#import "PayManager.h"
+#import "LocalForumApi.h"
+#import "ProgressDialog.h"
 
-@interface ForumPayUITableViewController ()
+@interface ForumPayUITableViewController (){
+    LocalForumApi *_localForumApi;
+    PayManager *_payManager;
+}
 
 @end
 
 @implementation ForumPayUITableViewController
 
+- (IBAction)close:(id)sender {
+    
+    UINavigationController *navigationController = self.navigationController;
+    [navigationController popViewControllerAnimated:YES];
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
-    // Uncomment the following line to preserve selection between presentations.
-    // self.clearsSelectionOnViewWillAppear = NO;
-    
-    // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-    // self.navigationItem.rightBarButtonItem = self.editButtonItem;
+    _localForumApi = [[LocalForumApi alloc] init];
+    // payManager
+    _payManager = [PayManager shareInstance];
+
+//    if ([_payManager hasPayed:_localForumApi.currentProductID]){
+//        [restorePayBtn setTitle:@"您已订阅" forState:UIControlStateNormal];
+//    } else {
+//        [restorePayBtn setTitle:@"恢复之前的订阅" forState:UIControlStateNormal];
+//    }
+
+}
+
+
+- (IBAction)pay:(UIBarButtonItem *)sender {
+
+    if ([_payManager hasPayed:_localForumApi.currentProductID]){
+        [ProgressDialog showSuccess:@"您已订阅"];
+        return;
+    }
+
+    [ProgressDialog show];
+
+    [_payManager payForProductID:_localForumApi.currentProductID with:^(BOOL isSuccess) {
+        if (isSuccess){
+            //[restorePayBtn setTitle:@"您已订阅" forState:UIControlStateNormal];
+            [ProgressDialog showSuccess:@"订阅成功"];
+        } else {
+            [ProgressDialog showError:@"订阅失败"];
+        }
+    }];
+
+}
+
+- (IBAction)restorePay:(id)sender {
+
+    if ([_payManager hasPayed:_localForumApi.currentProductID]){
+        [ProgressDialog showStatus:@"您已订阅"];
+        return;
+    }
+    [ProgressDialog show];
+
+    [_payManager restorePayForProductID:_localForumApi.currentProductID with:^(BOOL isSuccess) {
+        if (isSuccess){
+            //[restorePayBtn setTitle:@"您已订阅" forState:UIControlStateNormal];
+            [ProgressDialog showSuccess:@"订阅成功"];
+        } else {
+            [ProgressDialog showError:@"订阅失败"];
+        }
+    }];
+}
+
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    [self.tableView deselectRowAtIndexPath:indexPath animated:FALSE];
+
+    if (indexPath.section == 0){
+        if (indexPath.row == 0){
+            [self pay:nil];
+        } else if (indexPath.row == 2){
+            [self restorePay:nil];
+        }
+    }
 }
 
 - (BOOL)setLoadMore:(BOOL)enable {
@@ -46,7 +114,7 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     if (section == 0){
-        return 2;
+        return 3;
     } else if (section == 1){
         return 2;
     } else if (section == 2){
@@ -54,60 +122,6 @@
     }
     return 0;
 }
-
-/*
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:<#@"reuseIdentifier"#> forIndexPath:indexPath];
-    
-    // Configure the cell...
-    
-    return cell;
-}
-*/
-
-/*
-// Override to support conditional editing of the table view.
-- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
-    // Return NO if you do not want the specified item to be editable.
-    return YES;
-}
-*/
-
-/*
-// Override to support editing the table view.
-- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
-    if (editingStyle == UITableViewCellEditingStyleDelete) {
-        // Delete the row from the data source
-        [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
-    } else if (editingStyle == UITableViewCellEditingStyleInsert) {
-        // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-    }   
-}
-*/
-
-/*
-// Override to support rearranging the table view.
-- (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath {
-}
-*/
-
-/*
-// Override to support conditional rearranging of the table view.
-- (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath {
-    // Return NO if you do not want the item to be re-orderable.
-    return YES;
-}
-*/
-
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
     NSString * type = segue.identifier;

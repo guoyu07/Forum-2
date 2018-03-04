@@ -155,7 +155,7 @@
     self.webView.delegate = self;
     self.webView.backgroundColor = [UIColor whiteColor];
 
-    for (UIView *view in [[[self.webView subviews] objectAtIndex:0] subviews]) {
+    for (UIView *view in [[self.webView subviews][0] subviews]) {
         if ([view isKindOfClass:[UIImageView class]]) {
             view.hidden = YES;
         }
@@ -405,7 +405,7 @@
                 id<ForumConfigDelegate> forumConfig = [ForumApiHelper forumConfig:localForumApi.currentForumHost];
 
                 for (NSInteger i = currentShowThreadPage.postList.count; i < posts.count; i++) {
-                    Post *post = posts[i];
+                    Post *post = posts[(NSUInteger) i];
                     NSString *avatar = [forumConfig avatar:post.postUserInfo.userAvatar];
                     NSString *louceng = [post.postLouCeng stringWithRegular:@"\\d+"];
 
@@ -527,9 +527,9 @@
         [scanner scanCharactersFromSet:delimiterSet intoString:NULL];
         NSArray *kvPair = [pairString componentsSeparatedByString:@"="];
         if (kvPair.count == 2) {
-            NSString *key = [[kvPair objectAtIndex:0] stringByReplacingPercentEscapesUsingEncoding:encoding];
-            NSString *value = [[kvPair objectAtIndex:1] stringByReplacingPercentEscapesUsingEncoding:encoding];
-            [pairs setObject:value forKey:key];
+            NSString *key = [kvPair[0] stringByReplacingPercentEscapesUsingEncoding:encoding];
+            NSString *value = [kvPair[1] stringByReplacingPercentEscapesUsingEncoding:encoding];
+            pairs[key] = value;
         }
     }
 
@@ -573,7 +573,7 @@
 
         itemActionSheet = [LCActionSheet sheetWithTitle:userName cancelButtonTitle:@"取消" clicked:^(LCActionSheet * _Nonnull actionSheet, NSInteger buttonIndex) {
             
-            NSLog(@"LCActionSheet click index %ld", buttonIndex);
+            NSLog(@"LCActionSheet click index %ld", (long) buttonIndex);
             
             if (buttonIndex == 1) {
                 
