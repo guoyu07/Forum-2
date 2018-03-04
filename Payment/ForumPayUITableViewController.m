@@ -21,10 +21,24 @@
 
 @implementation ForumPayUITableViewController
 
-- (IBAction)close:(id)sender {
-    
-    UINavigationController *navigationController = self.navigationController;
-    [navigationController popViewControllerAnimated:YES];
+- (IBAction)backOrDismiss:(UIBarButtonItem *)sender {
+    [_payManager removeTransactionObserver];
+
+    if (self.canBack){
+        UINavigationController *navigationController = self.navigationController;
+        [navigationController popViewControllerAnimated:YES];
+    } else {
+        [self dismissViewControllerAnimated:YES completion:nil  ];
+    }
+}
+
+
+- (BOOL) canBack{
+//    UIViewController * c = self.navigationController.presentingViewController;
+//    return c != nil;
+//    return self.navigationController.topViewController == self;
+
+    return self.navigationController.viewControllers.count > 1;
 }
 
 - (void)viewDidLoad {
@@ -38,6 +52,12 @@
 //    } else {
 //        [restorePayBtn setTitle:@"恢复之前的订阅" forState:UIControlStateNormal];
 //    }
+    if (self.canBack) {
+        self.navigationItem.leftBarButtonItem.image = [UIImage imageNamed:@"ic_arrow_back_18pt"];
+    } else {
+        self.navigationItem.leftBarButtonItem.image = [UIImage imageNamed:@"ic_close_18pt"];
+    }
+
 
 }
 
