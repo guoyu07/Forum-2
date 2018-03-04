@@ -35,7 +35,8 @@
                     <constraints>
                         <constraint firstAttribute="height" constant="44" id="Idh-Em-KOs"/>
                     </constraints>
-                    <state key="normal" title="设置">
+                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                    <state key="normal" title="论坛设置">
                         <color key="titleColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     </state>
                     <connections>
@@ -84,7 +85,7 @@
                 <constraint firstItem="brC-N9-KEl" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="Zl9-s8-q0L"/>
                 <constraint firstAttribute="trailing" secondItem="RoY-1E-1dD" secondAttribute="trailing" id="aKm-2B-vxv"/>
                 <constraint firstItem="7SC-OU-YuA" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="hln-Sh-HKD"/>
-                <constraint firstItem="7SC-OU-YuA" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="45" id="oqw-0b-NH8"/>
+                <constraint firstItem="7SC-OU-YuA" firstAttribute="topMargin" secondItem="iN0-l3-epB" secondAttribute="top" constant="53" id="oqw-0b-NH8"/>
                 <constraint firstItem="EMP-9K-WJf" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="45" id="rvq-Zx-eQF"/>
                 <constraint firstItem="RoY-1E-1dD" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="tLU-Wi-bdm"/>
                 <constraint firstItem="EMP-9K-WJf" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="um7-hG-j4u"/>
