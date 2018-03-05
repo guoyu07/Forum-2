@@ -26,6 +26,8 @@
 static BOOL API_DEBUG = NO;
 static int DB_VERSION = 9;
 
+static BOOL PAY_DEBUG = YES;
+
 @interface AppDelegate ()<UNUserNotificationCenterDelegate> {
     ForumPushManager *_pushManager;
 }
@@ -37,18 +39,22 @@ static int DB_VERSION = 9;
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
 
     LocalForumApi *localForumApi = [[LocalForumApi alloc] init];
-    // 向服务器验证订阅情况
-    PayManager * payManager = [PayManager shareInstance];
-    [payManager verifyPay:localForumApi.currentProductID with:^(NSDictionary *response) {
+    
+    if (!PAY_DEBUG) {
+        // 向服务器验证订阅情况
+        PayManager * payManager = [PayManager shareInstance];
+        [payManager verifyPay:localForumApi.currentProductID with:^(NSDictionary *response) {
+            
+            if (response == nil || [response[@"status"] intValue] != 0){
+                [payManager setPayed:FALSE for:localForumApi.currentProductID];
+                NSLog(@"not payed");
+            } else {
+                [payManager setPayed:TRUE for:localForumApi.currentProductID];
+                NSLog(@"payed success");
+            }
+        }];
+    }
 
-        if (response == nil || [response[@"status"] intValue] != 0){
-            [payManager setPayed:FALSE for:localForumApi.currentProductID];
-            NSLog(@"not payed");
-        } else {
-            [payManager setPayed:TRUE for:localForumApi.currentProductID];
-            NSLog(@"payed success");
-        }
-    }];
 
     NSURLCache *cache = [[NSURLCache alloc] initWithMemoryCapacity:200 * 1024 * 1024 diskCapacity:1024 * 1024 * 1024 diskPath:nil];
     [NSURLCache setSharedURLCache:cache];
