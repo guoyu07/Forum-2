@@ -266,13 +266,22 @@ static PayManager *_instance = nil;
 - (void)verifyPay:(NSString *)productID with:(VerifyHandler)handler {
     _currentProductID = productID;
 
-    [self verifyWithUrl:[NSURL URLWithString:AppStore] handler:^(NSDictionary *response) {
-        if (response == nil || [response[@"status"] intValue] != 0){
+    NSLog(@"verify->:\tproductID:%@", _currentProductID);
 
-            [self verifyWithUrl:[NSURL URLWithString:SANDBOX] handler:^(NSDictionary *response) {
-                handler(response);
-            }];
-            return;
+    [self verifyWithUrl:[NSURL URLWithString:AppStore] handler:^(NSDictionary *response) {
+        if (response){
+            NSLog(@"verify->:\tAppStore 环境:%@", response);
+
+            // 21007 说明是沙河下的收据却拿到正式环境进行了验证，因此需要重新在沙河下进行验证
+            if ([response[@"status"] intValue] == 21007){
+                [self verifyWithUrl:[NSURL URLWithString:SANDBOX] handler:^(NSDictionary *response) {
+                    NSLog(@"verify->:\tSandbox 环境:%@", response);
+                    handler(response);
+                }];
+                return;
+            }
+        } else {
+            NSLog(@"verifyPay: response is nil.");
         }
 
         handler(response);
@@ -284,9 +293,16 @@ static PayManager *_instance = nil;
 //从沙盒中获取交易凭证并且拼接成请求体数据
     NSURL *receiptUrl = [[NSBundle mainBundle] appStoreReceiptURL];
     NSData *receiptData = [NSData dataWithContentsOfURL:receiptUrl];
+    // 保证数据
+    if (!receiptData){
+        NSLog(@"verify->:\tverifyWithUrl() : 没有任何收据，无需再次验证了");
+        handler(nil);
+        return;
+    }
 
     //转化为base64字符串
     NSString *receiptString = [receiptData base64EncodedStringWithOptions:NSDataBase64EncodingEndLineWithLineFeed];
+
     NSString *bodyString = [NSString stringWithFormat:@"{\"receipt-data\" : \"%@\", \"password\":\"%@\"}",
                                                       receiptString, @"b3189c215c0b423d985bc8d2548bb91a"];//拼接请求数据
     NSData *bodyData = [bodyString dataUsingEncoding:NSUTF8StringEncoding];
@@ -301,12 +317,12 @@ static PayManager *_instance = nil;
     NSError *error = nil;
     NSData *responseData = [NSURLConnection sendSynchronousRequest:requestM returningResponse:nil error:&error];
     if (error) {
-        NSLog(@"验证购买过程中发生错误，错误信息：%@", error.localizedDescription);
+        NSLog(@"verify->:\tverifyWithUrl() : 验证发生错误: %@", error.localizedDescription);
         handler(nil);
         return;
     }
     NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:responseData options:NSJSONReadingAllowFragments error:nil];
-    NSLog(@"验证订阅>>>\t%@", dic);
+    NSLog(@"verify->:\tverifyWithUrl() : 验证返回数据: %@", dic);
     handler(dic);
 }
 

@@ -26,7 +26,7 @@
 static BOOL API_DEBUG = NO;
 static int DB_VERSION = 9;
 
-static BOOL PAY_DEBUG = YES;
+static BOOL PAY_DEBUG = NO;
 
 @interface AppDelegate ()<UNUserNotificationCenterDelegate> {
     ForumPushManager *_pushManager;
