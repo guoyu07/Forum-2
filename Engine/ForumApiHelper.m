@@ -19,24 +19,30 @@
 
 typedef id (^Runnable)(NSString *bundle, NSString *host);
 
+#define CCF_HOST @"bbs.et8.net"
+#define DRL_HOST @"dream4ever.org"
+#define CRSKY_HOST @"bbs .crsky.com"
+#define CHIPHELL_HOST @"chiphell.com"
+
 @implementation ForumApiHelper
 + (id <ForumBrowserDelegate>)forumApi:(NSString *)host {
-    if ([host isEqualToString:@"bbs.et8.net"]){
+
+    if ([host isEqualToString:CCF_HOST]){
 
         CCFForumApi * ccfForumApi = [[CCFForumApi alloc] init];
         return ccfForumApi;
 
-    } else if ([host isEqualToString:@"dream4ever.org"]){
+    } else if ([host isEqualToString:DRL_HOST]){
 
         DRLForumApi * drlForumApi = [[DRLForumApi alloc] init];
         return drlForumApi;
 
-    } else if ([host isEqualToString:@"bbs.crsky.com"]){
+    } else if ([host isEqualToString:CRSKY_HOST]){
 
         CrskyForumApi *crskyForumApi = [[CrskyForumApi alloc] init];
         return crskyForumApi;
 
-    } else if([host isEqualToString:@"chiphell.com"]){
+    } else if([host isEqualToString:CHIPHELL_HOST]){
 
         CHHForumApi * chhForumApi = [[CHHForumApi alloc] init];
         return chhForumApi;
@@ -46,22 +52,22 @@ typedef id (^Runnable)(NSString *bundle, NSString *host);
 }
 
 + (id <ForumConfigDelegate>)forumConfig:(NSString *)host {
-    if ([host isEqualToString:@"bbs.et8.net"]){
+    if ([host isEqualToString:CCF_HOST]){
 
         CCFForumConfig * ccfForumApi = [[CCFForumConfig alloc] init];
         return ccfForumApi;
 
-    } else if ([host isEqualToString:@"dream4ever.org"]){
+    } else if ([host isEqualToString:DRL_HOST]){
 
         DRLForumConfig * drlForumApi = [[DRLForumConfig alloc] init];
         return drlForumApi;
 
-    } else if ([host isEqualToString:@"bbs.crsky.com"]){
+    } else if ([host isEqualToString:CRSKY_HOST]){
 
         CrskyForumConfig *crskyForumApi = [[CrskyForumConfig alloc] init];
         return crskyForumApi;
 
-    } else if([host isEqualToString:@"chiphell.com"]){
+    } else if([host isEqualToString:CHIPHELL_HOST]){
 
         CHHForumConfig * chhForumApi = [[CHHForumConfig alloc] init];
         return chhForumApi;
@@ -77,22 +83,22 @@ typedef id (^Runnable)(NSString *bundle, NSString *host);
     NSString *bundleId = [localForumApi bundleIdentifier];
     NSString * host = localForumApi.currentForumHost;
 
-    if ([bundleId isEqualToString:@"com.andforce.et8"] || [host isEqualToString:@"bbs.et8.net"]){
+    if ([bundleId isEqualToString:@"com.andforce.et8"] || [host isEqualToString:CCF_HOST]){
 
         CCFForumConfig * ccfForumApi = [[CCFForumConfig alloc] init];
         return ccfForumApi;
 
-    } else if ([bundleId isEqualToString:@"com.andforce.DRL"] || [host isEqualToString:@"dream4ever.org"]){
+    } else if ([bundleId isEqualToString:@"com.andforce.DRL"] || [host isEqualToString:DRL_HOST]){
 
         DRLForumConfig * drlForumApi = [[DRLForumConfig alloc] init];
         return drlForumApi;
 
-    } else if ([bundleId isEqualToString:@"com.andforce.Crsky"] || [host isEqualToString:@"bbs.crsky.com"]){
+    } else if ([bundleId isEqualToString:@"com.andforce.Crsky"] || [host isEqualToString:CRSKY_HOST]){
 
         CrskyForumConfig *crskyForumApi = [[CrskyForumConfig alloc] init];
         return crskyForumApi;
 
-    } else if([bundleId isEqualToString:@"com.andforce.CHH"] || [host isEqualToString:@"www.chiphell.com"] || [host isEqualToString:@"chiphell.com"]){
+    } else if([bundleId isEqualToString:@"com.andforce.CHH"] || [host isEqualToString:@"www.chiphell.com"] || [host isEqualToString:CHIPHELL_HOST]){
 
         CHHForumConfig * chhForumApi = [[CHHForumConfig alloc] init];
         return chhForumApi;
@@ -107,22 +113,22 @@ typedef id (^Runnable)(NSString *bundle, NSString *host);
     NSString *bundleId = [localForumApi bundleIdentifier];
     NSString * host = localForumApi.currentForumHost;
 
-    if ([bundleId isEqualToString:@"com.andforce.et8"] || [host isEqualToString:@"bbs.et8.net"]){
+    if ([bundleId isEqualToString:@"com.andforce.et8"] || [host isEqualToString:CCF_HOST]){
 
         CCFForumApi * ccfForumApi = [[CCFForumApi alloc] init];
         return ccfForumApi;
 
-    } else if ([bundleId isEqualToString:@"com.andforce.DRL"] || [host isEqualToString:@"dream4ever.org"]){
+    } else if ([bundleId isEqualToString:@"com.andforce.DRL"] || [host isEqualToString:DRL_HOST]){
 
         DRLForumApi * drlForumApi = [[DRLForumApi alloc] init];
         return drlForumApi;
 
-    } else if ([bundleId isEqualToString:@"com.andforce.Crsky"] || [host isEqualToString:@"bbs.crsky.com"]){
+    } else if ([bundleId isEqualToString:@"com.andforce.Crsky"] || [host isEqualToString:CRSKY_HOST]){
 
         CrskyForumApi *crskyForumApi = [[CrskyForumApi alloc] init];
         return crskyForumApi;
 
-    } else if([bundleId isEqualToString:@"com.andforce.CHH"] || [host isEqualToString:@"www.chiphell.com"] || [host isEqualToString:@"chiphell.com"]){
+    } else if([bundleId isEqualToString:@"com.andforce.CHH"] || [host isEqualToString:@"www.chiphell.com"] || [host isEqualToString:CHIPHELL_HOST]){
 
         CHHForumApi * chhForumApi = [[CHHForumApi alloc] init];
         return chhForumApi;
