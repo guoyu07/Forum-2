@@ -40,7 +40,7 @@ static BOOL PAY_DEBUG = NO;
 
     LocalForumApi *localForumApi = [[LocalForumApi alloc] init];
     
-    if (!PAY_DEBUG) {
+    if (NO && !PAY_DEBUG) {
         // 向服务器验证订阅情况
         PayManager * payManager = [PayManager shareInstance];
         [payManager verifyPay:localForumApi.currentProductID with:^(NSDictionary *response) {
