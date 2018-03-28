@@ -33,7 +33,7 @@ static PayManager *_instance = nil;
 
 - (instancetype)init {
     if (self = [super init]) {
-        [[SKPaymentQueue defaultQueue] addTransactionObserver:self];
+        //[[SKPaymentQueue defaultQueue] addTransactionObserver:self];
     }
     return self;
 

@@ -139,7 +139,6 @@
 		4D1B072A2046B15F0013B6A1 /* ForumPayUITableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4D1B07292046B15F0013B6A1 /* ForumPayUITableViewController.m */; };
 		4D4CCC791F42CA5A009A4D58 /* CloudKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D4CCC781F42CA5A009A4D58 /* CloudKit.framework */; };
 		4D7F74F21FBEB5FD0049BA46 /* AutoSendBackTabBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 4D7F74F11FBEB5FD0049BA46 /* AutoSendBackTabBar.m */; };
-		4D8962BB1FDFA6C30015BD9D /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D8962BA1FDFA6C30015BD9D /* StoreKit.framework */; };
 		4D8C11F21FF0CB23008813C4 /* PayViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4D8C11F11FF0CB22008813C4 /* PayViewController.m */; };
 		4DA372A41FC2DFD60094E655 /* ZhanNeiSearchViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 4DA372A31FC2DFD50094E655 /* ZhanNeiSearchViewCell.m */; };
 		4DB47C321F4AC73B00A79AC5 /* IGXMLNode+QueryNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 4DB47C311F4AC73B00A79AC5 /* IGXMLNode+QueryNode.m */; };
@@ -423,7 +422,6 @@
 		4D4CCC781F42CA5A009A4D58 /* CloudKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CloudKit.framework; path = System/Library/Frameworks/CloudKit.framework; sourceTree = SDKROOT; };
 		4D7F74F01FBEB5FD0049BA46 /* AutoSendBackTabBar.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AutoSendBackTabBar.h; sourceTree = "<group>"; };
 		4D7F74F11FBEB5FD0049BA46 /* AutoSendBackTabBar.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AutoSendBackTabBar.m; sourceTree = "<group>"; };
-		4D8962BA1FDFA6C30015BD9D /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
 		4D8C11F01FF0CB22008813C4 /* PayViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PayViewController.h; sourceTree = "<group>"; };
 		4D8C11F11FF0CB22008813C4 /* PayViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PayViewController.m; sourceTree = "<group>"; };
 		4DA372A21FC2DFD50094E655 /* ZhanNeiSearchViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZhanNeiSearchViewCell.h; sourceTree = "<group>"; };
@@ -488,7 +486,6 @@
 				4D4CCC791F42CA5A009A4D58 /* CloudKit.framework in Frameworks */,
 				4DEB34C31C47BBE400063CBB /* AssetsLibrary.framework in Frameworks */,
 				757C88B17FCB5AFBB7C0CA0B /* libPods-Forum.a in Frameworks */,
-				4D8962BB1FDFA6C30015BD9D /* StoreKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1049,7 +1046,6 @@
 		CC5E7A99B69535660B7F40C0 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				4D8962BA1FDFA6C30015BD9D /* StoreKit.framework */,
 				4D4CCC781F42CA5A009A4D58 /* CloudKit.framework */,
 				4DEB34C21C47BBE400063CBB /* AssetsLibrary.framework */,
 				EA91F0D805959E8525B7BE0D /* libPods-Forum.a */,
@@ -1096,7 +1092,7 @@
 						ProvisioningStyle = Automatic;
 						SystemCapabilities = {
 							com.apple.InAppPurchase = {
-								enabled = 1;
+								enabled = 0;
 							};
 							com.apple.Push = {
 								enabled = 1;
