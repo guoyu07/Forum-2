@@ -361,7 +361,7 @@
 
     self.frame = CGRectMake(0, 0, kEdge, rootView.frame.size.height);
 
-    NSLog(@"didMoveToSuperview %f", rootView.frame.size.width);
+    //NSLog(@"didMoveToSuperview %f", rootView.frame.size.width);
 
 
     _drawerMaskView.frame = CGRectMake(0, 0, rootView.frame.size.width, rootView.frame.size.height);
@@ -413,7 +413,7 @@
 
             }
         }
-        NSLog(@"左侧     %@", subViews);
+        //NSLog(@"左侧     %@", subViews);
     }
 
     if (_drawerType != DrawerViewTypeLeft) {
@@ -765,7 +765,7 @@
     if (recognizer.state == UIGestureRecognizerStateEnded) {
         CGPoint velocity = [recognizer velocityInView:self];
 
-        NSLog(@"Touch ===   %f", velocity.x);
+        //NSLog(@"Touch ===   %f", velocity.x);
 
         if (velocity.x > 0) {
             [self showLeftDrawerWithAdim:view];
@@ -779,7 +779,7 @@
     if (recognizer.state == UIGestureRecognizerStateEnded) {
         CGPoint velocity = [recognizer velocityInView:self];
 
-        NSLog(@"Touch ===   %f", velocity.x);
+        //NSLog(@"Touch ===   %f", velocity.x);
 
         if (velocity.x > 0) {
             [self hideRightDrawerWithAnim:view];

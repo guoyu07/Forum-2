@@ -115,8 +115,6 @@ static id <HPURLMapping> s_URLMapping;
         //NSLog(@"image -> YES");
         return YES;
     }
-
-    NSLog(@"NO");
     return NO;
 }
 

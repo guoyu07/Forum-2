@@ -66,13 +66,13 @@
              UNAuthorizationStatusDenied : 用户未授权
              UNAuthorizationStatusAuthorized ：用户已授权
              */
-            if (settings.authorizationStatus == UNAuthorizationStatusNotDetermined) {
-                NSLog(@"未选择");
-            } else if (settings.authorizationStatus == UNAuthorizationStatusDenied) {
-                NSLog(@"未授权");
-            } else if (settings.authorizationStatus == UNAuthorizationStatusAuthorized) {
-                NSLog(@"已授权");
-            }
+//            if (settings.authorizationStatus == UNAuthorizationStatusNotDetermined) {
+//                NSLog(@"未选择");
+//            } else if (settings.authorizationStatus == UNAuthorizationStatusDenied) {
+//                NSLog(@"未授权");
+//            } else if (settings.authorizationStatus == UNAuthorizationStatusAuthorized) {
+//                NSLog(@"已授权");
+//            }
         }];
     }
 #pragma clang diagnostic push

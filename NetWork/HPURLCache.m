@@ -96,7 +96,7 @@ webview 请求一个image
             NSURLResponse *response = [[NSURLResponse alloc] initWithURL:request.URL MIMEType:@"cache" expectedContentLength:[data length] textEncodingName:nil];
             cachedResponse = [[NSCachedURLResponse alloc] initWithResponse:response data:data];
         } else {
-            NSLog(@"not get cachedImage");
+            //NSLog(@"not get cachedImage");
         }
     });
 
