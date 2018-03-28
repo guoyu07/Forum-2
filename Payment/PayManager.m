@@ -79,9 +79,11 @@ static PayManager *_instance = nil;
 
 - (BOOL)hasPayed:(NSString *)productID {
 
-    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    BOOL isPayed = [defaults boolForKey:productID];
-    return isPayed;
+    return YES;
+
+//    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+//    BOOL isPayed = [defaults boolForKey:productID];
+//    return isPayed;
 }
 
 - (void)setPayed:(BOOL)payed for:(NSString *)productID {
