@@ -4,7 +4,7 @@
 //
 
 #import <Foundation/Foundation.h>
-#import <StoreKit/StoreKit.h>
+//#import <StoreKit/StoreKit.h>
 
 @interface PayManager : NSObject
 
