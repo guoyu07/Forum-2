@@ -11,9 +11,7 @@
 
 }
 + (void)show {
-    [SVProgressHUD setMinimumSize:CGSizeMake(100.0, 100.0)];
-    [SVProgressHUD setDefaultStyle:SVProgressHUDStyleLight];
-    [SVProgressHUD setDefaultMaskType:SVProgressHUDMaskTypeBlack];
+    [self initHUD];
     [SVProgressHUD show];
 }
 
@@ -22,24 +20,26 @@
 }
 
 
-+ (void)showStatus:(NSString *)message {
++(void)initHUD{
     [SVProgressHUD setMinimumSize:CGSizeMake(100.0, 100.0)];
     [SVProgressHUD setDefaultStyle:SVProgressHUDStyleLight];
     [SVProgressHUD setDefaultMaskType:SVProgressHUDMaskTypeBlack];
+    [SVProgressHUD setMaximumDismissTimeInterval:1];
+    [SVProgressHUD setMaximumDismissTimeInterval:1];
+}
+
++ (void)showStatus:(NSString *)message {
+    [self initHUD];
     [SVProgressHUD showWithStatus:message];
 }
 
 + (void)showError:(NSString *)message {
-    [SVProgressHUD setMinimumSize:CGSizeMake(100.0, 100.0)];
-    [SVProgressHUD setDefaultStyle:SVProgressHUDStyleLight];
-    [SVProgressHUD setDefaultMaskType:SVProgressHUDMaskTypeBlack];
+    [self initHUD];
     [SVProgressHUD showErrorWithStatus:message];
 }
 
 + (void)showSuccess:(NSString *)message {
-    [SVProgressHUD setMinimumSize:CGSizeMake(100.0, 100.0)];
-    [SVProgressHUD setDefaultStyle:SVProgressHUDStyleLight];
-    [SVProgressHUD setDefaultMaskType:SVProgressHUDMaskTypeBlack];
+    [self initHUD];
     [SVProgressHUD showSuccessWithStatus:message];
 }
 
